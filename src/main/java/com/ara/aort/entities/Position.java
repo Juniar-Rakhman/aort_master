@@ -1,57 +1,40 @@
 package com.ara.aort.entities;
 
+
+import lombok.Data;
+
 import javax.persistence.*;
+import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Created by a9jr5626 on 8/11/16.
+ * @author Sulthonyh
+ * @version 1.0
+ * @created 12-Aug-2016 4:11:46 PM
  */
+@Data
 @Entity
 @Table(name = "position")
 public class Position {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    public Long id;
+	@Column(name = "fte")
+	private BigDecimal FTE;
+	@Id
+	private String id;
+	@Column(name = "line_manager")
+	private String lineManager;
+	@ManyToMany(mappedBy="positions")
+	private List<Staff> staffs;
+	@Column(name = "title")
+	private String title;
 
-    @Column(name = "title")
-    public String title;
+	public Position(){
 
-    @Column(name = "full_time_equivalent_ratio")
-    public String fte;
+	}
 
-    @Column(name = "line_manager")
-    public String lineManager;
+	public void finalize() throws Throwable {
 
-    //getters & setters
-    public Long getId() {
-        return id;
-    }
+	}
 
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getFte() {
-        return fte;
-    }
-
-    public void setFte(String fte) {
-        this.fte = fte;
-    }
-
-    public String getLineManager() {
-        return lineManager;
-    }
-
-    public void setLineManager(String lineManager) {
-        this.lineManager = lineManager;
-    }
 }
