@@ -37,7 +37,7 @@ public class Observation {
     @Column(name = "course_level")
     private Integer courseLevel;
 
-    @Column(name = "day")
+    @Column(name = "programme")
     private String programme;
 
     @Column(name = "programme_level")
@@ -67,7 +67,7 @@ public class Observation {
     @Column(name = "notes")
     private String notes;
 
-    @Column(name = "reference_rating")
+    @OneToOne
     private ReferenceRating refRating;
 
     @Column(name = "rating_summary_eval")
@@ -82,16 +82,16 @@ public class Observation {
     @Column(name = "is_moderated")
     private String isModerated;
 
-    @Column(name = "moderator")
+    @OneToOne
     private Staff moderator;
 
-    @Column(name = "learning_coach")
+    @OneToOne
     private Staff learningCoach;
 
-    @Column(name = "line_manager")
+    @OneToOne
     private Staff lineManager;
 
-    @Column(name = "head_of_department")
+    @OneToOne
     private Staff HOD;
 
     //getters & setters

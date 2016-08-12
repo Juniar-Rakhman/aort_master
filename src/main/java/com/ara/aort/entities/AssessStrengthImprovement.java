@@ -7,17 +7,17 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "observation")
+@Table(name = "assess_strength_improvement")
 public class AssessStrengthImprovement {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
 
-    @Column(name = "observation")
+    @OneToOne
     public Observation observation;
 
-    @Column(name = "reference_strength_improvement")
+    @OneToOne
     public ReferenceStrengthImprovement refStrImp;
 
     @Column(name = "strength")

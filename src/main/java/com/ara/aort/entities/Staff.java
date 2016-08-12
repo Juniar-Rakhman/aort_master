@@ -6,7 +6,7 @@ import javax.persistence.*;
  * Created by a9jr5626 on 8/11/16.
  */
 @Entity
-@Table(name = "reference_strength_improvement")
+@Table(name = "staff")
 public class Staff {
 
     @Id
@@ -35,7 +35,6 @@ public class Staff {
     private String department;
 
     //getters & setters
-
     public Long getId() {
         return id;
     }

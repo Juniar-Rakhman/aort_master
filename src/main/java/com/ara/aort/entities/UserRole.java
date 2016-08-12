@@ -13,7 +13,7 @@ public class UserRole {
     @GeneratedValue(strategy = GenerationType.AUTO)
     public Long id;
 
-    @Column(name = "staff")
+    @OneToOne
     public Staff staff;
 
     @Column(name = "general")
