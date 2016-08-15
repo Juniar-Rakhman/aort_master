@@ -21,12 +21,13 @@ public class Position {
 	@Column(name = "fte")
 	private BigDecimal FTE;
 	@Id
+	@Column(columnDefinition = "nvarchar")
 	private String id;
-	@Column(name = "line_manager")
+	@Column(name = "line_manager", columnDefinition = "nvarchar")
 	private String lineManager;
 	@ManyToMany(mappedBy="positions")
 	private List<Staff> staffs;
-	@Column(name = "title")
+	@Column(name = "title", columnDefinition = "nvarchar")
 	private String title;
 
 	public Position(){

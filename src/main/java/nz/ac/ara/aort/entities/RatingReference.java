@@ -18,7 +18,7 @@ public class RatingReference {
 
 	@Id@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	@Column(name = "rating")
+	@Column(name = "rating", columnDefinition = "nvarchar")
 	private String rating;
 
 	public RatingReference(){
