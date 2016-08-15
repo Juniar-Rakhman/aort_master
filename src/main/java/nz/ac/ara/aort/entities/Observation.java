@@ -1,4 +1,4 @@
-package com.ara.aort.entities;
+package nz.ac.ara.aort.entities;
 
 
 import lombok.Data;

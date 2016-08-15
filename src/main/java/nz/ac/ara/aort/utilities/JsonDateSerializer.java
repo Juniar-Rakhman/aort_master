@@ -1,4 +1,4 @@
-package com.ara.aort.utilities;
+package nz.ac.ara.aort.utilities;
 
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.databind.JsonSerializer;

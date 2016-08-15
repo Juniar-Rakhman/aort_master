@@ -1,6 +1,6 @@
-package com.ara.aort.repositories;
+package nz.ac.ara.aort.repositories;
 
-import com.ara.aort.entities.UserRole;
+import nz.ac.ara.aort.entities.UserRole;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

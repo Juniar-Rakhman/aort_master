@@ -1,4 +1,4 @@
-package com.ara.aort;
+package nz.ac.ara.aort;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

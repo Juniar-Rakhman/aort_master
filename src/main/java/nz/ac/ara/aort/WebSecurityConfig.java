@@ -1,4 +1,4 @@
-package com.ara.aort;//package com.ara.aort;
+package nz.ac.ara.aort;//package com.ara.aort;
 //
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;

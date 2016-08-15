@@ -22,4 +22,7 @@ dependency-reduced-pom.xml
 buildNumber.properties
 .mvn/timing.properties
 
-/.idea/
+# IntelliJ IDEA files
+*.iml
+.idea/
+
