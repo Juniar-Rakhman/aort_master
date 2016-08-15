@@ -17,26 +17,27 @@ import java.util.List;
 @Table(name = "staff")
 public class Staff {
 
-	@Column(name = "department")
+	@Column(name = "department", columnDefinition = "nvarchar")
 	private String department;
-	@Column(name = "email")
+	@Column(name = "email", columnDefinition = "nvarchar")
 	private String email;
-	@Column(name = "first_name")
+	@Column(name = "first_name", columnDefinition = "nvarchar")
 	private String firstName;
 	@Id
+	@Column(columnDefinition = "nvarchar")
 	private String id;
-	@Column(name = "last_name")
+	@Column(name = "last_name", columnDefinition = "nvarchar")
 	private String lastName;
-	@Column(name = "campus_location")
+	@Column(name = "campus_location", columnDefinition = "nvarchar")
 	private String location;
-	@Column(name = "office_phone")
+	@Column(name = "office_phone", columnDefinition = "nvarchar")
 	private String officePhone;
 	@ManyToMany
 	@JoinTable(name="staff_position",
 			joinColumns=@JoinColumn(name="staff_id", referencedColumnName="id"),
 			inverseJoinColumns=@JoinColumn(name="position_id", referencedColumnName="id"))
 	private List<Position> positions;
-	@Column(name = "username")
+	@Column(name = "username", columnDefinition = "nvarchar")
 	private String username;
 
 	public Staff(){

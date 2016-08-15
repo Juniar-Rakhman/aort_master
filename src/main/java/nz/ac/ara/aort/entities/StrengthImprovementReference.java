@@ -16,9 +16,9 @@ import javax.persistence.*;
 @Table(name = "strength_improvement_reference")
 public class StrengthImprovementReference {
 
-	@Column(name = "category")
+	@Column(name = "category", columnDefinition = "nvarchar")
 	public String category;
-	@Column(name = "criteria")
+	@Column(name = "criteria", columnDefinition = "nvarchar")
 	public String criteria;
 	@Id@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long id;

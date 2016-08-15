@@ -18,15 +18,15 @@ import java.util.List;
 @Table(name = "observation")
 public class Observation {
 
-	@Column(name = "additional_comments")
+	@Column(name = "additional_comments", columnDefinition = "nvarchar")
 	private String additionalComments;
 	@Column(name = "course_level")
 	private Integer courseLevel;
-	@Column(name = "course_name")
+	@Column(name = "course_name", columnDefinition = "nvarchar")
 	private String courseName;
 	@Column(name = "observation_date")
 	private Date date;
-	@Column(name = "department")
+	@Column(name = "department", columnDefinition = "nvarchar")
 	private String department;
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="head_of_department")
@@ -41,14 +41,14 @@ public class Observation {
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="line_manager")
 	private Staff lineManager;
-	@Column(name = "campus_location")
+	@Column(name = "campus_location", columnDefinition = "nvarchar")
 	private String location;
 	@Column(name = "is_moderated")
 	private Boolean moderated;
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="moderator")
 	private Staff moderator;
-	@Column(name = "notes")
+	@Column(name = "notes", columnDefinition = "nvarchar")
 	private String notes;
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="observer_primary")
@@ -56,18 +56,18 @@ public class Observation {
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="observer_secondary")
 	private Staff observerSecondary;
-	@Column(name = "programme")
+	@Column(name = "programme", columnDefinition = "nvarchar")
 	private String programme;
 	@Column(name = "programme_level")
 	private Integer programmeLevel;
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="rating_reference_id")
 	private RatingReference ratingReference;
-	@Column(name = "rating_summary_eval")
+	@Column(name = "rating_summary_eval", columnDefinition = "nvarchar")
 	private String ratingSummary;
 	@Column(name = "register_no_learners")
 	private Integer registeredLearners;
-	@Column(name = "session_context")
+	@Column(name = "session_context", columnDefinition = "nvarchar")
 	private String sessionContext;
 	@OneToOne(fetch=FetchType.LAZY)
 	@JoinColumn(name="staff_id")
@@ -76,7 +76,7 @@ public class Observation {
 	private Integer startLearners;
 	@OneToMany(mappedBy="id")
 	private List<StrengthImprovement> strengthImprovements;
-	@Column(name = "strengths_to_share")
+	@Column(name = "strengths_to_share", columnDefinition = "nvarchar")
 	private String strengthsShare;
 	@Column(name = "observation_time")
 	private Date time;
