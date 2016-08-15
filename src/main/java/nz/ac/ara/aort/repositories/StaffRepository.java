@@ -1,6 +1,6 @@
-package com.ara.aort.repositories;
+package nz.ac.ara.aort.repositories;
 
-import com.ara.aort.entities.Staff;
+import nz.ac.ara.aort.entities.Staff;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

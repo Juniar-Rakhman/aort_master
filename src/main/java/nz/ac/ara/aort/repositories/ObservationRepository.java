@@ -1,6 +1,6 @@
-package com.ara.aort.repositories;
+package nz.ac.ara.aort.repositories;
 
-import com.ara.aort.entities.Observation;
+import nz.ac.ara.aort.entities.Observation;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

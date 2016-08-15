@@ -1,4 +1,4 @@
-package com.ara.aort.controllers;
+package nz.ac.ara.aort.controllers;
 
 import org.springframework.web.bind.annotation.RestController;
 

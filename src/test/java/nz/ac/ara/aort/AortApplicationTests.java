@@ -1,4 +1,4 @@
-package com.ara.aort;
+package nz.ac.ara.aort;
 
 import org.junit.Test;
 import org.junit.runner.RunWith;
