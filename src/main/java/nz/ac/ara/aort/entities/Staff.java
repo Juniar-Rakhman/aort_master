@@ -17,27 +17,27 @@ import java.util.List;
 @Table(name = "staff")
 public class Staff {
 
-	@Column(name = "department", columnDefinition = "nvarchar")
+	@Column(name = "department", columnDefinition = "nvarchar(50)")
 	private String department;
-	@Column(name = "email", columnDefinition = "nvarchar")
+	@Column(name = "email", columnDefinition = "nvarchar(128)")
 	private String email;
-	@Column(name = "first_name", columnDefinition = "nvarchar")
+	@Column(name = "first_name", columnDefinition = "nvarchar(50)")
 	private String firstName;
 	@Id
-	@Column(columnDefinition = "nvarchar")
+	@Column(columnDefinition = "nvarchar(50)")
 	private String id;
-	@Column(name = "last_name", columnDefinition = "nvarchar")
+	@Column(name = "last_name", columnDefinition = "nvarchar(50)")
 	private String lastName;
-	@Column(name = "campus_location", columnDefinition = "nvarchar")
+	@Column(name = "campus_location", columnDefinition = "nvarchar(50)")
 	private String location;
-	@Column(name = "office_phone", columnDefinition = "nvarchar")
+	@Column(name = "office_phone", columnDefinition = "nvarchar(30)")
 	private String officePhone;
 	@ManyToMany
 	@JoinTable(name="staff_position",
 			joinColumns=@JoinColumn(name="staff_id", referencedColumnName="id"),
 			inverseJoinColumns=@JoinColumn(name="position_id", referencedColumnName="id"))
 	private List<Position> positions;
-	@Column(name = "username", columnDefinition = "nvarchar")
+	@Column(name = "username", columnDefinition = "nvarchar(15)")
 	private String username;
 
 	public Staff(){
