@@ -18,24 +18,26 @@ import java.util.List;
 @Table(name = "position")
 public class Position {
 
-	@Column(name = "fte")
-	private BigDecimal FTE;
 	@Id
 	@Column(columnDefinition = "nvarchar(50)")
 	private String id;
+	
 	@Column(name = "line_manager", columnDefinition = "nvarchar(50)")
 	private String lineManager;
+	
 	@ManyToMany(mappedBy="positions")
 	private List<Staff> staffs;
+	
 	@Column(name = "title", columnDefinition = "nvarchar(100)")
 	private String title;
-
+	
+	@Column(name = "fte")
+	private BigDecimal FTE;
+	
 	public Position(){
-
 	}
 
 	public void finalize() throws Throwable {
-
 	}
 
 }

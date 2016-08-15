@@ -1,5 +1,5 @@
-package nz.ac.ara.aort;//package com.ara.aort;
-//
+package nz.ac.ara.aort;
+
 //import org.springframework.context.annotation.Configuration;
 //import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 //import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
@@ -11,26 +11,25 @@ package nz.ac.ara.aort;//package com.ara.aort;
 //@EnableWebSecurity
 //public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //
-//    @Override
-//    protected void configure(HttpSecurity http) throws Exception {
-//        http
-//                .authorizeRequests()
-//                .anyRequest().fullyAuthenticated()
-//                .and()
-//                .formLogin();
-//    }
+//	@Override
+//	protected void configure(HttpSecurity http) throws Exception {
+//		http
+//				.authorizeRequests()
+//				.anyRequest().fullyAuthenticated()
+//				.and()
+//				.formLogin();
+//	}
 //
-//    @Configuration
-//    protected static class AuthenticationConfiguration extends
-//            GlobalAuthenticationConfigurerAdapter {
+//	@Configuration
+//	protected static class AuthenticationConfiguration extends GlobalAuthenticationConfigurerAdapter {
 //
-//        @Override
-//        public void init(AuthenticationManagerBuilder auth) throws Exception {
-//            auth
-//                    .ldapAuthentication()
-//                    .userDnPatterns("uid={0},ou=people")
-//                    .groupSearchBase("ou=groups")
-//                    .contextSource().ldif("classpath:test-server.ldif");
-//        }
-//    }
+//		@Override
+//		public void init(AuthenticationManagerBuilder auth) throws Exception {
+//			auth
+//					.ldapAuthentication()
+//					.userDnPatterns("uid={0},ou=people")
+//					.groupSearchBase("ou=groups")
+//					.contextSource().ldif("classpath:test-server.ldif");
+//		}
+//	}
 //}
