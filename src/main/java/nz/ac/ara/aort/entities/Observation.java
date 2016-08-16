@@ -1,6 +1,7 @@
 package nz.ac.ara.aort.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -23,33 +24,25 @@ public class Observation {
 	
 	@Column(name = "late_no_learners")
 	private Integer lateLearners;
-	
-	@OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="learning_coach")
-	private Staff learningCoach;
-	
-	@OneToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="line_manager")
-	private Staff lineManager;
-	
+
 	@Column(name = "campus_location", columnDefinition = "nvarchar(50)")
 	private String location;
 	
 	@Column(name = "is_moderated")
 	private Boolean moderated;
 	
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne
 	@JoinColumn(name="moderator")
 	private Staff moderator;
 	
 	@Column(name = "notes", columnDefinition = "nvarchar(MAX)")
 	private String notes;
 	
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne
 	@JoinColumn(name="observer_primary")
 	private Staff observerPrimary;
 	
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne
 	@JoinColumn(name="observer_secondary")
 	private Staff observerSecondary;
 	
@@ -59,7 +52,7 @@ public class Observation {
 	@Column(name = "programme_level")
 	private Integer programmeLevel;
 	
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne
 	@JoinColumn(name="rating_reference_id")
 	private RatingReference ratingReference;
 	
@@ -72,7 +65,7 @@ public class Observation {
 	@Column(name = "session_context", columnDefinition = "nvarchar(250)")
 	private String sessionContext;
 	
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne
 	@JoinColumn(name="staff_id")
 	private Staff staff;
 	
@@ -81,6 +74,7 @@ public class Observation {
 	
 	@OneToMany(mappedBy="id")
 	private List<StrengthImprovement> strengthImprovements;
+	
 	@Column(name = "strengths_to_share", columnDefinition = "nvarchar(250)")
 	private String strengthsShare;
 	
@@ -105,16 +99,14 @@ public class Observation {
 	@Column(name = "department", columnDefinition = "nvarchar(50)")
 	private String department;
 	
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne
 	@JoinColumn(name="head_of_department")
 	private Staff HOD;
 	
 	public Observation(){
-
 	}
 
 	public void finalize() throws Throwable {
-
 	}
 
 }
