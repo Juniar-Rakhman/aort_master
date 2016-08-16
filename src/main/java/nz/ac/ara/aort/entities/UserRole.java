@@ -16,16 +16,20 @@ import javax.persistence.*;
 @Table(name = "user_role")
 public class UserRole {
 
-	@Column(name = "add_observation")
-	public Boolean addObservation;
-	@Column(name = "general")
-	public Boolean general;
 	@Id@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long id;
-	@OneToOne(fetch=FetchType.LAZY)@JoinColumn(name="staff_id")
-	public Staff staff;
+
+	@Column(name = "add_observation")
+	public Boolean addObservation;
+	
+	@Column(name = "general")
+	public Boolean general;
+
 	@Column(name = "system_admin")
 	public Boolean systemAdmin;
+
+	@OneToOne(fetch=FetchType.LAZY)@JoinColumn(name="staff_id")
+	public Staff staff;
 
 	public UserRole(){
 
