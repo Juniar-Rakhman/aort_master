@@ -1,7 +1,6 @@
 package nz.ac.ara.aort.entities;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -35,7 +34,7 @@ public class Observation {
 	@JoinColumn(name="moderator")
 	private Staff moderator;
 	
-	@Column(name = "notes", columnDefinition = "nvarchar(MAX)")
+	@Column(name = "notes", columnDefinition = "nvarchar(1000)")
 	private String notes;
 	
 	@OneToOne
