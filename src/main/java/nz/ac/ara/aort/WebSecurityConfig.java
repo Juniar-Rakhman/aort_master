@@ -19,7 +19,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         http.authorizeRequests()
                 .antMatchers("/").authenticated()
-                //.antMatchers("/api/**").authenticated()
+                .antMatchers("/api/**").authenticated()
                 .antMatchers("/home").authenticated();
 
         http.formLogin()
@@ -44,7 +44,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .userDnPatterns("uid={0},ou=people")
                     .groupSearchBase("ou=groups")
                     .contextSource().ldif("classpath:test-server.ldif");
-
         }
     }
 }

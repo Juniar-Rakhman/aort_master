@@ -16,7 +16,8 @@ import javax.persistence.*;
 @Table(name = "strength_improvement")
 public class StrengthImprovement {
 
-	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
 	
 	@Column(name = "improvement")
@@ -32,7 +33,7 @@ public class StrengthImprovement {
 	@Column(name = "evidence", columnDefinition = "nvarchar(250)")
 	public String evidence;
 
-	@OneToOne(fetch=FetchType.LAZY)
+	@OneToOne
 	@JoinColumn(name="strength_improvement_reference_id")
 	public StrengthImprovementReference strImpRef;
 
