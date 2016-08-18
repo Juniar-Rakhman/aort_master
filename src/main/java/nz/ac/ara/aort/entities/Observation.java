@@ -3,8 +3,17 @@ package nz.ac.ara.aort.entities;
 
 import lombok.Data;
 
-import javax.persistence.*;
-import java.util.Date;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
+import javax.persistence.Table;
+import java.sql.Date;
+import java.sql.Time;
 import java.util.List;
 
 /**
@@ -18,9 +27,16 @@ import java.util.List;
 @Table(name = "observation")
 public class Observation {
 	
-	@Id@GeneratedValue(strategy = GenerationType.AUTO)
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
+	@Column(name = "observation_date")
+	private Date date;
+
+	@Column(name = "observation_time")
+	private Time time;
+
 	@Column(name = "late_no_learners")
 	private Integer lateLearners;
 
@@ -29,31 +45,15 @@ public class Observation {
 	
 	@Column(name = "is_moderated")
 	private Boolean moderated;
-	
-	@OneToOne
-	@JoinColumn(name="moderator")
-	private Staff moderator;
-	
-	@Column(name = "notes", columnDefinition = "nvarchar(1000)")
-	private String notes;
-	
-	@OneToOne
-	@JoinColumn(name="observer_primary")
-	private Staff observerPrimary;
-	
-	@OneToOne
-	@JoinColumn(name="observer_secondary")
-	private Staff observerSecondary;
-	
+
 	@Column(name = "programme", columnDefinition = "nvarchar(100)")
 	private String programme;
 	
 	@Column(name = "programme_level")
 	private Integer programmeLevel;
-	
-	@OneToOne
-	@JoinColumn(name="rating_reference_id")
-	private RatingReference ratingReference;
+
+	@Column(name = "notes", columnDefinition = "nvarchar(1000)")
+	private String notes;
 	
 	@Column(name = "rating_summary_eval", columnDefinition = "nvarchar(250)")
 	private String ratingSummary;
@@ -63,23 +63,13 @@ public class Observation {
 	
 	@Column(name = "session_context", columnDefinition = "nvarchar(250)")
 	private String sessionContext;
-	
-	@OneToOne
-	@JoinColumn(name="staff_id")
-	private Staff staff;
-	
+
 	@Column(name = "start_no_learners")
 	private Integer startLearners;
 	
-	@OneToMany(mappedBy="id")
-	private List<StrengthImprovement> strengthImprovements;
-	
 	@Column(name = "strengths_to_share", columnDefinition = "nvarchar(250)")
 	private String strengthsShare;
-	
-	@Column(name = "observation_time")
-	private Date time;
-	
+
 	@Column(name = "total_no_learners")
 	private Integer totalLearners;
 	
@@ -91,13 +81,41 @@ public class Observation {
 	
 	@Column(name = "course_name", columnDefinition = "nvarchar(100)")
 	private String courseName;
-	
-	@Column(name = "observation_date")
-	private Date date;
-	
+
 	@Column(name = "department", columnDefinition = "nvarchar(50)")
 	private String department;
-	
+
+	@OneToOne
+	@JoinColumn(name="moderator")
+	private Staff moderator;
+
+	@OneToOne
+	@JoinColumn(name="observer_primary")
+	private Staff observerPrimary;
+
+	@OneToOne
+	@JoinColumn(name="observer_secondary")
+	private Staff observerSecondary;
+
+	@OneToOne
+	@JoinColumn(name="rating_reference_id")
+	private RatingReference ratingReference;
+
+	@OneToOne
+	@JoinColumn(name="staff_id")
+	private Staff staff;
+
+	@OneToOne
+	@JoinColumn(name="learning_coach")
+	private Staff learningCoach;
+
+	@OneToMany(mappedBy="id")
+	private List<StrengthImprovement> strengthImprovements;
+
+	@OneToOne
+	@JoinColumn(name="line_manager")
+	private Staff lineManager;
+
 	@OneToOne
 	@JoinColumn(name="head_of_department")
 	private Staff HOD;

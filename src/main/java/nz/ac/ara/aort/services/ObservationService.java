@@ -7,7 +7,7 @@ import nz.ac.ara.aort.repositories.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
+import java.sql.Date;
 
 
 /**
@@ -27,7 +27,7 @@ public class ObservationService {
         Staff staff = staffRepository.findOne("00000065");
         
         Observation obs = new Observation();
-        obs.setDate(new Date());
+        obs.setDate(new Date(new java.util.Date().getTime()));
         obs.setCourseName("test 1");
         obs.setDepartment("test 2");
         obs.setHOD(staff);

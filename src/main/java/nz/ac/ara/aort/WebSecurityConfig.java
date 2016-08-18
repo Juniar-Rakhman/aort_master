@@ -14,8 +14,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        //TODO: Enable this in prod?
+        http.csrf().disable();
+
         http.authorizeRequests()
                 .antMatchers("/").authenticated()
+                .antMatchers("/api/**").authenticated()
                 .antMatchers("/home").authenticated();
 
         http.formLogin()
