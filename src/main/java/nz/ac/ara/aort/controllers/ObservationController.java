@@ -36,7 +36,7 @@ public class ObservationController {
     ObservationRepository observationRepo;
 
     @RequestMapping(value = "/api/observation_add", method = RequestMethod.POST)
-    public void addMeeting(
+    public void addObservation(
             @RequestParam("date") String date,  //YYYY-MM-DD
             @RequestParam("time") String time,  //HH:MM
             @RequestParam("staff") String staffId,

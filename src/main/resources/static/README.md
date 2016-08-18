@@ -388,8 +388,6 @@ Use the [Heroku Buildpack for create-react-app](https://github.com/mars/create-r
 
 If you have ideas for more “How To” recipes that should be on this page, [let us know](https://github.com/facebookincubator/create-react-app/issues) or [contribute some!](https://github.com/facebookincubator/create-react-app/edit/master/template/README.md)
 
-1. Open command prompt
-2. Go to directory project directory, run "npm install"
 3. Open file webpack.config.prod.js located in [project_directory]\src\main\resources\static\node_modules\react-scripts\config
 4. Change output file name into 'static/js/bundle.js'
 5. Install the project 

@@ -13,7 +13,7 @@ class Entry extends Component {
                         <div className="ibox float-e-margins">
                             <div className="ibox-content">
 
-                                <form method="get" className="form-horizontal">
+                                <form method="post" className="form-horizontal" >
                                     <div className="ibox-content">
                                         <div className="form-group">
                                             <div className="form-group">
