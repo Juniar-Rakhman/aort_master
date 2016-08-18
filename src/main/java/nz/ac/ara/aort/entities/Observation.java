@@ -2,6 +2,7 @@ package nz.ac.ara.aort.entities;
 
 
 import lombok.Data;
+import nz.ac.ara.aort.entities.master.Staff;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -28,7 +29,7 @@ import java.util.List;
 public class Observation {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "observation_date")

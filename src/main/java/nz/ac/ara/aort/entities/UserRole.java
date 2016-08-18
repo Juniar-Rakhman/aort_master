@@ -2,6 +2,7 @@ package nz.ac.ara.aort.entities;
 
 
 import lombok.Data;
+import nz.ac.ara.aort.entities.master.Staff;
 
 import javax.persistence.*;
 
@@ -16,7 +17,7 @@ import javax.persistence.*;
 @Table(name = "user_role")
 public class UserRole {
 
-	@Id@GeneratedValue(strategy = GenerationType.AUTO)
+	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
 
 	@Column(name = "add_observation")

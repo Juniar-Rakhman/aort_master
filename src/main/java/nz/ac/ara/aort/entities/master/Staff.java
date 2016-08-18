@@ -1,4 +1,4 @@
-package nz.ac.ara.aort.entities;
+package nz.ac.ara.aort.entities.master;
 
 
 import lombok.Data;
@@ -17,7 +17,7 @@ import java.util.List;
 @Table(name = "staff")
 public class Staff {
 	@Id
-	@Column(columnDefinition = "nvarchar(50)")
+	@Column(name = "staff_id", columnDefinition = "nvarchar(50)")
 	private String id;
 
 	@Column(name = "department", columnDefinition = "nvarchar(50)")
@@ -32,6 +32,7 @@ public class Staff {
 	@Column(name = "last_name", columnDefinition = "nvarchar(50)")
 	private String lastName;
 
+	@Transient
 	@Column(name = "campus_location", columnDefinition = "nvarchar(50)")
 	private String location;
 
@@ -40,8 +41,8 @@ public class Staff {
 
 	@ManyToMany
 	@JoinTable(name="staff_position",
-			joinColumns=@JoinColumn(name="staff_id", referencedColumnName="id"),
-			inverseJoinColumns=@JoinColumn(name="position_id", referencedColumnName="id"))
+			joinColumns=@JoinColumn(name="staff_id", referencedColumnName="staff_id"),
+			inverseJoinColumns=@JoinColumn(name="position_id", referencedColumnName="position_id"))
 	private List<Position> positions;
 
 	@Column(name = "username", columnDefinition = "nvarchar(15)")
