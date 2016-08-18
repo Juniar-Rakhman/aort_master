@@ -1,4 +1,4 @@
-package nz.ac.ara.aort.entities;
+package nz.ac.ara.aort.entities.master;
 
 
 import lombok.Data;
@@ -19,9 +19,10 @@ import java.util.List;
 public class Position {
 
 	@Id
-	@Column(columnDefinition = "nvarchar(50)")
+	@Column(name = "position_id", columnDefinition = "nvarchar(50)")
 	private String id;
-	
+
+	@Transient
 	@Column(name = "line_manager", columnDefinition = "nvarchar(50)")
 	private String lineManager;
 	
