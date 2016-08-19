@@ -16,7 +16,7 @@ import javax.persistence.*;
 @Table(name = "strength_improvement")
 public class StrengthImprovement {
 
-	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long id;
 	
 	@Column(name = "improvement")
