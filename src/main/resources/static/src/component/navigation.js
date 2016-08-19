@@ -41,15 +41,10 @@ class Navigation extends Component {
               </ul>
             </li>
             <li>
-              <a href="minor.html"><i className="fa fa-book"></i> <span className="nav-label">Observation Record</span> </a>
-              <ul className="nav nav-second-level collapse">
-                <li><a href="search.html">Data Search</a></li>
-                <li><a href="#" onClick={this.handlePage.bind(this)}>Data Entry</a></li>
-                <li><a href="#">Data Update</a></li>
-              </ul>
+              <a href="#" onClick={this.handlePage.bind(this)}><i className="fa fa-book"></i> <span className="nav-label">Search</span> </a>
             </li>
             <li>
-              <a href="minor.html"><i className="fa fa-print"></i> <span className="nav-label">Reporting</span> </a>
+              <a href="minor.html"><i className="fa fa-print"></i> <span className="nav-label">Report</span> </a>
               <ul className="nav nav-second-level collapse">
                 <li><a href="#">Print Report</a></li>
               </ul>
