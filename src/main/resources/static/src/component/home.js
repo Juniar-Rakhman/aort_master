@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import logo from '../logo.svg';
+import logo from '../logo.png';
 
 class Home extends Component {
   render() {
@@ -9,7 +9,7 @@ class Home extends Component {
           <div className="text-center m-t-lg">
             <img src={logo} className="App-logo" alt="logo" />
             <h1>
-                Welcome in Academic Observation Recording Tool Front Page
+                Welcome in Academic Observation Recording Tool
             </h1>
           </div>
           <div id='example'>

@@ -31,8 +31,8 @@ module.exports = {
   ],
   output: {
     path: '',
-    filename: 'js/[name].[chunkhash:8].js',
-    chunkFilename: 'js/[name].[chunkhash:8].chunk.js',
+    filename: 'js/bundle.js',
+    chunkFilename: 'js/bundle.chunk.js',
     publicPath: publicPath
   },
   resolve: {
@@ -86,7 +86,7 @@ module.exports = {
         include: [paths.appSrc, paths.appNodeModules],
         loader: 'file',
         query: {
-          name: 'media/[name].[hash:8].[ext]'
+          name: 'media/bundle.[ext]'
         }
       },
       {
@@ -95,7 +95,7 @@ module.exports = {
         loader: 'url',
         query: {
           limit: 10000,
-          name: 'media/[name].[hash:8].[ext]'
+          name: 'media/bundle.[ext]'
         }
       }
     ]
@@ -110,23 +110,6 @@ module.exports = {
     return [autoprefixer];
   },
   plugins: [
-    new HtmlWebpackPlugin({
-      inject: true,
-      template: paths.appHtml,
-      favicon: paths.appFavicon,
-      minify: {
-        removeComments: true,
-        collapseWhitespace: true,
-        removeRedundantAttributes: true,
-        useShortDoctype: true,
-        removeEmptyAttributes: true,
-        removeStyleLinkTypeAttributes: true,
-        keepClosingSlash: true,
-        minifyJS: true,
-        minifyCSS: true,
-        minifyURLs: true
-      }
-    }),
     new webpack.DefinePlugin({ 'process.env.NODE_ENV': '"production"' }),
     new webpack.optimize.OccurrenceOrderPlugin(),
     new webpack.optimize.DedupePlugin(),
@@ -143,6 +126,6 @@ module.exports = {
         screw_ie8: true
       }
     }),
-    new ExtractTextPlugin('css/[name].[contenthash:8].css')
+    new ExtractTextPlugin('css/bundle.css')
   ]
 };

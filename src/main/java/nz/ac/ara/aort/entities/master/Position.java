@@ -22,8 +22,10 @@ public class Position {
 	@Column(name = "position_id", columnDefinition = "nvarchar(50)")
 	private String id;
 
-	@Transient
-	@Column(name = "line_manager", columnDefinition = "nvarchar(50)")
+	@Column(name = "is_active")
+	private short isActive;
+
+	@Column(name = "manager_position_id", columnDefinition = "nvarchar(50)")
 	private String lineManager;
 	
 	@ManyToMany(mappedBy="positions")

@@ -22,6 +22,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <java.version>1.8</java.version>
+        <npm.build.skip>false</npm.build.skip>
     </properties>
 
     <dependencies>
@@ -123,6 +124,7 @@
                             <goal>install-node-and-npm</goal>
                         </goals>
                         <configuration>
+                            <skip>${npm.build.skip}</skip>
                             <nodeVersion>v4.4.5</nodeVersion>
                             <npmVersion>3.9.2</npmVersion>
                         </configuration>
@@ -133,6 +135,7 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
+                            <skip>${npm.build.skip}</skip>
                             <arguments>install</arguments>
                         </configuration>
                     </execution>
@@ -143,11 +146,20 @@
                             <goal>npm</goal>
                         </goals>
                         <configuration>
+                            <skip>${npm.build.skip}</skip>
                             <arguments>run build</arguments>
                         </configuration>
                     </execution>
                     
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.1</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
             </plugin>
         </plugins>
         <resources>
@@ -157,7 +169,16 @@
                 <directory>src/main/resources</directory>
                 <includes>
                     <include>application.properties</include>
+                    <include>**/*.*</include>
                 </includes>
+                <excludes>
+                    <exclude>data.sql</exclude>
+                    <exclude>development.properties</exclude>
+                    <exclude>production.properties</exclude>
+                    <exclude>test.properties</exclude>
+                    <exclude>test-server.ldif</exclude>
+                    <exclude>*.exe</exclude>
+                </excludes>
                 <filtering>true</filtering>
             </resource>
         </resources>

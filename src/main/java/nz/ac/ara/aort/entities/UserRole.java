@@ -30,16 +30,15 @@ public class UserRole {
 	@Column(name = "system_admin")
 	public Boolean systemAdmin;
 
-	@OneToOne
-	@JoinColumn(name="staff_id")
+	@Column(name = "staff_id", columnDefinition = "nvarchar(50)")
+	private String staffId;
+	@Transient
 	public Staff staff;
 
 	public UserRole(){
-
 	}
 
 	public void finalize() throws Throwable {
-
 	}
 
 }

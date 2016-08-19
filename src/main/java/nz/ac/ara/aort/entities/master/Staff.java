@@ -4,6 +4,7 @@ package nz.ac.ara.aort.entities.master;
 import lombok.Data;
 
 import javax.persistence.*;
+import java.math.BigDecimal;
 import java.util.List;
 
 /**
@@ -29,6 +30,9 @@ public class Staff {
 	@Column(name = "first_name", columnDefinition = "nvarchar(50)")
 	private String firstName;
 
+	@Column(name = "is_employed")
+	private short isEmployed;
+
 	@Column(name = "last_name", columnDefinition = "nvarchar(50)")
 	private String lastName;
 
@@ -44,6 +48,9 @@ public class Staff {
 			joinColumns=@JoinColumn(name="staff_id", referencedColumnName="staff_id"),
 			inverseJoinColumns=@JoinColumn(name="position_id", referencedColumnName="position_id"))
 	private List<Position> positions;
+
+	@Column(name = "total_fte")
+	private BigDecimal totalFte;
 
 	@Column(name = "username", columnDefinition = "nvarchar(15)")
 	private String username;
