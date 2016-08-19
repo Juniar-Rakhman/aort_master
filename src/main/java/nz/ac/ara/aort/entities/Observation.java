@@ -1,17 +1,10 @@
 package nz.ac.ara.aort.entities;
 
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
-import javax.persistence.Table;
+import javax.persistence.*;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
@@ -85,6 +78,46 @@ public class Observation {
 	@Column(name = "department", columnDefinition = "nvarchar(50)")
 	private String department;
 
+	// JSON fields
+	@Transient
+	@JsonIgnore
+	private String StrStaffId;
+	
+	@Transient
+	@JsonIgnore
+	private String StrModeratorId;
+	
+	@Transient
+	@JsonIgnore
+	private String StrPrimaryObserverId;
+	
+	@Transient
+	@JsonIgnore
+	private String StrSecondaryObserverId;
+	
+	@Transient
+	@JsonIgnore
+	private String StrRatingRefId;
+	
+	@Transient
+	@JsonIgnore
+	private String StrLearningCoachId;
+	
+	@Transient
+	@JsonIgnore
+	private String StrLineManagerId;
+	
+	@Transient
+	@JsonIgnore
+	private String StrHodId;
+	
+	@Transient
+	@JsonIgnore
+	private List<String> ListStrImprov;
+
+	//-- End of  JSON fields --//
+	
+	// Joined Columns
 	@OneToOne
 	@JoinColumn(name="moderator")
 	private Staff moderator;

@@ -16,7 +16,8 @@ import javax.persistence.*;
 @Table(name = "user_role")
 public class UserRole {
 
-	@Id@GeneratedValue(strategy = GenerationType.AUTO)
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long id;
 
 	@Column(name = "add_observation")
@@ -28,15 +29,14 @@ public class UserRole {
 	@Column(name = "system_admin")
 	public Boolean systemAdmin;
 
-	@OneToOne(fetch=FetchType.LAZY)@JoinColumn(name="staff_id")
+	@OneToOne
+	@JoinColumn(name="staff_id")
 	public Staff staff;
 
 	public UserRole(){
-
 	}
 
 	public void finalize() throws Throwable {
-
 	}
 
 }

@@ -16,15 +16,12 @@ import javax.persistence.*;
 @Table(name = "strength_improvement")
 public class StrengthImprovement {
 
-	@Id@GeneratedValue(strategy = GenerationType.AUTO)
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	public Long id;
 	
 	@Column(name = "improvement")
 	public Boolean improvement;
-	
-	@ManyToOne(fetch=FetchType.LAZY)
-	@JoinColumn(name="observation_id")
-	public Observation observation;
 	
 	@Column(name = "strength")
 	public Boolean strength;
@@ -32,7 +29,11 @@ public class StrengthImprovement {
 	@Column(name = "evidence", columnDefinition = "nvarchar(250)")
 	public String evidence;
 
-	@OneToOne(fetch=FetchType.LAZY)
+	@ManyToOne
+	@JoinColumn(name="observation_id")
+	public Observation observation;
+
+	@OneToOne
 	@JoinColumn(name="strength_improvement_reference_id")
 	public StrengthImprovementReference strImpRef;
 
