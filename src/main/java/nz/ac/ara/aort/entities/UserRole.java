@@ -2,6 +2,7 @@ package nz.ac.ara.aort.entities;
 
 
 import lombok.Data;
+import nz.ac.ara.aort.entities.master.Staff;
 
 import javax.persistence.*;
 
@@ -17,7 +18,7 @@ import javax.persistence.*;
 public class UserRole {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
 
 	@Column(name = "add_observation")
@@ -29,8 +30,9 @@ public class UserRole {
 	@Column(name = "system_admin")
 	public Boolean systemAdmin;
 
-	@OneToOne
-	@JoinColumn(name="staff_id")
+	@Column(name = "staff_id", columnDefinition = "nvarchar(50)")
+	private String staffId;
+	@Transient
 	public Staff staff;
 
 	public UserRole(){

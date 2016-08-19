@@ -4,8 +4,8 @@ import nz.ac.ara.aort.entities.Observation;
 import nz.ac.ara.aort.entities.StrengthImprovement;
 import nz.ac.ara.aort.repositories.ObservationRepository;
 import nz.ac.ara.aort.repositories.RatingReferenceRepository;
-import nz.ac.ara.aort.repositories.StaffRepository;
 import nz.ac.ara.aort.repositories.StrengthImprovementRepository;
+import nz.ac.ara.aort.repositories.master.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -48,7 +48,6 @@ public class ObservationController {
             observation.setLineManager(staffRepo.findOne(observation.getStrLineManagerId()));
             observation.setHOD(staffRepo.findOne(observation.getStrHodId()));
 
-                       
             observationRepo.save(observation);
 
         } catch (Exception e) {

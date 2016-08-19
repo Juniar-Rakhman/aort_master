@@ -3,6 +3,7 @@ package nz.ac.ara.aort.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
+import nz.ac.ara.aort.entities.master.Staff;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -21,7 +22,7 @@ import java.util.List;
 public class Observation {
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
 	@Column(name = "observation_date")
@@ -82,75 +83,82 @@ public class Observation {
 	@Transient
 	@JsonIgnore
 	private String StrStaffId;
-	
+
 	@Transient
 	@JsonIgnore
 	private String StrModeratorId;
-	
+
 	@Transient
 	@JsonIgnore
 	private String StrPrimaryObserverId;
-	
+
 	@Transient
 	@JsonIgnore
 	private String StrSecondaryObserverId;
-	
+
 	@Transient
 	@JsonIgnore
 	private String StrRatingRefId;
-	
+
 	@Transient
 	@JsonIgnore
 	private String StrLearningCoachId;
-	
+
 	@Transient
 	@JsonIgnore
 	private String StrLineManagerId;
-	
+
 	@Transient
 	@JsonIgnore
 	private String StrHodId;
-	
+
 	@Transient
 	@JsonIgnore
 	private List<String> ListStrImprov;
 
 	//-- End of  JSON fields --//
-	
-	// Joined Columns
-	@OneToOne
-	@JoinColumn(name="moderator")
+
+	@Column(name = "moderator", columnDefinition = "nvarchar(50)")
+	private String moderatorId;
+	@Transient
 	private Staff moderator;
 
-	@OneToOne
-	@JoinColumn(name="observer_primary")
+	@Column(name = "observer_primary", columnDefinition = "nvarchar(50)")
+	private String observerPrimaryId;
+	@Transient
 	private Staff observerPrimary;
 
-	@OneToOne
-	@JoinColumn(name="observer_secondary")
+	@Column(name = "observer_secondary", columnDefinition = "nvarchar(50)")
+	private String observerSecondaryId;
+	@Transient
 	private Staff observerSecondary;
 
-	@OneToOne
-	@JoinColumn(name="rating_reference_id")
+	@Column(name = "rating_reference_id", columnDefinition = "nvarchar(50)")
+	private String ratingReferenceId;
+	@Transient
 	private RatingReference ratingReference;
 
-	@OneToOne
-	@JoinColumn(name="staff_id")
+	@Column(name = "staff_id", columnDefinition = "nvarchar(50)")
+	private String staffId;
+	@Transient
 	private Staff staff;
 
-	@OneToOne
-	@JoinColumn(name="learning_coach")
+	@Column(name = "learning_coach", columnDefinition = "nvarchar(50)")
+	private String learningCoachId;
+	@Transient
 	private Staff learningCoach;
 
 	@OneToMany(mappedBy="id")
 	private List<StrengthImprovement> strengthImprovements;
 
-	@OneToOne
-	@JoinColumn(name="line_manager")
+	@Column(name = "line_manager", columnDefinition = "nvarchar(50)")
+	private String lineManagerId;
+	@Transient
 	private Staff lineManager;
 
-	@OneToOne
-	@JoinColumn(name="head_of_department")
+	@Column(name = "head_of_department", columnDefinition = "nvarchar(50)")
+	private String hodId;
+	@Transient
 	private Staff HOD;
 	
 	public Observation(){
