@@ -48,14 +48,9 @@
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
         </dependency>
-        
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-thymeleaf</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.thymeleaf.extras</groupId>
-            <artifactId>thymeleaf-extras-springsecurity4</artifactId>
         </dependency>
 
         <!--SECURITY -->
@@ -76,7 +71,10 @@
             <groupId>org.springframework.security</groupId>
             <artifactId>spring-security-taglibs</artifactId>
         </dependency>
-
+        <dependency>
+            <groupId>org.thymeleaf.extras</groupId>
+            <artifactId>thymeleaf-extras-springsecurity4</artifactId>
+        </dependency>
         <dependency>
             <groupId>com.fasterxml.jackson.datatype</groupId>
             <artifactId>jackson-datatype-hibernate4</artifactId>
@@ -139,7 +137,6 @@
                             <arguments>install</arguments>
                         </configuration>
                     </execution>
-                    
                     <execution>
                         <id>npm build</id>
                         <goals>
@@ -150,7 +147,6 @@
                             <arguments>run build</arguments>
                         </configuration>
                     </execution>
-                    
                 </executions>
             </plugin>
             <plugin>
