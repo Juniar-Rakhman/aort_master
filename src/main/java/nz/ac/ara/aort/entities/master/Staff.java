@@ -21,6 +21,10 @@ public class Staff {
 	@Column(name = "staff_id", columnDefinition = "nvarchar(50)")
 	private String id;
 
+	public String getStaffId() {
+		return this.getId();	
+	}
+	
 	@Column(name = "department", columnDefinition = "nvarchar(50)")
 	private String department;
 

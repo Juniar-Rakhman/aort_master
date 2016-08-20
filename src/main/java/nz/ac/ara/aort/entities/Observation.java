@@ -1,9 +1,10 @@
 package nz.ac.ara.aort.entities;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import nz.ac.ara.aort.entities.master.Staff;
+import nz.ac.ara.aort.repositories.master.StaffRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -24,7 +25,7 @@ public class Observation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	
 	@Column(name = "observation_date")
 	private Date date;
 
@@ -79,45 +80,6 @@ public class Observation {
 	@Column(name = "department", columnDefinition = "nvarchar(50)")
 	private String department;
 
-	// JSON fields
-	@Transient
-	@JsonIgnore
-	private String StrStaffId;
-
-	@Transient
-	@JsonIgnore
-	private String StrModeratorId;
-
-	@Transient
-	@JsonIgnore
-	private String StrPrimaryObserverId;
-
-	@Transient
-	@JsonIgnore
-	private String StrSecondaryObserverId;
-
-	@Transient
-	@JsonIgnore
-	private String StrRatingRefId;
-
-	@Transient
-	@JsonIgnore
-	private String StrLearningCoachId;
-
-	@Transient
-	@JsonIgnore
-	private String StrLineManagerId;
-
-	@Transient
-	@JsonIgnore
-	private String StrHodId;
-
-	@Transient
-	@JsonIgnore
-	private List<String> ListStrImprov;
-
-	//-- End of  JSON fields --//
-
 	@Column(name = "moderator", columnDefinition = "nvarchar(50)")
 	private String moderatorId;
 	@Transient
@@ -148,7 +110,8 @@ public class Observation {
 	@Transient
 	private Staff learningCoach;
 
-	@OneToMany(mappedBy="id")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "observation_id")
 	private List<StrengthImprovement> strengthImprovements;
 
 	@Column(name = "line_manager", columnDefinition = "nvarchar(50)")

@@ -5,8 +5,24 @@ class Navigation extends Component {
     this.props.handlePageNav('entry');
   }
 
+  handleObservationSearch() {
+    this.props.handlePageNav('observationSearch');
+  }
+
   handleBackHome() {
     this.props.handlePageNav('')
+  }
+
+  handleStaffSearch() {
+    this.props.handlePageNav('staffSearch');
+  }
+
+  handleEntry() {
+    this.props.handlePageNav('entry');
+  }
+
+  handleObservationView(){
+    this.props.handlePageNav('entry')
   }
 
   render() {
@@ -24,27 +40,31 @@ class Navigation extends Component {
                 </ul>
               </div>
                 <div className="logo-element">
-                  <h1> LOGO </h1>
+                  <h1> ARA </h1>
                 </div>
             </li>
             <li className="active">
-              <a href="index.html"><i className="fa-tachometer"></i> <span className="nav-label">Dashboard</span></a>
+              <a href="#"><i className="fa-tachometer"></i> <span className="nav-label">Dashboard</span></a>
               <ul className="nav nav-second-level collapse">
                 <li><a href="#" onClick={this.handleBackHome.bind(this)}>Home</a></li>
               </ul>
             </li>
             <li>
-              <a href="index.html"><i className="fa fa-user"></i> <span className="nav-label">System Administration</span></a>
+              <a href="#"><i className="fa fa-user"></i> <span className="nav-label">System Administration</span></a>
               <ul className="nav nav-second-level collapse">
-                <li><a href="#">Users Management</a></li>
+                <li><a href="#" onClick={this.handleStaffSearch.bind(this)}>Users Management</a></li>
                 <li><a href="#">Roles Management</a></li>
               </ul>
             </li>
             <li>
-              <a href="#" onClick={this.handlePage.bind(this)}><i className="fa fa-book"></i> <span className="nav-label">Search</span> </a>
+              <a href="#"><i className="fa fa-book"></i> <span className="nav-label">Observation Record</span> </a>
+              <ul className="nav nav-second-level collapse">
+                <li><a href="#" onClick={this.handleObservationSearch.bind(this)}>Data Search</a></li>
+                <li><a href="#" onClick={this.handleEntry.bind(this)}>Data Entry</a></li>
+              </ul>
             </li>
             <li>
-              <a href="minor.html"><i className="fa fa-print"></i> <span className="nav-label">Report</span> </a>
+              <a href="#"><i className="fa fa-print"></i> <span className="nav-label">Reporting</span> </a>
               <ul className="nav nav-second-level collapse">
                 <li><a href="#">Print Report</a></li>
               </ul>
