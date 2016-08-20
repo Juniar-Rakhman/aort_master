@@ -1,7 +1,6 @@
 package nz.ac.ara.aort.entities;
 
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Data;
 import nz.ac.ara.aort.entities.master.Staff;
 
@@ -79,45 +78,9 @@ public class Observation {
 	@Column(name = "department", columnDefinition = "nvarchar(50)")
 	private String department;
 
-	// JSON fields
-	@Transient
-	@JsonIgnore
-	private String StrStaffId;
-
-	@Transient
-	@JsonIgnore
-	private String StrModeratorId;
-
-	@Transient
-	@JsonIgnore
-	private String StrPrimaryObserverId;
-
-	@Transient
-	@JsonIgnore
-	private String StrSecondaryObserverId;
-
-	@Transient
-	@JsonIgnore
-	private String StrRatingRefId;
-
-	@Transient
-	@JsonIgnore
-	private String StrLearningCoachId;
-
-	@Transient
-	@JsonIgnore
-	private String StrLineManagerId;
-
-	@Transient
-	@JsonIgnore
-	private String StrHodId;
-
-	@Transient
-	@JsonIgnore
-	private List<String> ListStrImprov;
-
-	//-- End of  JSON fields --//
-
+	@OneToMany(mappedBy="id")
+	private List<StrengthImprovement> strengthImprovements;
+	
 	@Column(name = "moderator", columnDefinition = "nvarchar(50)")
 	private String moderatorId;
 	@Transient
@@ -147,9 +110,6 @@ public class Observation {
 	private String learningCoachId;
 	@Transient
 	private Staff learningCoach;
-
-	@OneToMany(mappedBy="id")
-	private List<StrengthImprovement> strengthImprovements;
 
 	@Column(name = "line_manager", columnDefinition = "nvarchar(50)")
 	private String lineManagerId;

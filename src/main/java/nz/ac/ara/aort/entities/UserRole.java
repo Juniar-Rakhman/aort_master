@@ -21,20 +21,20 @@ public class UserRole {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
 
-	@Column(name = "add_observation")
-	public Boolean addObservation;
-	
-	@Column(name = "general")
-	public Boolean general;
-
-	@Column(name = "system_admin")
-	public Boolean systemAdmin;
-
 	@Column(name = "staff_id", columnDefinition = "nvarchar(50)")
 	private String staffId;
 	@Transient
 	public Staff staff;
 
+	@Column(name = "add_observation")
+	public Boolean addObservation;
+
+	@Column(name = "general")
+	public Boolean general;
+
+	@Column(name = "system_admin")
+	public Boolean systemAdmin;
+	
 	public UserRole(){
 	}
 

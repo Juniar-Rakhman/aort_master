@@ -39,21 +39,10 @@ public class ObservationController {
     @RequestMapping(value = "/api/observation_add", method = RequestMethod.POST)
     public ResponseEntity<Observation> observationAdd(@RequestBody Observation observation) {
         try {
-            observation.setStaff(staffRepo.findOne(observation.getStrStaffId()));
-            observation.setModerator(staffRepo.findOne(observation.getStrModeratorId()));
-            observation.setObserverPrimary(staffRepo.findOne(observation.getStrPrimaryObserverId()));
-            observation.setObserverSecondary(staffRepo.findOne(observation.getStrSecondaryObserverId()));
-            observation.setRatingReference(ratingRefRepo.findOne(Long.valueOf(observation.getStrRatingRefId())));
-            observation.setLearningCoach(staffRepo.findOne(observation.getStrLearningCoachId()));
-            observation.setLineManager(staffRepo.findOne(observation.getStrLineManagerId()));
-            observation.setHOD(staffRepo.findOne(observation.getStrHodId()));
-
             observationRepo.save(observation);
-
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         return new ResponseEntity<>(observation, HttpStatus.OK);
     }
 }
