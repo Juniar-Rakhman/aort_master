@@ -108,7 +108,8 @@ public class Observation {
 	@Transient
 	private Staff learningCoach;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy="observation")
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@JoinColumn(name = "observation_id")
 	private List<StrengthImprovement> strengthImprovements;
 
 	@Column(name = "line_manager", columnDefinition = "nvarchar(50)")

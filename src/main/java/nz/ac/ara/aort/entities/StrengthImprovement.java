@@ -29,10 +29,6 @@ public class StrengthImprovement {
 	@Column(name = "evidence", columnDefinition = "nvarchar(250)")
 	public String evidence;
 
-	@ManyToOne
-	@JoinColumn(name="observation_id")
-	public Observation observation;
-
 	@OneToOne
 	@JoinColumn(name="strength_improvement_reference_id")
 	public StrengthImprovementReference strImpRef;
