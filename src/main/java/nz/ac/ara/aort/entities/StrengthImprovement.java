@@ -34,11 +34,9 @@ public class StrengthImprovement {
 	public StrengthImprovementReference strImpRef;
 
 	public StrengthImprovement(){
-
 	}
 
 	public void finalize() throws Throwable {
-
 	}
 
 }

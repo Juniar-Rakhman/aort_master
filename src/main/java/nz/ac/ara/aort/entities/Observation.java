@@ -3,6 +3,8 @@ package nz.ac.ara.aort.entities;
 
 import lombok.Data;
 import nz.ac.ara.aort.entities.master.Staff;
+import nz.ac.ara.aort.repositories.master.StaffRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
 import java.sql.Date;
@@ -23,7 +25,7 @@ public class Observation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	
 	@Column(name = "observation_date")
 	private Date date;
 

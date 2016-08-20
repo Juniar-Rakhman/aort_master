@@ -2,6 +2,7 @@ package nz.ac.ara.aort.controllers;
 
 import nz.ac.ara.aort.entities.Observation;
 import nz.ac.ara.aort.entities.StrengthImprovement;
+import nz.ac.ara.aort.entities.master.Staff;
 import nz.ac.ara.aort.repositories.ObservationRepository;
 import nz.ac.ara.aort.repositories.RatingReferenceRepository;
 import nz.ac.ara.aort.repositories.StrengthImprovementRepository;
@@ -12,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
+import javax.websocket.server.PathParam;
 import java.sql.Date;
 import java.sql.Time;
 import java.text.DateFormat;
@@ -43,6 +45,15 @@ public class ObservationController {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return new ResponseEntity<>(observation, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/api/observations/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Observation> observations(@PathParam("id") Long id) {
+        Observation observation = observationRepo.findOne(new Long(1));
+        Staff moderator = staffRepo.findOne(observation.getModeratorId());
+        observation.setModerator(moderator);
+//        observation.setStaff(moderator);
         return new ResponseEntity<>(observation, HttpStatus.OK);
     }
 }
