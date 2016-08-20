@@ -16,7 +16,8 @@ import javax.persistence.*;
 @Table(name = "rating_reference")
 public class RatingReference {
 
-	@Id@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	@Column(name = "rating", columnDefinition = "nvarchar(50)")

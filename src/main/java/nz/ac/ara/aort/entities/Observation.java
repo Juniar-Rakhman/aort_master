@@ -78,9 +78,6 @@ public class Observation {
 	@Column(name = "department", columnDefinition = "nvarchar(50)")
 	private String department;
 
-	@OneToMany(mappedBy="id")
-	private List<StrengthImprovement> strengthImprovements;
-	
 	@Column(name = "moderator", columnDefinition = "nvarchar(50)")
 	private String moderatorId;
 	@Transient
@@ -110,6 +107,9 @@ public class Observation {
 	private String learningCoachId;
 	@Transient
 	private Staff learningCoach;
+
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST, mappedBy="observation")
+	private List<StrengthImprovement> strengthImprovements;
 
 	@Column(name = "line_manager", columnDefinition = "nvarchar(50)")
 	private String lineManagerId;

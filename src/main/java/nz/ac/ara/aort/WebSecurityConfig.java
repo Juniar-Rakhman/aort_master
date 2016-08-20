@@ -44,7 +44,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .userDnPatterns("uid={0},ou=people")
                     .groupSearchBase("ou=groups")
                     .contextSource().ldif("classpath:test-server.ldif");
-
         }
     }
 }
