@@ -36,7 +36,7 @@ class Navigation extends Component {
                 <span className="clear"> <span className="block m-t-xs"> <strong className="font-bold">John Connotr</strong>
                  </span> <span className="text-muted text-xs block">Administrator <b className="caret"></b></span> </span> </a>
                 <ul className="dropdown-menu animated fadeInRight m-t-xs">
-                    <li><a href="#">Logout</a></li>
+                    <li><a href="/logout">Logout</a></li>
                 </ul>
               </div>
                 <div className="logo-element">
