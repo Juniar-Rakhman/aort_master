@@ -13,4 +13,6 @@ import java.util.List;
 public interface StaffRepository extends JpaRepository<Staff, String> {
     @Query(value = "SELECT s FROM Staff s WHERE s.lastName like '%name%' or s.firstName = '%name%'")
     List<Staff> findByStaffName(@Param("staffName") String name);
+    
+    List<Staff> findByUsername(@Param("username") String username);
 }

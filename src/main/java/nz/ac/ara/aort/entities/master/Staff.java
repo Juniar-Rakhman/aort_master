@@ -40,7 +40,8 @@ public class Staff {
 	@Column(name = "last_name", columnDefinition = "nvarchar(50)")
 	private String lastName;
 
-	@Column(name = "campus_location", columnDefinition = "nvarchar(50)")
+//	@Column(name = "campus_location", columnDefinition = "nvarchar(50)")
+	@Transient
 	private String location;
 
 	@Column(name = "office_phone", columnDefinition = "nvarchar(30)")
