@@ -34,7 +34,7 @@ class Container extends Component {
     if (this.state.page === '') {
       content = <Home />;
     } else if (this.state.page === 'entry') {
-      content = <Entry title='Entry' />;
+      content = <Entry title='Create' redirectTo={this.handlePageNav}/>;
     } else if (this.state.page === 'staffSearch') {
       content = <StaffSearch />
     } else if (this.state.page === 'observationSearch') {
@@ -45,6 +45,8 @@ class Container extends Component {
       content = <UserRoleSearch handlePageNav={this.handlePageNav} />
     } else if (this.state.page === 'viewUserRole') {
       content = <ViewUserRole userRole = {this.state.data} />
+    } else if (this.state.page === 'editentry') {
+      content = <Entry title='Edit' observation={this.state.data} redirectTo={this.handlePageNav}/>;
     }
 
     return content;

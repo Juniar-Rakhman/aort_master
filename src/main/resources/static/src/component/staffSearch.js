@@ -26,7 +26,7 @@ class StaffTable extends Component {
                 staff.lastName.toLowerCase().indexOf(this.props.filterText.toLowerCase()) === -1) {
                 return;
             }
-            rows.push(<StaffRow staff={staff} key={staff.staffId} />);
+            rows.push(<StaffRow staff={staff} key={staff.id} />);
         }, this);
         return (
             <table className="table table-striped table-bordered table-hover dataTables-example" >

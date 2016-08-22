@@ -6,7 +6,11 @@ class ObservationRow extends Component {
     }
     
     handleObservationView() {
-      this.props.handlePageNav('view', this.props.observation.id);
+        this.props.handlePageNav('view', this.props.observation.id);
+    }
+
+    handleObservationEdit(){
+        this.props.handlePageNav('editentry', this.props.observation);
     }
 
     render() {
@@ -17,6 +21,7 @@ class ObservationRow extends Component {
                 <td>{this.props.observation.courseLevel}</td>
                 <td>{this.props.observation.programme}</td>
                 <td>{this.props.observation.programmeLevel}</td>
+                <td><button onClick={this.handleObservationEdit.bind(this)}>Edit</button></td>
             </tr>
         );
     }
@@ -45,6 +50,7 @@ class ObservationTable extends Component {
                         <th>Course Level</th>
                         <th>Programme</th>
                         <th>Programme Level</th>
+                        <th>Action</th>
                     </tr>
                 </thead>
                 <tbody>{rows}</tbody>
