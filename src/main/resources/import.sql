@@ -28,4 +28,5 @@ INSERT INTO dbo.rating_reference (rating) VALUES ('C');
 INSERT INTO dbo.rating_reference (rating) VALUES ('D');
 INSERT INTO dbo.rating_reference (rating) VALUES ('E');
 
--- academic_observation.dbo.observation
+INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES ('Learner-centred teaching enables all learners to achieve', 'Learning strategies cater for the needs of the learners');
+INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES ('Learning strategies cater for the needs of the learnersqewrqwrqwerqwer', 'Learning strategies cater for the needs of the learnersqewrqwe');

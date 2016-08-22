@@ -33,9 +33,11 @@ public class StrengthImprovement {
 	@Column(name = "evidence", columnDefinition = "nvarchar(250)")
 	public String evidence;
 
-	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-	@JoinColumn(name="strength_improvement_reference_id")
-	public StrengthImprovementReference strImpRef;
+	@Column(name = "strength_improvement_reference_id", columnDefinition = "nvarchar(250)")
+	public String strengthImprovementReferenceId;
+	
+	@Transient
+	public StrengthImprovementReference strengthImprovementReference;
 
 	public StrengthImprovement(){
 	}

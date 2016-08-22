@@ -6,6 +6,7 @@ import nz.ac.ara.aort.entities.StrengthImprovement;
 import nz.ac.ara.aort.entities.master.Staff;
 import nz.ac.ara.aort.repositories.ObservationRepository;
 import nz.ac.ara.aort.repositories.RatingReferenceRepository;
+import nz.ac.ara.aort.repositories.StrengthImprovementReferenceRepository;
 import nz.ac.ara.aort.repositories.StrengthImprovementRepository;
 import nz.ac.ara.aort.repositories.master.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +39,9 @@ public class ObservationController {
 
     @Autowired
     ObservationRepository observationRepo;
+    
+    @Autowired
+    StrengthImprovementReferenceRepository strImpRefRepo;
 
     @RequestMapping(value = "/api/observation_add", method = RequestMethod.POST)
     public ResponseEntity<Observation> observationAdd(@RequestBody Observation observation) {
@@ -77,6 +81,10 @@ public class ObservationController {
 
         RatingReference ratingReference = ratingRefRepo.findOne(Long.valueOf(observation.getRatingReferenceId()));
         observation.setRatingReference(ratingReference);
+
+        for (StrengthImprovement strengthImprovement : observation.getStrengthImprovements()) {
+            strengthImprovement.setStrengthImprovementReference(strImpRefRepo.findOne(strengthImprovement.getId()));
+        }
 
         return new ResponseEntity<>(observation, HttpStatus.OK);
     }
