@@ -40,14 +40,13 @@ public class Staff {
 	@Column(name = "last_name", columnDefinition = "nvarchar(50)")
 	private String lastName;
 
-	@Transient
 	@Column(name = "campus_location", columnDefinition = "nvarchar(50)")
 	private String location;
 
 	@Column(name = "office_phone", columnDefinition = "nvarchar(30)")
 	private String officePhone;
 
-	@ManyToMany
+	@Transient
 	@JoinTable(name="staff_position",
 			joinColumns=@JoinColumn(name="staff_id", referencedColumnName="staff_id"),
 			inverseJoinColumns=@JoinColumn(name="position_id", referencedColumnName="position_id"))

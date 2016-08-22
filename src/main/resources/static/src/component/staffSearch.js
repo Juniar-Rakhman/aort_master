@@ -52,7 +52,7 @@ class SearchBar extends Component {
     handleChange() {
         console.log('ini 2:' + this.refs.filterTextInput.value)
         this.props.onUserInput(
-            this.refs.filterTextInput.value,
+            this.refs.filterTextInput.value
         )
     }
 
