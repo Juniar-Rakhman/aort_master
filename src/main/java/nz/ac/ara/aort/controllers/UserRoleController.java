@@ -18,13 +18,13 @@ public class UserRoleController {
     @Autowired
     UserRoleRepository userRoleRepo;
 
-    @RequestMapping(value = "/api/user_role_add", method = RequestMethod.POST)
-    public ResponseEntity<UserRole> userRoleAdd(@RequestBody UserRole userRole) {
-        try {
-            userRoleRepo.save(userRole);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(userRole, HttpStatus.OK);
-    }
+//    @RequestMapping(value = "/api/user_role_add", method = RequestMethod.POST)
+//    public ResponseEntity<UserRole> userRoleAdd(@RequestBody UserRole userRole) {
+//        try {
+//            userRoleRepo.save(userRole);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return new ResponseEntity<>(userRole, HttpStatus.OK);
+//    }
 }

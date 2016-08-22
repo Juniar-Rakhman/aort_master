@@ -21,10 +21,6 @@ public class Staff {
 	@Column(name = "staff_id", columnDefinition = "nvarchar(50)")
 	private String id;
 
-	public String getStaffId() {
-		return this.getId();	
-	}
-	
 	@Column(name = "department", columnDefinition = "nvarchar(50)")
 	private String department;
 
@@ -40,7 +36,6 @@ public class Staff {
 	@Column(name = "last_name", columnDefinition = "nvarchar(50)")
 	private String lastName;
 
-//	@Column(name = "campus_location", columnDefinition = "nvarchar(50)")
 	@Transient
 	private String location;
 

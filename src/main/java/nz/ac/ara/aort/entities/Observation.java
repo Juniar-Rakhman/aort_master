@@ -34,10 +34,6 @@ public class Observation {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	public Long getObservationId() {
-		return this.getId();
-	}
-	
 	@Column(name = "observation_date")
 	private Date date;
 
@@ -96,17 +92,23 @@ public class Observation {
 	private String moderatorId;
 	@Transient
 	private Staff moderator;
+	@Transient
+	private String moderatorName;
 
 	@Column(name = "observer_primary", columnDefinition = "nvarchar(50)")
 	private String observerPrimaryId;
 	@Transient
 	private Staff observerPrimary;
+	@Transient
+	private String observerPrimaryName;
 
 	@Column(name = "observer_secondary", columnDefinition = "nvarchar(50)")
 	private String observerSecondaryId;
 	@Transient
 	private Staff observerSecondary;
-
+	@Transient
+	private String observerSecondaryName;
+	
 	@Column(name = "rating_reference_id", columnDefinition = "nvarchar(50)")
 	private String ratingReferenceId;
 	@Transient
@@ -116,11 +118,15 @@ public class Observation {
 	private String staffId;
 	@Transient
 	private Staff staff;
+	@Transient
+	private String staffName;
 
 	@Column(name = "learning_coach", columnDefinition = "nvarchar(50)")
 	private String learningCoachId;
 	@Transient
 	private Staff learningCoach;
+	@Transient
+	private String learningCoachName;
 
 	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinColumn(name = "observation_id")
@@ -130,12 +136,16 @@ public class Observation {
 	private String lineManagerId;
 	@Transient
 	private Staff lineManager;
+	@Transient
+	private String lineManagerName;
 
 	@Column(name = "head_of_department", columnDefinition = "nvarchar(50)")
 	private String hodId;
 	@Transient
 	private Staff HOD;
-	
+	@Transient
+	private String hodName;
+
 	public Observation(){
 	}
 

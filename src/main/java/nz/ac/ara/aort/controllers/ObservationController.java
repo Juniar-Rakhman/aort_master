@@ -10,6 +10,10 @@ import nz.ac.ara.aort.repositories.StrengthImprovementReferenceRepository;
 import nz.ac.ara.aort.repositories.StrengthImprovementRepository;
 import nz.ac.ara.aort.repositories.master.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -53,6 +57,34 @@ public class ObservationController {
         return new ResponseEntity<>(observation, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/api/observation_add", method = RequestMethod.PUT)
+    public ResponseEntity<Observation> observationModify(@RequestBody Observation observation) {
+        try {
+            observationRepo.save(observation);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(observation, HttpStatus.OK);
+    }
+    
+//    @RequestMapping(value = "/api/observations", method = RequestMethod.GET)
+//    public ResponseEntity<Page<Observation>> observationFindAll() {
+//
+//        Pageable pageRequest = new PageRequest(1, 10);
+//
+//        Page<Observation> observations = observationRepo.findAll(pageRequest);
+//
+//        for (Observation observation : observations) {
+//            observation.setStaffName(staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
+//            observation.setStaffName(staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
+//            observation.setStaffName(staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
+//            observation.setStaffName(staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
+//            observation.setStaffName(staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
+//        }
+//
+//        return new ResponseEntity<>(observations, HttpStatus.OK);
+//    }
+    
     @RequestMapping(value = "/api/observations/{id}", method = RequestMethod.GET)
     public ResponseEntity<Observation> observations(@PathVariable("id") String obsId) {
 

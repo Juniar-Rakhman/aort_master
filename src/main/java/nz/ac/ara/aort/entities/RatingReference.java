@@ -20,10 +20,6 @@ public class RatingReference {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 
-	public Long getRatingReferenceId() {
-		return this.getId();
-	}
-	
 	@Column(name = "rating", columnDefinition = "nvarchar(50)")
 	private String rating;
 

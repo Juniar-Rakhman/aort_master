@@ -20,10 +20,6 @@ public class StrengthImprovement {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
 
-	public Long getStrengthImprovementId() {
-		return this.getId();
-	}
-
 	@Column(name = "improvement")
 	public Boolean improvement;
 	

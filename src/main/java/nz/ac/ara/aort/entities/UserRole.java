@@ -21,10 +21,6 @@ public class UserRole {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
 
-	public Long getUserRoleId() {
-		return this.getId();
-	}
-
 	@Column(name = "add_observation")
 	public Boolean addObservation;
 	

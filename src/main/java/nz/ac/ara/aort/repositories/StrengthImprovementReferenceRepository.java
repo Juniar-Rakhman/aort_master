@@ -1,6 +1,5 @@
 package nz.ac.ara.aort.repositories;
 
-import nz.ac.ara.aort.entities.StrengthImprovement;
 import nz.ac.ara.aort.entities.StrengthImprovementReference;
 import org.springframework.data.jpa.repository.JpaRepository;
 

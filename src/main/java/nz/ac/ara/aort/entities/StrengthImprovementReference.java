@@ -20,10 +20,6 @@ public class StrengthImprovementReference {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
 
-	public Long getStrengthImprovementReferenceId() {
-		return this.getId();
-	}
-
 	@Column(name = "category", columnDefinition = "nvarchar(100)")
 	public String category;
 	

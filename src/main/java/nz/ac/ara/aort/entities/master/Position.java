@@ -22,10 +22,6 @@ public class Position {
 	@Column(name = "position_id", columnDefinition = "nvarchar(50)")
 	private String id;
 
-	public String getPositionId() {
-		return this.getId();
-	}
-
 	@Column(name = "is_active")
 	private short isActive;
 
