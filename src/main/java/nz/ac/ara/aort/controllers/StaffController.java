@@ -7,5 +7,6 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class StaffController {
-    
+    //TODO handle role, handle positions
+
 }

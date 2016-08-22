@@ -1,6 +1,7 @@
 package nz.ac.ara.aort.controllers;
 
 import nz.ac.ara.aort.entities.Observation;
+import nz.ac.ara.aort.entities.RatingReference;
 import nz.ac.ara.aort.entities.master.Staff;
 import nz.ac.ara.aort.repositories.ObservationRepository;
 import nz.ac.ara.aort.repositories.RatingReferenceRepository;
@@ -9,12 +10,11 @@ import nz.ac.ara.aort.repositories.master.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
-import javax.websocket.server.PathParam;
 
 /**
  * Created by a9jr5626 on 8/12/16.
@@ -45,8 +45,9 @@ public class ObservationController {
     }
 
     @RequestMapping(value = "/api/observations/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Observation> observations(@PathParam("id") String id) {
-        Observation observation = observationRepo.findOne(Long.valueOf(id));
+    public ResponseEntity<Observation> observations(@PathVariable("id") String obsId) {
+
+        Observation observation = observationRepo.findOne(Long.valueOf(obsId));
 
         Staff moderator = staffRepo.findOne(observation.getModeratorId());
         observation.setModerator(moderator);
@@ -68,6 +69,9 @@ public class ObservationController {
 
         Staff hod = staffRepo.findOne(observation.getHodId());
         observation.setHOD(hod);
+
+        RatingReference ratingReference = ratingRefRepo.findOne(observation.getRatingReferenceId());
+        observation.setRatingReference(ratingReference);
 
         return new ResponseEntity<>(observation, HttpStatus.OK);
     }

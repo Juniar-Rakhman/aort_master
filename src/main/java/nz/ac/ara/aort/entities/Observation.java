@@ -3,10 +3,18 @@ package nz.ac.ara.aort.entities;
 
 import lombok.Data;
 import nz.ac.ara.aort.entities.master.Staff;
-import nz.ac.ara.aort.repositories.master.StaffRepository;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.sql.Date;
 import java.sql.Time;
 import java.util.List;
@@ -25,6 +33,10 @@ public class Observation {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
+	public Long getObservationId() {
+		return this.getId();
+	}
 	
 	@Column(name = "observation_date")
 	private Date date;

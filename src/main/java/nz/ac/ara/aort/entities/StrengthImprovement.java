@@ -19,7 +19,11 @@ public class StrengthImprovement {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long id;
-	
+
+	public Long getStrengthImprovementId() {
+		return this.getId();
+	}
+
 	@Column(name = "improvement")
 	public Boolean improvement;
 	
@@ -29,7 +33,7 @@ public class StrengthImprovement {
 	@Column(name = "evidence", columnDefinition = "nvarchar(250)")
 	public String evidence;
 
-	@OneToOne
+	@OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
 	@JoinColumn(name="strength_improvement_reference_id")
 	public StrengthImprovementReference strImpRef;
 
