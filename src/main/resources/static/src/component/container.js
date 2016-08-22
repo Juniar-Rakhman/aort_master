@@ -6,21 +6,26 @@ import Header from './header'
 import Entry from "./entry"
 import StaffSearch from "./staffSearch"
 import ObservationSearch from "./observationSearch"
+import View from "./view"
+import UserRoleSearch from "./userRoleSearch"
+import ViewUserRole from "./viewUserRole"
 
 class Container extends Component {
   constructor(props, context) {
     super(props);
 
     this.state = {
-      page: ''
+      page: '',
+      data: null
     };
 
     this.handlePageNav = this.handlePageNav.bind(this);
   };
 
-  handlePageNav(state) {
+  handlePageNav(state, data = null) {
     this.setState({
-      page: state
+      page: state,
+      data: data
     });
   }
 
@@ -29,11 +34,17 @@ class Container extends Component {
     if (this.state.page === '') {
       content = <Home />;
     } else if (this.state.page === 'entry') {
-      content = <Entry title='Create' />;
+      content = <Entry title='Entry' />;
     } else if (this.state.page === 'staffSearch') {
       content = <StaffSearch />
     } else if (this.state.page === 'observationSearch') {
-      content = <ObservationSearch />
+      content = <ObservationSearch handlePageNav={this.handlePageNav} />
+    } else if (this.state.page === 'view') {
+      content = <View observationId = {this.state.data} />
+    } else if (this.state.page === 'userRoleSearch') {
+      content = <UserRoleSearch handlePageNav={this.handlePageNav} />
+    } else if (this.state.page === 'viewUserRole') {
+      content = <ViewUserRole userRole = {this.state.data} />
     }
 
     return content;

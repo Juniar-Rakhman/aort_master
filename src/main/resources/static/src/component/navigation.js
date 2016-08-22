@@ -22,7 +22,11 @@ class Navigation extends Component {
   }
 
   handleObservationView(){
-    this.props.handlePageNav('entry')
+    this.props.handlePageNav('view')
+  }
+
+  handleUserRoleSearch() {
+    this.props.handlePageNav('userRoleSearch')
   }
 
   render() {
@@ -36,7 +40,7 @@ class Navigation extends Component {
                 <span className="clear"> <span className="block m-t-xs"> <strong className="font-bold">John Connotr</strong>
                  </span> <span className="text-muted text-xs block">Administrator <b className="caret"></b></span> </span> </a>
                 <ul className="dropdown-menu animated fadeInRight m-t-xs">
-                    <li><a href="/logout">Logout</a></li>
+                    <li><a href="#">Logout</a></li>
                 </ul>
               </div>
                 <div className="logo-element">
@@ -53,7 +57,7 @@ class Navigation extends Component {
               <a href="#"><i className="fa fa-user"></i> <span className="nav-label">System Administration</span></a>
               <ul className="nav nav-second-level collapse">
                 <li><a href="#" onClick={this.handleStaffSearch.bind(this)}>Users Management</a></li>
-                <li><a href="#">Roles Management</a></li>
+                <li><a href="#" onClick={this.handleUserRoleSearch.bind(this)}>Roles Management</a></li>
               </ul>
             </li>
             <li>

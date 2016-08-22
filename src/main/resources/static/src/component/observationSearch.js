@@ -1,11 +1,18 @@
 import React, { Component } from 'react';
 
 class ObservationRow extends Component {
+    constructor(props){
+        super(props);
+    }
+    
+    handleObservationView() {
+      this.props.handlePageNav('view', this.props.observation.id);
+    }
+
     render() {
-        var fullName = this.props.observation.hod.firstName + ' ' + this.props.observation.hod.lastName;
         return (
             <tr className="gradeX">
-                <td><a href='#' onClick='{this.handleObservationView.bind(this)}'> {fullName}</a></td>
+                <td><a href='#' onClick={this.handleObservationView.bind(this)}>{this.props.observation.staffName}</a></td>
                 <td>{this.props.observation.courseName}</td>
                 <td>{this.props.observation.courseLevel}</td>
                 <td>{this.props.observation.programme}</td>
@@ -23,10 +30,11 @@ class ObservationTable extends Component {
     render() {
         var rows = [];
         this.props.observations.forEach(function (observation) {
-            if (observation.courseName.indexOf(this.props.filterText) === -1){
+            if (observation.courseName.toLowerCase().indexOf(this.props.filterText.toLowerCase()) === -1 &&
+                observation.staffName.toLowerCase().indexOf(this.props.filterText.toLowerCase()) === -1 ){
                 return;
             }
-            rows.push(<ObservationRow observation={observation} key={observation.observationId} />);
+            rows.push(<ObservationRow observation={observation} key={observation.observationId} handlePageNav={this.props.handlePageNav} />);
         }, this);
         return (
             <table className="table table-striped table-bordered table-hover dataTables-example" >
@@ -53,7 +61,7 @@ class SearchBar extends Component {
 
     handleChange() {
         this.props.onUserInput(
-            this.refs.filterTextInput.value
+            this.refs.filterTextInput.value,
         )
     }
 
@@ -96,7 +104,7 @@ class FilterableObservationTable extends Component {
             type: 'GET',
             url: "/api/observations",
             success: function(response) {
-                this.setState({observations: response["_embedded"]["observations"]});
+                this.setState({observations: response});
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
@@ -126,6 +134,7 @@ class FilterableObservationTable extends Component {
                                     <ObservationTable 
                                         observations={this.state.observations}
                                         filterText={this.state.constFilterText}
+                                        handlePageNav={this.props.handlePageNav}
                                     />
                                 </div>
                             </div>
@@ -137,29 +146,30 @@ class FilterableObservationTable extends Component {
     }
 }
 
-/*
 var OBSERVATIONS =
 [
       {
-        "date": "2016-08-18",
-        "time": null,
-        "lateLearners": null,
-        "location": null,
-        "moderated": null,
-        "programme": null,
-        "programmeLevel": null,
-        "notes": null,
-        "ratingSummary": null,
-        "registeredLearners": null,
-        "sessionContext": null,
-        "startLearners": null,
-        "strengthsShare": null,
-        "totalLearners": null,
-        "additionalComments": null,
-        "courseLevel": null,
-        "courseName": "test 1",
-        "department": "test 2",
-        "hod": {
+        "id" : 1,
+        "date" : "2016-08-17",
+        "time" : "11:00:00",
+        "lateLearners" : 1,
+        "location" : "test loc",
+        "moderated" : true,
+        "programme" : "test aja",
+        "programmeLevel" : 1,
+        "notes" : "test notest",
+        "ratingSummary" : "1",
+        "registeredLearners" : 15,
+        "sessionContext" : "test session",
+        "startLearners" : 11,
+        "strengthsShare" : "test str",
+        "totalLearners" : 12,
+        "additionalComments" : "test add comments",
+        "courseLevel" : 3,
+        "courseName" : "test aja",
+        "department" : "test dep",
+        "staff": {
+          "id" : "00000065",
           "department": "Department of Computing",
           "email": "Richard.Smith1@ara.ac.nz",
           "firstName": "Richard",
@@ -168,44 +178,114 @@ var OBSERVATIONS =
           "officePhone": "1984432418",
           "username": "Smith1R"
         },
-        "_links": {
-          "self": {
-            "href": "http://localhost:8080/api/observations/1"
+        "hod": {
+          "id" : "00000065",
+          "department": "Department of Computing",
+          "email": "Richard.Smith1@ara.ac.nz",
+          "firstName": "Richard",
+          "lastName": "Smith1",
+          "location": null,
+          "officePhone": "1984432418",
+          "username": "Smith1R"
+        },
+        "learningCoach": {
+          "id" : "00000065",
+          "department": "Department of Computing",
+          "email": "Richard.Smith1@ara.ac.nz",
+          "firstName": "Richard",
+          "lastName": "Smith1",
+          "location": null,
+          "officePhone": "1984432418",
+          "username": "Smith1R"
+        },
+        "lineManager": {
+          "id" : "00000065",
+          "department": "Department of Computing",
+          "email": "Richard.Smith1@ara.ac.nz",
+          "firstName": "Richard",
+          "lastName": "Smith1",
+          "location": null,
+          "officePhone": "1984432418",
+          "username": "Smith1R"
+        },
+        "observerPrimary": {
+          "id" : "00000065",
+          "department": "Department of Computing",
+          "email": "Richard.Smith1@ara.ac.nz",
+          "firstName": "Richard",
+          "lastName": "Smith1",
+          "location": null,
+          "officePhone": "1984432418",
+          "username": "Smith1R"
+        },
+        "moderator": {
+          "id" : "00000065",
+          "department": "Department of Computing",
+          "email": "Richard.Smith1@ara.ac.nz",
+          "firstName": "Richard",
+          "lastName": "Smith1",
+          "location": null,
+          "officePhone": "1984432418",
+          "username": "Smith1R"
+        },
+        "observerSecondary": {
+          "id" : "00000065",
+          "department": "Department of Computing",
+          "email": "Richard.Smith1@ara.ac.nz",
+          "firstName": "Richard",
+          "lastName": "Smith1",
+          "location": null,
+          "officePhone": "1984432418",
+          "username": "Smith1R"
+        },
+        "strengthImprovements": [
+            {
+              "id" : 1,
+              "improvement": true,
+              "strength": false,
+              "evidence": "test1",
+              "strImpRef": {
+                "id" : 1,
+                "category": "Learner-centred teaching enables all learners to achieve",
+                "criteria": "Learning strategies cater for the needs of the learners"
+              }
+            },
+            {
+              "id" : 2,
+              "improvement": false,
+              "strength": true,
+              "evidence": "test2",
+              "strImpRef": {
+                "id" : 2,
+                "category": "Learner-centred teaching enables all learners to achieve",
+                "criteria": "Learning activities are varied and interesting"
+              }
+            }
+        ],
+        "ratingReference": {
+          "id" : 1,
+          "rating": "Excellent"
+        },
+        "_links" : {
+          "self" : {
+            "href" : "http://localhost:8080/api/observations"
           },
-          "observation": {
-            "href": "http://localhost:8080/api/observations/1"
+          "profile" : {
+            "href" : "http://localhost:8080/api/profile/observations"
           },
-          "learningCoach": {
-            "href": "http://localhost:8080/api/observations/1/learningCoach"
-          },
-          "HOD": {
-            "href": "http://localhost:8080/api/observations/1/HOD"
-          },
-          "strengthImprovements": {
-            "href":
-"http://localhost:8080/api/observations/1/strengthImprovements"
-          },
-          "lineManager": {
-            "href": "http://localhost:8080/api/observations/1/lineManager"
-          },
-          "observerPrimary": {
-            "href": "http://localhost:8080/api/observations/1/observerPrimary"
-          },
-          "moderator": {
-            "href": "http://localhost:8080/api/observations/1/moderator"
-          },
-          "observerSecondary": {
-            "href": "http://localhost:8080/api/observations/1/observerSecondary"
-          },
-          "ratingReference": {
-            "href": "http://localhost:8080/api/observations/1/ratingReference"
-          },
-          "staff": {
-            "href": "http://localhost:8080/api/observations/1/staff"
+          "search" : {
+            "href" : "http://localhost:8080/api/observations/search"
           }
+        },
+        "page" : {
+          "size" : 20,
+          "totalElements" : 1,
+          "totalPages" : 1,
+          "number" : 0
         }
       },
       {
+        "id": 2,
         "date": "2016-08-17",
         "time": "11:00:00",
         "lateLearners": 1,
@@ -224,7 +304,8 @@ var OBSERVATIONS =
         "courseLevel": 3,
         "courseName": "test aja",
         "department": "test dep",
-        "hod": {
+        "staff": {
+          "id" : "00000065",
           "department": "Department of Computing",
           "email": "Richard.Smith1@ara.ac.nz",
           "firstName": "Richard",
@@ -233,43 +314,112 @@ var OBSERVATIONS =
           "officePhone": "1984432418",
           "username": "Smith1R"
         },
-        "_links": {
-          "self": {
-            "href": "http://localhost:8080/api/observations/2"
+        "hod": {
+          "id" : "00000065",
+          "department": "Department of Computing",
+          "email": "Richard.Smith1@ara.ac.nz",
+          "firstName": "Richard",
+          "lastName": "Smith1",
+          "location": null,
+          "officePhone": "1984432418",
+          "username": "Smith1R"
+        },
+        "learningCoach": {
+          "id" : "00000065",
+          "department": "Department of Computing",
+          "email": "Richard.Smith1@ara.ac.nz",
+          "firstName": "Richard",
+          "lastName": "Smith1",
+          "location": null,
+          "officePhone": "1984432418",
+          "username": "Smith1R"
+        },
+        "lineManager": {
+          "id" : "00000065",
+          "department": "Department of Computing",
+          "email": "Richard.Smith1@ara.ac.nz",
+          "firstName": "Richard",
+          "lastName": "Smith1",
+          "location": null,
+          "officePhone": "1984432418",
+          "username": "Smith1R"
+        },
+        "observerPrimary": {
+          "id" : "00000065",
+          "department": "Department of Computing",
+          "email": "Richard.Smith1@ara.ac.nz",
+          "firstName": "Richard",
+          "lastName": "Smith1",
+          "location": null,
+          "officePhone": "1984432418",
+          "username": "Smith1R"
+        },
+        "moderator": {
+          "id" : "00000065",
+          "department": "Department of Computing",
+          "email": "Richard.Smith1@ara.ac.nz",
+          "firstName": "Richard",
+          "lastName": "Smith1",
+          "location": null,
+          "officePhone": "1984432418",
+          "username": "Smith1R"
+        },
+        "observerSecondary": {
+          "id" : "00000065",
+          "department": "Department of Computing",
+          "email": "Richard.Smith1@ara.ac.nz",
+          "firstName": "Richard",
+          "lastName": "Smith1",
+          "location": null,
+          "officePhone": "1984432418",
+          "username": "Smith1R"
+        },
+        "strengthImprovements": [
+            {
+              "id": 1,
+              "improvement": true,
+              "strength": true,
+              "evidence": "test1",
+              "strImpRef": {
+                "id": 1,
+                "category": "Learner-centred teaching enables all learners to achieve",
+                "criteria": "Learning strategies cater for the needs of the learners"
+              }
+            },
+            {
+              "id": 2,
+              "improvement": false,
+              "strength": false,
+              "evidence": "test2",
+              "strImpRef": {
+                "category": "Learner-centred teaching enables all learners to achieve",
+                "criteria": "Learning activities are varied and interesting"
+              }
+            }
+        ],
+        "ratingReference": {
+          "id": 2,
+          "rating": "Good"
+        },
+        "_links" : {
+          "self" : {
+            "href" : "http://localhost:8080/api/observations"
           },
-          "observation": {
-            "href": "http://localhost:8080/api/observations/2"
+          "profile" : {
+            "href" : "http://localhost:8080/api/profile/observations"
           },
-          "learningCoach": {
-            "href": "http://localhost:8080/api/observations/2/learningCoach"
-          },
-          "HOD": {
-            "href": "http://localhost:8080/api/observations/2/HOD"
-          },
-          "strengthImprovements": {
-            "href":
-"http://localhost:8080/api/observations/2/strengthImprovements"
-          },
-          "lineManager": {
-            "href": "http://localhost:8080/api/observations/2/lineManager"
-          },
-          "observerPrimary": {
-            "href": "http://localhost:8080/api/observations/2/observerPrimary"
-          },
-          "moderator": {
-            "href": "http://localhost:8080/api/observations/2/moderator"
-          },
-          "observerSecondary": {
-            "href": "http://localhost:8080/api/observations/2/observerSecondary"
-          },
-          "ratingReference": {
-            "href": "http://localhost:8080/api/observations/2/ratingReference"
-          },
-          "staff": {
-            "href": "http://localhost:8080/api/observations/2/staff"
+          "search" : {
+            "href" : "http://localhost:8080/api/observations/search"
           }
+        },
+        "page" : {
+          "size" : 20,
+          "totalElements" : 1,
+          "totalPages" : 1,
+          "number" : 0
         }
       }
     ];
-*/
+
+
 export default FilterableObservationTable;

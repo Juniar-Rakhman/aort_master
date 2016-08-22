@@ -22,7 +22,8 @@ class StaffTable extends Component {
     render() {
         var rows = [];
         this.props.staffs.forEach(function (staff) {
-            if (staff.firstName.indexOf(this.props.filterText) === -1 && staff.lastName.indexOf(this.props.filterText) === -1) {
+            if (staff.firstName.toLowerCase().indexOf(this.props.filterText.toLowerCase()) === -1 &&
+                staff.lastName.toLowerCase().indexOf(this.props.filterText.toLowerCase()) === -1) {
                 return;
             }
             rows.push(<StaffRow staff={staff} key={staff.staffId} />);
