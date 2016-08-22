@@ -24,6 +24,7 @@ import java.sql.Date;
 import java.sql.Time;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -47,7 +48,7 @@ public class ObservationController {
     @Autowired
     StrengthImprovementReferenceRepository strImpRefRepo;
 
-    @RequestMapping(value = "/api/observation_add", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/observations", method = RequestMethod.POST)
     public ResponseEntity<Observation> observationAdd(@RequestBody Observation observation) {
         try {
             observationRepo.save(observation);
@@ -57,7 +58,7 @@ public class ObservationController {
         return new ResponseEntity<>(observation, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/api/observation_add", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/observations", method = RequestMethod.PUT)
     public ResponseEntity<Observation> observationModify(@RequestBody Observation observation) {
         try {
             observationRepo.save(observation);
@@ -67,10 +68,30 @@ public class ObservationController {
         return new ResponseEntity<>(observation, HttpStatus.OK);
     }
     
+    @RequestMapping(value = "/api/observations", method = RequestMethod.GET)
+    public ResponseEntity<List<Observation>> observationFindAll() {
+
+        List<Observation> observationList = new ArrayList<>();
+                
+        for (Observation observation : observationRepo.findAll()) {
+            observation.setStaffName(staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
+            observation.setModeratorName(staffRepo.findOne(observation.getModeratorId()).getFirstName() + " " + staffRepo.findOne(observation.getModeratorId()).getLastName());
+            observation.setObserverPrimaryName(staffRepo.findOne(observation.getObserverPrimaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverPrimaryId()).getLastName());
+            observation.setObserverSecondaryName(staffRepo.findOne(observation.getObserverSecondaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverSecondaryId()).getLastName());
+            observation.setLearningCoachName(staffRepo.findOne(observation.getLearningCoachId()).getFirstName() + " " + staffRepo.findOne(observation.getLearningCoachId()).getLastName());
+            observation.setLineManagerName(staffRepo.findOne(observation.getLineManagerId()).getFirstName() + " " + staffRepo.findOne(observation.getLineManagerId()).getLastName());
+            observation.setHodName(staffRepo.findOne(observation.getHodId()).getFirstName() + " " + staffRepo.findOne(observation.getHodId()).getLastName());
+            observationList.add(observation);
+        }
+
+        return new ResponseEntity<>(observationList, HttpStatus.OK);
+    }
+    
+////      TODO: USE PAGING!!!
 //    @RequestMapping(value = "/api/observations", method = RequestMethod.GET)
 //    public ResponseEntity<Page<Observation>> observationFindAll() {
 //
-//        Pageable pageRequest = new PageRequest(1, 10);
+//        Pageable pageRequest = new PageRequest(0, 10);
 //
 //        Page<Observation> observations = observationRepo.findAll(pageRequest);
 //
@@ -115,7 +136,7 @@ public class ObservationController {
         observation.setRatingReference(ratingReference);
 
         for (StrengthImprovement strengthImprovement : observation.getStrengthImprovements()) {
-            strengthImprovement.setStrengthImprovementReference(strImpRefRepo.findOne(strengthImprovement.getId()));
+            strengthImprovement.setStrengthImprovementReference(strImpRefRepo.findOne(Long.valueOf(strengthImprovement.getStrengthImprovementReferenceId())));
         }
 
         return new ResponseEntity<>(observation, HttpStatus.OK);
