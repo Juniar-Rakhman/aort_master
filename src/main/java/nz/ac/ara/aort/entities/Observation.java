@@ -128,7 +128,7 @@ public class Observation {
 	@Transient
 	private String learningCoachName;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
+	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
 	@JoinColumn(name = "observation_id")
 	private List<StrengthImprovement> strengthImprovements;
 
