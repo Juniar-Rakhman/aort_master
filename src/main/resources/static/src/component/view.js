@@ -321,7 +321,6 @@ class View extends Component {
   getDataObservation() {
       $.ajax({
           type: 'GET',
-          dataType: 'json',
           url: "/api/observations/" + this.props.observationId,
           success: function(response) {
               alert(response);
@@ -380,11 +379,12 @@ class View extends Component {
               </div>
             );
     } else {
-        return <div>Data not found</div>
+        return <div>Loading...</div>
     }
   }
 }
 
+/*
 var CATEGITEMS =
   [ {
       "id" : 1,
@@ -638,5 +638,6 @@ var OBSERVATION =
           }
         }
       };
+*/
 
 export default View;

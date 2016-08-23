@@ -6,11 +6,11 @@ class ObservationRow extends Component {
     }
     
     handleObservationView() {
-        this.props.handlePageNav('view', this.props.observation.id);
+        this.props.redirectTo('view', this.props.observation.id);
     }
 
     handleObservationEdit(){
-        this.props.handlePageNav('editentry', this.props.observation);
+        this.props.redirectTo('edit', this.props.observation);
     }
 
     render() {
@@ -21,7 +21,7 @@ class ObservationRow extends Component {
                 <td>{this.props.observation.courseLevel}</td>
                 <td>{this.props.observation.programme}</td>
                 <td>{this.props.observation.programmeLevel}</td>
-                <td><button onClick={this.handleObservationEdit.bind(this)}>Edit</button></td>
+                <td><button className="btn" onClick={this.handleObservationEdit.bind(this)}>Edit</button></td>
             </tr>
         );
     }
@@ -39,7 +39,7 @@ class ObservationTable extends Component {
                 observation.staffName.toLowerCase().indexOf(this.props.filterText.toLowerCase()) === -1 ){
                 return;
             }
-            rows.push(<ObservationRow observation={observation} key={observation.observationId} handlePageNav={this.props.handlePageNav} />);
+            rows.push(<ObservationRow observation={observation} key={observation.observationId} redirectTo={this.props.redirectTo} />);
         }, this);
         return (
             <table className="table table-striped table-bordered table-hover dataTables-example" >
@@ -87,7 +87,7 @@ class SearchBar extends Component {
     }
 }
 
-class FilterableObservationTable extends Component {
+class ObservationSearch extends Component {
     constructor(props, context) {
         super(props);
         this.handleUserInput = this.handleUserInput.bind(this);
@@ -140,7 +140,7 @@ class FilterableObservationTable extends Component {
                                     <ObservationTable 
                                         observations={this.state.observations}
                                         filterText={this.state.constFilterText}
-                                        handlePageNav={this.props.handlePageNav}
+                                        redirectTo={this.props.redirectTo}
                                     />
                                 </div>
                             </div>
@@ -152,6 +152,7 @@ class FilterableObservationTable extends Component {
     }
 }
 
+/*
 var OBSERVATIONS =
 [
       {
@@ -426,6 +427,6 @@ var OBSERVATIONS =
         }
       }
     ];
+*/
 
-
-export default FilterableObservationTable;
+export default ObservationSearch;

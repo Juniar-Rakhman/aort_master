@@ -27,4 +27,14 @@ public class UserRoleController {
 //        }
 //        return new ResponseEntity<>(userRole, HttpStatus.OK);
 //    }
+
+    @RequestMapping(value = "/api/userRoles/modify", method = RequestMethod.PUT)
+    public ResponseEntity<UserRole> userRoleModify(@RequestBody UserRole userRole) {
+        try {
+            userRoleRepo.save(userRole);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(userRole, HttpStatus.OK);
+    }
 }

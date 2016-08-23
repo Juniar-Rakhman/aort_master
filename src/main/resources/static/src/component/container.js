@@ -38,14 +38,14 @@ class Container extends Component {
     } else if (this.state.page === 'staffSearch') {
       content = <StaffSearch />
     } else if (this.state.page === 'observationSearch') {
-      content = <ObservationSearch handlePageNav={this.handlePageNav} />
+      content = <ObservationSearch redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'view') {
       content = <View title='View' observationId = {this.state.data} />
     } else if (this.state.page === 'userRoleSearch') {
-      content = <UserRoleSearch handlePageNav={this.handlePageNav} />
+      content = <UserRoleSearch redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'viewUserRole') {
-      content = <ViewUserRole userRole = {this.state.data} />
-    } else if (this.state.page === 'editentry') {
+      content = <ViewUserRole userRole = {this.state.data} redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'edit') {
       content = <Entry title='Edit' observation={this.state.data} redirectTo={this.handlePageNav}/>;
     }
 

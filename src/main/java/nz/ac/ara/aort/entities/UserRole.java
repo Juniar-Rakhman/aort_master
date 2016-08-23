@@ -30,6 +30,9 @@ public class UserRole {
 	@Column(name = "system_admin")
 	public Boolean systemAdmin;
 
+	@Column(name = "quality_assurance")
+	public Boolean qualityAssurance;
+
 	@Column(name = "staff_id", columnDefinition = "nvarchar(50)")
 	private String staffId;
 	@Transient

@@ -12,25 +12,28 @@ class UserRoleRow extends Component {
         role : this.props.role
       };
 
-      this.props.handlePageNav('viewUserRole', data);
+      this.props.redirectTo('viewUserRole', data);
   
   }
   render() {
       var fullName = this.props.staff.firstName + ' ' + this.props.staff.lastName;
       var role = "";
-      
-      if(this.props.role.general) {
-        role = "General";
+
+      if(this.props.role != null) {
+          if(this.props.role.general) {
+            role = "General";
+          }
+          else if(this.props.role.addObservation) {
+            role = "Add Observation";
+          }
+          else if(this.props.role.systemAdmin) {
+            role = "System Administration";
+          }
+          else if(this.props.role.qualityAssurance) {
+            role = "Quality Assurance";
+          }
       }
-      else if(this.props.role.addObservation) {
-        role = "Add Observation";
-      }
-      else if(this.props.role.systemAdmin) {
-        role = "System Administration";
-      }
-      else if(this.props.role.qualityAssurance) {
-        role = "Quality Assurance";
-      }
+
       return (
           <tr className="gradeX">
               <td><a href='#' onClick={this.handleUserRoleView.bind(this)}>{fullName}</a></td>
@@ -61,7 +64,7 @@ class UserRoleTable extends Component {
               return;
             }
           });
-          rows.push(<UserRoleRow staff={staff} role={role} key={staff.id} handlePageNav={this.props.handlePageNav} />);
+          rows.push(<UserRoleRow staff={staff} role={role} key={staff.id} redirectTo={this.props.redirectTo} />);
       }, this);
       
       return (
@@ -107,7 +110,7 @@ class SearchBar extends Component {
   }
 }
 
-class FiterableUserRoleSearch extends Component {
+class UserRoleSearch extends Component {
 	constructor(props, context) {
         super(props);
         this.handleUserInput = this.handleUserInput.bind(this);
@@ -178,7 +181,7 @@ class FiterableUserRoleSearch extends Component {
                                         staffs={this.state.staffs}
                                         userRoles={this.state.userRoles}
                                         filterText={this.state.constFilterText}
-                                        handlePageNav={this.props.handlePageNav}
+                                        redirectTo={this.props.redirectTo}
                                     />
                                 </div>
                             </div>
@@ -190,6 +193,7 @@ class FiterableUserRoleSearch extends Component {
     }
 }
 
+/*
 var STAFFS =  [ {
       "id" : "1",
       "department" : "Department of Computing",
@@ -313,5 +317,6 @@ var USERROLES = [
 		"qualityAssurance" : false
 	}
 ]
+*/
 
-export default FiterableUserRoleSearch;
+export default UserRoleSearch;

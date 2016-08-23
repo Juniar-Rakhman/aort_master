@@ -73,7 +73,7 @@ class SearchBar extends Component {
     }
 }
 
-class FilterableStaffTable extends Component {
+class StaffSearch extends Component {
     constructor(props, context) {
         super(props);
         this.handleUserInput = this.handleUserInput.bind(this);
@@ -198,4 +198,5 @@ var STAFFS =  [ {
       }
     }  ];
 */
-export default FilterableStaffTable;
+
+export default StaffSearch;
