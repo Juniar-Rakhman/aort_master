@@ -45,7 +45,7 @@ public class MyAuthoritiesPopulator implements LdapAuthoritiesPopulator {
             e.printStackTrace();
         }
 
+        return authorities;
 
-        return null;
     }
 }
