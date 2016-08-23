@@ -238,7 +238,7 @@ class ObserveSummary extends Component{
             <div className="col-sm-12">
               <label className="col-sm-4 control-label">Rating</label>
               <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.ratingReference.rating} disabled />
+                <input type="text" className="form-control m-b" value={this.props.observation.ratingReference.rating} disabled /><br/>
               </div>
             </div>
             <div className="col-sm-12">
@@ -275,7 +275,7 @@ class ObserveModerate extends Component{
     return(
       <div className="ibox-content">
           <div className="form-group">
-            <div className="col-sm-12">
+            <div className="col-sm-6">
               <label className="col-sm-4 control-label">Has been moderated</label>
               <div className="col-sm-8">
                 <select className="form-control m-b" value={this.props.observation.moderated ? "Yes" : "No"} disabled>
@@ -284,19 +284,19 @@ class ObserveModerate extends Component{
                 </select>
               </div>
             </div>
-            <div className="col-sm-12">
+            <div className="col-sm-6">
               <label className="col-sm-4 control-label">Moderator Name</label>
               <div className="col-sm-8">
                 <input type="text" className="form-control m-b" value={this.props.observation.moderator.firstName + ' ' + this.props.observation.moderator.lastName} disabled/>
               </div>
             </div>
-            <div className="col-sm-12">
+            <div className="col-sm-6">
               <label className="col-sm-4 control-label">Learning Coach Name</label>
               <div className="col-sm-8">
                 <input type="text" className="form-control m-b" value={this.props.observation.learningCoach.firstName + ' ' + this.props.observation.learningCoach.lastName} disabled/>
               </div>
             </div>
-            <div className="col-sm-12">
+            <div className="col-sm-6">
               <label className="col-sm-4 control-label">Head of Department Name</label>
               <div className="col-sm-8">
                 <input type="text" className="form-control m-b" value={this.props.observation.hod.firstName + ' ' + this.props.observation.hod.lastName} disabled/>
@@ -321,11 +321,14 @@ class View extends Component {
   getDataObservation() {
       $.ajax({
           type: 'GET',
+          dataType: 'json',
           url: "/api/observations/" + this.props.observationId,
           success: function(response) {
+              alert(response);
               this.setState({observation: response});
           }.bind(this),
           error: function(xhr, status, err) {
+              alert(err.toString());
               console.error(this.props.url, status, err.toString());
           }.bind(this)
       });
@@ -376,6 +379,8 @@ class View extends Component {
                 </div>
               </div>
             );
+    } else {
+        return <div>Data not found</div>
     }
   }
 }
