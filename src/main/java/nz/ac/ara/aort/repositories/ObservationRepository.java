@@ -14,9 +14,6 @@ import java.util.List;
  */
 public interface ObservationRepository extends JpaRepository<Observation, Long> {
     List<Observation> findByStaffId(@Param("staffId") String staffId, Pageable pageable);
-
     List<Observation> findByDateBetween(@Param("after") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date after, @Param("before") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) Date before, Pageable pageable);
-
     List<Observation> findByObserverPrimaryId(@Param("observerPrimaryId") String observerPrimaryId, Pageable pageable);
-    
 }

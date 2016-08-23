@@ -74,13 +74,27 @@ public class ObservationController {
         List<Observation> observationList = new ArrayList<>();
                 
         for (Observation observation : observationRepo.findAll()) {
-            observation.setStaffName(staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
-            observation.setModeratorName(staffRepo.findOne(observation.getModeratorId()).getFirstName() + " " + staffRepo.findOne(observation.getModeratorId()).getLastName());
-            observation.setObserverPrimaryName(staffRepo.findOne(observation.getObserverPrimaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverPrimaryId()).getLastName());
-            observation.setObserverSecondaryName(staffRepo.findOne(observation.getObserverSecondaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverSecondaryId()).getLastName());
-            observation.setLearningCoachName(staffRepo.findOne(observation.getLearningCoachId()).getFirstName() + " " + staffRepo.findOne(observation.getLearningCoachId()).getLastName());
-            observation.setLineManagerName(staffRepo.findOne(observation.getLineManagerId()).getFirstName() + " " + staffRepo.findOne(observation.getLineManagerId()).getLastName());
-            observation.setHodName(staffRepo.findOne(observation.getHodId()).getFirstName() + " " + staffRepo.findOne(observation.getHodId()).getLastName());
+            if (!observation.getStaffId().isEmpty()) {
+                observation.setStaffName(staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
+            }
+            if (!observation.getModeratorId().isEmpty()) {
+                observation.setModeratorName(staffRepo.findOne(observation.getModeratorId()).getFirstName() + " " + staffRepo.findOne(observation.getModeratorId()).getLastName());
+            }
+            if (!observation.getObserverPrimaryId().isEmpty()) {
+                observation.setObserverPrimaryName(staffRepo.findOne(observation.getObserverPrimaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverPrimaryId()).getLastName());
+            }
+            if (!observation.getObserverSecondaryId().isEmpty()) {
+                observation.setObserverSecondaryName(staffRepo.findOne(observation.getObserverSecondaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverSecondaryId()).getLastName());
+            }
+            if (!observation.getLearningCoachId().isEmpty()) {
+                observation.setLearningCoachName(staffRepo.findOne(observation.getLearningCoachId()).getFirstName() + " " + staffRepo.findOne(observation.getLearningCoachId()).getLastName());
+            }
+            if (!observation.getLineManagerId().isEmpty()) {
+                observation.setLineManagerName(staffRepo.findOne(observation.getLineManagerId()).getFirstName() + " " + staffRepo.findOne(observation.getLineManagerId()).getLastName());
+            }
+            if (!observation.getHodId().isEmpty()) {
+                observation.setHodName(staffRepo.findOne(observation.getHodId()).getFirstName() + " " + staffRepo.findOne(observation.getHodId()).getLastName());
+            }
             observationList.add(observation);
         }
 
@@ -110,30 +124,46 @@ public class ObservationController {
     public ResponseEntity<Observation> observations(@PathVariable("id") String obsId) {
 
         Observation observation = observationRepo.findOne(Long.valueOf(obsId));
+        
+        if (!observation.getStaffId().isEmpty()) {
+            Staff moderator = staffRepo.findOne(observation.getModeratorId());
+            observation.setModerator(moderator);
+        }
+        
+        if (!observation.getModeratorId().isEmpty()) {
+            Staff staff = staffRepo.findOne(observation.getStaffId());
+            observation.setStaff(staff);
+        }
+        
+        if (!observation.getObserverPrimaryId().isEmpty()) {
+            Staff observerPrimary = staffRepo.findOne(observation.getObserverPrimaryId());
+            observation.setObserverPrimary(observerPrimary);
+        }
+        
+        if (!observation.getObserverSecondaryId().isEmpty()) {
+            Staff observerSecondary = staffRepo.findOne(observation.getObserverSecondaryId());
+            observation.setObserverSecondary(observerSecondary);
+        }
+        
+        if (!observation.getLineManagerId().isEmpty()) {
+            Staff lineManager = staffRepo.findOne(observation.getLineManagerId());
+            observation.setLineManager(lineManager);
+        }
+        
+        if (!observation.getLearningCoachId().isEmpty()) {
+            Staff learningCoach = staffRepo.findOne(observation.getLearningCoachId());
+            observation.setLearningCoach(learningCoach);
+        }
+        
+        if (!observation.getHodId().isEmpty()) {
+            Staff hod = staffRepo.findOne(observation.getHodId());
+            observation.setHOD(hod);
+        }
 
-        Staff moderator = staffRepo.findOne(observation.getModeratorId());
-        observation.setModerator(moderator);
-
-        Staff staff = staffRepo.findOne(observation.getStaffId());
-        observation.setStaff(staff);
-
-        Staff observerPrimary = staffRepo.findOne(observation.getObserverPrimaryId());
-        observation.setObserverPrimary(observerPrimary);
-
-        Staff observerSecondary = staffRepo.findOne(observation.getObserverSecondaryId());
-        observation.setObserverSecondary(observerSecondary);
-
-        Staff lineManager = staffRepo.findOne(observation.getLineManagerId());
-        observation.setLineManager(lineManager);
-
-        Staff learningCoach = staffRepo.findOne(observation.getLearningCoachId());
-        observation.setLearningCoach(learningCoach);
-
-        Staff hod = staffRepo.findOne(observation.getHodId());
-        observation.setHOD(hod);
-
-        RatingReference ratingReference = ratingRefRepo.findOne(Long.valueOf(observation.getRatingReferenceId()));
-        observation.setRatingReference(ratingReference);
+        if (!observation.getRatingReferenceId().isEmpty()) {
+            RatingReference ratingReference = ratingRefRepo.findOne(Long.valueOf(observation.getRatingReferenceId()));
+            observation.setRatingReference(ratingReference);
+        }
 
         for (StrengthImprovement strengthImprovement : observation.getStrengthImprovements()) {
             strengthImprovement.setStrengthImprovementReference(strImpRefRepo.findOne(Long.valueOf(strengthImprovement.getStrengthImprovementReferenceId())));

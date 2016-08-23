@@ -37,6 +37,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Configuration
     protected static class AuthenticationConfiguration extends GlobalAuthenticationConfigurerAdapter {
 
+//        @Autowired
+//        @Qualifier("myAuthPopulator")
+//        LdapAuthoritiesPopulator authoritiesPopulator;
+
         @Override
         public void init(AuthenticationManagerBuilder auth) throws Exception {
             auth
@@ -44,6 +48,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .userDnPatterns("uid={0},ou=people")
                     .groupSearchBase("ou=groups")
                     .contextSource().ldif("classpath:test-server.ldif");
+//                    .and()
+//                    .ldapAuthoritiesPopulator(authoritiesPopulator);
         }
     }
 }
