@@ -123,17 +123,18 @@ class ObserveHeader extends Component{
   populateStaff(key){
     var fullName='';
     var rows = []
+    rows.push(<option value={''} selected>Please Select</option>);
     this.props.staffs.forEach(function(staff){
-        fullName = staff.firstName + ' ' + staff.lastName; // "#{staff.firstName} #{staff.lastName}"
+        fullName = staff.firstName + ' ' + staff.lastName; 
         if(staff.id === key){
-            rows.push(<option value={staff.id} selected>{fullName}</option>); //value={staff.id}
+            rows.push(<option value={staff.id} selected>{fullName}</option>); 
         }else{
             rows.push(<option value={staff.id}>{fullName}</option>);
         }
     })
     return rows
   }
-    
+
   render(){
     return(
       <div className="ibox-content">
@@ -357,36 +358,45 @@ class ObserveEntryRow extends Component{
 
   handleStrengthChange(e) {
     var newState = Object.assign(this.state.categoryItem, {strength: e.target.value});
-    this.props.strengthImprovements.push(newState);
     this.setState({categoryItem: newState});
     this.props.updateObservation({strengthImprovements: this.updateStrengthImprovements(newState)});
   }
 
   handleImprovementChange(e) {
     var newState = Object.assign(this.state.categoryItem, {improvement: e.target.value});
-    this.props.strengthImprovements.push(newState);
     this.setState({categoryItem: newState});
     this.props.updateObservation({strengthImprovements: this.updateStrengthImprovements(newState)});
   }
 
   handleEvidenceChange(e) {
     var newState = Object.assign(this.state.categoryItem, {evidence: e.target.value});
-    this.props.strengthImprovements.push(newState);
     this.setState({categoryItem: newState});
     this.props.updateObservation({strengthImprovements: this.updateStrengthImprovements(newState)});
   }
 
   updateStrengthImprovements(strengthImprovement) {
-    var newStrengthImprovements = [];
-    this.props.strengthImprovements.forEach(function(item) {
-      if (item.id === strengthImprovement.strengthImprovementReferenceId) {
-        newStrengthImprovements.push(strengthImprovement);
-      }else {
-        newStrengthImprovements.push(item);
-      }
-    });
+    var newStrengthImprovements = Object.assign([], this.props.strengthImprovements);
+    var count = 1;
+    
+    if (newStrengthImprovements.length > 0) {
+      newStrengthImprovements.forEach(function(item, index) {
+        if (item.strengthImprovementReferenceId === strengthImprovement.strengthImprovementReferenceId) {
+          newStrengthImprovements[index] = strengthImprovement;
+        } else {
+          count++;
+        }
+      });
+    }else {
+      newStrengthImprovements.push(strengthImprovement)
+    }
+
+    if (count != newStrengthImprovements.length ) {
+      newStrengthImprovements.push(strengthImprovement)
+    }
     return newStrengthImprovements;
   }
+
+
   render(){
     return(
       <div className="ibox-content">
@@ -465,31 +475,22 @@ class ObserveEntries extends Component{
           found = item;
         } 
       })
-      // if cari dari this.props.strengthImprovements[].strengthImprovementReferenceId yang sama dengan
-      // categitem.id
-      // kalo ketemu save variable found = this.prop.strengthImprovement[]
+
       var rowsdata = {
+        id: found.id || "",
         strength:  found.strength || false,
         improvement: found.improvement || false,
         evidence: found.evidence || "",
         strengthImprovementReferenceId: found.strengthImprovementReferenceId || categitem.id
       };
-/*
-      data.forEach(function(data){
-        if(data.strengthImprovementReference.id === categitem.id) {
-          rowsdata.strength = data.strength;
-          rowsdata.improvement = data.improvement;
-          rowsdata.evidence = data.evidence;
-          return false;
-      }
-*/
+
       rows.push(<ObserveEntryRow 
                   categitem={rowsdata} 
                   key={categitem.criteria} 
                   criteria={categitem.criteria} 
                   mode={this.props.mode} 
                   updateObservation={this.props.updateObservation} 
-                  strengthImprovements={temp}
+                  strengthImprovements={this.props.strengthImprovements || []}
                 />);
       lastCategory = categitem.category;
     }, this)
@@ -540,6 +541,7 @@ class ObserveSumarry extends Component{
   populateRatingReferences(key){
     var ratingRef='';
     var rows = []
+    rows.push(<option value={''} selected>Please Select</option>);
     this.props.ratingReferences.forEach(function(ratingReference){
         if(ratingReference.id === key){
             rows.push(<option value={ratingReference.id} selected>{ratingReference.rating}</option>);
@@ -635,10 +637,11 @@ class ObserveModerate extends Component{
   populateStaff(key){
     var fullName='';
     var rows = []
+    rows.push(<option value={''} selected>Please Select</option>);
     this.props.staffs.forEach(function(staff){
-        fullName = staff.firstName + ' ' + staff.lastName; // "#{staff.firstName} #{staff.lastName}"
+        fullName = staff.firstName + ' ' + staff.lastName;
         if(staff.id === key){
-            rows.push(<option value={staff.id} selected>{fullName}</option>); //value={staff.id}
+            rows.push(<option value={staff.id} selected>{fullName}</option>); 
         }else{
             rows.push(<option value={staff.id}>{fullName}</option>);
         }
@@ -655,8 +658,8 @@ class ObserveModerate extends Component{
               <label className="col-sm-4 control-label">Has been moderated</label>
               <div className="col-sm-8">
                 <select {...this.props.mode} className="form-control m-b" onChange={this.handleModeratedChange.bind(this)}>
-                  <option value={true}>Yes</option>
                   <option value={false}>No</option>
+                  <option value={true} >Yes</option>
                 </select>
               </div>
             </div>
@@ -753,7 +756,6 @@ class Entry extends Component {
   }
 
   componentWillMount(){
-    // Uncomment this to use API
     this.getStaffRecords();
     this.getRatingReferencesRecords();
     this.getDataStrengthImprovementReferences();
@@ -772,39 +774,37 @@ class Entry extends Component {
     }
   }
   createMethod(observation) {
-    console.log('DATA CREATED')
+    console.log('Creating data')
     var data = JSON.stringify(observation);
     console.log(data);
-    // Uncomment to use API
      $.ajax({
         type: 'POST',
         url: "/api/observations",
         contentType: "application/json",
         data: data,
         success: function(response) {
-           console.log(response)
+           console.log(response); 
         }.bind(this),
         error: function(xhr, status, err) {
             console.error(this.props.url, status, err.toString());
         }.bind(this)
      });
-    this.props.redirectTo('');
+    this.props.redirectTo('entry');
+
   }
   updateMethod(observation) {
-    console.log('DATA UPDATED')
-    // Candhie
+    console.log('Updating data')
+
     // Before use JSON.stringify remove key that isn't necessary to update
     // Make a constant array of key that unnecessary like
     var removeKey = ["_links", "staff", "hod", "learningCoach", "lineManager", "observerPrimary", "moderator", "observerSecondary", "ratingReference","page"]
-    //
+
     removeKey.forEach(function(value){
       delete observation[value];
     })
     var data = JSON.stringify(observation);
     console.log(data);
-    // Uncomment to use API
-    // REST API UPDATE METHOD
-     $.ajax({
+    $.ajax({
         type: 'PUT',
         url: "/api/observations",
         contentType: "application/json",
@@ -817,7 +817,7 @@ class Entry extends Component {
         }.bind(this)
      });
 
-    this.props.redirectTo('');
+    this.props.redirectTo('observationSearch');
   }
 
 
@@ -841,18 +841,11 @@ class Entry extends Component {
                     mode={mode}
                     disabled='true'
                     updateObservation={this.updateObservation}
-                    // Candhie
-                    // Change {STAFFS} to {this.state.staffs}
                     staffs={this.state.staffs}
                   />
 
                   <ObserveEntries
-                    // Candhie
-                    // Change [] to default for create entry from database
-                    //categitems={this.state.observationData.strengthImprovements || []}
-                    //categitems={this.state.observationData.strengthImprovements || this.state.strengthImprovementReferences}
                     categitems={this.state.strengthImprovementReferences}
-                    //data = {this.state.observation.strengthImprovements} 
                     strengthImprovements={this.state.observationData.strengthImprovements || []}
                     mode={mode}
                     updateObservation={this.updateObservation}
@@ -865,7 +858,6 @@ class Entry extends Component {
                     strengthsShare={this.state.observationData.strengthsShare}
                     additionalComments={this.state.observationData.additionalComments}
                     ratingReferenceId={this.state.observationData.ratingReferenceId}
-                    // change {REFERENCES} with {this.state.ratingReferences}
                     ratingReferences={this.state.ratingReferences}
                   />
                   <ObserveModerate
@@ -874,8 +866,6 @@ class Entry extends Component {
                     learningCoachId={this.state.observationData.learningCoachId}
                     moderatorId={this.state.observationData.moderatorId}
                     hodId={this.state.observationData.hodId}
-                    // Candhie
-                    // Change {STAFFS} to {this.state.staffs}
                     staffs={this.state.staffs}
                   />
 
