@@ -13,6 +13,14 @@ class ObservationRow extends Component {
         this.props.redirectTo('edit', this.props.observation);
     }
 
+    displayAction(){
+        if (this.props.role.qualityAssurance){
+            return(
+                <td><button onClick={this.handleObservationEdit.bind(this)}>Edit</button></td>
+            );
+        }
+    }
+
     render() {
         return (
             <tr className="gradeX">
@@ -21,7 +29,7 @@ class ObservationRow extends Component {
                 <td>{this.props.observation.courseLevel}</td>
                 <td>{this.props.observation.programme}</td>
                 <td>{this.props.observation.programmeLevel}</td>
-                <td><button className="btn" onClick={this.handleObservationEdit.bind(this)}>Edit</button></td>
+                {this.displayAction()}
             </tr>
         );
     }
@@ -32,6 +40,14 @@ class ObservationTable extends Component {
         super(props);
     }
 
+    displayAction(){
+        if (this.props.role.qualityAssurance){
+            return(
+                <th>Action</th>
+            );
+        }
+    }
+
     render() {
         var rows = [];
         this.props.observations.forEach(function (observation) {
@@ -39,7 +55,7 @@ class ObservationTable extends Component {
                 observation.staffName.toLowerCase().indexOf(this.props.filterText.toLowerCase()) === -1 ){
                 return;
             }
-            rows.push(<ObservationRow observation={observation} key={observation.observationId} redirectTo={this.props.redirectTo} />);
+            rows.push(<ObservationRow observation={observation} key={observation.observationId} redirectTo={this.props.redirectTo} role={this.props.role} />);
         }, this);
         return (
             <table className="table table-striped table-bordered table-hover dataTables-example" >
@@ -50,7 +66,7 @@ class ObservationTable extends Component {
                         <th>Course Level</th>
                         <th>Programme</th>
                         <th>Programme Level</th>
-                        <th>Action</th>
+                        {this.displayAction()}
                     </tr>
                 </thead>
                 <tbody>{rows}</tbody>
@@ -141,6 +157,7 @@ class ObservationSearch extends Component {
                                         observations={this.state.observations}
                                         filterText={this.state.constFilterText}
                                         redirectTo={this.props.redirectTo}
+                                        role={this.props.role}
                                     />
                                 </div>
                             </div>

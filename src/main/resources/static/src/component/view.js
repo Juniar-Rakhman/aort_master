@@ -323,11 +323,9 @@ class View extends Component {
           type: 'GET',
           url: "/api/observations/" + this.props.observationId,
           success: function(response) {
-              alert(response);
               this.setState({observation: response});
           }.bind(this),
           error: function(xhr, status, err) {
-              alert(err.toString());
               console.error(this.props.url, status, err.toString());
           }.bind(this)
       });

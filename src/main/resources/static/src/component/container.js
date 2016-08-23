@@ -16,7 +16,10 @@ class Container extends Component {
 
     this.state = {
       page: '',
-      data: null
+      data: null,
+      username: null,
+      staff: null,
+      role: null
     };
 
     this.handlePageNav = this.handlePageNav.bind(this);
@@ -29,6 +32,51 @@ class Container extends Component {
     });
   }
 
+  getUsername() {
+    $.ajax({
+        type: 'GET',
+        url: "/api/username",
+        success: function(response) {
+            this.getStaff(response);
+            this.setState({username: response});
+        }.bind(this),
+        error: function(xhr, status, err) {
+            console.error(this.props.url, status, err.toString());
+        }.bind(this)
+    });
+  }
+
+  getStaff(username) {
+    $.ajax({
+        type: 'GET',
+        url: "/api/staffs/search/findByUsername?username=" + username,
+        success: function(response) {
+            this.getRole(response.id);
+            this.setState({staff: response});
+        }.bind(this),
+        error: function(xhr, status, err) {
+            console.error(this.props.url, status, err.toString());
+        }.bind(this)
+    });
+  }
+
+  getRole(staffId) {
+    $.ajax({
+        type: 'GET',
+        url: "api/userRoles/search/findByStaffId?staffId=" + staffId,
+        success: function(response) {
+            this.setState({role: response});
+        }.bind(this),
+        error: function(xhr, status, err) {
+            console.error(this.props.url, status, err.toString());
+        }.bind(this)
+    });
+  }
+
+  componentDidMount() {
+    this.getUsername();
+  }
+
   renderContent() {
     var content;
     if (this.state.page === '') {
@@ -38,7 +86,7 @@ class Container extends Component {
     } else if (this.state.page === 'staffSearch') {
       content = <StaffSearch />
     } else if (this.state.page === 'observationSearch') {
-      content = <ObservationSearch redirectTo={this.handlePageNav} />
+      content = <ObservationSearch redirectTo={this.handlePageNav} role={this.state.role}/>
     } else if (this.state.page === 'view') {
       content = <View title='View' observationId = {this.state.data} />
     } else if (this.state.page === 'userRoleSearch') {
@@ -63,19 +111,25 @@ class Container extends Component {
   }
 
   render() {
-    return (
-      <div className="main-content">
-        <Navigation
-          handlePageNav={this.handlePageNav}
-          role={this.props.role}
-          />
-        <div id="page-wrapper" className="gray-bg">
-          <Header />
-          {this.renderContent() }
-          {this.renderFooter() }
-        </div>
-      </div>
-    );
+    if(this.state.role != null) {
+        return (
+          <div className="main-content">
+            <Navigation
+              handlePageNav={this.handlePageNav}
+              role={this.state.role}
+              />
+            <div id="page-wrapper" className="gray-bg">
+              <Header />
+              {this.renderContent() }
+              {this.renderFooter() }
+            </div>
+          </div>
+        );
+    }
+    else {
+        return <div>Loading...</div>
+    }
+
   }
 }
 
