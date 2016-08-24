@@ -136,42 +136,31 @@ class ObserveEntryRow extends Component{
   }
   render(){
     return(
-      <div className="ibox-content">
-        <div className="form-group">
-          <div className="form-group" style={{ paddingLeft: "25px" }}>{this.props.criteria}</div>
-          <div className="form-group">
-            <div className="col-sm-3">
-              <label className="col-sm-6 control-label">Strengths</label>
-              <div className="col-sm-6">
-                <input
-                    className="form-control m-b"
+        <tr className={this.props.category}>
+            <td>
+                <ul>
+                    <li>{this.props.criteria}</li>
+                </ul>
+            </td>
+            <td align="center">
+                <input className="form-control m-b"
                     type="checkbox"
                     checked={this.props.strength}
                     disabled
                 />
-              </div>
-            </div>
-            <div className="col-sm-3">
-              <label className="col-sm-6 control-label">Improvement</label>
-              <div className="col-sm-6">
-                <input
-                    className="form-control m-b"
+            </td>
+            <td align="center">
+                <input className="form-control m-b"
                     type="checkbox"
                     checked={this.props.improvement}
                     disabled
                 />
-              </div>
-            </div>
-            <div className="col-sm-6">
-              <label className="col-sm-2 control-label">Evidence</label>
-              <div className="col-sm-10">
-                <textarea type="text" className="form-control m-b" value={this.props.evidence} disabled></textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
+            </td>
+            <td>
+                <textArea type="text" className="form-control m-b" value={this.props.evidence} disabled></textArea>
+            </td>
+        </tr>
+    );
   }
 }
 
@@ -182,9 +171,11 @@ class ObserveEntryCategory extends Component{
 
   render(){
     return(
-      <div className="ibox-title">
-        <h5>{this.props.category}</h5>
-      </div>
+      <tr>
+        <td colSpan="4">
+            <h5>{this.props.category}</h5>
+        </td>
+      </tr>
     )
   }
 }
@@ -223,7 +214,23 @@ class ObserveEntries extends Component{
 
     return(
       <div className="ibox-content">
-        {rows}
+        <div className="form-group">
+          <div className="form-group">
+            <table className="table table-striped table-bordered table-hover dataTables-example">
+                <thead>
+                  <tr>
+                    <th>Criteria</th>
+                    <th>Strengths</th>
+                    <th>Areas for improvement</th>
+                    <th>Evidence</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {rows}
+                </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     )
   }
@@ -282,9 +289,7 @@ class ObserveModerate extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Has been moderated</label>
               <div className="col-sm-8">
-                <input
-                    type="checkbox"
-                    className="form-control m-b"
+                <input type="checkbox"
                     checked={this.props.observation.moderated}
                     disabled
                 />
