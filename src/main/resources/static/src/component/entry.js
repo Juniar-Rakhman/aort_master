@@ -120,17 +120,27 @@ class ObserveHeader extends Component{
     this.props.updateObservation(newState);
   }
 
-  populateStaff(key){
+  componentDidMount() {
+    $('#teacher').select2({placeholder: "Please Select"});
+    $('#teacher').on('change', this.handleTeacherNameChange.bind(this));
+
+    $('#lineManager').select2({placeholder: "Please Select"});
+    $('#lineManager').on('change', this.handleManagerNameChange.bind(this));
+
+    $('#observerPrimary').select2({placeholder: "Please Select"});
+    $('#observerPrimary').on('change', this.handlePrimaryObserverNameChange.bind(this));
+
+    $('#observerSecondary').select2({placeholder: "Please Select"});
+    $('#observerSecondary').on('change', this.handleSecondObserverNameChange.bind(this));
+  }
+
+  populateStaff2(){
     var fullName='';
-    var rows = []
-    rows.push(<option value={''} selected>Please Select</option>);
+    var rows = [];
+    var lastIndex = 0
     this.props.staffs.forEach(function(staff){
-        fullName = staff.firstName + ' ' + staff.lastName; 
-        if(staff.id === key){
-            rows.push(<option value={staff.id} selected>{fullName}</option>); 
-        }else{
-            rows.push(<option value={staff.id}>{fullName}</option>);
-        }
+      fullName = staff.firstName + ' ' + staff.lastName;
+      rows.push(<option value={staff.id}>{fullName}</option>);
     })
     return rows
   }
@@ -143,16 +153,18 @@ class ObserveHeader extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Teacher's Name</label>
               <div className="col-sm-8">
-                <select className="form-control m-b" onChange={this.handleTeacherNameChange.bind(this)} >
-                    {this.populateStaff(this.state.staffId)}
+                <select id="teacher" className="form-control m-b" value={this.state.staffId}>
+                  <option></option>
+                  {this.populateStaff2()}
                 </select>
               </div>
             </div>
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Line Manager's Name</label>
               <div className="col-sm-8">
-                <select className="form-control m-b" onChange={this.handleManagerNameChange.bind(this)} >
-                    {this.populateStaff(this.state.lineManagerId)}
+                <select id="lineManager" className="form-control m-b" value={this.state.lineManagerId}>
+                  <option></option>
+                  {this.populateStaff2()}
                 </select>
               </div>
             </div>
@@ -162,16 +174,18 @@ class ObserveHeader extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Primary Observer's Name</label>
               <div className="col-sm-8">
-                <select className="form-control m-b" onChange={this.handlePrimaryObserverNameChange.bind(this)} >
-                    {this.populateStaff(this.state.observerPrimaryId)}
+                <select id="observerPrimary" className="form-control m-b" value={this.state.observerPrimaryId}>
+                  <option></option>
+                  {this.populateStaff2()}
                 </select>
               </div>
             </div>
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Secondary Observer's Name</label>
               <div className="col-sm-8">
-                <select className="form-control m-b" onChange={this.handleSecondObserverNameChange.bind(this)} >
-                    {this.populateStaff(this.state.observerSecondaryId)}
+                <select id="observerSecondary" className="form-control m-b" value={this.state.observerSecondaryId}>
+                  <option></option>
+                  {this.populateStaff2()}
                 </select>
               </div>
             </div>
@@ -184,6 +198,8 @@ class ObserveHeader extends Component{
                 <input
                     {...this.props.mode}
                     type="text"
+                    placeholder="100 characters allowed"
+                    maxLength={100}
                     className="form-control m-b"
                     value={this.state.courseName}
                     onChange={this.handleCourseChange.bind(this)}
@@ -196,6 +212,8 @@ class ObserveHeader extends Component{
                 <input
                     {...this.props.mode}
                     type="text"
+                    placeholder="100 characters allowed"
+                    maxLength={100}
                     className="form-control m-b"
                     value={this.state.programme}
                     onChange={this.handleProgrammeChange.bind(this)}
@@ -211,6 +229,9 @@ class ObserveHeader extends Component{
                 <input
                     {...this.props.mode}
                     type="number"
+                    min={0}
+                    max={99}
+                    placeholder="Max value is 99"
                     className="form-control m-b"
                     value={this.state.courseLevel}
                     onChange={this.handleCourseLevelChange.bind(this)}
@@ -223,6 +244,9 @@ class ObserveHeader extends Component{
                 <input
                     {...this.props.mode}
                     type="number"
+                    min={0}
+                    max={99}
+                    placeholder="Max value is 99"
                     className="form-control m-b"
                     value={this.state.programmeLevel}
                     onChange={this.handleProgrammeLevelChange.bind(this)}
@@ -238,6 +262,9 @@ class ObserveHeader extends Component{
                 <input
                     {...this.props.mode}
                     type="number"
+                    min={0}
+                    max={999}
+                    placeholder="Max value is 999"
                     className="form-control m-b"
                     value={this.state.registeredLearners}
                     onChange={this.handleNumLearnerOnRegisterChange.bind(this)}
@@ -250,6 +277,8 @@ class ObserveHeader extends Component{
                 <input
                     {...this.props.mode}
                     type="number"
+                    min={0}
+                    max={999}
                     className="form-control m-b"
                     value={this.state.startLearners}
                     onChange={this.handleNumLearnerAtStartChange.bind(this)}
@@ -265,6 +294,9 @@ class ObserveHeader extends Component{
                 <input
                     {...this.props.mode}
                     type="number"
+                    min={0}
+                    max={999}
+                    placeholder="Max value is 999"
                     className="form-control m-b"
                     value={this.state.lateLearners}
                     onChange={this.handleNumLearnerLateChange.bind(this)}
@@ -277,6 +309,9 @@ class ObserveHeader extends Component{
                 <input
                     {...this.props.mode}
                     type="number"
+                    min={0}
+                    max={999}
+                    placeholder="Max value is 999"
                     className="form-control m-b"
                     value={this.state.totalLearners}
                     onChange={this.handleTotalLearnerChange.bind(this)}
@@ -292,6 +327,8 @@ class ObserveHeader extends Component{
                 <input
                     {...this.props.mode}
                     type="text"
+                    placeholder="50 characters allowed"
+                    maxLength={50}
                     className="form-control m-b"
                     value={this.state.location}
                     onChange={this.handleCampusChange.bind(this)}
@@ -304,6 +341,8 @@ class ObserveHeader extends Component{
                 <input
                     {...this.props.mode}
                     type="text"
+                    placeholder="50 characters allowed"
+                    maxLength={50}
                     className="form-control m-b"
                     value={this.state.department}
                     onChange={this.handleDepartmentChange.bind(this)}
@@ -318,6 +357,8 @@ class ObserveHeader extends Component{
               <div className="col-sm-8">
                 <textarea
                     {...this.props.mode}
+                    maxLength={250}
+                    placeholder="250 characters allowed"
                     type="text"
                     className="form-control m-b"
                     value={this.state.sessionContext}
@@ -334,6 +375,8 @@ class ObserveHeader extends Component{
                 <textarea
                     {...this.props.mode}
                     type="text"
+                    maxLength={1000}
+                    placeholder="1000 characters allowed"
                     className="form-control m-b"
                     value={this.state.notes}
                     onChange={this.handleNotesSessionChange.bind(this)}
@@ -433,6 +476,8 @@ class ObserveEntryRow extends Component{
               <label className="col-sm-2 control-label">Evidence</label>
               <div className="col-sm-10">
                 <textarea {...this.props.mode} type="text"
+                  maxLength={250}
+                  placeholder="250 characters allowed"
                   className="form-control m-b"
                   value={this.state.categoryItem.evidence || ''}
                   onChange={this.handleEvidenceChange.bind(this)}
@@ -569,6 +614,8 @@ class ObserveSumarry extends Component{
               <label className="col-sm-4 control-label">Sumarry Evaluation</label>
               <div className="col-sm-8">
                 <textarea {...this.props.mode} type="text" className="form-control m-b"
+                    maxLength={250}
+                    placeholder="250 characters allowed"
                     onChange={this.handleRatingSummaryChange.bind(this)}
                     value={this.state.ratingSummary}
                 />
@@ -578,6 +625,8 @@ class ObserveSumarry extends Component{
               <label className="col-sm-4 control-label">Identified strengths for sharing</label>
               <div className="col-sm-8">
                 <textarea {...this.props.mode} type="text" className="form-control m-b"
+                    maxLength={250}
+                    placeholder="250 characters allowed"
                     onChange={this.handleStrengthsShareChange.bind(this)}
                     value={this.state.strengthsShare}
                 />
@@ -587,6 +636,8 @@ class ObserveSumarry extends Component{
               <label className="col-sm-4 control-label">Additional Comments</label>
               <div className="col-sm-8">
                 <textarea {...this.props.mode} type="text" className="form-control m-b"
+                    maxLength={250}
+                    placeholder="250 characters allowed"
                     onChange={this.handleAdditionalCommentsChange.bind(this)}
                     value={this.state.additionalComments}
                 />
@@ -634,17 +685,26 @@ class ObserveModerate extends Component{
     this.props.updateObservation(newState);
   }
 
-  populateStaff(key){
+  componentDidMount() {
+    $('#moderator').select2({placeholder: "Please Select"});
+    $('#moderator').on('change', this.handleModeratorIdChange.bind(this));
+
+    $('#coach').select2({
+        placeholder: "Please Select"}
+    );
+    $('#coach').on('change', this.handleLearningCoachIdChange.bind(this));
+
+    $('#hod').select2({placeholder: "Please Select"});
+    $('#hod').on('change', this.handleHodIdChange.bind(this));
+  }
+
+  populateStaff2(){
     var fullName='';
-    var rows = []
-    rows.push(<option value={''} selected>Please Select</option>);
+    var rows = [];
+    var lastIndex = 0
     this.props.staffs.forEach(function(staff){
-        fullName = staff.firstName + ' ' + staff.lastName;
-        if(staff.id === key){
-            rows.push(<option value={staff.id} selected>{fullName}</option>); 
-        }else{
-            rows.push(<option value={staff.id}>{fullName}</option>);
-        }
+      fullName = staff.firstName + ' ' + staff.lastName;
+      rows.push(<option value={staff.id}>{fullName}</option>);
     })
     return rows
   }
@@ -666,8 +726,9 @@ class ObserveModerate extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Moderator Name</label>
               <div className="col-sm-8">
-                <select className="form-control m-b" onChange={this.handleModeratorIdChange.bind(this)} >
-                    {this.populateStaff(this.state.moderatorId)}
+                <select id="moderator" className="form-control m-b" value={this.state.moderatorId}>
+                  <option></option>
+                  {this.populateStaff2()}
                 </select>
               </div>
             </div>
@@ -676,16 +737,18 @@ class ObserveModerate extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Learning Coach Name</label>
               <div className="col-sm-8">
-                <select className="form-control m-b" onChange={this.handleLearningCoachIdChange.bind(this)} >
-                    {this.populateStaff(this.state.learningCoachId)}
+                <select id="coach" className="form-control m-b" value={this.state.learningCoachId}>
+                  <option></option>
+                  {this.populateStaff2()}
                 </select>
               </div>
             </div>
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Head of Department Name</label>
               <div className="col-sm-8">
-                <select className="form-control m-b" onChange={this.handleHodIdChange.bind(this)} >
-                    {this.populateStaff(this.state.hodId)}
+                <select id="hod" className="form-control m-b" value={this.state.hodId}>
+                  <option></option>
+                  {this.populateStaff2()}
                 </select>
               </div>
             </div>
