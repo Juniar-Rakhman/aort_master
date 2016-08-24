@@ -28,6 +28,7 @@ INSERT INTO dbo.rating_reference (rating) VALUES ('C');
 INSERT INTO dbo.rating_reference (rating) VALUES ('D');
 INSERT INTO dbo.rating_reference (rating) VALUES ('E');
 
+-- academic_observation.dbo.strength_improvement_reference
 INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learner-centred teaching enables all learners to achieve', 'Learning strategies cater for the needs of the learners');
 INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learner-centred teaching enables all learners to achieve', 'Learning activities are varied and interesting');
 INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learner-centred teaching enables all learners to achieve', 'Learning time is managed effectively');
@@ -38,4 +39,8 @@ INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Lear
 INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learning environments ensure participation and engagement', 'Variety of interactive and independent activity');
 INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learning environments ensure participation and engagement', 'Good use of learning technologies');
 
--- academic_observation.dbo.observation
+-- academic_observation.dbo.user_role
+INSERT INTO dbo.user_role VALUES(0, 0, 0, '00000065', 1)
+INSERT INTO dbo.user_role VALUES(1, 0, 0, '00000216', 0)
+INSERT INTO dbo.user_role VALUES(0, 1, 0, '00000332', 0)
+INSERT INTO dbo.user_role VALUES(0, 0, 1, '00000486', 0)
