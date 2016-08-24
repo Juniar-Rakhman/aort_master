@@ -59,7 +59,7 @@ class Navigation extends Component {
             <a href="#"><i className="fa fa-user"></i> <span className="nav-label">System Administration</span></a>
             <ul className="nav nav-second-level">
               <li><a href="#" onClick={this.handleStaffSearch.bind(this)}>Users Management</a></li>
-              <li><a href="#">Roles Management</a></li>
+              <li><a href="#" onClick={this.handleUserRoleSearch.bind(this)}>Roles Management</a></li>
             </ul>
           </li>
         )
