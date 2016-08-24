@@ -67,18 +67,30 @@ public class Observation {
 	@Column(name = "session_context", columnDefinition = "nvarchar(250)")
 	private String sessionContext;
 
+	@Column(name = "lesson_plan")
+	private Boolean lessonPlan;
+	
+	@Column(name = "lesson_plan_comment", columnDefinition = "nvarchar(250)") 
+	private String lessonPlanComment;
+	
+	@Column(name = "course_outline")
+	private Boolean courseOutline;
+	
+	@Column(name = "course_outline_comment", columnDefinition = "nvarchar(250)")
+	private String courseOutlineComment;
+
 	@Column(name = "start_no_learners")
 	private Integer startLearners;
 	
-	@Column(name = "strengths_to_share", columnDefinition = "nvarchar(250)")
-	private String strengthsShare;
-
 	@Column(name = "total_no_learners")
 	private Integer totalLearners;
 	
 	@Column(name = "additional_comments", columnDefinition = "nvarchar(250)")
 	private String additionalComments;
-	
+
+	@Column(name = "course_code", columnDefinition = "nvarchar(20)")
+	private Integer courseCode;
+
 	@Column(name = "course_level")
 	private Integer courseLevel;
 	

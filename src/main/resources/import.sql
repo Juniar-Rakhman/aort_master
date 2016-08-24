@@ -20,19 +20,17 @@
 -- INSERT INTO staff_position (staff_id, position_id) VALUES ('00000242', '0000002123');
 
 -- academic_observation.dbo.rating_reference
-INSERT INTO dbo.rating_reference (rating) VALUES ('A');
-INSERT INTO dbo.rating_reference (rating) VALUES ('AB');
-INSERT INTO dbo.rating_reference (rating) VALUES ('B');
-INSERT INTO dbo.rating_reference (rating) VALUES ('BC');
-INSERT INTO dbo.rating_reference (rating) VALUES ('C');
-INSERT INTO dbo.rating_reference (rating) VALUES ('D');
-INSERT INTO dbo.rating_reference (rating) VALUES ('E');
+INSERT INTO dbo.rating_reference (rating) VALUES ('Excellent Practice');
+INSERT INTO dbo.rating_reference (rating) VALUES ('Good Practice');
+INSERT INTO dbo.rating_reference (rating) VALUES ('Practice Needs Improvement');
+INSERT INTO dbo.rating_reference (rating) VALUES ('Practice Requires Intervention and Support');
 
 -- academic_observation.dbo.strength_improvement_reference
 INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learner-centred teaching enables all learners to achieve', 'Learning strategies cater for the needs of the learners');
 INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learner-centred teaching enables all learners to achieve', 'Learning activities are varied and interesting');
 INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learner-centred teaching enables all learners to achieve', 'Learning time is managed effectively');
 INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learner-centred teaching enables all learners to achieve', 'Questioning techniques progress learning');
+INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learner-centred teaching enables all learners to achieve', 'Evidence of learner achievement');
 INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learning environments ensure participation and engagement', 'Learning environment is positive and respectful');
 INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learning environments ensure participation and engagement', 'Instructions, explanations and expectations are clear');
 INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learning environments ensure participation and engagement', 'Learning environment is well organised');
@@ -40,9 +38,9 @@ INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Lear
 INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learning environments ensure participation and engagement', 'Good use of learning technologies');
 
 -- academic_observation.dbo.user_role
-INSERT INTO dbo.user_role VALUES(0, 0, 0, '00000065', 1)
-INSERT INTO dbo.user_role VALUES(1, 0, 0, '00000216', 0)
-INSERT INTO dbo.user_role VALUES(0, 1, 0, '00000332', 0)
-INSERT INTO dbo.user_role VALUES(0, 0, 1, '00000486', 0)
+INSERT INTO dbo.user_role VALUES(1, 1, 1, '00000065', 1);
+INSERT INTO dbo.user_role VALUES(1, 0, 0, '00000216', 0);
+INSERT INTO dbo.user_role VALUES(0, 1, 0, '00000332', 0);
+INSERT INTO dbo.user_role VALUES(0, 0, 1, '00000486', 0);
 
 update dbo.staff set username = 'ben' where dbo.staff.staff_id = '00000065';

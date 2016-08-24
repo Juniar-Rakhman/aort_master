@@ -131,7 +131,7 @@ class Container extends Component {
             }
         }
         else {
-            window.location = "/logout?no_access";
+            window.location = "/no_access";
         }
     }
     else {

@@ -29,7 +29,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .defaultSuccessUrl("/home")
                 .loginPage("/login")
                     .permitAll()
-                    .and()
+                .and()
                 .logout()
                     .logoutRequestMatcher(new AntPathRequestMatcher("/logout", "GET"))
                     .deleteCookies("JSESSIONID")
@@ -40,9 +40,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Configuration
     protected static class AuthenticationConfiguration extends GlobalAuthenticationConfigurerAdapter {
 
-        @Autowired
-        @Qualifier("myAuthPopulator")
-        LdapAuthoritiesPopulator authoritiesPopulator;
+//        @Autowired
+//        @Qualifier("myAuthPopulator")
+//        LdapAuthoritiesPopulator authoritiesPopulator;
 
         @Override
         public void init(AuthenticationManagerBuilder auth) throws Exception {
