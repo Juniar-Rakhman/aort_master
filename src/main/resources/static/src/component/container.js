@@ -111,20 +111,28 @@ class Container extends Component {
   }
 
   render() {
-    if(this.state.role != null) {
-        return (
-          <div className="main-content">
-            <Navigation
-              handlePageNav={this.handlePageNav}
-              role={this.state.role}
-              />
-            <div id="page-wrapper" className="gray-bg">
-              <Header />
-              {this.renderContent() }
-              {this.renderFooter() }
-            </div>
-          </div>
-        );
+    if(this.state.staff != null) {
+        if(this.state.staff.isEmployed) {
+            if(this.state.role != null) {
+                return (
+                  <div className="main-content">
+                    <Navigation
+                      handlePageNav={this.handlePageNav}
+                      role={this.state.role}
+                      staff={this.state.staff}
+                      />
+                    <div id="page-wrapper" className="gray-bg">
+                      <Header />
+                      {this.renderContent() }
+                      {this.renderFooter() }
+                    </div>
+                  </div>
+                );
+            }
+        }
+        else {
+            window.location = "/logout?no_access";
+        }
     }
     else {
         return <div>Loading...</div>

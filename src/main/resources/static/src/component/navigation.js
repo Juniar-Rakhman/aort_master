@@ -83,8 +83,8 @@ class Navigation extends Component {
             <li className="nav-header">
               <div className="dropdown profile-element">
                 <a data-toggle="dropdown" className="dropdown-toggle" href="#">
-                <span className="clear"> <span className="block m-t-xs"> <strong className="font-bold">John Connotr</strong>
-                 </span> <span className="text-muted text-xs block">Administrator <b className="caret"></b></span> </span> </a>
+                <span className="clear"> <span className="block m-t-xs"> <strong className="font-bold">{this.props.staff.firstName + ' ' + this.props.staff.lastName}</strong>
+                 </span> </span> </a>
                 <ul className="dropdown-menu animated fadeInRight m-t-xs">
                     <li><a href="#">Logout</a></li>
                 </ul>
