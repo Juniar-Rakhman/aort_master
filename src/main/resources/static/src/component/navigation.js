@@ -37,10 +37,11 @@ class Navigation extends Component {
           <li>
             <a href="#"><i className="fa fa-book"></i> <span className="nav-label">Observation Record</span> </a>
             <ul className="nav nav-second-level">
+              <li><a href="#" onClick={this.handleObservationSearch.bind(this)}>Data Search</a></li>
               <li><a href="#" onClick={this.handleEntry.bind(this)}>Data Entry</a></li>
             </ul>
           </li>
-        )
+        );
       }
       else if(role.general || role.qualityAssurance) {
         return(
@@ -50,7 +51,7 @@ class Navigation extends Component {
               <li><a href="#" onClick={this.handleObservationSearch.bind(this)}>Data Search</a></li>
             </ul>
           </li>
-        )
+        );
       }
       else if(role.systemAdmin) {
         var row = [];
@@ -62,7 +63,7 @@ class Navigation extends Component {
               <li><a href="#" onClick={this.handleUserRoleSearch.bind(this)}>Roles Management</a></li>
             </ul>
           </li>
-        )
+        );
         row.push(
           <li>
             <a href="#"><i className="fa fa-book"></i> <span className="nav-label">Observation Record</span> </a>
@@ -70,7 +71,8 @@ class Navigation extends Component {
               <li><a href="#" onClick={this.handleObservationSearch.bind(this)}>Data Search</a></li>
             </ul>
           </li>
-        )
+        );
+
         return row;
       }
   }
