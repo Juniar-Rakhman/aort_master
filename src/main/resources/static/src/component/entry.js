@@ -272,13 +272,14 @@ class ObserveHeader extends Component{
               </div>
             </div>
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">No of learniers at start</label>
+              <label className="col-sm-4 control-label">No of learners at start</label>
               <div className="col-sm-8">
                 <input
                     {...this.props.mode}
                     type="number"
                     min={0}
                     max={999}
+                    placeholder="Max value is 999"
                     className="form-control m-b"
                     value={this.state.startLearners}
                     onChange={this.handleNumLearnerAtStartChange.bind(this)}
@@ -611,7 +612,7 @@ class ObserveSumarry extends Component{
               </div>
             </div>
             <div className="col-sm-12">
-              <label className="col-sm-4 control-label">Sumarry Evaluation</label>
+              <label className="col-sm-4 control-label">Summary Evaluation</label>
               <div className="col-sm-8">
                 <textarea {...this.props.mode} type="text" className="form-control m-b"
                     maxLength={250}
