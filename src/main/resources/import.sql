@@ -44,3 +44,5 @@ INSERT INTO dbo.user_role VALUES(0, 0, 0, '00000065', 1)
 INSERT INTO dbo.user_role VALUES(1, 0, 0, '00000216', 0)
 INSERT INTO dbo.user_role VALUES(0, 1, 0, '00000332', 0)
 INSERT INTO dbo.user_role VALUES(0, 0, 1, '00000486', 0)
+
+update dbo.staff set username = 'ben' where dbo.staff.staff_id = '00000065';
