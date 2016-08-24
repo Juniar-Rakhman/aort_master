@@ -401,13 +401,13 @@ class ObserveEntryRow extends Component{
   }
 
   handleStrengthChange(e) {
-    var newState = Object.assign(this.state.categoryItem, {strength: e.target.value});
+    var newState = Object.assign(this.state.categoryItem, {strength: e.target.checked});
     this.setState({categoryItem: newState});
     this.props.updateObservation({strengthImprovements: this.updateStrengthImprovements(newState)});
   }
 
   handleImprovementChange(e) {
-    var newState = Object.assign(this.state.categoryItem, {improvement: e.target.value});
+    var newState = Object.assign(this.state.categoryItem, {improvement: e.target.checked});
     this.setState({categoryItem: newState});
     this.props.updateObservation({strengthImprovements: this.updateStrengthImprovements(newState)});
   }
@@ -450,27 +450,21 @@ class ObserveEntryRow extends Component{
             <div className="col-sm-3">
               <label className="col-sm-6 control-label">Strengths</label>
               <div className="col-sm-6">
-                <select {...this.props.mode}
-                  className="form-control m-b"
-                  value={this.state.categoryItem.strength || false}
-                  onChange={this.handleStrengthChange.bind(this)}
-                >
-                  <option value={true}>Yes</option>
-                  <option value={false}>No</option>
-                </select>
+                <input
+                  type="checkbox"
+                  checked={this.state.categoryItem.strength}
+                  onClick={this.handleStrengthChange.bind(this)}
+                />
               </div>
             </div>
             <div className="col-sm-3">
               <label className="col-sm-6 control-label">Improvement</label>
               <div className="col-sm-6">
-                <select {...this.props.mode}
-                  className="form-control m-b"
-                  value={this.state.categoryItem.improvement || false}
-                  onChange={this.handleImprovementChange.bind(this)}
-                >
-                  <option value={true}>Yes</option>
-                  <option value={false}>No</option>
-                </select>
+                <input
+                  type="checkbox"
+                  checked={this.state.categoryItem.improvement}
+                  onClick={this.handleImprovementChange.bind(this)}
+                />
               </div>
             </div>
             <div className="col-sm-6">
@@ -584,16 +578,18 @@ class ObserveSumarry extends Component{
     this.props.updateObservation(newState);
   }
 
-  populateRatingReferences(key){
-    var ratingRef='';
-    var rows = []
-    rows.push(<option value={''} selected>Please Select</option>);
+  componentDidMount() {
+    $('#rating').select2({placeholder: "Please Select"});
+    $('#rating').on('change', this.handleRatingReferenceIdChange.bind(this));
+  }
+
+  populateRating(){
+    var ratingValue='';
+    var rows = [];
+    var lastIndex = 0;
     this.props.ratingReferences.forEach(function(ratingReference){
-        if(ratingReference.id === key){
-            rows.push(<option value={ratingReference.id} selected>{ratingReference.rating}</option>);
-        }else{
-            rows.push(<option value={ratingReference.id}>{ratingReference.rating}</option>);
-        }
+      ratingValue = ratingReference.rating;
+      rows.push(<option value={ratingReference.id}>{ratingValue}</option>);
     })
     return rows
   }
@@ -606,8 +602,9 @@ class ObserveSumarry extends Component{
             <div className="col-sm-12">
               <label className="col-sm-4 control-label">Rating</label>
               <div className="col-sm-8">
-                <select className="form-control m-b" onChange={this.handleRatingReferenceIdChange.bind(this)} >
-                    {this.populateRatingReferences(this.state.ratingReferenceId)}
+                <select id="rating" className="form-control m-b" value={this.state.ratingReferenceId}>
+                  <option></option>
+                  {this.populateRating()}
                 </select>
               </div>
             </div>
@@ -663,8 +660,8 @@ class ObserveModerate extends Component{
   }
 
   handleModeratedChange(e){
-    var newState = Object.assign(this.state, {moderated: e.target.value});
-    this.setState({moderated: e.target.value})
+    var newState = Object.assign(this.state, {moderated: e.target.checked});
+    this.setState({moderated: e.target.checked})
     this.props.updateObservation(newState);
   }
 
@@ -718,10 +715,11 @@ class ObserveModerate extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Has been moderated</label>
               <div className="col-sm-8">
-                <select {...this.props.mode} className="form-control m-b" onChange={this.handleModeratedChange.bind(this)}>
-                  <option value={false}>No</option>
-                  <option value={true} >Yes</option>
-                </select>
+                <input
+                  type="checkbox"
+                  checked={this.state.moderated}
+                  onClick={this.handleModeratedChange.bind(this)}
+                />
               </div>
             </div>
             <div className="col-sm-6">
@@ -847,14 +845,13 @@ class Entry extends Component {
         contentType: "application/json",
         data: data,
         success: function(response) {
-           console.log(response); 
+           console.log(response);
+           this.props.redirectTo('entry');
         }.bind(this),
         error: function(xhr, status, err) {
             console.error(this.props.url, status, err.toString());
         }.bind(this)
      });
-    this.props.redirectTo('entry');
-
   }
   updateMethod(observation) {
     console.log('Updating data')
@@ -874,16 +871,14 @@ class Entry extends Component {
         contentType: "application/json",
         data: data,
         success: function(response) {
-           console.log(response)
+           console.log(response);
+           this.props.redirectTo('observationSearch');
         }.bind(this),
         error: function(xhr, status, err) {
             console.error(this.props.url, status, err.toString());
         }.bind(this)
      });
-
-    this.props.redirectTo('observationSearch');
   }
-
 
   render() {
     var mode = this.props.title === 'Create' ? 'Create':'Edit';
@@ -927,6 +922,7 @@ class Entry extends Component {
                   <ObserveModerate
                     mode={mode}
                     updateObservation={this.updateObservation}
+                    moderated={this.state.observationData.moderated}
                     learningCoachId={this.state.observationData.learningCoachId}
                     moderatorId={this.state.observationData.moderatorId}
                     hodId={this.state.observationData.hodId}

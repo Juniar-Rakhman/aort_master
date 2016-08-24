@@ -143,19 +143,23 @@ class ObserveEntryRow extends Component{
             <div className="col-sm-3">
               <label className="col-sm-6 control-label">Strengths</label>
               <div className="col-sm-6">
-                <select className="form-control m-b" value={this.props.strength ? "Yes" : "No"} disabled>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
+                <input
+                    className="form-control m-b"
+                    type="checkbox"
+                    checked={this.props.strength}
+                    disabled
+                />
               </div>
             </div>
             <div className="col-sm-3">
               <label className="col-sm-6 control-label">Improvement</label>
               <div className="col-sm-6">
-                <select className="form-control m-b" value={this.props.improvement ? "Yes" : "No"} disabled>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
+                <input
+                    className="form-control m-b"
+                    type="checkbox"
+                    checked={this.props.improvement}
+                    disabled
+                />
               </div>
             </div>
             <div className="col-sm-6">
@@ -278,10 +282,12 @@ class ObserveModerate extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Has been moderated</label>
               <div className="col-sm-8">
-                <select className="form-control m-b" value={this.props.observation.moderated ? "Yes" : "No"} disabled>
-                  <option>Yes</option>
-                  <option>No</option>
-                </select>
+                <input
+                    type="checkbox"
+                    className="form-control m-b"
+                    checked={this.props.observation.moderated}
+                    disabled
+                />
               </div>
             </div>
             <div className="col-sm-6">
