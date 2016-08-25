@@ -70,10 +70,15 @@ public class ObservationController {
     
     @RequestMapping(value = "/api/observations", method = RequestMethod.GET)
     public ResponseEntity<List<Observation>> observationFindAll() {
-
+        return new ResponseEntity<>(observationSearch(0,1000), HttpStatus.OK);
+    }
+    
+    public List<Observation> observationSearch(int page, int size) {
+        
+        Pageable pageRequest = new PageRequest(page, size);
         List<Observation> observationList = new ArrayList<>();
-                
-        for (Observation observation : observationRepo.findAll()) {
+
+        for (Observation observation : observationRepo.findAll(pageRequest)) {
             if (!observation.getStaffId().isEmpty()) {
                 observation.setStaffName(staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
             }
@@ -98,27 +103,8 @@ public class ObservationController {
             observationList.add(observation);
         }
 
-        return new ResponseEntity<>(observationList, HttpStatus.OK);
+        return observationList;
     }
-    
-////      TODO: USE PAGING!!!
-//    @RequestMapping(value = "/api/observations", method = RequestMethod.GET)
-//    public ResponseEntity<Page<Observation>> observationFindAll() {
-//
-//        Pageable pageRequest = new PageRequest(0, 10);
-//
-//        Page<Observation> observations = observationRepo.findAll(pageRequest);
-//
-//        for (Observation observation : observations) {
-//            observation.setStaffName(staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
-//            observation.setStaffName(staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
-//            observation.setStaffName(staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
-//            observation.setStaffName(staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
-//            observation.setStaffName(staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
-//        }
-//
-//        return new ResponseEntity<>(observations, HttpStatus.OK);
-//    }
     
     @RequestMapping(value = "/api/observations/{id}", method = RequestMethod.GET)
     public ResponseEntity<Observation> observations(@PathVariable("id") String obsId) {

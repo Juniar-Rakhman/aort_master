@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * Created by a9jr5626 on 8/12/16.
  */
@@ -23,10 +25,15 @@ public class StaffController {
     @Autowired
     PositionRepository positionRepo;
 
-//    @RequestMapping(value = "/api/staffs/{id}", method = RequestMethod.GET)
-//    public ResponseEntity<Staff> staffs(@PathVariable("id") String staffId) {
-//        Staff staff = staffRepo.findOne(staffId);
-//        staff.setPositions(positionRepo.findByStaff(staff));
-//        return new ResponseEntity<>(staff, HttpStatus.OK); 
-//    }
+    @RequestMapping(value = "/api/staffs", method = RequestMethod.GET)
+    public ResponseEntity<List<Staff>> staffFindAll() {
+        List<Staff> staffList = (List<Staff>) staffRepo.findAll();
+        return new ResponseEntity<>(staffList, HttpStatus.OK);
+    }
+    
+    @RequestMapping(value = "/api/staffs/{id}", method = RequestMethod.GET)
+    public ResponseEntity<Staff> staffFindOne(@PathVariable("id") String staffId) {
+        Staff staff = staffRepo.findOne(staffId);
+        return new ResponseEntity<>(staff, HttpStatus.OK);
+    }
 }
