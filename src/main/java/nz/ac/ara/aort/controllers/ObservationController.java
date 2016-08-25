@@ -72,6 +72,11 @@ public class ObservationController {
     public ResponseEntity<List<Observation>> observationFindAll() {
         return new ResponseEntity<>(observationSearch(0,1000), HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/api/observations?page={page}&size={size}", method = RequestMethod.GET)
+    public ResponseEntity<List<Observation>> observationFindAll(@PathVariable("page") int page,@PathVariable("size") int size) {
+        return new ResponseEntity<>(observationSearch(page,size), HttpStatus.OK);
+    }
     
     public List<Observation> observationSearch(int page, int size) {
         
