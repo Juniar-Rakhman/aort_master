@@ -158,6 +158,9 @@ public class Observation {
 	@Transient
 	private String hodName;
 
+	@Transient
+	private String access;
+	
 	public Observation(){
 	}
 

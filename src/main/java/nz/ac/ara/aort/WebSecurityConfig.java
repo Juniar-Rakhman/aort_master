@@ -52,7 +52,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                     .groupSearchBase("ou=groups")
                     .contextSource().ldif("classpath:test-server.ldif");
 //                    .and()
-//                    .ldapAuthoritiesPopulator(authoritiesPopulator);
+//                    .ldapAuthoritiesPopulator(authoritiesPopulator); 
 //          
 //          TODO: Use this in prod
 //          auth.ldapAuthentication()
