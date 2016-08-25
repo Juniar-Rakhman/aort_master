@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class ObserveHeader extends Component{
   constructor(props){
@@ -440,59 +440,55 @@ class ObserveEntryRow extends Component{
     return newStrengthImprovements;
   }
 
-
   render(){
     return(
-      <div className="ibox-content">
-        <div className="form-group">
-          <div className="form-group" style={{ paddingLeft: "25px" }}>{this.props.criteria}</div>
-          <div className="form-group">
-            <div className="col-sm-3">
-              <label className="col-sm-6 control-label">Strengths</label>
-              <div className="col-sm-6">
-                <input
+        <tr className={this.props.category}>
+            <td>
+                <ul>
+                    <li>{this.props.criteria}</li>
+                </ul>
+            </td>
+            <td align="center">
+                <input className="form-control m-b"
                   type="checkbox"
                   checked={this.state.categoryItem.strength}
                   onClick={this.handleStrengthChange.bind(this)}
                 />
-              </div>
-            </div>
-            <div className="col-sm-3">
-              <label className="col-sm-6 control-label">Improvement</label>
-              <div className="col-sm-6">
-                <input
+            </td>
+            <td align="center">
+                <input className="form-control m-b"
                   type="checkbox"
                   checked={this.state.categoryItem.improvement}
                   onClick={this.handleImprovementChange.bind(this)}
                 />
-              </div>
-            </div>
-            <div className="col-sm-6">
-              <label className="col-sm-2 control-label">Evidence</label>
-              <div className="col-sm-10">
-                <textarea {...this.props.mode} type="text"
+            </td>
+            <td>
+                <textArea {...this.props.mode} type="text"
                   maxLength={250}
                   placeholder="250 characters allowed"
                   className="form-control m-b"
                   value={this.state.categoryItem.evidence || ''}
                   onChange={this.handleEvidenceChange.bind(this)}
                 >
-                </textarea>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    )
+                </textArea>
+            </td>
+        </tr>
+    );
   }
 }
 
 class ObserveEntryCategory extends Component{
+  constructor(props){
+    super(props);
+  }
+
   render(){
     return(
-      <div className="ibox-title">
-        <h5>{this.props.category}</h5>
-      </div>
+      <tr>
+        <td colSpan="4">
+            <h5>{this.props.category}</h5>
+        </td>
+      </tr>
     )
   }
 }
@@ -536,14 +532,30 @@ class ObserveEntries extends Component{
     }, this)
 
     return(
-      <div className="ibox-content">
-        {rows}
-      </div>
-    )
+        <div className="ibox-content">
+          <div className="form-group">
+            <div className="form-group">
+              <table className="table table-striped table-bordered table-hover dataTables-example">
+                  <thead>
+                    <tr>
+                      <th>Criteria</th>
+                      <th>Strengths</th>
+                      <th>Areas for improvement</th>
+                      <th>Evidence</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rows}
+                  </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+    );
   }
 }
 
-class ObserveSumarry extends Component{
+class ObserveSummary extends Component{
   constructor(props){
     super(props);
     this.state = {
@@ -758,7 +770,6 @@ class ObserveModerate extends Component{
   }
 }
 
-
 class Entry extends Component {
   constructor(props){
     super(props)
@@ -771,7 +782,6 @@ class Entry extends Component {
 
     this.updateObservation = this.updateObservation.bind(this);
   }
-
 
   updateObservation(observation){
     var newObservation = Object.assign(this.state.observationData, observation)
@@ -835,6 +845,7 @@ class Entry extends Component {
       this.updateMethod(observation)
     }
   }
+
   createMethod(observation) {
     console.log('Creating data')
     var data = JSON.stringify(observation);
@@ -846,13 +857,14 @@ class Entry extends Component {
         data: data,
         success: function(response) {
            console.log(response);
-           this.props.redirectTo('entry');
+           this.props.redirectTo('observationSearch');
         }.bind(this),
         error: function(xhr, status, err) {
             console.error(this.props.url, status, err.toString());
         }.bind(this)
      });
   }
+
   updateMethod(observation) {
     console.log('Updating data')
 
@@ -910,7 +922,7 @@ class Entry extends Component {
                     updateObservation={this.updateObservation}
                   />
 
-                  <ObserveSumarry
+                  <ObserveSummary
                     mode={mode}
                     updateObservation={this.updateObservation}
                     ratingSummary={this.state.observationData.ratingSummary}
