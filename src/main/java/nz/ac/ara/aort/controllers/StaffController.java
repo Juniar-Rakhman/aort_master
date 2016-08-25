@@ -25,15 +25,10 @@ public class StaffController {
     @Autowired
     PositionRepository positionRepo;
 
-    @RequestMapping(value = "/api/staffs", method = RequestMethod.GET)
-    public ResponseEntity<List<Staff>> staffFindAll() {
-        List<Staff> staffList = (List<Staff>) staffRepo.findAll();
-        return new ResponseEntity<>(staffList, HttpStatus.OK);
-    }
-    
-    @RequestMapping(value = "/api/staffs/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Staff> staffFindOne(@PathVariable("id") String staffId) {
-        Staff staff = staffRepo.findOne(staffId);
-        return new ResponseEntity<>(staff, HttpStatus.OK);
-    }
+//    //TODO: Retrieve position   
+//    @RequestMapping(value = "/api/staffs/{id}", method = RequestMethod.GET)
+//    public ResponseEntity<Staff> staffFindOne(@PathVariable("id") String staffId) {
+//        Staff staff = staffRepo.findOne(staffId);
+//        return new ResponseEntity<>(staff, HttpStatus.OK);
+//    }
 }
