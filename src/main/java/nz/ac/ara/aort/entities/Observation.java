@@ -89,7 +89,7 @@ public class Observation {
 	private String additionalComments;
 
 	@Column(name = "course_code", columnDefinition = "nvarchar(20)")
-	private Integer courseCode;
+	private String courseCode;
 
 	@Column(name = "course_level")
 	private Integer courseLevel;
