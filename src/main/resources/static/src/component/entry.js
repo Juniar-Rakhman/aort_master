@@ -396,7 +396,7 @@ class ObserveEntryRow extends Component{
   constructor(props){
     super(props)
     this.state = {
-      categoryItem: props.categitem || {}
+      categoryItem: props.categoryItem || {}
     }
   }
 
@@ -480,13 +480,56 @@ class ObserveEntryRow extends Component{
 class ObserveEntryCategory extends Component{
   constructor(props){
     super(props);
+    this.state = {
+      expanded: this.props.categoryItem.expanded || false
+    }
+  }
+
+  expandOrCollapseObserveEntry() {
+    var newState = Object.assign(this.props.categoryItem, {expanded: !this.state.expanded});
+    this.setState({expanded: newState.expanded});
+    this.props.updateObservation({strengthImprovementReferences: this.updateCategoryItems(newState)});
+  }
+
+  updateCategoryItems(categoryItem) {
+    var newCategoryItems = Object.assign([], this.props.categoryItems);
+    var count = 1;
+
+    if (newCategoryItems.length > 0) {
+      newCategoryItems.forEach(function(item, index) {
+        if (item.category === categoryItem.category) {
+          newCategoryItems[index].expanded = categoryItem.expanded;
+        } else {
+          count++;
+        }
+      });
+    }else {
+      newCategoryItems.push(categoryItem)
+    }
+
+    if (count != newCategoryItems.length ) {
+      newCategoryItems.push(categoryItem)
+    }
+    return newCategoryItems;
   }
 
   render(){
+    var trStyle= {
+      cursor: 'pointer'
+    };
+    var h5Style= {
+        display: 'inline-block'
+    };
+    var iconStyle = {
+      marginLeft: "8px"
+    };
+    var iconClass = this.state.expanded ? "fa-chevron-up" : "fa-chevron-down";
+
     return(
-      <tr>
+      <tr style={trStyle} onClick={this.expandOrCollapseObserveEntry.bind(this)}>
         <td colSpan="4">
-            <h5>{this.props.category}</h5>
+            <h5 style={h5Style}>{this.props.categoryItem.category}</h5>
+            <i className={'fa ' + iconClass} style={iconStyle} aria-hidden="true"></i>
         </td>
       </tr>
     )
@@ -498,37 +541,44 @@ class ObserveEntries extends Component{
   render(){
     var rows = [];
     var lastCategory = null;
-    var found = {};
-    var temp = [];
-    //var listStrengthImprovements = this.props.strengthImprovements || this.props.categitems;
-    this.props.categitems.forEach(function(categitem, index){
-      if (categitem.category !== lastCategory){
-        rows.push(<ObserveEntryCategory category={categitem.category} key={categitem.category} />);
+    var currentCategoryExpanded = null;
+    this.props.categoryItems.forEach(function(categoryItem){
+      currentCategoryExpanded = categoryItem.expanded;
+      if (categoryItem.category !== lastCategory){
+        rows.push(<ObserveEntryCategory categoryItem={categoryItem}
+                                        key={categoryItem.category}
+                                        updateObservation={this.props.updateObservation}
+                                        categoryItems={this.props.categoryItems || []} />);
       }
 
-      this.props.strengthImprovements.forEach(function(item){
-        if (item.strengthImprovementReferenceId == categitem.id){
-          found = item;
-        } 
-      })
+      if(currentCategoryExpanded) {
+        var found = {};
+        this.props.strengthImprovements.forEach(function(item){
+            if (item.strengthImprovementReferenceId == categoryItem.id){
+              found = item;
+              return false;
+            }
+        });
 
-      var rowsdata = {
-        id: found.id || "",
-        strength:  found.strength || false,
-        improvement: found.improvement || false,
-        evidence: found.evidence || "",
-        strengthImprovementReferenceId: found.strengthImprovementReferenceId || categitem.id
-      };
+        var rowData = {
+            id: found.id || "",
+            strength:  found.strength || false,
+            improvement: found.improvement || false,
+            evidence: found.evidence || "",
+            strengthImprovementReferenceId: found.strengthImprovementReferenceId || categoryItem.id
+        };
 
-      rows.push(<ObserveEntryRow 
-                  categitem={rowsdata} 
-                  key={categitem.criteria} 
-                  criteria={categitem.criteria} 
-                  mode={this.props.mode} 
-                  updateObservation={this.props.updateObservation} 
+        rows.push(<ObserveEntryRow
+                  categoryItem={rowData}
+                  key={categoryItem.criteria}
+                  criteria={categoryItem.criteria}
+                  mode={this.props.mode}
+                  updateObservation={this.props.updateObservation}
                   strengthImprovements={this.props.strengthImprovements || []}
                 />);
-      lastCategory = categitem.category;
+      }
+
+      lastCategory = categoryItem.category;
     }, this);
 
     return(
@@ -950,7 +1000,7 @@ class ObserveRecommendations extends Component {
                     {this.state.recommendationRows}
                   </tbody>
               </table>
-              <button className="btn btn-primary" type="button" onClick={this.handleAddRecommendation.bind(this)} disabled={this.state.recommendationNum > 5 ? true : false}>Add Recommendation</button>
+              <button className="btn btn-primary" type="button" onClick={this.handleAddRecommendation.bind(this)} disabled={this.state.recommendationNum > 5}>Add Recommendation</button>
             </div>
           </div>
         </div>
@@ -972,7 +1022,7 @@ class Entry extends Component {
   }
 
   updateObservation(observation){
-    var newObservation = Object.assign(this.state.observationData, observation)
+    var newObservation = Object.assign(this.state.observationData, observation);
     this.setState({observationData: newObservation});
   }
 
@@ -1104,7 +1154,7 @@ class Entry extends Component {
                         staffs={this.state.staffs}
                       />
                       <ObserveEntries
-                        categitems={this.state.strengthImprovementReferences}
+                        categoryItems={this.state.strengthImprovementReferences}
                         strengthImprovements={this.state.observationData.strengthImprovements || []}
                         mode={mode}
                         updateObservation={this.updateObservation}

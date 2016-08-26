@@ -167,13 +167,57 @@ class ObserveEntryRow extends Component{
 class ObserveEntryCategory extends Component{
   constructor(props){
     super(props);
+    this.state = {
+      expanded: this.props.categoryItem.expanded || false
+    }
+  }
+
+  expandOrCollapseObserveEntry() {
+    var newState = Object.assign(this.props.categoryItem, {expanded: !this.state.expanded});
+    this.props.updateCategoryItems({strengthImprovementReferences: this.updateCategoryItems(newState)});
+    this.setState({expanded: newState.expanded});
+  }
+
+  updateCategoryItems(categoryItem) {
+    var newCategoryItems = Object.assign([], this.props.categoryItems);
+    var count = 1;
+
+    if (newCategoryItems.length > 0) {
+      newCategoryItems.forEach(function(item, index) {
+        if (item.category === categoryItem.category) {
+          newCategoryItems[index].expanded = categoryItem.expanded;
+        } else {
+          count++;
+        }
+      });
+    }else {
+      newCategoryItems.push(categoryItem);
+    }
+
+    if (count != newCategoryItems.length ) {
+      newCategoryItems.push(categoryItem)
+    }
+
+    return newCategoryItems;
   }
 
   render(){
+    var trStyle= {
+      cursor: 'pointer'
+    };
+    var h5Style= {
+        display: 'inline-block'
+    };
+    var iconStyle = {
+      marginLeft: "8px"
+    };
+    var iconClass = this.state.expanded ? "fa-chevron-up" : "fa-chevron-down";
+
     return(
-      <tr>
+      <tr style={trStyle} onClick={this.expandOrCollapseObserveEntry.bind(this)}>
         <td colSpan="4">
-            <h5>{this.props.category}</h5>
+            <h5 style={h5Style}>{this.props.categoryItem.category}</h5>
+            <i className={'fa ' + iconClass} style={iconStyle} aria-hidden="true"></i>
         </td>
       </tr>
     )
@@ -183,31 +227,54 @@ class ObserveEntryCategory extends Component{
 class ObserveEntries extends Component{
   constructor(props){
     super(props)
+    this.state = {
+      categoryItems: this.props.categoryItems || []
+    };
+
+    this.updateCategoryItems = this.updateCategoryItems.bind(this);
+  }
+
+  updateCategoryItems(items) {
+    this.setState({
+        categoryItems: Object.assign(this.state.categoryItems, items)
+    });
   }
 
   render(){
     var rows = [];
     var lastCategory = null;
-    this.props.categoryItems.forEach(function(categoryItem){
+    var currentCategoryExpanded = null;
+    this.state.categoryItems.forEach(function(categoryItem){
+      currentCategoryExpanded = categoryItem.expanded;
       if (categoryItem.category !== lastCategory){
-        rows.push(<ObserveEntryCategory category={categoryItem.category} key={categoryItem.category} />);
+        rows.push(<ObserveEntryCategory key={categoryItem.category}
+                                        categoryItem={categoryItem}
+                                        categoryItems={this.state.categoryItems}
+                                        updateCategoryItems={this.updateCategoryItems} />);
       }
 
-      var rowData = {
-        strength: false,
-        improvement: false,
-        evidence: ""
-      };
-      this.props.strengthImprovements.forEach(function(data){
+      if(currentCategoryExpanded) {
+        var rowData = {
+            strength: false,
+            improvement: false,
+            evidence: ""
+        };
+        this.props.strengthImprovements.forEach(function(data){
         if(data.strengthImprovementReference.id === categoryItem.id) {
           rowData.strength = data.strength;
           rowData.improvement = data.improvement;
           rowData.evidence = data.evidence;
           return false;
         }
-      });
+        });
 
-      rows.push(<ObserveEntryRow criteria={categoryItem.criteria} key={categoryItem.id} strength={rowData.strength} improvement={rowData.improvement} evidence={rowData.evidence} />);
+        rows.push(<ObserveEntryRow criteria={categoryItem.criteria}
+                                   key={categoryItem.id}
+                                   strength={rowData.strength}
+                                   improvement={rowData.improvement}
+                                   evidence={rowData.evidence} />);
+      }
+
       lastCategory = categoryItem.category;
     }, this);
 
@@ -469,7 +536,8 @@ class View extends Component {
                       <div className="ibox-content">
                         <form method="get" className="form-horizontal">
                           <ObserveHeader observation = {this.state.observation} />
-                          <ObserveEntries strengthImprovements = {this.state.observation.strengthImprovements || []} categoryItems = {this.state.strengthImprovementReferences}/>
+                          <ObserveEntries strengthImprovements = {this.state.observation.strengthImprovements || []}
+                                          categoryItems = {this.state.strengthImprovementReferences}/>
                           <ObserveSummary observation = {this.state.observation} />
                           <ObserveModerate observation = {this.state.observation} />
                           <ObserveRecommendations recommendations = {this.state.observation.observationRecommendations || []} />
