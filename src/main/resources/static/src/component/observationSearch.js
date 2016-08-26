@@ -61,7 +61,7 @@ class SearchBar extends Component {
 
     handleChange() {
         this.props.onUserInput(
-            this.refs.filterTextInput.value
+            this.refs.filterTextInput.value,
         )
     }
 

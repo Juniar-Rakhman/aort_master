@@ -529,7 +529,7 @@ class ObserveEntries extends Component{
                   strengthImprovements={this.props.strengthImprovements || []}
                 />);
       lastCategory = categitem.category;
-    }, this)
+    }, this);
 
     return(
         <div className="ibox-content">
@@ -699,9 +699,7 @@ class ObserveModerate extends Component{
     $('#moderator').select2({placeholder: "Please Select"});
     $('#moderator').on('change', this.handleModeratorIdChange.bind(this));
 
-    $('#coach').select2({
-        placeholder: "Please Select"}
-    );
+    $('#coach').select2({placeholder: "Please Select"});
     $('#coach').on('change', this.handleLearningCoachIdChange.bind(this));
 
     $('#hod').select2({placeholder: "Please Select"});
@@ -770,14 +768,204 @@ class ObserveModerate extends Component{
   }
 }
 
+class ObserveRecommendation extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+        recommendation: this.props.recommendation
+    };
+  }
+
+  handleFocusAreaChange(e) {
+    var newState = Object.assign(this.state.recommendation, {focusArea: e.target.value});
+    this.props.updateObservation({observationRecommendations: this.updateRecommendations(newState)});
+    this.setState({recommendation: newState});
+  }
+
+  handleStrengthChange(e) {
+    var newState = Object.assign(this.state.recommendation, {strength: e.target.checked});
+    this.props.updateObservation({observationRecommendations: this.updateRecommendations(newState)});
+    this.setState({recommendation: newState});
+  }
+
+  handleImprovementChange(e) {
+    var newState = Object.assign(this.state.recommendation, {improvement: e.target.checked});
+    this.props.updateObservation({observationRecommendations: this.updateRecommendations(newState)});
+    this.setState({recommendation: newState});
+  }
+
+  handleRecommendedActionChange(e) {
+    var newState = Object.assign(this.state.recommendation, {recommendedAction: e.target.value});
+    this.props.updateObservation({observationRecommendations: this.updateRecommendations(newState)});
+    this.setState({recommendation: newState});
+  }
+
+  updateRecommendations(recommendation) {
+    if(this.props.isNew) {
+      this.props.recommendations.push(recommendation);
+      this.props.isNew = false;
+    }
+    else {
+      Object.assign(this.props.recommendations, recommendation);
+    }
+
+    return this.props.recommendations;
+  }
+
+  populateFocusArea() {
+    var rows = [];
+    var lastCategory = null;
+    this.props.categoryItems.forEach(function(item){
+      if (item.category !== lastCategory){
+        rows.push(<option value={item.category}>{item.category}</option>);
+      }
+      lastCategory = item.category;
+    });
+    return rows;
+  }
+
+  componentDidMount() {
+    $('#focus-area-dropdown').select2({
+        placeholder: "Please Select",
+        width: 'element'
+    });
+    $('#focus-area-dropdown').on('change', this.handleFocusAreaChange.bind(this));
+  }
+
+  render() {
+    return (
+        <tr>
+            <td>
+                <select className="form-control m-b"
+                  onChange={this.handleFocusAreaChange.bind(this)}
+                  value={this.state.recommendation.focusArea}>
+                  <option></option>
+                  {this.populateFocusArea()}
+                </select>
+            </td>
+            <td align="center">
+                <input className="form-control m-b"
+                  type="checkbox"
+                  checked={this.state.recommendation.strength}
+                  onClick={this.handleStrengthChange.bind(this)}
+                />
+            </td>
+            <td align="center">
+                <input className="form-control m-b"
+                  type="checkbox"
+                  checked={this.state.recommendation.improvement}
+                  onClick={this.handleImprovementChange.bind(this)}
+                />
+            </td>
+            <td>
+                <textArea {...this.props.mode} type="text"
+                  maxLength={250}
+                  placeholder="250 characters allowed"
+                  className="form-control m-b"
+                  value={this.state.recommendation.recommendedAction}
+                  onChange={this.handleRecommendedActionChange.bind(this)}
+                >
+                </textArea>
+            </td>
+        </tr>
+    );
+  }
+}
+
+class ObserveRecommendations extends Component {
+  constructor(props){
+    super(props);
+    this.state = {
+        recommendations: this.props.recommendations || [],
+        recommendationRows: [],
+        recommendationNum: 0
+    };
+  }
+
+  handleAddRecommendation() {
+    var recommendation = {
+      focusArea: '',
+      improvement: false,
+      strength: false,
+      recommendedAction: ''
+    };
+    this.state.recommendationRows.push(<ObserveRecommendation isNew={true}
+                                                           updateObservation={this.props.updateObservation}
+                                                           recommendations={this.state.recommendations}
+                                                           recommendation={recommendation}
+                                                           categoryItems={this.props.categoryItems} />);
+    this.setState({
+        recommendationRows: this.state.recommendationRows,
+        recommendationNum: this.state.recommendationNum + 1
+    });
+  }
+
+  componentDidMount() {
+    var count = 0;
+    if(this.state.recommendations.length === 0) {
+      var recommendation = {
+        focusArea: '',
+        improvement: false,
+        strength: false,
+        recommendedAction: ''
+      };
+      this.state.recommendationRows.push(<ObserveRecommendation isNew={true}
+                                                               updateObservation={this.props.updateObservation}
+                                                               recommendations={this.state.recommendations}
+                                                               recommendation={recommendation}
+                                                               categoryItems={this.props.categoryItems} />);
+      count++;
+    }
+    else {
+      this.state.recommendations.forEach(function(recommendation){
+        this.state.recommendationRows.push(<ObserveRecommendation isNew={false}
+                                                                 updateObservation={this.props.updateObservation}
+                                                                 recommendations={this.state.recommendations}
+                                                                 recommendation={recommendation}
+                                                                 categoryItems={this.props.categoryItems} />);
+        count++;
+      }, this);
+    }
+    this.setState({
+        recommendationRows: this.state.recommendationRows,
+        recommendationNum: count
+    });
+  }
+
+  render() {
+    return (
+        <div className="ibox-content">
+          <div className="form-group">
+            <div className="form-group">
+              <table className="table table-striped table-bordered table-hover dataTables-example">
+                  <thead>
+                    <tr>
+                      <th>Focus Area</th>
+                      <th>Strength</th>
+                      <th>Improvement</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {this.state.recommendationRows}
+                  </tbody>
+              </table>
+              <button className="btn btn-primary" type="button" onClick={this.handleAddRecommendation.bind(this)} disabled={this.state.recommendationNum > 5 ? true : false}>Add Recommendation</button>
+            </div>
+          </div>
+        </div>
+    );
+  }
+}
+
 class Entry extends Component {
   constructor(props){
     super(props)
     this.state = {
       observationData: props.observation || {},
-      staffs:[],
-      ratingReferences:[],
-      strengthImprovementReferences:[]
+      staffs:null,
+      ratingReferences:null,
+      strengthImprovementReferences:null
     };
 
     this.updateObservation = this.updateObservation.bind(this);
@@ -897,74 +1085,81 @@ class Entry extends Component {
     var style = {
       paddingLeft: "55px"
     }
-    return (
-      <div className="wrapper wrapper-content animated fadeInRight">
-        <div className="row">
-          <div className="col-lg-12">
-            <div className="ibox float-e-margins">
-              <div className="ibox-title">
-                  <h5>Observation {this.props.title}</h5>
-              </div>
-              <div className="ibox-content">
-                <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
-                  <ObserveHeader
-                    observation={this.state.observationData}
-                    mode={mode}
-                    disabled='true'
-                    updateObservation={this.updateObservation}
-                    staffs={this.state.staffs}
-                  />
-
-                  <ObserveEntries
-                    categitems={this.state.strengthImprovementReferences}
-                    strengthImprovements={this.state.observationData.strengthImprovements || []}
-                    mode={mode}
-                    updateObservation={this.updateObservation}
-                  />
-
-                  <ObserveSummary
-                    mode={mode}
-                    updateObservation={this.updateObservation}
-                    ratingSummary={this.state.observationData.ratingSummary}
-                    strengthsShare={this.state.observationData.strengthsShare}
-                    additionalComments={this.state.observationData.additionalComments}
-                    ratingReferenceId={this.state.observationData.ratingReferenceId}
-                    ratingReferences={this.state.ratingReferences}
-                  />
-                  <ObserveModerate
-                    mode={mode}
-                    updateObservation={this.updateObservation}
-                    moderated={this.state.observationData.moderated}
-                    learningCoachId={this.state.observationData.learningCoachId}
-                    moderatorId={this.state.observationData.moderatorId}
-                    hodId={this.state.observationData.hodId}
-                    staffs={this.state.staffs}
-                  />
-
-                  <div className="ibox-content">
-                    <div className="form-group">
-                      <div className="col-sm-4 col-sm-offset-9">
-                        <button 
-                          {...this.props.mode} 
-                          className="btn btn-white" 
-                          type="submit">Cancel
-                        </button>
-                        <button 
-                          {...this.props.mode} 
-                          className="btn btn-primary" 
-                          type="submit"
-                          value="post">Save changes</button>
-                      </div>
-                    </div>
+    if(this.state.staffs != null && this.state.ratingReferences != null && this.state.strengthImprovementReferences != null) {
+        return (
+          <div className="wrapper wrapper-content animated fadeInRight">
+            <div className="row">
+              <div className="col-lg-12">
+                <div className="ibox float-e-margins">
+                  <div className="ibox-title">
+                      <h5>Observation {this.props.title}</h5>
                   </div>
+                  <div className="ibox-content">
+                    <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
+                      <ObserveHeader
+                        observation={this.state.observationData}
+                        mode={mode}
+                        disabled='true'
+                        updateObservation={this.updateObservation}
+                        staffs={this.state.staffs}
+                      />
+                      <ObserveEntries
+                        categitems={this.state.strengthImprovementReferences}
+                        strengthImprovements={this.state.observationData.strengthImprovements || []}
+                        mode={mode}
+                        updateObservation={this.updateObservation}
+                      />
+                      <ObserveSummary
+                        mode={mode}
+                        updateObservation={this.updateObservation}
+                        ratingSummary={this.state.observationData.ratingSummary}
+                        strengthsShare={this.state.observationData.strengthsShare}
+                        additionalComments={this.state.observationData.additionalComments}
+                        ratingReferenceId={this.state.observationData.ratingReferenceId}
+                        ratingReferences={this.state.ratingReferences}
+                      />
+                      <ObserveModerate
+                        mode={mode}
+                        updateObservation={this.updateObservation}
+                        moderated={this.state.observationData.moderated}
+                        learningCoachId={this.state.observationData.learningCoachId}
+                        moderatorId={this.state.observationData.moderatorId}
+                        hodId={this.state.observationData.hodId}
+                        staffs={this.state.staffs}
+                      />
+                      <ObserveRecommendations
+                        updateObservation={this.updateObservation}
+                        recommendations={this.state.observationData.observationRecommendations || []}
+                        categoryItems={this.state.strengthImprovementReferences}
+                      />
+                      <div className="ibox-content">
+                        <div className="form-group">
+                          <div className="col-sm-4 col-sm-offset-9">
+                            <button
+                              {...this.props.mode}
+                              className="btn btn-white"
+                              type="submit">Cancel
+                            </button>
+                            <button
+                              {...this.props.mode}
+                              className="btn btn-primary"
+                              type="submit"
+                              value="post">Save changes</button>
+                          </div>
+                        </div>
+                      </div>
 
-                </form>
+                    </form>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-    );
+        );
+    }
+    else {
+    return <div>Loading...</div>
+    }
   }
 }
 

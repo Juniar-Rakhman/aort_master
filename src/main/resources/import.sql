@@ -36,6 +36,17 @@ INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Lear
 INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learning environments ensure participation and engagement', 'Learning environment is well organised');
 INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learning environments ensure participation and engagement', 'Variety of interactive and independent activity');
 INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learning environments ensure participation and engagement', 'Good use of learning technologies');
+INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Cultural competence informs practice', 'Relationships are respectful ');
+INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Cultural competence informs practice', 'Teaching strategies are inclusive');
+INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Effective planning drives learner achievement', 'Teaching and learning plan has a clear structure');
+INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Effective planning drives learner achievement', 'Lesson flow, pace and level are appropriate');
+INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Effective planning drives learner achievement', 'In-class and self-directed learning activities are evident');
+INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Effective planning drives learner achievement', 'Activities make links to vocational/professional contexts');
+INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learners are well supported', 'Scaffolding and motivational techniques support progress');
+INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learners are well supported', 'Session relates to learning outcomes and to assessments');
+INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learners are well supported', 'Learning technologies and literacy/numeracy/academic literacies are evident');
+INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Feedback and assessment inform and improve student learning', 'In-class assessment and evaluation strategies are used to inform teaching');
+INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Feedback and assessment inform and improve student learning', 'Constructive feedback is given to learners');
 
 -- academic_observation.dbo.user_role
 INSERT INTO dbo.user_role VALUES(0, 1, 0, '00000065', 0);

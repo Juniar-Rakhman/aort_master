@@ -16,15 +16,14 @@ public class ObservationRecommendation {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.PERSIST)
-    @JoinColumn(name = "observation_id")
-    private Observation observation;
-
-    @Column(name = "focus_area", columnDefinition = "nvarchar(50)")
+    @Column(name = "focus_area", columnDefinition = "nvarchar(100)")
     private String focusArea;
 
-    @Column(name = "improve_or_strength")
-    private Boolean improveOrStrength;
+    @Column(name = "improvement")
+    private Boolean improvement;
+
+    @Column(name = "strength")
+    private Boolean strength;
 
     @Column(name = "recommended_action", columnDefinition = "nvarchar(250)")
     private String recommendedAction;
