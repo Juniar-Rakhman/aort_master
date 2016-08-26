@@ -140,9 +140,13 @@ public class Observation {
 	@Transient
 	private String learningCoachName;
 
-	@OneToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "observation_id")
 	private List<StrengthImprovement> strengthImprovements;
+
+	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "observation_id")
+	private List<ObservationRecommendation> observationRecommendations;
 
 	@Column(name = "line_manager", columnDefinition = "nvarchar(50)")
 	private String lineManagerId;

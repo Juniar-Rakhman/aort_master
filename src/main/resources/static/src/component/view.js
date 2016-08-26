@@ -188,29 +188,28 @@ class ObserveEntries extends Component{
   render(){
     var rows = [];
     var lastCategory = null;
-    var data = this.props.data;
-    this.props.categitems.forEach(function(categitem){
-      if (categitem.category !== lastCategory){
-        rows.push(<ObserveEntryCategory category={categitem.category} key={categitem.category} />);
+    this.props.categoryItems.forEach(function(categoryItem){
+      if (categoryItem.category !== lastCategory){
+        rows.push(<ObserveEntryCategory category={categoryItem.category} key={categoryItem.category} />);
       }
 
-      var rowsdata = {
-        strength: "",
-        improvement: "",
+      var rowData = {
+        strength: false,
+        improvement: false,
         evidence: ""
       };
-      data.forEach(function(data){
-        if(data.strengthImprovementReference.id === categitem.id) {
-          rowsdata.strength = data.strength;
-          rowsdata.improvement = data.improvement;
-          rowsdata.evidence = data.evidence;
+      this.props.strengthImprovements.forEach(function(data){
+        if(data.strengthImprovementReference.id === categoryItem.id) {
+          rowData.strength = data.strength;
+          rowData.improvement = data.improvement;
+          rowData.evidence = data.evidence;
           return false;
         }
       });
 
-      rows.push(<ObserveEntryRow criteria={categitem.criteria} key={categitem.id} strength={rowsdata.strength} improvement={rowsdata.improvement} evidence={rowsdata.evidence} />);
-      lastCategory = categitem.category;
-    });
+      rows.push(<ObserveEntryRow criteria={categoryItem.criteria} key={categoryItem.id} strength={rowData.strength} improvement={rowData.improvement} evidence={rowData.evidence} />);
+      lastCategory = categoryItem.category;
+    }, this);
 
     return(
       <div className="ibox-content">
@@ -319,13 +318,102 @@ class ObserveModerate extends Component{
   }
 }
 
+class ObserveRecommendation extends Component {
+  constructor(props){
+    super(props);
+  }
+
+  render() {
+    return (
+        <tr>
+            <td>
+                <input className="form-control m-b"
+                  type="text"
+                  value={this.props.recommendation.focusArea}
+                  disabled
+                />
+            </td>
+            <td align="center">
+                <input className="form-control m-b"
+                  type="checkbox"
+                  checked={this.props.recommendation.strength}
+                  disabled
+                />
+            </td>
+            <td align="center">
+                <input className="form-control m-b"
+                  type="checkbox"
+                  checked={this.props.recommendation.improvement}
+                  disabled
+                />
+            </td>
+            <td>
+                <textArea type="text"
+                  maxLength={250}
+                  placeholder="250 characters allowed"
+                  className="form-control m-b"
+                  value={this.props.recommendation.recommendedAction}
+                  disabled
+                >
+                </textArea>
+            </td>
+        </tr>
+    );
+  }
+}
+
+class ObserveRecommendations extends Component {
+  constructor(props){
+    super(props);
+  }
+
+  render() {
+    var rows = [];
+    if(this.props.recommendations.length === 0) {
+      var recommendation = {
+        focusArea: '',
+        improvement: false,
+        strength: false,
+        recommendedAction: ''
+      };
+      rows.push(<ObserveRecommendation recommendation={recommendation} />);
+    }
+    else {
+      this.props.recommendations.forEach(function(recommendation){
+        rows.push(<ObserveRecommendation recommendation={recommendation} />);
+      });
+    }
+
+    return (
+        <div className="ibox-content">
+          <div className="form-group">
+            <div className="form-group">
+              <table className="table table-striped table-bordered table-hover dataTables-example">
+                  <thead>
+                    <tr>
+                      <th>Focus Area</th>
+                      <th>Strength</th>
+                      <th>Improvement</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {rows}
+                  </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+    );
+  }
+}
+
 class View extends Component {
   constructor(props){
     super(props);
     this.state = {
         observation: null,
-        strengthImprovementReferences: [],
-        ratingReferences: []
+        strengthImprovementReferences: null
     };
   }
 
@@ -365,7 +453,7 @@ class View extends Component {
       paddingLeft: "55px"
     }
 
-    if (this.state.observation != null){
+    if (this.state.observation != null && this.state.strengthImprovementReferences != null){
         return (
               <div className="wrapper wrapper-content animated fadeInRight">
                 <div className="row">
@@ -377,9 +465,10 @@ class View extends Component {
                       <div className="ibox-content">
                         <form method="get" className="form-horizontal">
                           <ObserveHeader observation = {this.state.observation} />
-                          <ObserveEntries data = {this.state.observation.strengthImprovements} categitems = {this.state.strengthImprovementReferences}/>
+                          <ObserveEntries strengthImprovements = {this.state.observation.strengthImprovements || []} categoryItems = {this.state.strengthImprovementReferences}/>
                           <ObserveSummary observation = {this.state.observation} />
                           <ObserveModerate observation = {this.state.observation} />
+                          <ObserveRecommendations recommendations = {this.state.observation.observationRecommendations || []} />
                         </form>
                       </div>
                     </div>

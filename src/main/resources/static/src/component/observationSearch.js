@@ -16,7 +16,7 @@ class ObservationRow extends Component {
     displayAction(){
         if (this.props.role.qualityAssurance){
             return(
-                <td><button onClick={this.handleObservationEdit.bind(this)}>Edit</button></td>
+                <td><button className="btn btn-primary" onClick={this.handleObservationEdit.bind(this)}>Edit</button></td>
             );
         }
     }
