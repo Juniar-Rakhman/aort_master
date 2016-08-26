@@ -197,6 +197,6 @@ public class ObservationController {
             strengthImprovement.setStrengthImprovementReference(strImpRefRepo.findOne(Long.valueOf(strengthImprovement.getStrengthImprovementReferenceId())));
         }
 
-        return null;
+        return observation;
     }
 }
