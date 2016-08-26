@@ -6,21 +6,9 @@ class ObservationRow extends Component {
     }
     
     handleObservationView() {
-        this.props.redirectTo('view', this.props.observation.id);
+        this.props.redirectTo('view', this.props.observation.id, this.props.observation.staffId);
     }
-
-    handleObservationEdit(){
-        this.props.redirectTo('edit', this.props.observation);
-    }
-
-    displayAction(){
-        if (this.props.role.qualityAssurance){
-            return(
-                <td><button onClick={this.handleObservationEdit.bind(this)}>Edit</button></td>
-            );
-        }
-    }
-
+    
     render() {
         return (
             <tr className="gradeX">
@@ -29,7 +17,6 @@ class ObservationRow extends Component {
                 <td>{this.props.observation.courseLevel}</td>
                 <td>{this.props.observation.programme}</td>
                 <td>{this.props.observation.programmeLevel}</td>
-                {this.displayAction()}
             </tr>
         );
     }
@@ -39,15 +26,7 @@ class ObservationTable extends Component {
     constructor(props){
         super(props);
     }
-
-    displayAction(){
-        if (this.props.role.qualityAssurance){
-            return(
-                <th>Action</th>
-            );
-        }
-    }
-
+    
     render() {
         var rows = [];
         this.props.observations.forEach(function (observation) {
@@ -66,7 +45,6 @@ class ObservationTable extends Component {
                         <th>Course Level</th>
                         <th>Programme</th>
                         <th>Programme Level</th>
-                        {this.displayAction()}
                     </tr>
                 </thead>
                 <tbody>{rows}</tbody>
@@ -83,7 +61,7 @@ class SearchBar extends Component {
 
     handleChange() {
         this.props.onUserInput(
-            this.refs.filterTextInput.value,
+            this.refs.filterTextInput.value
         )
     }
 

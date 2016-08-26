@@ -8,14 +8,12 @@ import nz.ac.ara.aort.entities.master.Staff;
 import nz.ac.ara.aort.repositories.*;
 import nz.ac.ara.aort.repositories.master.StaffRepository;
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
@@ -131,7 +129,7 @@ public class ObservationController {
         Observation observation = observationRepo.findOne(Long.valueOf(obsId));
 
         //validation
-        if (!StringUtils.isEmpty(staffId)) {
+        if (!StringUtils.isBlank(staffId)) {
 
             UserRole userRole = userRoleRepo.findByStaffId(staffId);
 
@@ -141,15 +139,15 @@ public class ObservationController {
 
             if (observation.getObserverPrimaryId().equals(staffId)
                     || observation.getObserverSecondaryId().equals(staffId)) {
-                observation.setAccess("all");
+                observation.setAccess("edit");
             }
 
             if (BooleanUtils.isTrue(userRole.getQualityAssurance())) {
-                observation.setAccess("all");
+                observation.setAccess("edit");
             }
 
             if (BooleanUtils.isTrue(userRole.getSystemAdmin())) {
-                observation.setAccess("all");
+                observation.setAccess("edit");
             }
         }
 

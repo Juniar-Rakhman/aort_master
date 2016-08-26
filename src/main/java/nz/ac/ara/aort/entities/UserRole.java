@@ -33,7 +33,7 @@ public class UserRole {
 	@Column(name = "quality_assurance")
 	public Boolean qualityAssurance;
 
-	@Column(name = "staff_id", columnDefinition = "nvarchar(50)")
+	@Column(name = "staff_id", columnDefinition = "nvarchar(50)", unique = true)
 	private String staffId;
 	@Transient
 	public Staff staff;

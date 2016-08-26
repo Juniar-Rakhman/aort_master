@@ -38,9 +38,14 @@ INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Lear
 INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Learning environments ensure participation and engagement', 'Good use of learning technologies');
 
 -- academic_observation.dbo.user_role
-INSERT INTO dbo.user_role VALUES(1, 1, 1, '00000065', 1);
-INSERT INTO dbo.user_role VALUES(1, 0, 0, '00000216', 0);
+INSERT INTO dbo.user_role VALUES(0, 1, 0, '00000065', 0);
+INSERT INTO dbo.user_role VALUES(1, 0, 0, '00000216', 1);
 INSERT INTO dbo.user_role VALUES(0, 1, 0, '00000332', 0);
 INSERT INTO dbo.user_role VALUES(0, 0, 1, '00000486', 0);
 
-update dbo.staff set username = 'ben' where dbo.staff.staff_id = '00000065';
+INSERT INTO aort_test.dbo.observation VALUES ('testestsetst', null, 1, 'test', 1, null, '2016-08-26', 'test', '00000065', 2, '00000065', null, null, '00000065', 'test', 1, '00000065', 'testsetstset', '00000065', '00000065', 'estsetsetse', 1, '2', 'testetsetse', 2, 'testset', '00000065', 1, '03:45:38.0000000', 1);
+
+
+update academic_observation.dbo.staff set username = 'ben' where staff_id = '00000065';
+update academic_observation.dbo.staff set username = 'bob' where staff_id = '00000486';
+

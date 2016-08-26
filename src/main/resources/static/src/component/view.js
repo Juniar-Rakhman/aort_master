@@ -332,9 +332,13 @@ class View extends Component {
   getDataObservation() {
       $.ajax({
           type: 'GET',
-          url: "/api/observations/" + this.props.observationId,
+        url: "/api/observations/" + this.props.observationId + "/" + this.props.staff.id,
           success: function(response) {
+            if (response.access === 'edit') {
+              this.props.redirectTo('edit', response);
+            } else {
               this.setState({observation: response});
+            }
           }.bind(this),
           error: function(xhr, status, err) {
               console.error(this.props.url, status, err.toString());
@@ -363,7 +367,7 @@ class View extends Component {
   render() {
     var style = {
       paddingLeft: "55px"
-    }
+    };
 
     if (this.state.observation != null){
         return (

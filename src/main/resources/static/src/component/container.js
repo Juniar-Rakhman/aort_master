@@ -86,9 +86,9 @@ class Container extends Component {
     } else if (this.state.page === 'staffSearch') {
       content = <StaffSearch />
     } else if (this.state.page === 'observationSearch') {
-      content = <ObservationSearch redirectTo={this.handlePageNav} role={this.state.role}/>
+      content = <ObservationSearch redirectTo={this.handlePageNav}/>
     } else if (this.state.page === 'view') {
-      content = <View title='View' observationId = {this.state.data} />
+      content = <View title='View' observationId = {this.state.data} staff = {this.state.staff} redirectTo={this.handlePageNav}/>
     } else if (this.state.page === 'userRoleSearch') {
       content = <UserRoleSearch redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'viewUserRole') {
