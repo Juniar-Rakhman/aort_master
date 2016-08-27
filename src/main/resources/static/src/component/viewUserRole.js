@@ -108,25 +108,24 @@ class UserRoleForm extends Component {
     	return (
             <div className="ibox-content">
                 <div className="ibox-content">
-                    <div className="form-group">
+                    <div className="form-group m-b">
                         <div className="form-group">
-                            <div className="col-sm-12">
+                            <div className="col-sm-12  m-b">
                                 <label className="col-sm-4 control-label">Name</label>
                                 <div className="col-sm-8">
                                     <input type="text" className="form-control m-b" value={this.props.userRole.staff.firstName + ' ' + this.props.userRole.staff.lastName} disabled />
                                 </div>
                             </div>
                         </div>
-
-                        <div className="form-group">
-                            <div className="col-sm-12">
-                                <label className="col-sm-4 control-label">Role</label>
-                                <div className="col-sm-8">
-                                    <input type="radio" name="role" value="general" checked={this.state.general} onChange={this.handleChange.bind(this)} /> General<br /><br />
-                                    <input type="radio" name="role" value="addObservation" checked={this.state.addObservation} onChange={this.handleChange.bind(this)} />  Add Observation<br /><br />
-                                    <input type="radio" name="role" value="systemAdmin" checked={this.state.systemAdmin} onChange={this.handleChange.bind(this)} /> System Administration<br /><br />
-                                    <input type="radio" name="role" value="qualityAssurance" checked={this.state.qualityAssurance} onChange={this.handleChange.bind(this)} /> Quality Assurance
-                                </div>
+                    </div>
+                    <div className="form-group">
+                        <div className="col-sm-12  m-b">
+                            <label className="col-sm-4 control-label">Role</label>
+                            <div className="col-sm-8">
+                                <input type="radio" name="role" value="general" checked={this.state.general} onChange={this.handleChange.bind(this)} /> General<br />
+                                <input type="radio" name="role" value="addObservation" checked={this.state.addObservation} onChange={this.handleChange.bind(this)} />  Add Observation<br />
+                                <input type="radio" name="role" value="systemAdmin" checked={this.state.systemAdmin} onChange={this.handleChange.bind(this)} /> System Administration<br />
+                                <input type="radio" name="role" value="qualityAssurance" checked={this.state.qualityAssurance} onChange={this.handleChange.bind(this)} /> Quality Assurance
                             </div>
                         </div>
                     </div>
@@ -134,7 +133,7 @@ class UserRoleForm extends Component {
                 <div className="ibox-content">
                     <div className="form-group">
                       <div className="col-sm-4 col-sm-offset-9">
-                        <button className="btn btn-white" onClick={this.handleBack.bind(this)}>Cancel</button>
+                        <button className="btn btn-white" onClick={this.handleBack.bind(this)}>Cancel</button>&nbsp;
                         <button className="btn btn-primary" onClick={this.handleSubmit.bind(this)}>Save changes</button>
                       </div>
                     </div>
@@ -152,7 +151,7 @@ class ViewUserRole extends Component {
 
 	render() {
 		return (
-			<div className="wrapper wrapper-content animated fadeInRight">
+			<div className="wrapper-content animated fadeInRight">
 		        <div className="row">
 		          <div className="col-lg-12">
 		            <div className="ibox float-e-margins">

@@ -19,7 +19,12 @@ class ObserveHeader extends Component{
         location: props.observation.location || '',
         department: props.observation.department || '',
         sessionContext: props.observation.sessionContext || '',
-        notes: props.observation.notes || ''
+        notes: props.observation.notes || '',
+        courseCode: props.observation.courseCode || '',
+        lessonPlan: props.observation.lessonPlan || '',
+        courseOutline: props.observation.courseOutline || '',
+        lessonPlanComment: props.observation.lessonPlanComment || '',
+        courseOutlineComment: props.observation.courseOutlineComment || ''
     }
     console.log('ObserveHeader mode: '+ this.props.mode);
   }
@@ -45,6 +50,12 @@ class ObserveHeader extends Component{
   handleSecondObserverNameChange(e){
     var newState = Object.assign(this.state, {observerSecondaryId: e.target.value});
     this.setState({observerSecondaryId: e.target.value})
+    this.props.updateObservation(newState);
+  }
+
+  handleCourseCodeChange(e){
+    var newState = Object.assign(this.state, {courseCode: e.target.value});
+    this.setState({courseCode: e.target.value})
     this.props.updateObservation(newState);
   }
 
@@ -120,6 +131,29 @@ class ObserveHeader extends Component{
     this.props.updateObservation(newState);
   }
 
+  handleLessonPlanChange(e){
+    var newState = Object.assign(this.state, {lessonPlan: e.target.checked});
+    this.setState({lessonPlan: e.target.checked})
+    this.props.updateObservation(newState);
+  }
+
+  handleLessonPlanCommentChange(e){
+    var newState = Object.assign(this.state, {lessonPlanComment: e.target.value});
+    this.setState({lessonPlanComment: e.target.value})
+    this.props.updateObservation(newState);
+  }
+
+  handleCourseOutlineChange(e){
+    var newState = Object.assign(this.state, {courseOutline: e.target.checked});
+    this.setState({courseOutline: e.target.checked})
+    this.props.updateObservation(newState);
+  }
+
+  handleCourseOutlineCommentChange(e){
+    var newState = Object.assign(this.state, {courseOutlineComment: e.target.value});
+    this.setState({courseOutlineComment: e.target.value})
+    this.props.updateObservation(newState);
+  }
   componentDidMount() {
     $('#teacher').select2({placeholder: "Please Select"});
     $('#teacher').on('change', this.handleTeacherNameChange.bind(this));
@@ -149,12 +183,13 @@ class ObserveHeader extends Component{
     return(
       <div className="ibox-content">
         <div className="form-group">
-          <div className="form-group">
+
+            <div className="row m-b">
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Teacher's Name</label>
               <div className="col-sm-8">
                 <select id="teacher" className="form-control m-b" value={this.state.staffId}>
-                  <option></option>
+                    <option></option>
                   {this.populateStaff2()}
                 </select>
               </div>
@@ -168,9 +203,9 @@ class ObserveHeader extends Component{
                 </select>
               </div>
             </div>
-          </div>
+            </div>
 
-          <div className="form-group">
+            <div className="row">
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Primary Observer's Name</label>
               <div className="col-sm-8">
@@ -191,23 +226,23 @@ class ObserveHeader extends Component{
             </div>
           </div>
 
-          <div className="form-group">
+            <div className="row">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Course </label>
+              <label className="col-sm-4 control-label">Course Code</label>
               <div className="col-sm-8">
                 <input
                     {...this.props.mode}
                     type="text"
-                    placeholder="100 characters allowed"
-                    maxLength={100}
+                    placeholder="20 characters allowed"
+                    maxLength={20}
                     className="form-control m-b"
-                    value={this.state.courseName}
-                    onChange={this.handleCourseChange.bind(this)}
+                    value={this.state.courseCode}
+                    onChange={this.handleCourseCodeChange.bind(this)}
                 />
               </div>
             </div>
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Programme</label>
+              <label className="col-sm-4 control-label">Programme/ Qualification</label>
               <div className="col-sm-8">
                 <input
                     {...this.props.mode}
@@ -220,21 +255,20 @@ class ObserveHeader extends Component{
                 />
               </div>
             </div>
-          </div>
+            </div>
 
-          <div className="form-group">
+            <div className="row">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Course Level </label>
+              <label className="col-sm-4 control-label">Course Title</label>
               <div className="col-sm-8">
                 <input
                     {...this.props.mode}
-                    type="number"
-                    min={0}
-                    max={99}
-                    placeholder="Max value is 99"
+                    type="text"
+                    placeholder="100 characters allowed"
+                    maxLength={100}
                     className="form-control m-b"
-                    value={this.state.courseLevel}
-                    onChange={this.handleCourseLevelChange.bind(this)}
+                    value={this.state.courseName}
+                    onChange={this.handleCourseChange.bind(this)}
                 />
               </div>
             </div>
@@ -252,10 +286,27 @@ class ObserveHeader extends Component{
                     onChange={this.handleProgrammeLevelChange.bind(this)}
                 />
               </div>
-            </div>
-          </div>
 
-          <div className="form-group">
+            </div>
+            </div>
+
+
+            <div className="row">
+            <div className="col-sm-6">
+              <label className="col-sm-4 control-label">Course Level </label>
+              <div className="col-sm-8">
+                <input
+                    {...this.props.mode}
+                    type="number"
+                    min={0}
+                    max={99}
+                    placeholder="Max value is 99"
+                    className="form-control m-b"
+                    value={this.state.courseLevel}
+                    onChange={this.handleCourseLevelChange.bind(this)}
+                />
+              </div>
+            </div>
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">No of learners on register</label>
               <div className="col-sm-8">
@@ -268,6 +319,25 @@ class ObserveHeader extends Component{
                     className="form-control m-b"
                     value={this.state.registeredLearners}
                     onChange={this.handleNumLearnerOnRegisterChange.bind(this)}
+                />
+              </div>
+            </div>
+            </div>
+
+
+            <div className="row">
+            <div className="col-sm-6">
+              <label className="col-sm-4 control-label">No of learners late</label>
+              <div className="col-sm-8">
+                <input
+                    {...this.props.mode}
+                    type="number"
+                    min={0}
+                    max={999}
+                    placeholder="Max value is 999"
+                    className="form-control m-b"
+                    value={this.state.lateLearners}
+                    onChange={this.handleNumLearnerLateChange.bind(this)}
                 />
               </div>
             </div>
@@ -286,24 +356,10 @@ class ObserveHeader extends Component{
                 />
               </div>
             </div>
-          </div>
-
-          <div className="form-group">
-            <div className="col-sm-6">
-              <label className="col-sm-4 control-label">No of learners late</label>
-              <div className="col-sm-8">
-                <input
-                    {...this.props.mode}
-                    type="number"
-                    min={0}
-                    max={999}
-                    placeholder="Max value is 999"
-                    className="form-control m-b"
-                    value={this.state.lateLearners}
-                    onChange={this.handleNumLearnerLateChange.bind(this)}
-                />
-              </div>
             </div>
+
+
+            <div className="row">
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Total no. of learners in session</label>
               <div className="col-sm-8">
@@ -316,23 +372,6 @@ class ObserveHeader extends Component{
                     className="form-control m-b"
                     value={this.state.totalLearners}
                     onChange={this.handleTotalLearnerChange.bind(this)}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="form-group">
-            <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Campus Location</label>
-              <div className="col-sm-8">
-                <input
-                    {...this.props.mode}
-                    type="text"
-                    placeholder="50 characters allowed"
-                    maxLength={50}
-                    className="form-control m-b"
-                    value={this.state.location}
-                    onChange={this.handleCampusChange.bind(this)}
                 />
               </div>
             </div>
@@ -350,9 +389,26 @@ class ObserveHeader extends Component{
                 />
               </div>
             </div>
-          </div>
-          
-          <div className="form-group">
+            </div>
+
+            <div className="row m-b">
+            <div className="col-sm-6">
+              <label className="col-sm-4 control-label">Campus Location</label>
+              <div className="col-sm-8">
+                <input
+                    {...this.props.mode}
+                    type="text"
+                    placeholder="50 characters allowed"
+                    maxLength={50}
+                    className="form-control m-b"
+                    value={this.state.location}
+                    onChange={this.handleCampusChange.bind(this)}
+                />
+              </div>
+            </div>
+            </div>
+
+            <div className="row">
             <div className="col-sm-12">
               <label className="col-sm-4 control-label">Context of Session (include stage in programme)</label>
               <div className="col-sm-8">
@@ -369,7 +425,7 @@ class ObserveHeader extends Component{
             </div>
           </div>
 
-          <div className="form-group">
+            <div className="row">
             <div className="col-sm-12">
               <label className="col-sm-4 control-label">Observation Notes</label>
               <div className="col-sm-8">
@@ -386,6 +442,59 @@ class ObserveHeader extends Component{
             </div>
           </div>
 
+            <div className="row m-b">
+            <div className="col-sm-3">
+              <label className="col-sm-8 control-label">Lesson Plan</label>
+              <div className="col-sm-4">
+                <input
+                  type="checkbox"
+                  checked={this.state.lessonPlan}
+                  onClick={this.handleLessonPlanChange.bind(this)}
+                />
+              </div>
+            </div>
+            <div className="col-sm-9">
+              <label className="col-sm-2 control-label">Comments</label>
+              <div className="col-sm-10">
+                <textarea
+                    {...this.props.mode}
+                    type="text"
+                    maxLength={250}
+                    placeholder="250 characters allowed"
+                    className="form-control"
+                    value={this.state.lessonPlanComment}
+                    onChange={this.handleLessonPlanCommentChange.bind(this)}
+                />
+              </div>
+            </div>
+            </div>
+
+            <div className="row">
+            <div className="col-sm-3">
+              <label className="col-sm-8 control-label">Course Outline</label>
+              <div className="col-sm-4">
+                <input
+                  type="checkbox"
+                  checked={this.state.courseOutline}
+                  onClick={this.handleCourseOutlineChange.bind(this)}
+                />
+              </div>
+            </div>
+            <div className="col-sm-9">
+              <label className="col-sm-2 control-label">Comments</label>
+              <div className="col-sm-10">
+                <textarea
+                    {...this.props.mode}
+                    type="text"
+                    maxLength={250}
+                    placeholder="250 characters allowed"
+                    className="form-control"
+                    value={this.state.courseOutlineComment}
+                    onChange={this.handleCourseOutlineCommentChange.bind(this)}
+                />
+              </div>
+            </div>
+            </div>
         </div>
       </div>
     )
@@ -449,14 +558,14 @@ class ObserveEntryRow extends Component{
                 </ul>
             </td>
             <td align="center">
-                <input className="form-control m-b"
+                <input className="form-control"
                   type="checkbox"
                   checked={this.state.categoryItem.strength}
                   onClick={this.handleStrengthChange.bind(this)}
                 />
             </td>
             <td align="center">
-                <input className="form-control m-b"
+                <input className="form-control"
                   type="checkbox"
                   checked={this.state.categoryItem.improvement}
                   onClick={this.handleImprovementChange.bind(this)}
@@ -466,7 +575,7 @@ class ObserveEntryRow extends Component{
                 <textArea {...this.props.mode} type="text"
                   maxLength={250}
                   placeholder="250 characters allowed"
-                  className="form-control m-b"
+                  className="form-control"
                   value={this.state.categoryItem.evidence || ''}
                   onChange={this.handleEvidenceChange.bind(this)}
                 >
@@ -588,10 +697,10 @@ class ObserveEntries extends Component{
               <table className="table table-striped table-bordered table-hover dataTables-example">
                   <thead>
                     <tr>
-                      <th>Criteria</th>
-                      <th>Strengths</th>
-                      <th>Areas for improvement</th>
-                      <th>Evidence</th>
+                      <th width="35%">Criteria</th>
+                      <th width="5%">Strengths</th>
+                      <th width="5%">Areas for improvement</th>
+                      <th width="55%">Evidence</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -611,7 +720,6 @@ class ObserveSummary extends Component{
     this.state = {
         ratingReferenceId: props.ratingReferenceId || '',
         ratingSummary: props.ratingSummary || '',
-        strengthsShare: props.strengthsShare || '',
         additionalComments: props.additionalComments || ''
     }
   }
@@ -625,12 +733,6 @@ class ObserveSummary extends Component{
   handleRatingSummaryChange(e){
     var newState = Object.assign(this.state, {ratingSummary: e.target.value});
     this.setState({ratingSummary: e.target.value})
-    this.props.updateObservation(newState);
-  }
-
-  handleStrengthsShareChange(e){
-    var newState = Object.assign(this.state, {strengthsShare: e.target.value});
-    this.setState({strengthsShare: e.target.value})
     this.props.updateObservation(newState);
   }
 
@@ -670,10 +772,12 @@ class ObserveSummary extends Component{
                 </select>
               </div>
             </div>
+          </div>
+          <div className="form-group">
             <div className="col-sm-12">
               <label className="col-sm-4 control-label">Summary Evaluation</label>
               <div className="col-sm-8">
-                <textarea {...this.props.mode} type="text" className="form-control m-b"
+                <textarea {...this.props.mode} type="text" className="form-control"
                     maxLength={250}
                     placeholder="250 characters allowed"
                     onChange={this.handleRatingSummaryChange.bind(this)}
@@ -681,17 +785,8 @@ class ObserveSummary extends Component{
                 />
               </div>
             </div>
-            <div className="col-sm-12">
-              <label className="col-sm-4 control-label">Identified strengths for sharing</label>
-              <div className="col-sm-8">
-                <textarea {...this.props.mode} type="text" className="form-control m-b"
-                    maxLength={250}
-                    placeholder="250 characters allowed"
-                    onChange={this.handleStrengthsShareChange.bind(this)}
-                    value={this.state.strengthsShare}
-                />
-              </div>
-            </div>
+          </div>
+          <div className="form-group">
             <div className="col-sm-12">
               <label className="col-sm-4 control-label">Additional Comments</label>
               <div className="col-sm-8">
@@ -886,7 +981,7 @@ class ObserveRecommendation extends Component {
     return (
         <tr>
             <td>
-                <select className="form-control m-b"
+                <select className="form-control"
                   onChange={this.handleFocusAreaChange.bind(this)}
                   value={this.state.recommendation.focusArea}>
                   <option></option>
@@ -894,14 +989,14 @@ class ObserveRecommendation extends Component {
                 </select>
             </td>
             <td align="center">
-                <input className="form-control m-b"
+                <input className="form-control"
                   type="checkbox"
                   checked={this.state.recommendation.strength}
                   onClick={this.handleStrengthChange.bind(this)}
                 />
             </td>
             <td align="center">
-                <input className="form-control m-b"
+                <input className="form-control"
                   type="checkbox"
                   checked={this.state.recommendation.improvement}
                   onClick={this.handleImprovementChange.bind(this)}
@@ -911,7 +1006,7 @@ class ObserveRecommendation extends Component {
                 <textArea {...this.props.mode} type="text"
                   maxLength={250}
                   placeholder="250 characters allowed"
-                  className="form-control m-b"
+                  className="form-control"
                   value={this.state.recommendation.recommendedAction}
                   onChange={this.handleRecommendedActionChange.bind(this)}
                 >
@@ -990,10 +1085,10 @@ class ObserveRecommendations extends Component {
               <table className="table table-striped table-bordered table-hover dataTables-example">
                   <thead>
                     <tr>
-                      <th>Focus Area</th>
-                      <th>Strength</th>
-                      <th>Improvement</th>
-                      <th>Action</th>
+                      <th width='35%'>Focus Area</th>
+                      <th width='5%'>Strength</th>
+                      <th width='5%'>Improvement</th>
+                      <th width='55%'>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1015,14 +1110,14 @@ class Entry extends Component {
       observationData: props.observation || {},
       staffs:null,
       ratingReferences:null,
-      strengthImprovementReferences:null
+      strengthImprovementReferences:null,
     };
 
     this.updateObservation = this.updateObservation.bind(this);
   }
 
   updateObservation(observation){
-    var newObservation = Object.assign(this.state.observationData, observation);
+    var newObservation = Object.assign(this.state.observationData, observation)
     this.setState({observationData: newObservation});
   }
 
@@ -1137,7 +1232,7 @@ class Entry extends Component {
     }
     if(this.state.staffs != null && this.state.ratingReferences != null && this.state.strengthImprovementReferences != null) {
         return (
-          <div className="wrapper wrapper-content animated fadeInRight">
+          <div className="wrapper-content animated fadeInRight">
             <div className="row">
               <div className="col-lg-12">
                 <div className="ibox float-e-margins">
@@ -1189,7 +1284,7 @@ class Entry extends Component {
                               {...this.props.mode}
                               className="btn btn-white"
                               type="submit">Cancel
-                            </button>
+                            </button>&nbsp;
                             <button
                               {...this.props.mode}
                               className="btn btn-primary"

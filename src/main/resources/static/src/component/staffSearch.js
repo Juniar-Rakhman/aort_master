@@ -111,7 +111,7 @@ class StaffSearch extends Component {
     render() {
         console.log('test ini:' + this.state.constFilterText);
         return (
-            <div className="wrapper wrapper-content animated fadeInRight">
+            <div className="wrapper-content animated fadeInRight">
                 <div className="row">
                     <div className="col-lg-12">
                         <div className="ibox float-e-margins">
