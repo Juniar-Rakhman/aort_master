@@ -12,6 +12,7 @@ import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -72,32 +73,27 @@ public class ObservationController {
 
     @RequestMapping(value = "/api/observations/search", method = RequestMethod.GET)
     public ResponseEntity<Page> observationFindFilter(@RequestParam("filter") String filter, @RequestParam("page") int page, @RequestParam("size") int size) {
-//        Pageable pageRequest = new PageRequest(page, size);
-//        Page<Observation> observationList = new ArrayList<>();
-//        Integer totalElements = 0;
-//        try {
-//            // filter can be staff
-//            for (Staff staff : staffRepo.findByStaffName(filter)) {
-//                observationList.addAll(fetchStaffName(observationRepo.findByStaffId(staff.getId(), pageRequest)));
-//                totalElements += observationRepo.findByStaffId(staff.getId(), null).getNumberOfElements();
-//            }
-//            // or course name, not both!
-//            if (observationList.isEmpty()) {
-//                observationList = fetchStaffName(observationRepo.findByCourseName(filter, pageRequest));
-//            }
-//
-//            
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//        return new ResponseEntity<>(observationList, HttpStatus.OK);
-        return null;
+        Pageable pageRequest = new PageRequest(page, size);
+        List<Observation> observationList = new ArrayList<>();
+        try {
+            // filter can be staff
+            for (Staff staff : staffRepo.findByStaffName(filter)) {
+                observationList.addAll(observationRepo.findByStaffId(staff.getId()));
+            }
+            // or course name
+            if (observationList.isEmpty()) {
+                observationList.addAll(observationRepo.findByCourseName(filter));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(fetchStaffName(observationList, pageRequest), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/api/observations", method = RequestMethod.GET)
     public ResponseEntity<Page> observationFindAll(@RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
-        return new ResponseEntity<>(fetchStaffName(observationRepo.findAll(pageRequest)), HttpStatus.OK);
+        return new ResponseEntity<>(fetchStaffName((List<Observation>) observationRepo.findAll(), pageRequest), HttpStatus.OK);
     }
 
     //TODO find a way to use optional path variable
@@ -185,8 +181,8 @@ public class ObservationController {
 
         return observation;
     }
-    
-    private Page<Observation> fetchStaffName(Page<Observation> observations) {
+
+    private Page<Observation> fetchStaffName(List<Observation> observations, Pageable pageable) {
 
         for (Observation observation : observations) {
             if (!observation.getStaffId().isEmpty()) {
@@ -211,7 +207,7 @@ public class ObservationController {
                 observation.setHodName(staffRepo.findOne(observation.getHodId()).getFirstName() + " " + staffRepo.findOne(observation.getHodId()).getLastName());
             }
         }
-        
-        return observations;
+
+        return new PageImpl<>(observations, pageable, observations.size());
     }
 }
