@@ -82,7 +82,7 @@ class Container extends Component {
     if (this.state.page === '') {
       content = <Home />;
     } else if (this.state.page === 'entry') {
-      content = <Entry title='Create' redirectTo={this.handlePageNav}/>;
+      content = <Entry title='Create' observation={this.state.data} redirectTo={this.handlePageNav}/>;
     } else if (this.state.page === 'staffSearch') {
       content = <StaffSearch />
     } else if (this.state.page === 'observationSearch') {

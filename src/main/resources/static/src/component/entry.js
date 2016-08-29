@@ -1185,16 +1185,22 @@ class Entry extends Component {
     this.getDataStrengthImprovementReferences();
   }
 
+  handleComplete(){
+    var observation = Object.assign({}, this.state.observationData, {completed: true});
+    this.updateMethod(observation);
+  }
+
   handleSubmit(){
     var date = new Date();
     var observation = Object.assign({}, this.state.observationData, {
         date: date.toISOString().slice(0,10),
-        time: (date.toLocaleTimeString().slice(0,8)).trim()
-    })
+        time: (date.toLocaleTimeString().slice(0,8)).trim(),
+        completed: false
+    });
     if (this.props.title === 'Create') {
       this.createMethod(observation);
     } else if (this.props.title === 'Edit') {
-      this.updateMethod(observation)
+      this.updateMethod(observation);
     }
   }
 
@@ -1245,9 +1251,26 @@ class Entry extends Component {
   }
 
   render() {
-    var mode = this.props.title === 'Create' ? 'Create':'Edit';
-    var style = {
-      paddingLeft: "55px"
+    var btnStyle = {
+      marginRight: "5px"
+    };
+    var submitButtons = null;
+    if(this.props.title === 'Edit') {
+      submitButtons = (
+        <div className="col-sm-4 col-sm-offset-9">
+          <button {...this.props.mode} className="btn btn-white" style={btnStyle} type="submit">Cancel</button>
+          <button {...this.props.mode} className="btn btn-primary" style={btnStyle} type="button" onClick={this.handleComplete.bind(this)}>Complete</button>
+          <button {...this.props.mode} className="btn btn-primary" type="submit" value="post">Save</button>
+        </div>
+      );
+    }
+    else if(this.props.title === 'Create') {
+      submitButtons = (
+        <div className="col-sm-4 col-sm-offset-10">
+          <button {...this.props.mode} className="btn btn-white" style={btnStyle} type="submit">Cancel</button>
+          <button {...this.props.mode} className="btn btn-primary" type="submit" value="post">Save</button>
+        </div>
+      );
     }
     if(this.state.staffs != null && this.state.ratingReferences != null && this.state.strengthImprovementReferences != null) {
         return (
@@ -1262,7 +1285,7 @@ class Entry extends Component {
                     <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
                       <ObserveHeader
                         observation={this.state.observationData}
-                        mode={mode}
+                        mode={this.props.title}
                         disabled='true'
                         updateObservation={this.updateObservation}
                         staffs={this.state.staffs}
@@ -1270,11 +1293,11 @@ class Entry extends Component {
                       <ObserveEntries
                         categoryItems={this.state.strengthImprovementReferences}
                         strengthImprovements={this.state.observationData.strengthImprovements || []}
-                        mode={mode}
+                        mode={this.props.title}
                         updateObservation={this.updateObservation}
                       />
                       <ObserveSummary
-                        mode={mode}
+                        mode={this.props.title}
                         updateObservation={this.updateObservation}
                         ratingSummary={this.state.observationData.ratingSummary}
                         strengthsShare={this.state.observationData.strengthsShare}
@@ -1283,7 +1306,7 @@ class Entry extends Component {
                         ratingReferences={this.state.ratingReferences}
                       />
                       <ObserveModerate
-                        mode={mode}
+                        mode={this.props.title}
                         updateObservation={this.updateObservation}
                         moderated={this.state.observationData.moderated}
                         learningCoachId={this.state.observationData.learningCoachId}
@@ -1298,21 +1321,9 @@ class Entry extends Component {
                       />
                       <div className="ibox-content">
                         <div className="form-group">
-                          <div className="col-sm-4 col-sm-offset-9">
-                            <button
-                              {...this.props.mode}
-                              className="btn btn-white"
-                              type="submit">Cancel
-                            </button>&nbsp;
-                            <button
-                              {...this.props.mode}
-                              className="btn btn-primary"
-                              type="submit"
-                              value="post">Save changes</button>
-                          </div>
+                          {submitButtons}
                         </div>
                       </div>
-
                     </form>
                   </div>
                 </div>

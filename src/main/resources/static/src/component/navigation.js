@@ -18,7 +18,7 @@ class Navigation extends Component {
   }
 
   handleEntry() {
-    this.props.handlePageNav('entry');
+    this.props.handlePageNav('entry', {});
   }
 
   handleObservationView() {

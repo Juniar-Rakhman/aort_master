@@ -547,12 +547,12 @@ class View extends Component {
   getDataObservation() {
       $.ajax({
           type: 'GET',
-        url: "/api/observations/" + this.props.observationId + "/" + this.props.staff.id,
+          url: "/api/observations/" + this.props.observationId + "/" + this.props.staff.id,
           success: function(response) {
-            if (response.access === 'edit') {
-              this.props.redirectTo('edit', response);
-            } else {
+            if (response.access === 'view' || response.completed) {
               this.setState({observation: response});
+            } else {
+              this.props.redirectTo('edit', response);
             }
           }.bind(this),
           error: function(xhr, status, err) {
