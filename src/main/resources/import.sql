@@ -54,8 +54,8 @@ INSERT INTO dbo.user_role VALUES(1, 0, 0, '00000216', 0);
 INSERT INTO dbo.user_role VALUES(0, 0, 1, '00000332', 0);
 INSERT INTO dbo.user_role VALUES(0, 0, 0, '00000486', 1);
 
-INSERT INTO aort_test.dbo.observation VALUES ('testestsetst 1', false, 'test aja', 1, 'test', 1, null, '2016-08-24', 'test', '00000065', 2, '00000065', null, null, '00000065', 'test', 1, '00000065', 'testsetstset', '00000065', '00000065', 'estsetsetse', 1, '2', 'testetsetse', 2, 'testset', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO aort_test.dbo.observation VALUES ('testestsetst 2', false, 'test aja 2', 1, 'test', 1, null, '2016-08-25', 'test', '00000065', 2, '00000065', null, null, '00000065', 'test', 1, '00000065', 'testsetstset', '00000065', '00000065', 'estsetsetse', 1, '2', 'testetsetse', 2, 'testset', '00000065', 1, '03:45:38.0000000', 1);
+INSERT INTO aort_test.dbo.observation VALUES ('testestsetst 1', 0, 'test aja', 1, 'test', 1, null, '2016-08-24', 'test', '00000065', 2, '00000065', null, null, '00000065', 'test', 1, '00000065', 'testsetstset', '00000065', '00000065', 'estsetsetse', 1, '2', 'testetsetse', 2, 'testset', '00000065', 1, '03:45:38.0000000', 1);
+INSERT INTO aort_test.dbo.observation VALUES ('testestsetst 2', 0, 'test aja 2', 1, 'test', 1, null, '2016-08-25', 'test', '00000065', 2, '00000065', null, null, '00000065', 'test', 1, '00000065', 'testsetstset', '00000065', '00000065', 'estsetsetse', 1, '2', 'testetsetse', 2, 'testset', '00000065', 1, '03:45:38.0000000', 1);
 
 update academic_observation.dbo.staff set username = 'ben' where staff_id = '00000065';
 update academic_observation.dbo.staff set username = 'bob' where staff_id = '00000216';
