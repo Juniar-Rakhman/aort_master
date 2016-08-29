@@ -68,6 +68,25 @@ public class ObservationController {
         return new ResponseEntity<>(observation, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/api/observations/search", method = RequestMethod.GET)
+    public ResponseEntity<List<Observation>> observationFindFilter(@RequestParam("filter") String filter, @RequestParam("page") int page, @RequestParam("size") int size) {
+        Pageable pageRequest = new PageRequest(page, size);
+        List<Observation> observationList = new ArrayList<>();
+        try {
+            // filter can be staff            
+            for (Staff staff : staffRepo.findByStaffName(filter)) {
+                observationList.addAll(observationRepo.findByStaffId(staff.getId(), pageRequest));
+            }
+            // or course name, not both!
+            if (observationList.isEmpty()) {
+                observationList = observationRepo.findByCourseName(filter, pageRequest);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(observationList, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/api/observations", method = RequestMethod.GET)
     public ResponseEntity<List<Observation>> observationFindAll(@RequestParam("page") int page, @RequestParam("size") int size) {
         return new ResponseEntity<>(observationSearch(page, size), HttpStatus.OK);

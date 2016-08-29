@@ -3,6 +3,7 @@ package nz.ac.ara.aort.repositories;
 import nz.ac.ara.aort.entities.Observation;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -21,4 +22,7 @@ public interface ObservationRepository extends JpaRepository<Observation, Long> 
     List<Observation> findByHodId(@Param("hodId") String hodId, Pageable pageable);
     List<Observation> findByModeratorId(@Param("moderatorId") String moderatorId, Pageable pageable);
     List<Observation> findByLearningCoachId(@Param("learningCoachId") String learningCoachId, Pageable pageable);
+
+    @Query("SELECT o FROM Observation o WHERE o.courseName like %:courseName%")
+    List<Observation> findByCourseName(@Param("courseName") String courseName, Pageable pageable);
 }
