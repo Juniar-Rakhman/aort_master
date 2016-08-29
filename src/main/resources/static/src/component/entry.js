@@ -155,28 +155,40 @@ class ObserveHeader extends Component{
     this.props.updateObservation(newState);
   }
   componentDidMount() {
-    $('#teacher').select2({placeholder: "Please Select"});
+    var configs =
+       {
+        ajax: {
+          url: 'api/staffs/search/findByStaffName',
+          data: function(params){
+              return {
+                  name: params.term
+              }
+          },
+          processResults: function (data) {
+              return {
+                  results: data["_embedded"]["staffs"]
+              }
+          },
+          delay: 250
+        },
+        templateResult: function(staff){
+          return staff.firstName + " " + staff.lastName;
+        },
+        templateSelection: function formatRepoSelection (staff) {
+          return staff.firstName === undefined ? "Please Select" : staff.firstName + " " + staff.lastName ;
+        }
+      };
+    $('#teacher').select2(configs);
     $('#teacher').on('change', this.handleTeacherNameChange.bind(this));
 
-    $('#lineManager').select2({placeholder: "Please Select"});
+    $('#lineManager').select2(configs);
     $('#lineManager').on('change', this.handleManagerNameChange.bind(this));
 
-    $('#observerPrimary').select2({placeholder: "Please Select"});
+    $('#observerPrimary').select2(configs);
     $('#observerPrimary').on('change', this.handlePrimaryObserverNameChange.bind(this));
 
-    $('#observerSecondary').select2({placeholder: "Please Select"});
+    $('#observerSecondary').select2(configs);
     $('#observerSecondary').on('change', this.handleSecondObserverNameChange.bind(this));
-  }
-
-  populateStaff2(){
-    var fullName='';
-    var rows = [];
-    var lastIndex = 0
-    this.props.staffs.forEach(function(staff){
-      fullName = staff.firstName + ' ' + staff.lastName;
-      rows.push(<option value={staff.id}>{fullName}</option>);
-    })
-    return rows
   }
 
   render(){
@@ -190,7 +202,6 @@ class ObserveHeader extends Component{
               <div className="col-sm-8">
                 <select id="teacher" className="form-control m-b" value={this.state.staffId}>
                     <option></option>
-                  {this.populateStaff2()}
                 </select>
               </div>
             </div>
@@ -199,7 +210,6 @@ class ObserveHeader extends Component{
               <div className="col-sm-8">
                 <select id="lineManager" className="form-control m-b" value={this.state.lineManagerId}>
                   <option></option>
-                  {this.populateStaff2()}
                 </select>
               </div>
             </div>
@@ -211,7 +221,6 @@ class ObserveHeader extends Component{
               <div className="col-sm-8">
                 <select id="observerPrimary" className="form-control m-b" value={this.state.observerPrimaryId}>
                   <option></option>
-                  {this.populateStaff2()}
                 </select>
               </div>
             </div>
@@ -220,7 +229,6 @@ class ObserveHeader extends Component{
               <div className="col-sm-8">
                 <select id="observerSecondary" className="form-control m-b" value={this.state.observerSecondaryId}>
                   <option></option>
-                  {this.populateStaff2()}
                 </select>
               </div>
             </div>
@@ -841,25 +849,39 @@ class ObserveModerate extends Component{
   }
 
   componentDidMount() {
-    $('#moderator').select2({placeholder: "Please Select"});
+    var configs =
+       {
+        ajax: {
+          url: 'api/staffs/search/findByStaffName',
+          data: function(params){
+              return {
+                  name: params.term
+              }
+          },
+          processResults: function (data) {
+              return {
+                  results: data["_embedded"]["staffs"]
+              }
+          },
+          delay: 250
+        },
+        templateResult: function(staff){
+          return staff.firstName + " " + staff.lastName;
+        },
+        templateSelection: function formatRepoSelection (staff) {
+          return staff.firstName === undefined ? "Please Select" : staff.firstName + " " + staff.lastName ;
+        }
+      };
+
+
+    $('#moderator').select2(configs);
     $('#moderator').on('change', this.handleModeratorIdChange.bind(this));
 
-    $('#coach').select2({placeholder: "Please Select"});
+    $('#coach').select2(configs);
     $('#coach').on('change', this.handleLearningCoachIdChange.bind(this));
 
-    $('#hod').select2({placeholder: "Please Select"});
+    $('#hod').select2(configs);
     $('#hod').on('change', this.handleHodIdChange.bind(this));
-  }
-
-  populateStaff2(){
-    var fullName='';
-    var rows = [];
-    var lastIndex = 0
-    this.props.staffs.forEach(function(staff){
-      fullName = staff.firstName + ' ' + staff.lastName;
-      rows.push(<option value={staff.id}>{fullName}</option>);
-    })
-    return rows
   }
 
   render(){
@@ -882,7 +904,6 @@ class ObserveModerate extends Component{
               <div className="col-sm-8">
                 <select id="moderator" className="form-control m-b" value={this.state.moderatorId}>
                   <option></option>
-                  {this.populateStaff2()}
                 </select>
               </div>
             </div>
@@ -893,7 +914,6 @@ class ObserveModerate extends Component{
               <div className="col-sm-8">
                 <select id="coach" className="form-control m-b" value={this.state.learningCoachId}>
                   <option></option>
-                  {this.populateStaff2()}
                 </select>
               </div>
             </div>
@@ -902,7 +922,6 @@ class ObserveModerate extends Component{
               <div className="col-sm-8">
                 <select id="hod" className="form-control m-b" value={this.state.hodId}>
                   <option></option>
-                  {this.populateStaff2()}
                 </select>
               </div>
             </div>
