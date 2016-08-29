@@ -31,10 +31,6 @@ class ObservationTable extends Component {
     render() {
         var rows = [];
         this.props.observations.forEach(function (observation) {
-            if (observation.courseName.toLowerCase().indexOf(this.props.filterText.toLowerCase()) === -1 &&
-                observation.staffName.toLowerCase().indexOf(this.props.filterText.toLowerCase()) === -1 ){
-                return;
-            }
             rows.push(<ObservationRow observation={observation} key={observation.observationId} redirectTo={this.props.redirectTo} role={this.props.role} />);
         }, this);
         return (
@@ -58,6 +54,7 @@ class SearchBar extends Component {
     constructor(props){
         super(props);
         this.handleChange = this.handleChange.bind(this);
+        this.state = {inputTextVal: ''}
     }
 
     handleChange() {
@@ -66,15 +63,29 @@ class SearchBar extends Component {
         )
     }
 
+    handleTextChange(e){
+        this.setState({inputTextVal: e.target.value});
+    }
     render() {
+        var style = {
+          "padding-top": "5px"
+        }
         return (
-            <div className="search-form">
-                <form>
-                    <div className="input-group">
+            <div className="form-group">
+                <form role="form" className="form-inline">
+                    <div className="form-group">
                         <input type="text" placeholder="Find Observation" name="search" className="form-control input-lg"
                             value={this.props.consFilterText}
                             ref="filterTextInput"
-                            onChange={this.handleChange} />
+                            onChange={this.handleTextChange.bind(this)}/>
+                    </div>
+                    <div className="form-group" style={style}>
+                        <button
+                            className="btn btn-sm btn-primary"
+                            type="button"
+                            onClick={this.handleChange.bind(this)}
+                            disabled={this.state.inputTextVal === ''}>Search
+                        </button>
                     </div>
                 </form>
             </div>
@@ -99,10 +110,22 @@ class ObservationSearch extends Component {
         };
     };
 
-    handleUserInput(target){
-        this.setState({
-            constFilterText: target
-        })
+    handleUserInput(value){
+        this.getObservationBySearch(value);
+    }
+
+    getObservationBySearch(filter){
+        $.ajax({
+            type: 'GET',
+            url: "api/observations/search?filter=" + filter + "&page=" + this.state.page + "&size=" + this.state.size,
+            success: function(response) {
+                this.setState({observations: response["content"]});
+                this.setState({totalPages: response["totalPages"]});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
     }
 
     getDataObservation() {
