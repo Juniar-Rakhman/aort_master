@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
@@ -68,12 +69,7 @@ public class ObservationController {
     }
 
     @RequestMapping(value = "/api/observations", method = RequestMethod.GET)
-    public ResponseEntity<List<Observation>> observationFindAll() {
-        return new ResponseEntity<>(observationSearch(0, 1000), HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/api/observations?page={page}&size={size}", method = RequestMethod.GET)
-    public ResponseEntity<List<Observation>> observationFindAll(@PathVariable("page") int page, @PathVariable("size") int size) {
+    public ResponseEntity<List<Observation>> observationFindAll(@RequestParam("page") int page, @RequestParam("size") int size) {
         return new ResponseEntity<>(observationSearch(page, size), HttpStatus.OK);
     }
 
