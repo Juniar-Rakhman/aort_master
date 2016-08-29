@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import PageInfo from './pageInfo';
 
 class UserRoleRow extends Component {
   constructor(props){
@@ -114,12 +115,17 @@ class UserRoleSearch extends Component {
 	constructor(props, context) {
         super(props);
         this.handleUserInput = this.handleUserInput.bind(this);
+        this.handlePage = this.handlePage.bind(this);
+        this.handleSize = this.handleSize.bind(this);
 
         this.state = {
             userRoles: [],
             staffs: [],
             filterText: '',
-            constFilterText: ''
+            constFilterText: '',
+            page: 0,
+            size: 20,
+            totalPages: 10
         };
     }
 
@@ -146,9 +152,10 @@ class UserRoleSearch extends Component {
     getDataStaff() {
         $.ajax({
             type: 'GET',
-            url: "/api/staffs",
+            url: "/api/staffs?page=" + this.state.page + "&size=" + this.state.size,
             success: function(response) {
                 this.setState({staffs: response["_embedded"]["staffs"]});
+                this.setState({totalPages: response["page"]["totalPages"]});
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
@@ -156,9 +163,23 @@ class UserRoleSearch extends Component {
         });
     }
 
+    handlePage(page) {
+        this.setState({page: page});
+    }
+
+    handleSize(size) {
+        this.setState({size: size});
+    }
+
     componentWillMount() {
         this.getDataUserRole();
         this.getDataStaff();
+    }
+
+    componentDidUpdate(prevProps, prevState) {
+        if ((prevState.page != this.state.page) || (prevState.size != this.state.size)) {
+            this.getDataStaff();
+        }
     }
 
     render() {
@@ -182,6 +203,13 @@ class UserRoleSearch extends Component {
                                         userRoles={this.state.userRoles}
                                         filterText={this.state.constFilterText}
                                         redirectTo={this.props.redirectTo}
+                                    />
+                                    <PageInfo
+                                        page={this.state.page}
+                                        totalPages={this.state.totalPages}
+                                        size={this.state.size}
+                                        handlePage={this.handlePage}
+                                        handleSize={this.handleSize}
                                     />
                                 </div>
                             </div>
