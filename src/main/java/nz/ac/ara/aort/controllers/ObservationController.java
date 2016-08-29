@@ -11,6 +11,7 @@ import nz.ac.ara.aort.repositories.master.StaffRepository;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -70,65 +71,33 @@ public class ObservationController {
     }
 
     @RequestMapping(value = "/api/observations/search", method = RequestMethod.GET)
-    public ResponseEntity<Object> observationFindFilter(@RequestParam("filter") String filter, @RequestParam("page") int page, @RequestParam("size") int size) {
-        Pageable pageRequest = new PageRequest(page, size);
-        List<Observation> observationList = new ArrayList<>();
-        Integer totalElements = 0;
-        JSONObject entity = new JSONObject();
-        try {
-            // filter can be staff
-            for (Staff staff : staffRepo.findByStaffName(filter)) {
-                observationList.addAll(observationRepo.findByStaffId(staff.getId(), pageRequest));
-                totalElements += observationRepo.findByStaffId(staff.getId(), null).size();
-            }
-            // or course name, not both!
-            if (observationList.isEmpty()) {
-                observationList = observationRepo.findByCourseName(filter, pageRequest);
-                totalElements += observationRepo.findByCourseName(filter, null).size();
-            }
-            
-            entity.put("observations", observationList);
-            entity.put("totalElements", totalElements);
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(entity, HttpStatus.OK);
+    public ResponseEntity<Page> observationFindFilter(@RequestParam("filter") String filter, @RequestParam("page") int page, @RequestParam("size") int size) {
+//        Pageable pageRequest = new PageRequest(page, size);
+//        Page<Observation> observationList = new ArrayList<>();
+//        Integer totalElements = 0;
+//        try {
+//            // filter can be staff
+//            for (Staff staff : staffRepo.findByStaffName(filter)) {
+//                observationList.addAll(fetchStaffName(observationRepo.findByStaffId(staff.getId(), pageRequest)));
+//                totalElements += observationRepo.findByStaffId(staff.getId(), null).getNumberOfElements();
+//            }
+//            // or course name, not both!
+//            if (observationList.isEmpty()) {
+//                observationList = fetchStaffName(observationRepo.findByCourseName(filter, pageRequest));
+//            }
+//
+//            
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return new ResponseEntity<>(observationList, HttpStatus.OK);
+        return null;
     }
 
     @RequestMapping(value = "/api/observations", method = RequestMethod.GET)
-    public ResponseEntity<Object> observationFindAll(@RequestParam("page") int page, @RequestParam("size") int size) {
+    public ResponseEntity<Page> observationFindAll(@RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
-        List<Observation> observationList = new ArrayList<>();
-        Integer totalElements = observationRepo.findAll().size();
-        JSONObject entity = new JSONObject();
-        for (Observation observation : observationRepo.findAll(pageRequest)) {
-            if (!observation.getStaffId().isEmpty()) {
-                observation.setStaffName(staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
-            }
-            if (!observation.getModeratorId().isEmpty()) {
-                observation.setModeratorName(staffRepo.findOne(observation.getModeratorId()).getFirstName() + " " + staffRepo.findOne(observation.getModeratorId()).getLastName());
-            }
-            if (!observation.getObserverPrimaryId().isEmpty()) {
-                observation.setObserverPrimaryName(staffRepo.findOne(observation.getObserverPrimaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverPrimaryId()).getLastName());
-            }
-            if (!observation.getObserverSecondaryId().isEmpty()) {
-                observation.setObserverSecondaryName(staffRepo.findOne(observation.getObserverSecondaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverSecondaryId()).getLastName());
-            }
-            if (!observation.getLearningCoachId().isEmpty()) {
-                observation.setLearningCoachName(staffRepo.findOne(observation.getLearningCoachId()).getFirstName() + " " + staffRepo.findOne(observation.getLearningCoachId()).getLastName());
-            }
-            if (!observation.getLineManagerId().isEmpty()) {
-                observation.setLineManagerName(staffRepo.findOne(observation.getLineManagerId()).getFirstName() + " " + staffRepo.findOne(observation.getLineManagerId()).getLastName());
-            }
-            if (!observation.getHodId().isEmpty()) {
-                observation.setHodName(staffRepo.findOne(observation.getHodId()).getFirstName() + " " + staffRepo.findOne(observation.getHodId()).getLastName());
-            }
-            observationList.add(observation);
-        }
-        entity.put("observations", observationList);
-        entity.put("totalElements", totalElements);
-        return new ResponseEntity<>(entity, HttpStatus.OK);
+        return new ResponseEntity<>(fetchStaffName(observationRepo.findAll(pageRequest)), HttpStatus.OK);
     }
 
     //TODO find a way to use optional path variable
@@ -215,5 +184,34 @@ public class ObservationController {
         }
 
         return observation;
+    }
+    
+    private Page<Observation> fetchStaffName(Page<Observation> observations) {
+
+        for (Observation observation : observations) {
+            if (!observation.getStaffId().isEmpty()) {
+                observation.setStaffName(staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
+            }
+            if (!observation.getModeratorId().isEmpty()) {
+                observation.setModeratorName(staffRepo.findOne(observation.getModeratorId()).getFirstName() + " " + staffRepo.findOne(observation.getModeratorId()).getLastName());
+            }
+            if (!observation.getObserverPrimaryId().isEmpty()) {
+                observation.setObserverPrimaryName(staffRepo.findOne(observation.getObserverPrimaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverPrimaryId()).getLastName());
+            }
+            if (!observation.getObserverSecondaryId().isEmpty()) {
+                observation.setObserverSecondaryName(staffRepo.findOne(observation.getObserverSecondaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverSecondaryId()).getLastName());
+            }
+            if (!observation.getLearningCoachId().isEmpty()) {
+                observation.setLearningCoachName(staffRepo.findOne(observation.getLearningCoachId()).getFirstName() + " " + staffRepo.findOne(observation.getLearningCoachId()).getLastName());
+            }
+            if (!observation.getLineManagerId().isEmpty()) {
+                observation.setLineManagerName(staffRepo.findOne(observation.getLineManagerId()).getFirstName() + " " + staffRepo.findOne(observation.getLineManagerId()).getLastName());
+            }
+            if (!observation.getHodId().isEmpty()) {
+                observation.setHodName(staffRepo.findOne(observation.getHodId()).getFirstName() + " " + staffRepo.findOne(observation.getHodId()).getLastName());
+            }
+        }
+        
+        return observations;
     }
 }
