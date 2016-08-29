@@ -1,5 +1,6 @@
 package nz.ac.ara.aort.controllers;
 
+import net.minidev.json.JSONObject;
 import nz.ac.ara.aort.entities.Observation;
 import nz.ac.ara.aort.entities.RatingReference;
 import nz.ac.ara.aort.entities.StrengthImprovement;
@@ -69,34 +70,38 @@ public class ObservationController {
     }
 
     @RequestMapping(value = "/api/observations/search", method = RequestMethod.GET)
-    public ResponseEntity<List<Observation>> observationFindFilter(@RequestParam("filter") String filter, @RequestParam("page") int page, @RequestParam("size") int size) {
+    public ResponseEntity<Object> observationFindFilter(@RequestParam("filter") String filter, @RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
         List<Observation> observationList = new ArrayList<>();
+        Integer totalElements = 0;
+        JSONObject entity = new JSONObject();
         try {
-            // filter can be staff            
+            // filter can be staff
             for (Staff staff : staffRepo.findByStaffName(filter)) {
                 observationList.addAll(observationRepo.findByStaffId(staff.getId(), pageRequest));
+                totalElements += observationRepo.findByStaffId(staff.getId(), null).size();
             }
             // or course name, not both!
             if (observationList.isEmpty()) {
                 observationList = observationRepo.findByCourseName(filter, pageRequest);
+                totalElements += observationRepo.findByCourseName(filter, null).size();
             }
+            
+            entity.put("observations", observationList);
+            entity.put("totalElements", totalElements);
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(observationList, HttpStatus.OK);
+        return new ResponseEntity<>(entity, HttpStatus.OK);
     }
 
     @RequestMapping(value = "/api/observations", method = RequestMethod.GET)
-    public ResponseEntity<List<Observation>> observationFindAll(@RequestParam("page") int page, @RequestParam("size") int size) {
-        return new ResponseEntity<>(observationSearch(page, size), HttpStatus.OK);
-    }
-
-    public List<Observation> observationSearch(int page, int size) {
-
+    public ResponseEntity<Object> observationFindAll(@RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
         List<Observation> observationList = new ArrayList<>();
-
+        Integer totalElements = observationRepo.findAll().size();
+        JSONObject entity = new JSONObject();
         for (Observation observation : observationRepo.findAll(pageRequest)) {
             if (!observation.getStaffId().isEmpty()) {
                 observation.setStaffName(staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
@@ -121,8 +126,9 @@ public class ObservationController {
             }
             observationList.add(observation);
         }
-
-        return observationList;
+        entity.put("observations", observationList);
+        entity.put("totalElements", totalElements);
+        return new ResponseEntity<>(entity, HttpStatus.OK);
     }
 
     //TODO find a way to use optional path variable
