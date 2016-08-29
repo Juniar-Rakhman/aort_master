@@ -164,6 +164,9 @@ public class Observation {
 
 	@Transient
 	private String access;
+
+	@Column(name = "completed")
+	private Boolean completed;
 	
 	public Observation(){
 	}
