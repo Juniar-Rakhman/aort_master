@@ -11,6 +11,7 @@ import nz.ac.ara.aort.repositories.master.StaffRepository;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -208,6 +209,10 @@ public class ObservationController {
             }
         }
 
-        return new PageImpl<>(observations, pageable, observations.size());
+        PagedListHolder<Observation> pageList = new PagedListHolder<>(observations);
+        pageList.setPage(pageable.getPageNumber());
+        pageList.setPageSize(pageable.getPageSize());
+
+        return new PageImpl<>(pageList.getPageList(), pageable, observations.size());
     }
 }
