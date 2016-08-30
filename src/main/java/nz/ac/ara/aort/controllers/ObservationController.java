@@ -77,7 +77,7 @@ public class ObservationController {
         List<Observation> observationList = new ArrayList<>();
         try {
             // filter can be staff
-            for (Staff staff : staffRepo.findByStaffName(filter)) {
+            for (Staff staff : staffRepo.findByStaffName(filter, null)) {
                 observationList.addAll(observationRepo.findByStaffId(staff.getId()));
             }
             // or course name
