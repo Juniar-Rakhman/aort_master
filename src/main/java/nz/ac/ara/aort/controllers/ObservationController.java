@@ -1,6 +1,5 @@
 package nz.ac.ara.aort.controllers;
 
-import net.minidev.json.JSONObject;
 import nz.ac.ara.aort.entities.Observation;
 import nz.ac.ara.aort.entities.RatingReference;
 import nz.ac.ara.aort.entities.StrengthImprovement;
