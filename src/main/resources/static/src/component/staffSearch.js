@@ -23,10 +23,6 @@ class StaffTable extends Component {
     render() {
         var rows = [];
         this.props.staffs.forEach(function (staff) {
-            if (staff.firstName.toLowerCase().indexOf(this.props.filterText.toLowerCase()) === -1 &&
-                staff.lastName.toLowerCase().indexOf(this.props.filterText.toLowerCase()) === -1) {
-                return;
-            }
             rows.push(<StaffRow staff={staff} key={staff.id} />);
         }, this);
         return (
@@ -49,24 +45,39 @@ class SearchBar extends Component {
     constructor(props){
         super(props);
         this.handleChange = this.handleChange.bind(this);
+        this.state = {inputTextVal: ''}
     }
 
     handleChange() {
-        console.log('ini 2:' + this.refs.filterTextInput.value)
         this.props.onUserInput(
             this.refs.filterTextInput.value
         )
     }
 
+    handleTextChange(e){
+        this.setState({inputTextVal: e.target.value});
+    }
+
     render() {
+        var style = {
+          "padding-top": "5px"
+        }
         return (
-            <div className="search-form">
-                <form>
-                    <div className="input-group">
+            <div className="form-group">
+                <form role="form" className="form-inline">
+                    <div className="form-group">
                         <input type="text" placeholder="Find Staff" name="search" className="form-control input-lg"
                             value={this.props.consFilterText}
                             ref="filterTextInput"
-                            onChange={this.handleChange} />
+                            onChange={this.handleTextChange.bind(this)} />
+                    </div>
+                    <div className="form-group" style={style}>
+                        <button
+                            className="btn btn-sm btn-primary"
+                            type="button"
+                            onClick={this.handleChange.bind(this)}
+                            disabled={this.state.inputTextVal === ''}>Search
+                        </button>
                     </div>
                 </form>
             </div>
@@ -91,12 +102,24 @@ class StaffSearch extends Component {
         };
     };
 
-    handleUserInput(target){
-       // const { value: constFilterText } = target;
-        this.setState({
-            constFilterText: target
-        })
+    handleUserInput(value){
+        this.getStaffBySearch(value);
     }
+
+    getStaffBySearch(name){
+        $.ajax({
+            type: 'GET',
+            url: "api/staffs/search/findByStaffName?name=" + name + "&page=" + this.state.page + "&size=" + this.state.size,
+            success: function(response) {
+                this.setState({staffs: response["_embedded"]["staffs"]});
+                this.setState({totalPages: response["page"]["totalPages"]});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    }
+
     getDataStaff() {
         $.ajax({
             type: 'GET',
@@ -137,7 +160,7 @@ class StaffSearch extends Component {
                     <div className="col-lg-12">
                         <div className="ibox float-e-margins">
                             <div className="ibox-title">
-                                <h5>Staff search result</h5>
+                                <h5>Staff Search</h5>
                             </div>
                             <div className="ibox-content">
                                 <div className="table-responsive">

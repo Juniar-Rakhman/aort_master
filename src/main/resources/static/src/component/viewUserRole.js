@@ -107,6 +107,9 @@ class UserRoleForm extends Component {
 	render() {
     	return (
             <div className="ibox-content">
+                <div className="ibox-title">
+                    <h5>Staff Role Update</h5>
+                </div>
                 <div className="ibox-content">
                     <div className="form-group m-b">
                         <div className="form-group">

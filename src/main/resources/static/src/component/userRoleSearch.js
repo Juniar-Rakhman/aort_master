@@ -53,11 +53,6 @@ class UserRoleTable extends Component {
   render() {
   	var rows = [];
       this.props.staffs.forEach(function(staff) {
-          if (staff.firstName.toLowerCase().indexOf(this.props.filterText.toLowerCase()) === -1 
-              && staff.lastName.toLowerCase().indexOf(this.props.filterText.toLowerCase()) === -1) {
-              return;
-          }
-
           var role = {};
           this.props.userRoles.forEach(function(userRole) {
             if(userRole.staffId === staff.id) {
@@ -72,8 +67,8 @@ class UserRoleTable extends Component {
           <table className="table table-striped table-bordered table-hover dataTables-example" >
               <thead>
                   <tr>
-                      <th>Full Name</th>
-                      <th>Role</th>
+                      <th width='60%'>Full Name</th>
+                      <th width='40%'>Role</th>
                   </tr>
               </thead>
               <tbody>{rows}</tbody>
@@ -83,30 +78,45 @@ class UserRoleTable extends Component {
 }
 
 class SearchBar extends Component {
-  constructor(props){
+    constructor(props){
       super(props);
       this.handleChange = this.handleChange.bind(this);
-  }
+      this.state = {inputTextVal: ''}
+    }
 
-  handleChange() {
-      console.log('ini 2:' + this.refs.filterTextInput.value)
+    handleChange() {
       this.props.onUserInput(
           this.refs.filterTextInput.value,
       )
-  }
+    }
 
-  render() {
+    handleTextChange(e){
+        this.setState({inputTextVal: e.target.value});
+    }
+
+    render() {
+      var style = {
+        "padding-top": "5px"
+      }
       return (
-          <div className="search-form">
-              <form>
-                  <div className="input-group">
-                      <input type="text" placeholder="Find Staff" name="search" className="form-control input-lg"
-                          value={this.props.consFilterText}
-                          ref="filterTextInput"
-                          onChange={this.handleChange} />
-                  </div>
-              </form>
-          </div>
+        <div className="form-group">
+            <form role="form" className="form-inline">
+              <div className="input-group">
+                  <input type="text" placeholder="Find Staff's Role" name="search" className="form-control input-lg"
+                      value={this.props.consFilterText}
+                      ref="filterTextInput"
+                      onChange={this.handleTextChange.bind(this)} />
+              </div>
+              <div className="form-group" style={style}>
+                <button
+                    className="btn btn-sm btn-primary"
+                    type="button"
+                    onClick={this.handleChange.bind(this)}
+                    disabled={this.state.inputTextVal === ''}>Search
+                </button>
+              </div>
+            </form>
+        </div>
       );
   }
 }
@@ -129,11 +139,23 @@ class UserRoleSearch extends Component {
         };
     }
 
-    handleUserInput(target){
-       // const { value: constFilterText } = target;
-        this.setState({
-            constFilterText: target
-        })
+    handleUserInput(name){
+        this.getStaffBySearch(name);
+        this.getDataUserRole();
+    }
+
+    getStaffBySearch(name){
+        $.ajax({
+            type: 'GET',
+            url: "api/staffs/search/findByStaffName?name=" + name,
+            success: function(response) {
+                this.setState({staffs: response["_embedded"]["staffs"]});
+                this.setState({totalPages: response["page"]["totalPages"]});
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
     }
 
     getDataUserRole() {
@@ -190,7 +212,7 @@ class UserRoleSearch extends Component {
                     <div className="col-lg-12">
                         <div className="ibox float-e-margins">
                             <div className="ibox-title">
-                                <h5>Staff search result</h5>
+                                <h5>Staff Role Search</h5>
                             </div>
                             <div className="ibox-content">
                                 <div className="table-responsive">
