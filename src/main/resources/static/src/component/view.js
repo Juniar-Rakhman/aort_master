@@ -549,10 +549,12 @@ class View extends Component {
           type: 'GET',
           url: "/api/observations/" + this.props.observationId + "/" + this.props.staff.id,
           success: function(response) {
-            if (response.access === 'view' || response.completed) {
-              this.setState({observation: response});
+            if (!response.success) {
+              alert(response.result);
+            } else if (response.result.access === 'view' || response.result.completed) {
+              this.setState({observation: response.result});
             } else {
-              this.props.redirectTo('edit', response);
+              this.props.redirectTo('edit', response.result);
             }
           }.bind(this),
           error: function(xhr, status, err) {

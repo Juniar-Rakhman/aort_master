@@ -1,5 +1,6 @@
 package nz.ac.ara.aort.controllers;
 
+import net.minidev.json.JSONObject;
 import nz.ac.ara.aort.entities.Observation;
 import nz.ac.ara.aort.entities.RatingReference;
 import nz.ac.ara.aort.entities.StrengthImprovement;
@@ -96,19 +97,21 @@ public class ObservationController {
         return new ResponseEntity<>(fetchStaffName((List<Observation>) observationRepo.findAll(), pageRequest), HttpStatus.OK);
     }
 
-    //TODO find a way to use optional path variable
-    //disable method below for security? so always check for staff role
-    @RequestMapping(value = "/api/observations/{id}", method = RequestMethod.GET)
-    public ResponseEntity<Object> observationFindId(@PathVariable("id") String obsId) {
-        return new ResponseEntity<>(findObservation(obsId, null), HttpStatus.OK);
-    }
-
     @RequestMapping(value = "/api/observations/{id}/{staffId}", method = RequestMethod.GET)
     public ResponseEntity<Object> observationsFindIdStaff(@PathVariable("id") String obsId, @PathVariable("staffId") String staffId) {
-        return new ResponseEntity<>(findObservation(obsId, staffId), HttpStatus.OK);
+        JSONObject entity = new JSONObject();
+        try {
+            entity.put("result", findObservation(obsId, staffId));
+            entity.put("success", true);
+        } catch (Exception e) {
+            e.printStackTrace();
+            entity.put("result", "You do not have access to this record");
+            entity.put("success", false);
+        }
+        return new ResponseEntity<>(entity, HttpStatus.OK);
     }
 
-    private Observation findObservation(String obsId, String staffId) {
+    private Observation findObservation(String obsId, String staffId) throws Exception {
 
         Observation observation = observationRepo.findOne(Long.valueOf(obsId));
 
@@ -117,7 +120,9 @@ public class ObservationController {
 
             UserRole userRole = userRoleRepo.findByStaffId(staffId);
 
-            if (BooleanUtils.isTrue(userRole.getGeneral())) {
+            if (observation.getHodId().equals(staffId)
+                    || observation.getLineManagerId().equals(staffId)
+                    || observation.getLearningCoachId().equals(staffId)) {
                 observation.setAccess("view");
             }
 
@@ -132,6 +137,10 @@ public class ObservationController {
 
             if (BooleanUtils.isTrue(userRole.getSystemAdmin())) {
                 observation.setAccess("edit");
+            }
+
+            if (StringUtils.isEmpty(observation.getAccess())) {
+                throw new Exception("You do not have access to this record");
             }
         }
 
