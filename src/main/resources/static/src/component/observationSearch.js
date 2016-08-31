@@ -168,6 +168,15 @@ class ObservationSearch extends Component {
     }
 
     render() {
+        var errorMessage = null;
+        if(this.props.errorMessage != null) {
+            errorMessage = (
+                <div className="alert alert-danger">
+                    <a href="#" className="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {this.props.errorMessage}
+                </div>
+            );
+        }
         return (
             <div className="wrapper-content animated fadeInRight">
                 <div className="row">
@@ -178,6 +187,7 @@ class ObservationSearch extends Component {
                             </div>
                             <div className="ibox-content">
                                 <div className="table-responsive">
+                                    {errorMessage}
                                     <SearchBar
                                         onUserInput={this.handleUserInput}
                                     />

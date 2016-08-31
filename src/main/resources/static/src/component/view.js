@@ -550,7 +550,7 @@ class View extends Component {
           url: "/api/observations/" + this.props.observationId + "/" + this.props.staff.id,
           success: function(response) {
             if (!response.success) {
-              alert(response.result);
+              this.props.redirectTo('observationSearch', response.result);
             } else if (response.result.access === 'view' || response.result.completed) {
               this.setState({observation: response.result});
             } else {
