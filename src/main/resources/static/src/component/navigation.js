@@ -97,7 +97,7 @@ class Navigation extends Component {
                 </div>
             </li>
             <li className="active">
-              <a href="#"><i className="fa-tachometer"></i> <span className="nav-label">Dashboard</span></a>
+              <a href="#"><i className="fa fa-home"></i> <span className="nav-label">Dashboard</span></a>
               <ul className="nav nav-second-level">
                 <li><a href="#" onClick={this.handleBackHome.bind(this)}>Home</a></li>
               </ul>
