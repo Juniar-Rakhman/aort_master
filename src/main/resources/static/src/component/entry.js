@@ -24,7 +24,11 @@ class ObserveHeader extends Component{
         lessonPlan: props.observation.lessonPlan || '',
         courseOutline: props.observation.courseOutline || '',
         lessonPlanComment: props.observation.lessonPlanComment || '',
-        courseOutlineComment: props.observation.courseOutlineComment || ''
+        courseOutlineComment: props.observation.courseOutlineComment || '',
+        staff: props.observation.staff || {firstName:'', lastName:''},
+        lineManager: props.observation.lineManager || {firstName:'', lastName:''},
+        observerPrimary: props.observation.observerPrimary || {firstName:'', lastName:''},
+        observerSecondary: props.observation.observerSecondary || {firstName:'', lastName:''}
     }
     console.log('ObserveHeader mode: '+ this.props.mode);
   }
@@ -176,7 +180,22 @@ class ObserveHeader extends Component{
           return staff.firstName + " " + staff.lastName;
         },
         templateSelection: function formatRepoSelection (staff) {
-          return staff.firstName === undefined ? "Please Select" : staff.firstName + " " + staff.lastName ;
+          if(staff===undefined){
+            return "Please select";
+          }
+          else{
+            if(staff.firstName != null){
+              return staff.firstName + " " + staff.lastName;
+            }
+            else if(staff.name != null){
+              return staff.name;
+            }
+            return "Please select";
+          }
+        },
+        initSelection: function(element, callback) {
+          var value = $(element).attr('data-init');
+          callback({name: value});
         }
       };
     $('#teacher').select2(configs);
@@ -201,7 +220,11 @@ class ObserveHeader extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Teacher's Name</label>
               <div className="col-sm-8">
-                <select id="teacher" className="form-control m-b" value={this.state.staffId} required>
+                <select id="teacher"
+                  className="form-control m-b"
+                  data-init={this.state.staff.firstName + ' ' + this.state.staff.lastName}
+                  value={this.state.staffId}
+                  required>
                     <option></option>
                 </select>
               </div>
@@ -209,7 +232,10 @@ class ObserveHeader extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Line Manager's Name</label>
               <div className="col-sm-8">
-                <select id="lineManager" className="form-control m-b" value={this.state.lineManagerId}>
+                <select id="lineManager"
+                  className="form-control m-b"
+                  data-init={this.state.lineManager.firstName + ' ' + this.state.lineManager.lastName}
+                  value={this.state.lineManagerId}>
                   <option></option>
                 </select>
               </div>
@@ -220,7 +246,10 @@ class ObserveHeader extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Primary Observer's Name</label>
               <div className="col-sm-8">
-                <select id="observerPrimary" className="form-control m-b" value={this.state.observerPrimaryId}>
+                <select id="observerPrimary"
+                  className="form-control m-b"
+                  data-init={this.state.observerPrimary.firstName + ' ' + this.state.observerPrimary.lastName}
+                  value={this.state.observerPrimaryId}>
                   <option></option>
                 </select>
               </div>
@@ -228,7 +257,10 @@ class ObserveHeader extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Secondary Observer's Name</label>
               <div className="col-sm-8">
-                <select id="observerSecondary" className="form-control m-b" value={this.state.observerSecondaryId}>
+                <select id="observerSecondary"
+                  className="form-control m-b"
+                  data-init={this.state.observerSecondary.firstName + ' ' + this.state.observerSecondary.lastName}
+                  value={this.state.observerSecondaryId}>
                   <option></option>
                 </select>
               </div>
@@ -818,10 +850,13 @@ class ObserveModerate extends Component{
   constructor(props){
     super(props);
     this.state = {
-        moderated: props.moderated || false,
-        moderatorId: props.moderatorId || '',
-        learningCoachId: props.learningCoachId || '',
-        hodId: props.hodId || ''
+        moderated: props.observation.moderated || false,
+        moderatorId: props.observation.moderatorId || '',
+        learningCoachId: props.observation.learningCoachId || '',
+        hodId: props.observation.hodId || '',
+        moderator: props.observation.moderator || {firstName: '', lastName: ''},
+        learningCoach: props.observation.learningCoach || {firstName: '', lastName: ''},
+        hod: props.observation.hod || {firstName: '', lastName: ''}
     }
   }
 
@@ -870,10 +905,24 @@ class ObserveModerate extends Component{
           return staff.firstName + " " + staff.lastName;
         },
         templateSelection: function formatRepoSelection (staff) {
-          return staff.firstName === undefined ? "Please Select" : staff.firstName + " " + staff.lastName ;
+          if(staff === undefined){
+            return "Please select";
+          }
+          else{
+            if(staff.firstName != null){
+              return staff.firstName + " " + staff.lastName;
+            }
+            else if(staff.name != null){
+              return staff.name;
+            }
+            return "Please select";
+          }
+        },
+        initSelection: function(element, callback) {
+          var value = $(element).attr('data-init');
+          callback({name: value});
         }
       };
-
 
     $('#moderator').select2(configs);
     $('#moderator').on('change', this.handleModeratorIdChange.bind(this));
@@ -903,7 +952,10 @@ class ObserveModerate extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Moderator Name</label>
               <div className="col-sm-8">
-                <select id="moderator" className="form-control m-b" value={this.state.moderatorId}>
+                <select id="moderator"
+                  className="form-control m-b"
+                  data-init={this.state.moderator.firstName + " " + this.state.moderator.lastName}
+                  value={this.state.moderatorId}>
                   <option></option>
                 </select>
               </div>
@@ -913,7 +965,10 @@ class ObserveModerate extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Learning Coach Name</label>
               <div className="col-sm-8">
-                <select id="coach" className="form-control m-b" value={this.state.learningCoachId}>
+                <select id="coach"
+                  className="form-control m-b"
+                  data-init={this.state.learningCoach.firstName + " " + this.state.learningCoach.lastName}
+                  value={this.state.learningCoachId}>
                   <option></option>
                 </select>
               </div>
@@ -921,7 +976,10 @@ class ObserveModerate extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Head of Department Name</label>
               <div className="col-sm-8">
-                <select id="hod" className="form-control m-b" value={this.state.hodId}>
+                <select id="hod"
+                  className="form-control m-b"
+                  data-init={this.state.hod.firstName + " " + this.state.hod.lastName}
+                  value={this.state.hodId}>
                   <option></option>
                 </select>
               </div>
@@ -1363,10 +1421,7 @@ class Entry extends Component {
                         key={this.props.title+"-moderate"}
                         mode={this.props.title}
                         updateObservation={this.updateObservation}
-                        moderated={this.state.observationData.moderated}
-                        learningCoachId={this.state.observationData.learningCoachId}
-                        moderatorId={this.state.observationData.moderatorId}
-                        hodId={this.state.observationData.hodId}
+                        observation={this.state.observationData}
                         staffs={this.state.staffs}
                       />
                       <ObserveRecommendations
