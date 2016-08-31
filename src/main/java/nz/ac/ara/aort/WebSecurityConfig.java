@@ -46,24 +46,22 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
         @Override
         public void init(AuthenticationManagerBuilder auth) throws Exception {
-            auth
-                    .ldapAuthentication()
-                    .userDnPatterns("uid={0},ou=people")
-                    .groupSearchBase("ou=groups")
-                    .contextSource().ldif("classpath:test-server.ldif");
-//                    .and()
-//                    .ldapAuthoritiesPopulator(authoritiesPopulator); 
-//          
+//            auth
+//                    .ldapAuthentication()
+//                    .userDnPatterns("uid={0},ou=people")
+//                    .groupSearchBase("ou=groups")
+//                    .contextSource().ldif("classpath:test-server.ldif");
+////                    .and()
+////                    .ldapAuthoritiesPopulator(authoritiesPopulator); 
 //          TODO: Use this in prod
-//          auth.ldapAuthentication()
-//                    .userSearchFilter("CN={0}")
-//                    .userSearchBase("OU=staff,O=LDAP")
-//                    .groupSearchBase("CN=BU-AllStaff,OU=groups,O=LDAP")
-//                    .contextSource()
-//                    .url("ldap://lds.cpit.ac.nz")
-//                    .managerDn("cn=webserver,ou=ServiceAccounts,o=LDAP")
-//                    .managerPassword("");
-            
+            auth.ldapAuthentication()
+                    .userSearchFilter("CN={0}")
+                    .userSearchBase("OU=staff,O=LDAP")
+                    .groupSearchBase("CN=BU-AllStaff,OU=groups,O=LDAP")
+                    .contextSource()
+                    .url("ldap://lds.cpit.ac.nz")
+                    .managerDn("cn=webserver,ou=ServiceAccounts,o=LDAP")
+                    .managerPassword("");
         }
     }
 }

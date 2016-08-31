@@ -75,8 +75,8 @@ INSERT INTO dbo.observation VALUES ('testestsetst 18', 0, 'test aja 18', 1, 'tes
 INSERT INTO dbo.observation VALUES ('testestsetst 19', 0, 'test aja 19', 1, 'test 19', 1, null, '2016-08-25', 'test 19', '00000065', 2, '00000065', null, null, '00000065', 'test 19', 1, '00000065', 'testsetstset19', '00000065', '00000065', 'estset19setse', 1, '2', 'te19stetsetse', 2, 'tests19et', '00000065', 1, '03:45:38.0000000', 1);
 INSERT INTO dbo.observation VALUES ('testestsetst 20', 0, 'test aja 20', 1, 'test 20', 1, null, '2016-08-25', 'test 20', '00000065', 2, '00000065', null, null, '00000065', 'test 20', 1, '00000065', 'testsetstset20', '00000065', '00000065', 'estset20setse', 1, '2', 'te20stetsetse', 2, 'tests20et', '00000065', 1, '03:45:38.0000000', 1);
 
-update academic_observation.dbo.staff set username = 'ben' where staff_id = '00000065';
-update academic_observation.dbo.staff set username = 'bob' where staff_id = '00000216';
-update academic_observation.dbo.staff set username = 'qauser' where staff_id = '00000332';
-update academic_observation.dbo.staff set username = 'admin' where staff_id = '00000486';
+-- update dbo.staff set username = 'ben' where staff_id = '00000065';
+-- update dbo.staff set username = 'bob' where staff_id = '00000216';
+-- update dbo.staff set username = 'qauser' where staff_id = '00000332';
+-- update dbo.staff set username = 'admin' where staff_id = '00000486';
 
