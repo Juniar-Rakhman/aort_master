@@ -69,6 +69,7 @@ class Navigation extends Component {
             <a href="#"><i className="fa fa-book"></i> <span className="nav-label">Observation Record</span> </a>
             <ul className="nav nav-second-level">
               <li><a href="#" onClick={this.handleObservationSearch.bind(this)}>Data Search</a></li>
+              <li><a href="#" onClick={this.handleEntry.bind(this)}>Data Entry</a></li>
             </ul>
           </li>
         );
@@ -88,7 +89,7 @@ class Navigation extends Component {
                 <span className="clear"> <span className="block m-t-xs"> <strong className="font-bold">{this.props.staff.firstName + ' ' + this.props.staff.lastName}</strong>
                  </span> </span> </a>
                 <ul className="dropdown-menu animated fadeInRight m-t-xs">
-                    <li><a href="#">Logout</a></li>
+                    <li><a href="/logout">Logout</a></li>
                 </ul>
               </div>
                 <div className="logo-element">
