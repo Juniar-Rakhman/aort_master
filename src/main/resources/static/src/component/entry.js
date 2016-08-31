@@ -154,6 +154,7 @@ class ObserveHeader extends Component{
     this.setState({courseOutlineComment: e.target.value})
     this.props.updateObservation(newState);
   }
+
   componentDidMount() {
     var configs =
        {
@@ -1185,6 +1186,12 @@ class Entry extends Component {
     this.getDataStrengthImprovementReferences();
   }
 
+  componentWillReceiveProps(nextProps) {
+      if (nextProps.observation != this.props.observation) {
+        this.setState({observationData: nextProps.observation});
+      }
+  }
+
   handleComplete(){
     var observation = Object.assign({}, this.state.observationData, {completed: true});
     this.updateMethod(observation);
@@ -1202,6 +1209,10 @@ class Entry extends Component {
     } else if (this.props.title === 'Edit') {
       this.updateMethod(observation);
     }
+  }
+
+  handleBack() {
+    this.props.redirectTo('observationSearch');
   }
 
   createMethod(observation) {
@@ -1258,17 +1269,17 @@ class Entry extends Component {
     if(this.props.title === 'Edit') {
       submitButtons = (
         <div className="col-sm-4 col-sm-offset-9">
-          <button {...this.props.mode} className="btn btn-white" style={btnStyle} type="submit">Cancel</button>
+          <button {...this.props.mode} className="btn btn-white" style={btnStyle} type="button" onClick={this.handleBack.bind(this)}>Cancel</button>
           <button {...this.props.mode} className="btn btn-primary" style={btnStyle} type="button" onClick={this.handleComplete.bind(this)}>Complete</button>
-          <button {...this.props.mode} className="btn btn-primary" type="submit" value="post">Save</button>
+          <button {...this.props.mode} className="btn btn-primary" type="button" value="post" onClick={this.handleSubmit.bind(this)}>Save</button>
         </div>
       );
     }
     else if(this.props.title === 'Create') {
       submitButtons = (
         <div className="col-sm-4 col-sm-offset-10">
-          <button {...this.props.mode} className="btn btn-white" style={btnStyle} type="submit">Cancel</button>
-          <button {...this.props.mode} className="btn btn-primary" type="submit" value="post">Save</button>
+          <button {...this.props.mode} className="btn btn-white" style={btnStyle} type="button" onClick={this.handleBack.bind(this)}>Cancel</button>
+          <button {...this.props.mode} className="btn btn-primary" type="button" value="post" onClick={this.handleSubmit.bind(this)}>Save</button>
         </div>
       );
     }
@@ -1282,8 +1293,9 @@ class Entry extends Component {
                       <h5>Observation {this.props.title}</h5>
                   </div>
                   <div className="ibox-content">
-                    <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
+                    <form className="form-horizontal">
                       <ObserveHeader
+                        key={this.props.title+"-header"}
                         observation={this.state.observationData}
                         mode={this.props.title}
                         disabled='true'
@@ -1291,12 +1303,14 @@ class Entry extends Component {
                         staffs={this.state.staffs}
                       />
                       <ObserveEntries
+                        key={this.props.title+"-entries"}
                         categoryItems={this.state.strengthImprovementReferences}
                         strengthImprovements={this.state.observationData.strengthImprovements || []}
                         mode={this.props.title}
                         updateObservation={this.updateObservation}
                       />
                       <ObserveSummary
+                        key={this.props.title+"-summary"}
                         mode={this.props.title}
                         updateObservation={this.updateObservation}
                         ratingSummary={this.state.observationData.ratingSummary}
@@ -1306,6 +1320,7 @@ class Entry extends Component {
                         ratingReferences={this.state.ratingReferences}
                       />
                       <ObserveModerate
+                        key={this.props.title+"-moderate"}
                         mode={this.props.title}
                         updateObservation={this.updateObservation}
                         moderated={this.state.observationData.moderated}
@@ -1315,6 +1330,7 @@ class Entry extends Component {
                         staffs={this.state.staffs}
                       />
                       <ObserveRecommendations
+                        key={this.props.title+"-recommendations"}
                         updateObservation={this.updateObservation}
                         recommendations={this.state.observationData.observationRecommendations || []}
                         categoryItems={this.state.strengthImprovementReferences}
@@ -1333,7 +1349,7 @@ class Entry extends Component {
         );
     }
     else {
-    return <div>Loading...</div>
+        return <div>Loading...</div>
     }
   }
 }
