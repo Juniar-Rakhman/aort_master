@@ -96,7 +96,7 @@ class Navigation extends Component {
                   <h1> ARA </h1>
                 </div>
             </li>
-            <li className="active">
+            <li>
               <a href="#"><i className="fa fa-home"></i> <span className="nav-label">Dashboard</span></a>
               <ul className="nav nav-second-level">
                 <li><a href="#" onClick={this.handleBackHome.bind(this)}>Home</a></li>
