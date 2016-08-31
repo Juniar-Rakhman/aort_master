@@ -74,11 +74,6 @@ class PageInfo extends Component {
   render() {
     return (
       <div>
-        <nav aria-label="navigation" className="pull-left">
-          <ul className="pagination">
-            {this.renderSizeOption()}
-          </ul>
-        </nav>
         <nav aria-label="navigation" className="pull-right">
           <ul className="pagination">
             <li className={this.disablePrevious()}>

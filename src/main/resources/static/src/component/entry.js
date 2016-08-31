@@ -201,7 +201,7 @@ class ObserveHeader extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Teacher's Name</label>
               <div className="col-sm-8">
-                <select id="teacher" className="form-control m-b" value={this.state.staffId}>
+                <select id="teacher" className="form-control m-b" value={this.state.staffId} required>
                     <option></option>
                 </select>
               </div>
@@ -1199,6 +1199,46 @@ class Entry extends Component {
 
   handleSubmit(){
     var date = new Date();
+    console.log('observation:' + this.state.observationData);
+
+    /*
+      newObservationData is updated with initial value in case user didn't change the observation fields.
+      if it is not initialized, the data will be saved in null value and caused an error.
+    */
+    var newObservationData = Object.assign(this.state.observationData, {
+        moderated: this.state.observationData.moderated || false,
+        staffId: this.state.observationData.staffId || '',
+        lineManagerId: this.state.observationData.lineManagerId || '',
+        observerPrimaryId: this.state.observationData.observerPrimaryId || '',
+        observerSecondaryId: this.state.observationData.observerSecondaryId || '',
+        courseName: this.state.observationData.courseName || '',
+        courseLevel: this.state.observationData.courseLevel || 0,
+        programme: this.state.observationData.programme || '',
+        programmeLevel: this.state.observationData.programmeLevel || 0,
+        registeredLearners: this.state.observationData.registeredLearners || 0 ,
+        startLearners: this.state.observationData.startLearners || 0,
+        lateLearners: this.state.observationData.lateLearners || 0,
+        totalLearners: this.state.observationData.totalLearners || 0 ,
+        location: this.state.observationData.location || '',
+        department: this.state.observationData.department || '',
+        sessionContext: this.state.observationData.sessionContext || '',
+        notes: this.state.observationData.notes || '',
+        courseCode: this.state.observationData.courseCode || '',
+        lessonPlan: this.state.observationData.lessonPlan || false,
+        courseOutline: this.state.observationData.courseOutline || false,
+        lessonPlanComment: this.state.observationData.lessonPlanComment || '',
+        courseOutlineComment: this.state.observationData.courseOutlineComment || '',
+        ratingReferenceId: this.state.observationData.ratingReferenceId || '',
+        ratingSummary: this.state.observationData.ratingSummary || '',
+        additionalComments: this.state.observationData.additionalComments || '',
+        moderated: this.state.observationData.moderated || false,
+        moderatorId: this.state.observationData.moderatorId || '',
+        learningCoachId: this.state.observationData.learningCoachId || '',
+        hodId: this.state.observationData.hodId || ''
+    });
+
+    this.setState({observationData: newObservationData});
+
     var observation = Object.assign({}, this.state.observationData, {
         date: date.toISOString().slice(0,10),
         time: (date.toLocaleTimeString().slice(0,8)).trim(),
@@ -1290,7 +1330,7 @@ class Entry extends Component {
               <div className="col-lg-12">
                 <div className="ibox float-e-margins">
                   <div className="ibox-title">
-                      <h5>Observation {this.props.title}</h5>
+                      <h2>Observation {this.props.title}</h2>
                   </div>
                   <div className="ibox-content">
                     <form className="form-horizontal">

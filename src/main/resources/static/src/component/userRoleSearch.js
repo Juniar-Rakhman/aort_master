@@ -134,7 +134,7 @@ class UserRoleSearch extends Component {
             filterText: '',
             constFilterText: '',
             page: 0,
-            size: 20,
+            size: 10,
             totalPages: 10
         };
     }
@@ -212,7 +212,7 @@ class UserRoleSearch extends Component {
                     <div className="col-lg-12">
                         <div className="ibox float-e-margins">
                             <div className="ibox-title">
-                                <h5>Staff Role Search</h5>
+                                <h2>Staff Role Search</h2>
                             </div>
                             <div className="ibox-content">
                                 <div className="table-responsive">
