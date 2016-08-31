@@ -346,10 +346,10 @@ class ObserveEntries extends Component{
             <table className="table table-striped table-bordered table-hover dataTables-example">
                 <thead>
                   <tr>
-                    <th width="35%">Criteria</th>
+                    <th width="40%">Criteria</th>
                     <th width="5%">Strengths</th>
                     <th width="5%">Areas for improvement</th>
-                    <th width="55%">Evidence</th>
+                    <th width="50%">Evidence</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -518,10 +518,10 @@ class ObserveRecommendations extends Component {
               <table className="table table-striped table-bordered table-hover dataTables-example">
                   <thead>
                     <tr>
-                      <th width='35%'>Focus Area</th>
+                      <th width='40%'>Focus Area</th>
                       <th width='5%'>Strength</th>
                       <th width='5%'>Improvement</th>
-                      <th width='55%'>Action</th>
+                      <th width='50%'>Action</th>
                     </tr>
                   </thead>
                   <tbody>

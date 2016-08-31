@@ -29,10 +29,10 @@ class StaffTable extends Component {
             <table className="table table-striped table-bordered table-hover dataTables-example" >
                 <thead>
                     <tr>
-                        <th>Full Name</th>
-                        <th>Email</th>
-                        <th>Office Phone</th>
-                        <th>Department</th>
+                        <th width="30%">Full Name</th>
+                        <th width="20%">Email</th>
+                        <th width="20%">Office Phone</th>
+                        <th width="30%">Department</th>
                     </tr>
                 </thead>
                 <tbody>{rows}</tbody>
@@ -67,7 +67,6 @@ class SearchBar extends Component {
                 <form role="form" className="form-inline">
                     <div className="form-group">
                         <input type="text" placeholder="Find Staff" name="search" className="form-control input-lg"
-                            value={this.props.consFilterText}
                             ref="filterTextInput"
                             onChange={this.handleTextChange.bind(this)} />
                     </div>
@@ -95,7 +94,6 @@ class StaffSearch extends Component {
         this.state = {
             staffs: [],
             filterText: '',
-            constFilterText: '',
             page: 0,
             size: 10,
             totalPages: 10
@@ -103,6 +101,10 @@ class StaffSearch extends Component {
     };
 
     handleUserInput(value){
+        this.setState({
+            page: 0,
+            filterText: value
+        });
         this.getStaffBySearch(value);
     }
 
@@ -148,7 +150,12 @@ class StaffSearch extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if ((prevState.page != this.state.page) || (prevState.size != this.state.size)) {
-            this.getDataStaff();
+            if (this.state.filterText != '') {
+                this.getStaffBySearch(this.state.filterText);
+            }
+            else {
+                this.getDataStaff();
+            }
         }
     }
 
@@ -164,13 +171,11 @@ class StaffSearch extends Component {
                             </div>
                             <div className="ibox-content">
                                 <div className="table-responsive">
-                                    <SearchBar 
-                                        filterText={this.state.constFilterText}
+                                    <SearchBar
                                         onUserInput={this.handleUserInput}
                                     />
                                     <StaffTable 
                                         staffs={this.state.staffs}
-                                        filterText={this.state.constFilterText}
                                     />
                                     <PageInfo
                                         page={this.state.page}

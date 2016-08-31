@@ -37,11 +37,11 @@ class ObservationTable extends Component {
             <table className="table table-striped table-bordered table-hover dataTables-example" >
                 <thead>
                     <tr>
-                        <th>Staff Name</th>
-                        <th>Course Name</th>
-                        <th>Course Level</th>
-                        <th>Programme</th>
-                        <th>Programme Level</th>
+                        <th width='30%'>Staff Name</th>
+                        <th width='20%'>Course Name</th>
+                        <th width='15%'>Course Level</th>
+                        <th width='20%'>Programme</th>
+                        <th width='15%'>Programme Level</th>
                     </tr>
                 </thead>
                 <tbody>{rows}</tbody>
@@ -75,7 +75,6 @@ class SearchBar extends Component {
                 <form role="form" className="form-inline">
                     <div className="form-group">
                         <input type="text" placeholder="Find Observation" name="search" className="form-control input-lg"
-                            value={this.props.consFilterText}
                             ref="filterTextInput"
                             onChange={this.handleTextChange.bind(this)}/>
                     </div>
@@ -103,7 +102,6 @@ class ObservationSearch extends Component {
         this.state = {
             observations: [],
             filterText: '',
-            constFilterText: '',
             page: 0,
             size: 10,
             totalPages: 10
@@ -111,6 +109,10 @@ class ObservationSearch extends Component {
     };
 
     handleUserInput(value){
+        this.setState({
+            page: 0,
+            filterText: value
+        });
         this.getObservationBySearch(value);
     }
 
@@ -156,7 +158,12 @@ class ObservationSearch extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if ((prevState.page != this.state.page) || (prevState.size != this.state.size)) {
-            this.getDataObservation();
+            if (this.state.filterText != '') {
+                this.getObservationBySearch(this.state.filterText);
+            }
+            else {
+                this.getDataStaff();
+            }
         }
     }
 
@@ -171,13 +178,11 @@ class ObservationSearch extends Component {
                             </div>
                             <div className="ibox-content">
                                 <div className="table-responsive">
-                                    <SearchBar 
-                                        filterText={this.state.constFilterText}
+                                    <SearchBar
                                         onUserInput={this.handleUserInput}
                                     />
                                     <ObservationTable 
                                         observations={this.state.observations}
-                                        filterText={this.state.constFilterText}
                                         redirectTo={this.props.redirectTo}
                                         role={this.props.role}
                                     />

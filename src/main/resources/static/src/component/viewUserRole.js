@@ -135,9 +135,9 @@ class UserRoleForm extends Component {
                 </div>
                 <div className="ibox-content">
                     <div className="form-group">
-                      <div className="col-sm-4 col-sm-offset-9">
+                      <div className="col-sm-4 col-sm-offset-10">
                         <button className="btn btn-white" type="button" onClick={this.handleBack.bind(this)}>Cancel</button>&nbsp;
-                        <button className="btn btn-primary" type="button" onClick={this.handleSubmit.bind(this)}>Save changes</button>
+                        <button className="btn btn-primary" type="button" onClick={this.handleSubmit.bind(this)}>Save</button>
                       </div>
                     </div>
                 </div>

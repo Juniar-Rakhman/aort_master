@@ -3,10 +3,11 @@ import React, { Component } from 'react';
 class ObserveHeader extends Component{
   constructor(props){
     super(props);
+    var observerPrimary = props.mode === 'Create' ? props.staff : props.observation.observerPrimary;
     this.state = {
         staffId: props.observation.staffId || '',
         lineManagerId: props.observation.lineManagerId || '',
-        observerPrimaryId: props.observation.observerPrimaryId || '',
+        observerPrimaryId: observerPrimary.id || '',
         observerSecondaryId: props.observation.observerSecondaryId || '',
         courseName: props.observation.courseName || '',
         courseLevel: props.observation.courseLevel || '',
@@ -27,7 +28,7 @@ class ObserveHeader extends Component{
         courseOutlineComment: props.observation.courseOutlineComment || '',
         staff: props.observation.staff || {firstName:'', lastName:''},
         lineManager: props.observation.lineManager || {firstName:'', lastName:''},
-        observerPrimary: props.observation.observerPrimary || {firstName:'', lastName:''},
+        observerPrimary: observerPrimary || {firstName:'', lastName:''},
         observerSecondary: props.observation.observerSecondary || {firstName:'', lastName:''}
     }
     console.log('ObserveHeader mode: '+ this.props.mode);
@@ -209,6 +210,11 @@ class ObserveHeader extends Component{
 
     $('#observerSecondary').select2(configs);
     $('#observerSecondary').on('change', this.handleSecondObserverNameChange.bind(this));
+
+    if(this.props.mode === 'Create') {
+        var newState = Object.assign(this.state, {observerPrimaryId: this.props.staff.id});
+        this.props.updateObservation(newState);
+    }
   }
 
   render(){
@@ -738,10 +744,10 @@ class ObserveEntries extends Component{
               <table className="table table-striped table-bordered table-hover dataTables-example">
                   <thead>
                     <tr>
-                      <th width="35%">Criteria</th>
+                      <th width="40%">Criteria</th>
                       <th width="5%">Strengths</th>
                       <th width="5%">Areas for improvement</th>
-                      <th width="55%">Evidence</th>
+                      <th width="50%">Evidence</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1163,10 +1169,10 @@ class ObserveRecommendations extends Component {
               <table className="table table-striped table-bordered table-hover dataTables-example">
                   <thead>
                     <tr>
-                      <th width='35%'>Focus Area</th>
+                      <th width='40%'>Focus Area</th>
                       <th width='5%'>Strength</th>
                       <th width='5%'>Improvement</th>
-                      <th width='55%'>Action</th>
+                      <th width='50%'>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1399,6 +1405,7 @@ class Entry extends Component {
                         disabled='true'
                         updateObservation={this.updateObservation}
                         staffs={this.state.staffs}
+                        staff={this.props.staff}
                       />
                       <ObserveEntries
                         key={this.props.title+"-entries"}

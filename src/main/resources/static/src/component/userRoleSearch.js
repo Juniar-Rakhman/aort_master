@@ -103,7 +103,6 @@ class SearchBar extends Component {
             <form role="form" className="form-inline">
               <div className="input-group">
                   <input type="text" placeholder="Find Staff's Role" name="search" className="form-control input-lg"
-                      value={this.props.consFilterText}
                       ref="filterTextInput"
                       onChange={this.handleTextChange.bind(this)} />
               </div>
@@ -132,7 +131,6 @@ class UserRoleSearch extends Component {
             userRoles: [],
             staffs: [],
             filterText: '',
-            constFilterText: '',
             page: 0,
             size: 10,
             totalPages: 10
@@ -140,6 +138,10 @@ class UserRoleSearch extends Component {
     }
 
     handleUserInput(name){
+        this.setState({
+            page: 0,
+            filterText: name
+        });
         this.getStaffBySearch(name);
         this.getDataUserRole();
     }
@@ -147,7 +149,7 @@ class UserRoleSearch extends Component {
     getStaffBySearch(name){
         $.ajax({
             type: 'GET',
-            url: "api/staffs/search/findByStaffName?name=" + name,
+            url: "api/staffs/search/findByStaffName?name=" + name + "&page=" + this.state.page + "&size=" + this.state.size,
             success: function(response) {
                 this.setState({staffs: response["_embedded"]["staffs"]});
                 this.setState({totalPages: response["page"]["totalPages"]});
@@ -200,12 +202,16 @@ class UserRoleSearch extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if ((prevState.page != this.state.page) || (prevState.size != this.state.size)) {
-            this.getDataStaff();
+            if (this.state.filterText != '') {
+                this.getStaffBySearch(this.state.filterText);
+            }
+            else {
+                this.getDataStaff();
+            }
         }
     }
 
     render() {
-        console.log('test ini:' + this.state.constFilterText);
         return (
             <div className="wrapper-content animated fadeInRight">
                 <div className="row">
@@ -216,14 +222,12 @@ class UserRoleSearch extends Component {
                             </div>
                             <div className="ibox-content">
                                 <div className="table-responsive">
-                                    <SearchBar 
-                                        filterText={this.state.constFilterText}
+                                    <SearchBar
                                         onUserInput={this.handleUserInput}
                                     />
                                     <UserRoleTable 
                                         staffs={this.state.staffs}
                                         userRoles={this.state.userRoles}
-                                        filterText={this.state.constFilterText}
                                         redirectTo={this.props.redirectTo}
                                     />
                                     <PageInfo
