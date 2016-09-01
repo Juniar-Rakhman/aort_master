@@ -96,24 +96,24 @@ class SearchBar extends Component {
 
     render() {
       var style = {
-        "padding-top": "5px"
+        "margin-bottom": "0px"
       }
       return (
-        <div className="form-group">
+
+        <div className="m-b">
             <form role="form" className="form-inline">
-              <div className="input-group">
-                  <input type="text" placeholder="Find Staff's Role" name="search" className="form-control input-lg"
+              <div className="form-group">
+                  <input type="text" placeholder="Find Staff's Role" name="search" className="form-control"
                       ref="filterTextInput"
-                      onChange={this.handleTextChange.bind(this)} />
+                      onChange={this.handleTextChange.bind(this)} /> &nbsp;
               </div>
-              <div className="form-group" style={style}>
                 <button
+                    style={style}
                     className="btn btn-sm btn-primary"
                     type="button"
                     onClick={this.handleChange.bind(this)}
                     disabled={this.state.inputTextVal === ''}>Search
                 </button>
-              </div>
             </form>
         </div>
       );
