@@ -144,12 +144,12 @@ public class ObservationController {
             }
         }
 
-        if (!observation.getStaffId().isEmpty()) {
+        if (!observation.getModeratorId().isEmpty()) {
             Staff moderator = staffRepo.findOne(observation.getModeratorId());
             observation.setModerator(moderator);
         }
 
-        if (!observation.getModeratorId().isEmpty()) {
+        if (!observation.getStaffId().isEmpty()) {
             Staff staff = staffRepo.findOne(observation.getStaffId());
             observation.setStaff(staff);
         }

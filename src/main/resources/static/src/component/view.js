@@ -20,13 +20,13 @@ class ObserveHeader extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Teacher's Name</label>
               <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.staff.firstName + ' ' + this.props.observation.staff.lastName || init} disabled/>
+                <input type="text" className="form-control m-b" value={this.props.staff.firstName + ' ' + this.props.staff.lastName || init} disabled/>
               </div>
             </div>
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Line Manager's Line</label>
               <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.lineManager.firstName + ' ' + this.props.observation.lineManager.lastName || init} disabled/>
+                <input type="text" className="form-control m-b" value={this.props.lineManager.firstName + ' ' + this.props.lineManager.lastName || init} disabled/>
               </div>
             </div>
           </div>
@@ -35,13 +35,13 @@ class ObserveHeader extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Primary Observer's Name</label>
               <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.observerPrimary.firstName + ' ' + this.props.observation.observerPrimary.lastName || init} disabled/>
+                <input type="text" className="form-control m-b" value={this.props.observerPrimary.firstName + ' ' + this.props.observerPrimary.lastName || init} disabled/>
               </div>
             </div>
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Secondary Observer's Name</label>
               <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.observerSecondary.firstName + ' ' + this.props.observation.observerSecondary.lastName || init} disabled/>
+                <input type="text" className="form-control m-b" value={this.props.observerSecondary.firstName + ' ' + this.props.observerSecondary.lastName || init} disabled/>
               </div>
             </div>
           </div>
@@ -376,7 +376,7 @@ class ObserveSummary extends Component{
             <div className="col-sm-12">
               <label className="col-sm-4 control-label">Rating</label>
               <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.ratingReference.rating} disabled /><br/>
+                <input type="text" className="form-control m-b" value={this.props.ratingReference.rating} disabled /><br/>
               </div>
             </div>
             <div className="col-sm-12">
@@ -597,11 +597,21 @@ class View extends Component {
                       </div>
                       <div className="ibox-content">
                         <form method="get" className="form-horizontal">
-                          <ObserveHeader observation = {this.state.observation} />
+                          <ObserveHeader observation = {this.state.observation}
+                            staff = {this.state.observation.staff || {firstName: '', lastName: ''}}
+                            lineManager = {this.state.observation.lineManager || {firstName: '', lastName: ''}}
+                            observerPrimary = {this.state.observation.observerPrimary || {firstName: '', lastName: ''}}
+                            observerSecondary = {this.state.observation.observerSecondary || {firstName: '', lastName: ''}}
+                          />
                           <ObserveEntries strengthImprovements = {this.state.observation.strengthImprovements || []}
-                                          categoryItems = {this.state.strengthImprovementReferences}/>
-                          <ObserveSummary observation = {this.state.observation} />
-                          <ObserveModerate observation = {this.state.observation} />
+                            categoryItems = {this.state.strengthImprovementReferences}/>
+                          <ObserveSummary observation = {this.state.observation}
+                            ratingReference = {this.state.observation.ratingReference || {rating: ''}}/>
+                          <ObserveModerate observation = {this.state.observation}
+                            moderator = {this.state.observation.moderator || {firstName: '', lastName: ''}}
+                            learningCoach = {this.state.observation.learningCoach || {firstName: '', lastName: ''}}
+                            hod = {this.state.observation.hod || {firstName: '', lastName: ''}}
+                          />
                           <ObserveRecommendations recommendations = {this.state.observation.observationRecommendations || []} />
                         </form>
                       </div>
