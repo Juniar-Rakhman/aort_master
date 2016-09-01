@@ -126,8 +126,8 @@ class UserRoleForm extends Component {
                             <label className="col-sm-4 control-label">Role</label>
                             <div className="col-sm-8">
                                 <input type="radio" name="role" value="general" checked={this.state.general} onChange={this.handleChange.bind(this)} /> General<br />
-                                <input type="radio" name="role" value="addObservation" checked={this.state.addObservation} onChange={this.handleChange.bind(this)} />  Add Observation<br />
-                                <input type="radio" name="role" value="systemAdmin" checked={this.state.systemAdmin} onChange={this.handleChange.bind(this)} /> System Administration<br />
+                                <input type="radio" name="role" value="addObservation" checked={this.state.addObservation} onChange={this.handleChange.bind(this)} /> Create Obs Record<br />
+                                <input type="radio" name="role" value="systemAdmin" checked={this.state.systemAdmin} onChange={this.handleChange.bind(this)} /> System Admin<br />
                                 <input type="radio" name="role" value="qualityAssurance" checked={this.state.qualityAssurance} onChange={this.handleChange.bind(this)} /> Quality Assurance
                             </div>
                         </div>
