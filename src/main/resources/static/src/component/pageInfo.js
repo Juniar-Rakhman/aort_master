@@ -77,13 +77,23 @@ class PageInfo extends Component {
         <nav aria-label="navigation" className="pull-right">
           <ul className="pagination">
             <li className={this.disablePrevious()}>
-              <a aria-label="Previous" onClick={this.disablePrevious() === 'disabled' ? '' : () => this.props.handlePage(this.props.page-1)} >
+              <a aria-label="First" onClick={this.disablePrevious() === 'disabled' ? '' : () => this.props.handlePage(0)} >
                 <span aria-hidden="true">&laquo;</span>
+              </a>
+            </li>
+            <li className={this.disablePrevious()}>
+              <a aria-label="Previous" onClick={this.disablePrevious() === 'disabled' ? '' : () => this.props.handlePage(this.props.page-1)} >
+                <span aria-hidden="true">&lsaquo;</span>
               </a>
             </li>
             {this.renderPage()}
             <li className={this.disableNext()}>
               <a aria-label="Next" onClick={this.disableNext() === 'disabled' ? '' :() => this.props.handlePage(this.props.page+1)}>
+                <span aria-hidden="true">&rsaquo;</span>
+              </a>
+            </li>
+            <li className={this.disableNext()}>
+              <a aria-label="Last" onClick={this.disableNext() === 'disabled' ? '' :() => this.props.handlePage(this.props.totalPages-1)}>
                 <span aria-hidden="true">&raquo;</span>
               </a>
             </li>
