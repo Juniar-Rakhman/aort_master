@@ -111,24 +111,22 @@ class Container extends Component {
   }
 
   render() {
-    if(this.state.staff != null) {
+    if(this.state.username != null && this.state.staff != null && this.state.role != null) {
         if(this.state.staff.isEmployed) {
-            if(this.state.role != null) {
-                return (
-                  <div className="main-content">
-                    <Navigation
-                      handlePageNav={this.handlePageNav}
-                      role={this.state.role}
-                      staff={this.state.staff}
-                      />
-                    <div id="page-wrapper" className="gray-bg">
-                      <Header />
-                      {this.renderContent() }
-                      {this.renderFooter() }
-                    </div>
-                  </div>
-                );
-            }
+            return (
+              <div className="main-content">
+                <Navigation
+                  handlePageNav={this.handlePageNav}
+                  role={this.state.role}
+                  staff={this.state.staff}
+                  />
+                <div id="page-wrapper" className="gray-bg">
+                  <Header />
+                  {this.renderContent() }
+                  {this.renderFooter() }
+                </div>
+              </div>
+            );
         }
         else {
             window.location = "/no_access";
