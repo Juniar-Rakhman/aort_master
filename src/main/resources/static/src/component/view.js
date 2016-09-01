@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class ObserveHeader extends Component{
   constructor(props){
@@ -621,7 +621,12 @@ class View extends Component {
               </div>
             );
     } else {
-        return <div>Loading...</div>
+        return (
+           <div className="wrapper-content" style={{textAlign: 'center'}}>
+             <i className="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
+             <span className="sr-only">Loading...</span>
+           </div>
+        );
     }
   }
 }

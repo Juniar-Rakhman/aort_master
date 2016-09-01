@@ -266,7 +266,8 @@ class ObserveHeader extends Component{
                 <select id="observerSecondary"
                   className="form-control m-b"
                   data-init={this.state.observerSecondary.firstName + ' ' + this.state.observerSecondary.lastName}
-                  value={this.state.observerSecondaryId}>
+                  value={this.state.observerSecondaryId}
+                  required>
                   <option></option>
                 </select>
               </div>
@@ -1261,7 +1262,7 @@ class Entry extends Component {
     this.updateMethod(observation);
   }
 
-  handleSubmit(){
+  handleSubmit(e){
     var date = new Date();
     console.log('observation:' + this.state.observationData);
 
@@ -1313,6 +1314,8 @@ class Entry extends Component {
     } else if (this.props.title === 'Edit') {
       this.updateMethod(observation);
     }
+
+    e.preventDefault();
   }
 
   handleBack() {
@@ -1375,7 +1378,7 @@ class Entry extends Component {
         <div className="col-sm-4 col-sm-offset-9">
           <button {...this.props.mode} className="btn btn-white" style={btnStyle} type="button" onClick={this.handleBack.bind(this)}>Cancel</button>
           <button {...this.props.mode} className="btn btn-primary" style={btnStyle} type="button" onClick={this.handleComplete.bind(this)}>Complete</button>
-          <button {...this.props.mode} className="btn btn-primary" type="button" value="post" onClick={this.handleSubmit.bind(this)}>Save</button>
+          <button {...this.props.mode} className="btn btn-primary" type="submit" value="post">Save</button>
         </div>
       );
     }
@@ -1383,7 +1386,7 @@ class Entry extends Component {
       submitButtons = (
         <div className="col-sm-4 col-sm-offset-10">
           <button {...this.props.mode} className="btn btn-white" style={btnStyle} type="button" onClick={this.handleBack.bind(this)}>Cancel</button>
-          <button {...this.props.mode} className="btn btn-primary" type="button" value="post" onClick={this.handleSubmit.bind(this)}>Save</button>
+          <button {...this.props.mode} className="btn btn-primary" type="submit" value="post">Save</button>
         </div>
       );
     }
@@ -1397,7 +1400,7 @@ class Entry extends Component {
                       <h2>Observation {this.props.title}</h2>
                   </div>
                   <div className="ibox-content">
-                    <form className="form-horizontal">
+                    <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
                       <ObserveHeader
                         key={this.props.title+"-header"}
                         observation={this.state.observationData}
@@ -1451,7 +1454,12 @@ class Entry extends Component {
         );
     }
     else {
-        return <div>Loading...</div>
+        return (
+          <div className="wrapper-content" style={{textAlign: 'center'}}>
+            <i className="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
+            <span className="sr-only">Loading...</span>
+          </div>
+        );
     }
   }
 }

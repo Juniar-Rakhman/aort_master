@@ -1,14 +1,14 @@
 import React, { Component } from 'react';
 import './container.css';
-import Navigation from './navigation'
-import Home from './home'
-import Header from './header'
-import Entry from "./entry"
-import StaffSearch from "./staffSearch"
-import ObservationSearch from "./observationSearch"
-import View from "./view"
-import UserRoleSearch from "./userRoleSearch"
-import ViewUserRole from "./viewUserRole"
+import Navigation from './navigation';
+import Home from './home';
+import Header from './header';
+import Entry from "./entry";
+import StaffSearch from "./staffSearch";
+import ObservationSearch from "./observationSearch";
+import View from "./view";
+import UserRoleSearch from "./userRoleSearch";
+import ViewUserRole from "./viewUserRole";
 
 class Container extends Component {
   constructor(props, context) {
@@ -135,7 +135,12 @@ class Container extends Component {
         }
     }
     else {
-        return <div>Loading...</div>
+        return (
+           <div className="main-content" style={{textAlign: 'center'}}>
+             <i className="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
+             <span className="sr-only">Loading...</span>
+           </div>
+        );
     }
 
   }
