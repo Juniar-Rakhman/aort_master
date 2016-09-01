@@ -162,7 +162,7 @@ class ObservationSearch extends Component {
                 this.getObservationBySearch(this.state.filterText);
             }
             else {
-                this.getDataStaff();
+                this.getDataObservation();
             }
         }
     }
