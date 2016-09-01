@@ -93,7 +93,6 @@ class Navigation extends Component {
                 </ul>
               </div>
                 <div className="logo-element">
-                  <h1> ARA </h1>
                 </div>
             </li>
             <li>

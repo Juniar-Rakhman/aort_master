@@ -161,7 +161,6 @@ class StaffSearch extends Component {
     }
 
     render() {
-        console.log('test ini:' + this.state.constFilterText);
         return (
             <div className="wrapper-content animated fadeInRight">
                 <div className="row">

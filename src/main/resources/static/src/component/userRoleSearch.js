@@ -25,10 +25,10 @@ class UserRoleRow extends Component {
             role = "General";
           }
           else if(this.props.role.addObservation) {
-            role = "Add Observation";
+            role = "Create Obs Record";
           }
           else if(this.props.role.systemAdmin) {
-            role = "System Administration";
+            role = "System Admin";
           }
           else if(this.props.role.qualityAssurance) {
             role = "Quality Assurance";
