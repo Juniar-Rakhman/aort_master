@@ -229,10 +229,11 @@ class ObserveHeader extends Component{
               <div className="col-sm-8">
                 <select id="teacher"
                   className="form-control m-b"
+                  style={{width: "100%"}}
                   data-init={this.state.staff.firstName + ' ' + this.state.staff.lastName}
                   value={this.state.staffId}
                   required={this.state.staffId === ''}>
-                    <option></option>
+                  <option></option>
                 </select>
               </div>
             </div>
@@ -241,6 +242,7 @@ class ObserveHeader extends Component{
               <div className="col-sm-8">
                 <select id="lineManager"
                   className="form-control m-b"
+                  style={{width: "100%"}}
                   data-init={this.state.lineManager.firstName + ' ' + this.state.lineManager.lastName}
                   value={this.state.lineManagerId}>
                   <option></option>
@@ -255,6 +257,7 @@ class ObserveHeader extends Component{
               <div className="col-sm-8">
                 <select id="observerPrimary"
                   className="form-control m-b"
+                  style={{width: "100%"}}
                   data-init={this.state.observerPrimary.firstName + ' ' + this.state.observerPrimary.lastName}
                   value={this.state.observerPrimaryId}>
                   <option></option>
@@ -266,6 +269,7 @@ class ObserveHeader extends Component{
               <div className="col-sm-8">
                 <select id="observerSecondary"
                   className="form-control m-b"
+                  style={{width: "100%"}}
                   data-init={this.state.observerSecondary.firstName + ' ' + this.state.observerSecondary.lastName}
                   value={this.state.observerSecondaryId}
                   required={this.state.observerSecondaryId === ''}>
@@ -815,9 +819,12 @@ class ObserveSummary extends Component{
             <div className="col-sm-12">
               <label className="col-sm-4 control-label">Rating</label>
               <div className="col-sm-8">
-                <select id="rating" className="form-control m-b" value={this.state.ratingReferenceId}>
-                  <option></option>
-                  {this.populateRating()}
+                <select id="rating"
+                    className="form-control m-b"
+                    style={{width: "100%"}}
+                    value={this.state.ratingReferenceId}>
+                    <option></option>
+                    {this.populateRating()}
                 </select>
               </div>
             </div>
@@ -962,6 +969,7 @@ class ObserveModerate extends Component{
               <div className="col-sm-8">
                 <select id="moderator"
                   className="form-control m-b"
+                  style={{width: "100%"}}
                   data-init={this.state.moderator.firstName + " " + this.state.moderator.lastName}
                   value={this.state.moderatorId}>
                   <option></option>
@@ -975,6 +983,7 @@ class ObserveModerate extends Component{
               <div className="col-sm-8">
                 <select id="coach"
                   className="form-control m-b"
+                  style={{width: "100%"}}
                   data-init={this.state.learningCoach.firstName + " " + this.state.learningCoach.lastName}
                   value={this.state.learningCoachId}>
                   <option></option>
@@ -986,6 +995,7 @@ class ObserveModerate extends Component{
               <div className="col-sm-8">
                 <select id="hod"
                   className="form-control m-b"
+                  style={{width: "100%"}}
                   data-init={this.state.hod.firstName + " " + this.state.hod.lastName}
                   value={this.state.hodId}>
                   <option></option>

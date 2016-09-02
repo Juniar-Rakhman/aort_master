@@ -390,7 +390,15 @@ If you have ideas for more “How To” recipes that should be on this page, [le
 
 3. Open file webpack.config.prod.js located in [project_directory]\src\main\resources\static\node_modules\react-scripts\config
 4. Change output file name into 'static/js/bundle.js'
-5. Install the project 
+5. Install the project
+
+### Install webpack config and babel plugin for object-assign compiler
+1. Copy file './config/build.js' into './node_modules/react-scripts/scripts/'
+2. Copy file './config/webpack.config.prod.js' and './config/babel.prod.js' into './node_modules/react-scripts/config/'
+3. Run command prompt as administrator
+4. Go to './node_modules/react-scripts/'
+5. Run 'npm install babel-plugin-transform-object-assign --save' in command prompt
+6. Run maven install
 
 
 
