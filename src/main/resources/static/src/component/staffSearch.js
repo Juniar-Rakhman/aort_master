@@ -48,10 +48,11 @@ class SearchBar extends Component {
         this.state = {inputTextVal: ''}
     }
 
-    handleChange() {
+    handleChange(e) {
         this.props.onUserInput(
             this.refs.filterTextInput.value
         )
+        e.preventDefault();
     }
 
     handleTextChange(e){
@@ -64,21 +65,18 @@ class SearchBar extends Component {
         }
         return (
             <div className="m-b">
-                <form role="form" className="form-inline">
+                <form role="form" className="form-inline" onSubmit={this.handleChange.bind(this)}>
                     <div className="form-group">
                         <input type="text" placeholder="Find Staff" name="search" className="form-control"
                             ref="filterTextInput"
                             onChange={this.handleTextChange.bind(this)} /> &nbsp;
                     </div>
-
                     <button
                         style={style}
                         className="btn btn-sm btn-primary"
-                        type="button"
-                        onClick={this.handleChange.bind(this)}
+                        type="submit"
                         disabled={this.state.inputTextVal === ''}>Search
                     </button>
-
                 </form>
             </div>
         );

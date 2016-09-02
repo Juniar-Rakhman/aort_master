@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 
 class ObserveHeader extends Component{
   constructor(props){
@@ -230,7 +231,7 @@ class ObserveHeader extends Component{
                   className="form-control m-b"
                   data-init={this.state.staff.firstName + ' ' + this.state.staff.lastName}
                   value={this.state.staffId}
-                  required>
+                  required={this.state.staffId === ''}>
                     <option></option>
                 </select>
               </div>
@@ -267,7 +268,7 @@ class ObserveHeader extends Component{
                   className="form-control m-b"
                   data-init={this.state.observerSecondary.firstName + ' ' + this.state.observerSecondary.lastName}
                   value={this.state.observerSecondaryId}
-                  required>
+                  required={this.state.observerSecondaryId === ''}>
                   <option></option>
                 </select>
               </div>
@@ -1263,7 +1264,6 @@ class Entry extends Component {
   }
 
   handleSubmit(e){
-    var date = new Date();
     console.log('observation:' + this.state.observationData);
 
     /*
@@ -1304,9 +1304,12 @@ class Entry extends Component {
 
     this.setState({observationData: newObservationData});
 
+    var date = moment().format('YYYY-MM-DD');
+    var time = moment().format('HH:mm:ss');
+
     var observation = Object.assign({}, this.state.observationData, {
-        date: date.toISOString().slice(0,10),
-        time: (date.toLocaleTimeString().slice(0,8)).trim(),
+        date: date,
+        time: time,
         completed: false
     });
     if (this.props.title === 'Create') {

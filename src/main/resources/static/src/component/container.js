@@ -104,7 +104,7 @@ class Container extends Component {
     return (
       <div className="footer">
         <div>
-          <strong>Copyright</strong> Company &copy; 2016
+          <strong>Copyright</strong> Ara &copy; 2016
         </div>
       </div>
     );
