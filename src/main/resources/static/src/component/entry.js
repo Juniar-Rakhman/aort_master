@@ -6,6 +6,8 @@ class ObserveHeader extends Component{
     super(props);
     var observerPrimary = props.mode === 'Create' ? props.staff : props.observation.observerPrimary;
     this.state = {
+        date: props.observation.date || "[auto]",
+        time: props.observation.time || "[auto]",
         staffId: props.observation.staffId || '',
         lineManagerId: props.observation.lineManagerId || '',
         observerPrimaryId: observerPrimary.id || '',
@@ -33,6 +35,18 @@ class ObserveHeader extends Component{
         observerSecondary: props.observation.observerSecondary || {firstName:'', lastName:''}
     }
     console.log('ObserveHeader mode: '+ this.props.mode);
+  }
+
+  handleDate(e){
+    var newState = Object.assign(this.state, {date: e.target.value})
+    this.setState({date: e.target.value})
+    this.props.updateObservation(newState);
+  }
+
+  handleTime(e){
+    var newState = Object.assign(this.state, {time: e.target.value})
+    this.setState({date: e.target.value})
+    this.props.updateObservation(newState);
   }
 
   handleTeacherNameChange(e){
@@ -223,59 +237,92 @@ class ObserveHeader extends Component{
       <div className="ibox-content">
         <div className="form-group">
 
-            <div className="row m-b">
-            <div className="col-sm-6">
+          <div className="row m-b">
+            <div className="col-sm-4">
               <label className="col-sm-4 control-label">Teacher's Name</label>
               <div className="col-sm-8">
                 <select id="teacher"
                   className="form-control m-b"
                   data-init={this.state.staff.firstName + ' ' + this.state.staff.lastName}
+                  style={{width: "100%"}}
                   value={this.state.staffId}
                   required={this.state.staffId === ''}>
                     <option></option>
                 </select>
               </div>
             </div>
-            <div className="col-sm-6">
+            <div className="col-sm-5">
               <label className="col-sm-4 control-label">Line Manager's Name</label>
               <div className="col-sm-8">
                 <select id="lineManager"
                   className="form-control m-b"
                   data-init={this.state.lineManager.firstName + ' ' + this.state.lineManager.lastName}
+                  style={{width: "100%"}}
                   value={this.state.lineManagerId}>
                   <option></option>
                 </select>
               </div>
             </div>
+            <div className="col-sm-3">
+              <label className="col-sm-3 control-label">Date</label>
+              <div className="col-sm-9">
+                <input
+                    {...this.props.mode}
+                    type="text"
+                    disabled
+                    value={this.state.date}
+                    className="form-control m-b"
+                />
+              </div>
             </div>
+          </div>
 
-            <div className="row">
+          <div className="row">
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Primary Observer's Name</label>
               <div className="col-sm-8">
                 <select id="observerPrimary"
                   className="form-control m-b"
                   data-init={this.state.observerPrimary.firstName + ' ' + this.state.observerPrimary.lastName}
+                  style={{width: "100%"}}
                   value={this.state.observerPrimaryId}>
                   <option></option>
                 </select>
               </div>
             </div>
             <div className="col-sm-6">
+              <label className="col-sm-4 control-label">Time of Observation</label>
+              <div className="col-sm-8">
+                <input
+                    {...this.props.mode}
+                    type="text"
+                    disabled
+                    value={this.state.time}
+                    className="form-control m-b"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-sm-6">
               <label className="col-sm-4 control-label">Secondary Observer's Name</label>
               <div className="col-sm-8">
                 <select id="observerSecondary"
                   className="form-control m-b"
                   data-init={this.state.observerSecondary.firstName + ' ' + this.state.observerSecondary.lastName}
+                  style={{width: "100%"}}
                   value={this.state.observerSecondaryId}
                   required={this.state.observerSecondaryId === ''}>
                   <option></option>
                 </select>
               </div>
             </div>
+            <div className="col-sm-6">
+            </div>
           </div>
 
-            <div className="row">
+          <div className="row">
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Course Code</label>
               <div className="col-sm-8">
@@ -287,72 +334,6 @@ class ObserveHeader extends Component{
                     className="form-control m-b"
                     value={this.state.courseCode}
                     onChange={this.handleCourseCodeChange.bind(this)}
-                />
-              </div>
-            </div>
-            <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Programme/ Qualification</label>
-              <div className="col-sm-8">
-                <input
-                    {...this.props.mode}
-                    type="text"
-                    placeholder="100 characters allowed"
-                    maxLength={100}
-                    className="form-control m-b"
-                    value={this.state.programme}
-                    onChange={this.handleProgrammeChange.bind(this)}
-                />
-              </div>
-            </div>
-            </div>
-
-            <div className="row">
-            <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Course Title</label>
-              <div className="col-sm-8">
-                <input
-                    {...this.props.mode}
-                    type="text"
-                    placeholder="100 characters allowed"
-                    maxLength={100}
-                    className="form-control m-b"
-                    value={this.state.courseName}
-                    onChange={this.handleCourseChange.bind(this)}
-                />
-              </div>
-            </div>
-            <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Programme Level</label>
-              <div className="col-sm-8">
-                <input
-                    {...this.props.mode}
-                    type="number"
-                    min={0}
-                    max={99}
-                    placeholder="Max value is 99"
-                    className="form-control m-b"
-                    value={this.state.programmeLevel}
-                    onChange={this.handleProgrammeLevelChange.bind(this)}
-                />
-              </div>
-
-            </div>
-            </div>
-
-
-            <div className="row">
-            <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Course Level </label>
-              <div className="col-sm-8">
-                <input
-                    {...this.props.mode}
-                    type="number"
-                    min={0}
-                    max={99}
-                    placeholder="Max value is 99"
-                    className="form-control m-b"
-                    value={this.state.courseLevel}
-                    onChange={this.handleCourseLevelChange.bind(this)}
                 />
               </div>
             </div>
@@ -371,22 +352,20 @@ class ObserveHeader extends Component{
                 />
               </div>
             </div>
-            </div>
+          </div>
 
-
-            <div className="row">
+          <div className="row">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">No of learners late</label>
+              <label className="col-sm-4 control-label">Course Title</label>
               <div className="col-sm-8">
                 <input
                     {...this.props.mode}
-                    type="number"
-                    min={0}
-                    max={999}
-                    placeholder="Max value is 999"
+                    type="text"
+                    placeholder="100 characters allowed"
+                    maxLength={100}
                     className="form-control m-b"
-                    value={this.state.lateLearners}
-                    onChange={this.handleNumLearnerLateChange.bind(this)}
+                    value={this.state.courseName}
+                    onChange={this.handleCourseChange.bind(this)}
                 />
               </div>
             </div>
@@ -405,10 +384,56 @@ class ObserveHeader extends Component{
                 />
               </div>
             </div>
+           </div>
+
+          <div className="row">
+            <div className="col-sm-6">
+              <label className="col-sm-4 control-label">Level</label>
+              <div className="col-sm-8">
+                <input
+                    {...this.props.mode}
+                    type="number"
+                    min={0}
+                    max={99}
+                    placeholder="Max value is 99"
+                    className="form-control m-b"
+                    value={this.state.courseLevel}
+                    onChange={this.handleCourseLevelChange.bind(this)}
+                />
+              </div>
             </div>
+            <div className="col-sm-6">
+              <label className="col-sm-4 control-label">No of learners late</label>
+              <div className="col-sm-8">
+                <input
+                    {...this.props.mode}
+                    type="number"
+                    min={0}
+                    max={999}
+                    placeholder="Max value is 999"
+                    className="form-control m-b"
+                    value={this.state.lateLearners}
+                    onChange={this.handleNumLearnerLateChange.bind(this)}
+                />
+              </div>
+            </div>
+          </div>
 
-
-            <div className="row">
+          <div className="row">
+            <div className="col-sm-6">
+              <label className="col-sm-4 control-label">Qualification</label>
+              <div className="col-sm-8">
+                <input
+                    {...this.props.mode}
+                    type="text"
+                    placeholder="100 characters allowed"
+                    maxLength={100}
+                    className="form-control m-b"
+                    value={this.state.programme}
+                    onChange={this.handleProgrammeChange.bind(this)}
+                />
+              </div>
+            </div>
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Total no. of learners in session</label>
               <div className="col-sm-8">
@@ -421,6 +446,25 @@ class ObserveHeader extends Component{
                     className="form-control m-b"
                     value={this.state.totalLearners}
                     onChange={this.handleTotalLearnerChange.bind(this)}
+                />
+              </div>
+            </div>
+          </div>
+
+
+          <div className="row">
+            <div className="col-sm-6">
+              <label className="col-sm-4 control-label">Level</label>
+              <div className="col-sm-8">
+                <input
+                    {...this.props.mode}
+                    type="number"
+                    min={0}
+                    max={99}
+                    placeholder="Max value is 99"
+                    className="form-control m-b"
+                    value={this.state.programmeLevel}
+                    onChange={this.handleProgrammeLevelChange.bind(this)}
                 />
               </div>
             </div>
@@ -438,9 +482,9 @@ class ObserveHeader extends Component{
                 />
               </div>
             </div>
-            </div>
+          </div>
 
-            <div className="row m-b">
+          <div className="row m-b">
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Campus Location</label>
               <div className="col-sm-8">
@@ -457,13 +501,14 @@ class ObserveHeader extends Component{
             </div>
             </div>
 
-            <div className="row">
+          <div className="row">
             <div className="col-sm-12">
-              <label className="col-sm-4 control-label">Context of Session (include stage in programme)</label>
-              <div className="col-sm-8">
+              <label className="col-sm-2 control-label">Context of Session (include stage in programme)</label>
+              <div className="col-sm-10">
                 <textarea
                     {...this.props.mode}
                     maxLength={250}
+                    style={{width: "100%", height: "70px"}}
                     placeholder="250 characters allowed"
                     type="text"
                     className="form-control m-b"
@@ -474,13 +519,14 @@ class ObserveHeader extends Component{
             </div>
           </div>
 
-            <div className="row">
+          <div className="row">
             <div className="col-sm-12">
-              <label className="col-sm-4 control-label">Observation Notes</label>
-              <div className="col-sm-8">
+              <label className="col-sm-2 control-label">Observation Notes</label>
+              <div className="col-sm-10">
                 <textarea
                     {...this.props.mode}
                     type="text"
+                    style={{width: "100%", height:"200px"}}
                     maxLength={1000}
                     placeholder="1000 characters allowed"
                     className="form-control m-b"
@@ -491,7 +537,7 @@ class ObserveHeader extends Component{
             </div>
           </div>
 
-            <div className="row m-b">
+          <div className="row m-b">
             <div className="col-sm-3">
               <label className="col-sm-8 control-label">Lesson Plan</label>
               <div className="col-sm-4">
@@ -516,9 +562,9 @@ class ObserveHeader extends Component{
                 />
               </div>
             </div>
-            </div>
+          </div>
 
-            <div className="row">
+          <div className="row">
             <div className="col-sm-3">
               <label className="col-sm-8 control-label">Course Outline</label>
               <div className="col-sm-4">
@@ -543,7 +589,7 @@ class ObserveHeader extends Component{
                 />
               </div>
             </div>
-            </div>
+          </div>
         </div>
       </div>
     )
@@ -815,7 +861,10 @@ class ObserveSummary extends Component{
             <div className="col-sm-12">
               <label className="col-sm-4 control-label">Rating</label>
               <div className="col-sm-8">
-                <select id="rating" className="form-control m-b" value={this.state.ratingReferenceId}>
+                <select id="rating"
+                  className="form-control m-b"
+                  value={this.state.ratingReferenceId}
+                  style={{width: "100%"}}>
                   <option></option>
                   {this.populateRating()}
                 </select>
@@ -962,6 +1011,7 @@ class ObserveModerate extends Component{
               <div className="col-sm-8">
                 <select id="moderator"
                   className="form-control m-b"
+                  style={{width: "100%"}}
                   data-init={this.state.moderator.firstName + " " + this.state.moderator.lastName}
                   value={this.state.moderatorId}>
                   <option></option>
@@ -974,6 +1024,7 @@ class ObserveModerate extends Component{
               <label className="col-sm-4 control-label">Learning Coach Name</label>
               <div className="col-sm-8">
                 <select id="coach"
+                  style={{width: "100%"}}
                   className="form-control m-b"
                   data-init={this.state.learningCoach.firstName + " " + this.state.learningCoach.lastName}
                   value={this.state.learningCoachId}>
@@ -985,6 +1036,7 @@ class ObserveModerate extends Component{
               <label className="col-sm-4 control-label">Head of Department Name</label>
               <div className="col-sm-8">
                 <select id="hod"
+                  style={{width: "100%"}}
                   className="form-control m-b"
                   data-init={this.state.hod.firstName + " " + this.state.hod.lastName}
                   value={this.state.hodId}>
