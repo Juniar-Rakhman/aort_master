@@ -25,10 +25,10 @@ class UserRoleRow extends Component {
             role = "General";
           }
           else if(this.props.role.addObservation) {
-            role = "Add Observation";
+            role = "Create Obs Record";
           }
           else if(this.props.role.systemAdmin) {
-            role = "System Administration";
+            role = "System Admin";
           }
           else if(this.props.role.qualityAssurance) {
             role = "Quality Assurance";
@@ -84,10 +84,11 @@ class SearchBar extends Component {
       this.state = {inputTextVal: ''}
     }
 
-    handleChange() {
+    handleChange(e) {
       this.props.onUserInput(
           this.refs.filterTextInput.value,
       )
+      e.preventDefault();
     }
 
     handleTextChange(e){
@@ -96,25 +97,23 @@ class SearchBar extends Component {
 
     render() {
       var style = {
-        "padding-top": "5px"
+        "margin-bottom": "0px"
       }
       return (
-        <div className="form-group">
-            <form role="form" className="form-inline">
-              <div className="input-group">
-                  <input type="text" placeholder="Find Staff's Role" name="search" className="form-control input-lg"
-                      value={this.props.consFilterText}
+
+        <div className="m-b">
+            <form role="form" className="form-inline" onSubmit={this.handleChange.bind(this)}>
+              <div className="form-group">
+                  <input type="text" placeholder="Find Staff's Role" name="search" className="form-control"
                       ref="filterTextInput"
-                      onChange={this.handleTextChange.bind(this)} />
+                      onChange={this.handleTextChange.bind(this)} /> &nbsp;
               </div>
-              <div className="form-group" style={style}>
                 <button
+                    style={style}
                     className="btn btn-sm btn-primary"
-                    type="button"
-                    onClick={this.handleChange.bind(this)}
+                    type="submit"
                     disabled={this.state.inputTextVal === ''}>Search
                 </button>
-              </div>
             </form>
         </div>
       );
@@ -132,7 +131,6 @@ class UserRoleSearch extends Component {
             userRoles: [],
             staffs: [],
             filterText: '',
-            constFilterText: '',
             page: 0,
             size: 10,
             totalPages: 10
@@ -140,6 +138,10 @@ class UserRoleSearch extends Component {
     }
 
     handleUserInput(name){
+        this.setState({
+            page: 0,
+            filterText: name
+        });
         this.getStaffBySearch(name);
         this.getDataUserRole();
     }
@@ -147,7 +149,7 @@ class UserRoleSearch extends Component {
     getStaffBySearch(name){
         $.ajax({
             type: 'GET',
-            url: "api/staffs/search/findByStaffName?name=" + name,
+            url: "api/staffs/search/findByStaffName?name=" + name + "&page=" + this.state.page + "&size=" + this.state.size,
             success: function(response) {
                 this.setState({staffs: response["_embedded"]["staffs"]});
                 this.setState({totalPages: response["page"]["totalPages"]});
@@ -200,12 +202,16 @@ class UserRoleSearch extends Component {
 
     componentDidUpdate(prevProps, prevState) {
         if ((prevState.page != this.state.page) || (prevState.size != this.state.size)) {
-            this.getDataStaff();
+            if (this.state.filterText != '') {
+                this.getStaffBySearch(this.state.filterText);
+            }
+            else {
+                this.getDataStaff();
+            }
         }
     }
 
     render() {
-        console.log('test ini:' + this.state.constFilterText);
         return (
             <div className="wrapper-content animated fadeInRight">
                 <div className="row">
@@ -216,14 +222,12 @@ class UserRoleSearch extends Component {
                             </div>
                             <div className="ibox-content">
                                 <div className="table-responsive">
-                                    <SearchBar 
-                                        filterText={this.state.constFilterText}
+                                    <SearchBar
                                         onUserInput={this.handleUserInput}
                                     />
                                     <UserRoleTable 
                                         staffs={this.state.staffs}
                                         userRoles={this.state.userRoles}
-                                        filterText={this.state.constFilterText}
                                         redirectTo={this.props.redirectTo}
                                     />
                                     <PageInfo

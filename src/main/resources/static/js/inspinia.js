@@ -104,11 +104,11 @@ $(document).ready(function () {
     //});
 
     // Minimalize menu
-    $('.navbar-minimalize').click(function () {
-        $("body").toggleClass("mini-navbar");
-        SmoothlyMenu();
+    //$('#navbar-minimalize').click(function () {
+//        $("body").toggleClass("mini-navbar");
+//        SmoothlyMenu();
 
-    });
+    //});
 
     // Tooltips demo
     $('.tooltip-demo').tooltip({

@@ -105,7 +105,7 @@ public class ObservationController {
             entity.put("success", true);
         } catch (Exception e) {
             e.printStackTrace();
-            entity.put("result", "You do not have access to this record");
+            entity.put("result", e.getMessage());
             entity.put("success", false);
         }
         return new ResponseEntity<>(entity, HttpStatus.OK);
@@ -140,7 +140,7 @@ public class ObservationController {
             }
 
             if (StringUtils.isEmpty(observation.getAccess())) {
-                throw new Exception("You do not have access to this record");
+                throw new Exception("You do not have access to this record.");
             }
         }
 

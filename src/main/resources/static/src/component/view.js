@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { Component } from 'react';
 
 class ObserveHeader extends Component{
   constructor(props){
@@ -17,16 +17,28 @@ class ObserveHeader extends Component{
       <div className="ibox-content">
         <div className="form-group">
           <div className="row m-b">
-            <div className="col-sm-6">
+            <div className="col-sm-4">
               <label className="col-sm-4 control-label">Teacher's Name</label>
               <div className="col-sm-8">
                 <input type="text" className="form-control m-b" value={this.props.staff.firstName + ' ' + this.props.staff.lastName || init} disabled/>
               </div>
             </div>
-            <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Line Manager's Line</label>
+            <div className="col-sm-5">
+              <label className="col-sm-4 control-label">Line Manager's Name</label>
               <div className="col-sm-8">
                 <input type="text" className="form-control m-b" value={this.props.lineManager.firstName + ' ' + this.props.lineManager.lastName || init} disabled/>
+              </div>
+            </div>
+            <div className="col-sm-3">
+              <label className="col-sm-3 control-label">Date</label>
+              <div className="col-sm-9">
+                <input
+                    {...this.props.mode}
+                    type="text"
+                    disabled
+                    value={this.props.observation.date}
+                    className="form-control m-b"
+                />
               </div>
             </div>
           </div>
@@ -39,10 +51,27 @@ class ObserveHeader extends Component{
               </div>
             </div>
             <div className="col-sm-6">
+              <label className="col-sm-4 control-label">Time of Observation</label>
+              <div className="col-sm-8">
+                <input
+                    {...this.props.mode}
+                    type="text"
+                    disabled
+                    value={this.props.observation.time}
+                    className="form-control m-b"
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-sm-6">
               <label className="col-sm-4 control-label">Secondary Observer's Name</label>
               <div className="col-sm-8">
                 <input type="text" className="form-control m-b" value={this.props.observerSecondary.firstName + ' ' + this.props.observerSecondary.lastName || init} disabled/>
               </div>
+            </div>
+            <div className="col-sm-6">
             </div>
           </div>
 
@@ -51,22 +80,6 @@ class ObserveHeader extends Component{
               <label className="col-sm-4 control-label">Course Code</label>
               <div className="col-sm-8">
                 <input type="text" className="form-control m-b" value={this.props.observation.courseCode || init} disabled/>
-              </div>
-            </div>
-            <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Course (including level)</label>
-              <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.courseName + ' ' + this.props.observation.courseLevel || init} disabled/>
-              </div>
-            </div>
-          </div>
-
-
-          <div className="row">
-            <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Programme (including level)</label>
-              <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.programme + ' ' + this.props.observation.programmeLevel || init} disabled/>
               </div>
             </div>
             <div className="col-sm-6">
@@ -79,24 +92,24 @@ class ObserveHeader extends Component{
 
           <div className="row m-b">
             <div className="col-sm-6">
+              <label className="col-sm-4 control-label">Course (including level)</label>
+              <div className="col-sm-8">
+                <input type="text" className="form-control m-b" value={this.props.observation.courseName + ' ' + this.props.observation.courseLevel || init} disabled/>
+              </div>
+            </div>
+            <div className="col-sm-6">
               <label className="col-sm-4 control-label">No of learners at start</label>
               <div className="col-sm-8">
                 <input type="text" className="form-control m-b" value={this.props.observation.startLearners || init} disabled/>
               </div>
             </div>
-            <div className="col-sm-6">
-              <label className="col-sm-4 control-label">No of learners late</label>
-              <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.lateLearners || init} disabled/>
-              </div>
-            </div>
-          </div>
+           </div>
 
           <div className="row">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Department</label>
+              <label className="col-sm-4 control-label">Qualification (including level)</label>
               <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.department || init} disabled/>
+                <input type="text" className="form-control m-b" value={this.props.observation.programme + ' ' + this.props.observation.programmeLevel || init} disabled/>
               </div>
             </div>
             <div className="col-sm-6">
@@ -109,30 +122,33 @@ class ObserveHeader extends Component{
 
           <div className="row m-b">
             <div className="col-sm-6">
+              <label className="col-sm-4 control-label">Department</label>
+              <div className="col-sm-8">
+                <input type="text" className="form-control m-b" value={this.props.observation.department || init} disabled/>
+              </div>
+            </div>
+            <div className="col-sm-6">
               <label className="col-sm-4 control-label">Campus Location</label>
               <div className="col-sm-8">
                 <input type="text" className="form-control m-b" value={this.props.observation.location || init} disabled/>
               </div>
             </div>
-            <div className="col-sm-6">
-
-            </div>
           </div>
 
           <div className="row">
             <div className="col-sm-12">
-              <label className="col-sm-4 control-label">Context of Session (include stage in programme)</label>
-              <div className="col-sm-8">
-                <textarea type="text" className="form-control m-b" value={this.props.observation.sessionContext || init} disabled/>
+              <label className="col-sm-2 control-label">Context of Session (include stage in programme)</label>
+              <div className="col-sm-10">
+                <textarea type="text" style={{width: "100%", height: "70px"}} className="form-control m-b" value={this.props.observation.sessionContext || init} disabled/>
               </div>
             </div>
           </div>
 
           <div className="row">
             <div className="col-sm-12">
-              <label className="col-sm-4 control-label">Observation Notes</label>
-              <div className="col-sm-8">
-                <textarea type="text" className="form-control m-b" value={this.props.observation.notes || init} disabled/>
+              <label className="col-sm-2 control-label">Observation Notes</label>
+              <div className="col-sm-10">
+                <textarea type="text" style={{width: "100%", height:"200px"}} className="form-control m-b" value={this.props.observation.notes || init} disabled/>
               </div>
             </div>
           </div>
@@ -346,10 +362,10 @@ class ObserveEntries extends Component{
             <table className="table table-striped table-bordered table-hover dataTables-example">
                 <thead>
                   <tr>
-                    <th width="35%">Criteria</th>
+                    <th width="40%">Criteria</th>
                     <th width="5%">Strengths</th>
                     <th width="5%">Areas for improvement</th>
-                    <th width="55%">Evidence</th>
+                    <th width="50%">Evidence</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -518,10 +534,10 @@ class ObserveRecommendations extends Component {
               <table className="table table-striped table-bordered table-hover dataTables-example">
                   <thead>
                     <tr>
-                      <th width='35%'>Focus Area</th>
+                      <th width='40%'>Focus Area</th>
                       <th width='5%'>Strength</th>
                       <th width='5%'>Improvement</th>
-                      <th width='55%'>Action</th>
+                      <th width='50%'>Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -550,7 +566,7 @@ class View extends Component {
           url: "/api/observations/" + this.props.observationId + "/" + this.props.staff.id,
           success: function(response) {
             if (!response.success) {
-              alert(response.result);
+              this.props.redirectTo('observationSearch', response.result);
             } else if (response.result.access === 'view' || response.result.completed) {
               this.setState({observation: response.result});
             } else {
@@ -621,7 +637,12 @@ class View extends Component {
               </div>
             );
     } else {
-        return <div>Loading...</div>
+        return (
+           <div className="wrapper-content" style={{textAlign: 'center'}}>
+             <i className="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
+             <span className="sr-only">Loading...</span>
+           </div>
+        );
     }
   }
 }
