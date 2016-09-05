@@ -18,14 +18,14 @@ class ObserveHeader extends Component{
         <div className="form-group">
           <div className="row m-b">
             <div className="col-sm-4">
-              <label className="col-sm-4 control-label">Teacher's Name</label>
-              <div className="col-sm-8">
+              <label className="col-sm-3 control-label">Teacher's Name</label>
+              <div className="col-sm-9">
                 <input type="text" className="form-control m-b" value={this.props.staff.firstName + ' ' + this.props.staff.lastName || init} disabled/>
               </div>
             </div>
             <div className="col-sm-5">
               <label className="col-sm-4 control-label">Line Manager's Name</label>
-              <div className="col-sm-8">
+              <div className="col-sm-7">
                 <input type="text" className="form-control m-b" value={this.props.lineManager.firstName + ' ' + this.props.lineManager.lastName || init} disabled/>
               </div>
             </div>
@@ -52,7 +52,7 @@ class ObserveHeader extends Component{
             </div>
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Time of Observation</label>
-              <div className="col-sm-8">
+              <div className="col-sm-4">
                 <input
                     {...this.props.mode}
                     type="text"
@@ -419,13 +419,7 @@ class ObserveModerate extends Component{
     super(props)
   }
 
-
   render(){
-    var obs = this.props.observation;
-    var modValue = obs.moderator == null ? '' : this.props.observation.moderator.firstName + ' ' + this.props.observation.moderator.lastName;
-    var coachValue = obs.learningCoach == null ? '' : this.props.observation.learningCoach.firstName + ' ' + this.props.observation.learningCoach.lastName;
-    var hodValue = obs.hod == null ? '' : this.props.observation.hod.firstName + ' ' + this.props.observation.hod.lastName;
-
     return(
       <div className="ibox-content">
           <div className="form-group">
@@ -442,7 +436,7 @@ class ObserveModerate extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Moderator Name</label>
               <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={modValue} disabled/>
+                <input type="text" className="form-control m-b" value={this.props.moderator.firstName + ' ' + this.props.moderator.lastName} disabled/>
               </div>
             </div>
             </div>
@@ -451,13 +445,13 @@ class ObserveModerate extends Component{
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Learning Coach Name</label>
               <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={coachValue} disabled/>
+                <input type="text" className="form-control m-b" value={this.props.learningCoach.firstName + ' ' + this.props.learningCoach.lastName} disabled/>
               </div>
             </div>
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Head of Department Name</label>
               <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={hodValue} disabled/>
+                <input type="text" className="form-control m-b" value={this.props.hod.firstName + ' ' + this.props.hod.lastName} disabled/>
               </div>
             </div>
             </div>

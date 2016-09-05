@@ -109,7 +109,7 @@ class ObservationSearch extends Component {
             size: 10,
             totalPages: 10
         };
-    };
+    }
 
     handleUserInput(value){
         this.setState({
