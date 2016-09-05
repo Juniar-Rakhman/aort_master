@@ -11,13 +11,14 @@ class ObservationRow extends Component {
     }
     
     render() {
+        var obsStatus = this.props.observation.completed == true ? "Completed" : "Open" ;
         return (
             <tr className="gradeX">
                 <td><a href='#' onClick={this.handleObservationView.bind(this)}>{this.props.observation.staffName}</a></td>
                 <td>{this.props.observation.courseName}</td>
-                <td>{this.props.observation.courseLevel}</td>
-                <td>{this.props.observation.programme}</td>
-                <td>{this.props.observation.programmeLevel}</td>
+                <td>{this.props.observation.observerPrimaryName}</td>
+                <td>{obsStatus}</td>
+                <td>{this.props.observation.date} / {this.props.observation.time}</td>
             </tr>
         );
     }
@@ -37,11 +38,11 @@ class ObservationTable extends Component {
             <table className="table table-striped table-bordered table-hover dataTables-example" >
                 <thead>
                     <tr>
-                        <th width='30%'>Staff Name</th>
+                        <th width='25%'>Staff Name</th>
                         <th width='20%'>Course Name</th>
-                        <th width='15%'>Course Level</th>
-                        <th width='20%'>Programme</th>
-                        <th width='15%'>Programme Level</th>
+                        <th width='25%'>Primary Observer</th>
+                        <th width='10%'>Status</th>
+                        <th width='20%'>Date/Time</th>
                     </tr>
                 </thead>
                 <tbody>{rows}</tbody>
