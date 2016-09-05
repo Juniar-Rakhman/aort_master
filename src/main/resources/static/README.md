@@ -388,11 +388,8 @@ Use the [Heroku Buildpack for create-react-app](https://github.com/mars/create-r
 
 If you have ideas for more “How To” recipes that should be on this page, [let us know](https://github.com/facebookincubator/create-react-app/issues) or [contribute some!](https://github.com/facebookincubator/create-react-app/edit/master/template/README.md)
 
-3. Open file webpack.config.prod.js located in [project_directory]\src\main\resources\static\node_modules\react-scripts\config
-4. Change output file name into 'static/js/bundle.js'
-5. Install the project
-
 ### Install webpack config and babel plugin for object-assign compiler
+
 1. Copy file './config/build.js' into './node_modules/react-scripts/scripts/'
 2. Copy file './config/webpack.config.prod.js' and './config/babel.prod.js' into './node_modules/react-scripts/config/'
 3. Run command prompt as administrator
