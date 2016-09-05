@@ -5,8 +5,8 @@
 
     <groupId>nz.ac.ara</groupId>
     <artifactId>aort</artifactId>
-    <version>0.1.2</version>
-    <packaging>jar</packaging>
+    <version>0.1.3</version>
+    <packaging>war</packaging>
 
     <name>ARA Academic Observation Tool</name>
     <description>ARA Academic Observation Tool</description>
