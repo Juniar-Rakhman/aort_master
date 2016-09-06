@@ -40,7 +40,7 @@ class ObservationTable extends Component {
                     <tr>
                         <th width='25%'>Staff Name</th>
                         <th width='20%'>Course Name</th>
-                        <th width='25%'>Primary Observer</th>
+                        <th width='25%'>Lead Observer</th>
                         <th width='10%'>Status</th>
                         <th width='20%'>Date/Time</th>
                     </tr>

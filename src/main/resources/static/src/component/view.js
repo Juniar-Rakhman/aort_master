@@ -43,9 +43,9 @@ class ObserveHeader extends Component{
             </div>
           </div>
 
-          <div className="row">
+          <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Primary Observer's Name</label>
+              <label className="col-sm-4 control-label">Lead Observer's Name</label>
               <div className="col-sm-8">
                 <input type="text" className="form-control m-b" value={this.props.observerPrimary.firstName + ' ' + this.props.observerPrimary.lastName || init} disabled/>
               </div>
@@ -64,9 +64,9 @@ class ObserveHeader extends Component{
             </div>
           </div>
 
-          <div className="row">
+          <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Secondary Observer's Name</label>
+              <label className="col-sm-4 control-label">Peer Observer's Name</label>
               <div className="col-sm-8">
                 <input type="text" className="form-control m-b" value={this.props.observerSecondary.firstName + ' ' + this.props.observerSecondary.lastName || init} disabled/>
               </div>
@@ -75,7 +75,7 @@ class ObserveHeader extends Component{
             </div>
           </div>
 
-          <div className="row">
+          <div className="row m-b">
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Course Code</label>
               <div className="col-sm-8">
@@ -92,9 +92,9 @@ class ObserveHeader extends Component{
 
           <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Course (including level)</label>
+              <label className="col-sm-4 control-label">Course Title</label>
               <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.courseName + ' ' + this.props.observation.courseLevel || init} disabled/>
+                <input type="text" className="form-control m-b" value={this.props.observation.courseName || init} disabled/>
               </div>
             </div>
             <div className="col-sm-6">
@@ -105,11 +105,26 @@ class ObserveHeader extends Component{
             </div>
            </div>
 
-          <div className="row">
+          <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Qualification (including level)</label>
+              <label className="col-sm-4 control-label">Level</label>
               <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.programme + ' ' + this.props.observation.programmeLevel || init} disabled/>
+                <input type="text" className="form-control m-b" value={this.props.observation.courseLevel || init} disabled/>
+              </div>
+            </div>
+            <div className="col-sm-6">
+              <label className="col-sm-4 control-label">No of learners late</label>
+              <div className="col-sm-8">
+                <input type="text" className="form-control m-b" value={this.props.observation.lateLearners || init} disabled/>
+              </div>
+            </div>
+           </div>
+
+          <div className="row m-b">
+            <div className="col-sm-6">
+              <label className="col-sm-4 control-label">Qualification</label>
+              <div className="col-sm-8">
+                <input type="text" className="form-control m-b" value={this.props.observation.programme || init} disabled/>
               </div>
             </div>
             <div className="col-sm-6">
@@ -122,11 +137,20 @@ class ObserveHeader extends Component{
 
           <div className="row m-b">
             <div className="col-sm-6">
+              <label className="col-sm-4 control-label">Level</label>
+              <div className="col-sm-8">
+                <input type="text" className="form-control m-b" value={this.props.observation.programmeLevel || init} disabled/>
+              </div>
+            </div>
+            <div className="col-sm-6">
               <label className="col-sm-4 control-label">Department</label>
               <div className="col-sm-8">
                 <input type="text" className="form-control m-b" value={this.props.observation.department || init} disabled/>
               </div>
             </div>
+          </div>
+
+          <div className="row m-b">
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Campus Location</label>
               <div className="col-sm-8">
@@ -135,7 +159,7 @@ class ObserveHeader extends Component{
             </div>
           </div>
 
-          <div className="row">
+          <div className="row m-b">
             <div className="col-sm-12">
               <label className="col-sm-2 control-label">Context of Session (include stage in programme)</label>
               <div className="col-sm-10">
@@ -144,7 +168,7 @@ class ObserveHeader extends Component{
             </div>
           </div>
 
-          <div className="row">
+          <div className="row m-b">
             <div className="col-sm-12">
               <label className="col-sm-2 control-label">Observation Notes</label>
               <div className="col-sm-10">
@@ -153,7 +177,7 @@ class ObserveHeader extends Component{
             </div>
           </div>
 
-          <div className="row">
+          <div className="row m-b">
             <div className="col-sm-3">
               <label className="col-sm-8 control-label">Lesson Plan</label>
               <div className="col-sm-4">
@@ -165,8 +189,8 @@ class ObserveHeader extends Component{
               </div>
             </div>
             <div className="col-sm-9">
-              <label className="col-sm-4 control-label">Comments</label>
-              <div className="col-sm-8">
+              <label className="col-sm-2 control-label">Comments</label>
+              <div className="col-sm-10">
                 <textarea
                     type="text"
                     className="form-control m-b"
@@ -177,7 +201,7 @@ class ObserveHeader extends Component{
             </div>
           </div>
 
-          <div className="row">
+          <div className="row m-b">
             <div className="col-sm-3">
               <label className="col-sm-8 control-label">Course Outline</label>
               <div className="col-sm-4">
@@ -189,8 +213,8 @@ class ObserveHeader extends Component{
               </div>
             </div>
             <div className="col-sm-9">
-              <label className="col-sm-4 control-label">Comments</label>
-              <div className="col-sm-8">
+              <label className="col-sm-2 control-label">Comments</label>
+              <div className="col-sm-10">
                 <textarea
                     type="text"
                     className="form-control m-b"
@@ -537,7 +561,7 @@ class ObserveRecommendations extends Component {
                       <th width='40%'>Focus Area</th>
                       <th width='5%'>Strength</th>
                       <th width='5%'>Improvement</th>
-                      <th width='50%'>Action</th>
+                      <th width='50%'>Recommended Action</th>
                     </tr>
                   </thead>
                   <tbody>

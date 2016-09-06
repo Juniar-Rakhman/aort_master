@@ -9,7 +9,7 @@ class Home extends Component {
           <div className="text-center m-t-lg">
             <img src={logo} className="App-logo" alt="logo" />
             <h1>
-                Welcome in Teaching Observation Recording Tool
+                Welcome to Formal Teaching Observation Tool
             </h1>
           </div>
           <div id='example'>
