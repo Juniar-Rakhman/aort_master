@@ -288,9 +288,9 @@ class ObserveHeader extends Component{
             </div>
           </div>
 
-          <div className="row">
+          <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Primary Observer's Name</label>
+              <label className="col-sm-4 control-label">Lead Observer's Name</label>
               <div className="col-sm-8">
                 <select id="observerPrimary"
                   className="form-control m-b"
@@ -314,16 +314,15 @@ class ObserveHeader extends Component{
             </div>
           </div>
 
-          <div className="row">
+          <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Secondary Observer's Name</label>
+              <label className="col-sm-4 control-label">Peer Observer's Name</label>
               <div className="col-sm-8">
                 <select id="observerSecondary"
                   className="form-control m-b"
                   data-init={this.state.observerSecondary.firstName + ' ' + this.state.observerSecondary.lastName}
                   style={{width: "100%"}}
-                  value={this.state.observerSecondaryId}
-                  required={this.state.observerSecondaryId === ''}>
+                  value={this.state.observerSecondaryId}>
                   <option></option>
                 </select>
               </div>
@@ -537,8 +536,6 @@ class ObserveHeader extends Component{
                     {...this.props.mode}
                     type="text"
                     style={{width: "100%", height:"200px"}}
-                    maxLength={1000}
-                    placeholder="1000 characters allowed"
                     className="form-control m-b"
                     value={this.state.notes}
                     onChange={this.handleNotesSessionChange.bind(this)}
@@ -1236,7 +1233,7 @@ class ObserveRecommendations extends Component {
                       <th width='40%'>Focus Area</th>
                       <th width='5%'>Strength</th>
                       <th width='5%'>Improvement</th>
-                      <th width='50%'>Action</th>
+                      <th width='50%'>Recommended Action</th>
                     </tr>
                   </thead>
                   <tbody>
