@@ -80,3 +80,7 @@ INSERT INTO dbo.observation VALUES ('testestsetst 20', 0, 'test aja 20', 1, 'tes
 -- update dbo.staff set username = 'qauser' where staff_id = '00000332';
 -- update dbo.staff set username = 'admin' where staff_id = '00000486';
 
+INSERT INTO academic_observation.dbo.report (created_date, description, name) VALUES ('2016-08-24', 'observation report', 'observation');
+INSERT INTO academic_observation.dbo.report (created_date, description, name) VALUES ('2016-08-24', 'team observation report', 'team_observation');
+INSERT INTO academic_observation.dbo.report (created_date, description, name) VALUES ('2016-08-24', 'observer performance report', 'observer_performance');
+INSERT INTO academic_observation.dbo.report (created_date, description, name) VALUES ('2016-08-24', 'Academic Staff Observation Overview', 'academic_staff_observation_overview');
