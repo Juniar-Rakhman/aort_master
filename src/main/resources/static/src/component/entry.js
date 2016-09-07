@@ -5,9 +5,11 @@ class ObserveHeader extends Component{
   constructor(props){
     super(props);
     var observerPrimary = props.mode === 'Create' ? props.staff : props.observation.observerPrimary;
+    var date = moment().format('YYYY-MM-DD');
+    var time = moment().format('HH:mm');
     this.state = {
-        date: props.observation.date || "[auto]",
-        time: props.observation.time || "[auto]",
+        date: props.observation.date || date,
+        time: props.observation.time || time,
         staffId: props.observation.staffId || '',
         lineManagerId: props.observation.lineManagerId || '',
         observerPrimaryId: observerPrimary.id || '',
@@ -37,15 +39,15 @@ class ObserveHeader extends Component{
     console.log('ObserveHeader mode: '+ this.props.mode);
   }
 
-  handleDate(e){
-    var newState = Object.assign(this.state, {date: e.target.value})
-    this.setState({date: e.target.value})
+  handleDateChange(e){
+    var newState = Object.assign(this.state, {date: e.target.childNodes[0].value});
+    this.setState({date: e.target.childNodes[0].value});
     this.props.updateObservation(newState);
   }
 
-  handleTime(e){
-    var newState = Object.assign(this.state, {time: e.target.value})
-    this.setState({date: e.target.value})
+  handleTimeChange(e){
+    var newState = Object.assign(this.state, {time: e.target.childNodes[0].value});
+    this.setState({time: e.target.childNodes[0].value});
     this.props.updateObservation(newState);
   }
 
@@ -230,6 +232,16 @@ class ObserveHeader extends Component{
         var newState = Object.assign(this.state, {observerPrimaryId: this.props.staff.id});
         this.props.updateObservation(newState);
     }
+
+    $('#datePicker').datetimepicker({
+        format: 'YYYY-MM-DD'
+    });
+    $('#datePicker').on('dp.change', this.handleDateChange.bind(this));
+
+    $('#timePicker').datetimepicker({
+        format: 'HH:mm'
+    });
+    $('#timePicker').on('dp.change', this.handleTimeChange.bind(this));
   }
 
   render(){
@@ -239,8 +251,8 @@ class ObserveHeader extends Component{
 
           <div className="row m-b">
             <div className="col-sm-4">
-              <label className="col-sm-4 control-label">Teacher's Name</label>
-              <div className="col-sm-8">
+              <label className="col-sm-3 control-label">Teacher's Name</label>
+              <div className="col-sm-9">
                 <select id="teacher"
                   className="form-control m-b"
                   data-init={this.state.staff.firstName + ' ' + this.state.staff.lastName}
@@ -253,7 +265,7 @@ class ObserveHeader extends Component{
             </div>
             <div className="col-sm-5">
               <label className="col-sm-4 control-label">Line Manager's Name</label>
-              <div className="col-sm-8">
+              <div className="col-sm-7">
                 <select id="lineManager"
                   className="form-control m-b"
                   data-init={this.state.lineManager.firstName + ' ' + this.state.lineManager.lastName}
@@ -266,20 +278,19 @@ class ObserveHeader extends Component{
             <div className="col-sm-3">
               <label className="col-sm-3 control-label">Date</label>
               <div className="col-sm-9">
-                <input
-                    {...this.props.mode}
-                    type="text"
-                    disabled
-                    value={this.state.date}
-                    className="form-control m-b"
-                />
+                <div className="input-group date" id="datePicker">
+                  <input type="text" className="form-control" value={this.state.date} />
+                  <span className="input-group-addon">
+                    <i className="fa fa-calendar" aria-hidden="true"></i>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="row">
+          <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Primary Observer's Name</label>
+              <label className="col-sm-4 control-label">Lead Observer's Name</label>
               <div className="col-sm-8">
                 <select id="observerPrimary"
                   className="form-control m-b"
@@ -292,28 +303,26 @@ class ObserveHeader extends Component{
             </div>
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Time of Observation</label>
-              <div className="col-sm-8">
-                <input
-                    {...this.props.mode}
-                    type="text"
-                    disabled
-                    value={this.state.time}
-                    className="form-control m-b"
-                />
+              <div className="col-sm-4">
+                <div className="input-group date" id="timePicker">
+                  <input type="text" className="form-control" value={this.state.time} />
+                  <span className="input-group-addon">
+                    <i className="fa fa-clock-o" aria-hidden="true"></i>
+                  </span>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="row">
+          <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Secondary Observer's Name</label>
+              <label className="col-sm-4 control-label">Peer Observer's Name</label>
               <div className="col-sm-8">
                 <select id="observerSecondary"
                   className="form-control m-b"
                   data-init={this.state.observerSecondary.firstName + ' ' + this.state.observerSecondary.lastName}
                   style={{width: "100%"}}
-                  value={this.state.observerSecondaryId}
-                  required={this.state.observerSecondaryId === ''}>
+                  value={this.state.observerSecondaryId}>
                   <option></option>
                 </select>
               </div>
@@ -527,8 +536,6 @@ class ObserveHeader extends Component{
                     {...this.props.mode}
                     type="text"
                     style={{width: "100%", height:"200px"}}
-                    maxLength={1000}
-                    placeholder="1000 characters allowed"
                     className="form-control m-b"
                     value={this.state.notes}
                     onChange={this.handleNotesSessionChange.bind(this)}
@@ -1226,7 +1233,7 @@ class ObserveRecommendations extends Component {
                       <th width='40%'>Focus Area</th>
                       <th width='5%'>Strength</th>
                       <th width='5%'>Improvement</th>
-                      <th width='50%'>Action</th>
+                      <th width='50%'>Recommended Action</th>
                     </tr>
                   </thead>
                   <tbody>
@@ -1356,12 +1363,8 @@ class Entry extends Component {
 
     this.setState({observationData: newObservationData});
 
-    var date = moment().format('YYYY-MM-DD');
-    var time = moment().format('HH:mm:ss');
-
     var observation = Object.assign({}, this.state.observationData, {
-        date: date,
-        time: time,
+        time : moment(this.state.observationData.date + "T" + this.state.observationData.time).format('HH:mm:ss'),
         completed: false
     });
     if (this.props.title === 'Create') {
