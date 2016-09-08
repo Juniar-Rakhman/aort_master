@@ -633,7 +633,7 @@ class View extends Component {
                   <div className="col-lg-12">
                     <div className="ibox float-e-margins">
                       <div className="ibox-title">
-                          <h2>Observation {this.props.title}</h2>
+                          <h2>Observation Record - {this.props.title}</h2>
                       </div>
                       <div className="ibox-content">
                         <form method="get" className="form-horizontal">
