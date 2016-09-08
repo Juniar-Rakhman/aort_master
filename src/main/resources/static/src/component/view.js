@@ -77,9 +77,9 @@ class ObserveHeader extends Component{
 
           <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Course Code</label>
+              <label className="col-sm-4 control-label">Qualification</label>
               <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.courseCode || init} disabled/>
+                <input type="text" className="form-control m-b" value={this.props.observation.programme || init} disabled/>
               </div>
             </div>
             <div className="col-sm-6">
@@ -92,9 +92,9 @@ class ObserveHeader extends Component{
 
           <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Course Title</label>
+              <label className="col-sm-4 control-label">Course Code</label>
               <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.courseName || init} disabled/>
+                <input type="text" className="form-control m-b" value={this.props.observation.courseCode || init} disabled/>
               </div>
             </div>
             <div className="col-sm-6">
@@ -107,9 +107,9 @@ class ObserveHeader extends Component{
 
           <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Level</label>
+              <label className="col-sm-4 control-label">Course Title</label>
               <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.courseLevel || init} disabled/>
+                <input type="text" className="form-control m-b" value={this.props.observation.courseName || init} disabled/>
               </div>
             </div>
             <div className="col-sm-6">
@@ -122,9 +122,9 @@ class ObserveHeader extends Component{
 
           <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Qualification</label>
+              <label className="col-sm-4 control-label">Level</label>
               <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.programme || init} disabled/>
+                <input type="text" className="form-control m-b" value={this.props.observation.courseLevel || init} disabled/>
               </div>
             </div>
             <div className="col-sm-6">

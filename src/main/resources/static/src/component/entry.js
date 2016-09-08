@@ -333,16 +333,16 @@ class ObserveHeader extends Component{
 
           <div className="row">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Course Code</label>
+              <label className="col-sm-4 control-label">Qualification</label>
               <div className="col-sm-8">
                 <input
                     {...this.props.mode}
                     type="text"
-                    placeholder="20 characters allowed"
-                    maxLength={20}
+                    placeholder="100 characters allowed"
+                    maxLength={100}
                     className="form-control m-b"
-                    value={this.state.courseCode}
-                    onChange={this.handleCourseCodeChange.bind(this)}
+                    value={this.state.programme}
+                    onChange={this.handleProgrammeChange.bind(this)}
                 />
               </div>
             </div>
@@ -365,16 +365,16 @@ class ObserveHeader extends Component{
 
           <div className="row">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Course Title</label>
+              <label className="col-sm-4 control-label">Course Code</label>
               <div className="col-sm-8">
                 <input
                     {...this.props.mode}
                     type="text"
-                    placeholder="100 characters allowed"
-                    maxLength={100}
+                    placeholder="20 characters allowed"
+                    maxLength={20}
                     className="form-control m-b"
-                    value={this.state.courseName}
-                    onChange={this.handleCourseChange.bind(this)}
+                    value={this.state.courseCode}
+                    onChange={this.handleCourseCodeChange.bind(this)}
                 />
               </div>
             </div>
@@ -397,17 +397,16 @@ class ObserveHeader extends Component{
 
           <div className="row">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Level</label>
+              <label className="col-sm-4 control-label">Course Title</label>
               <div className="col-sm-8">
                 <input
                     {...this.props.mode}
-                    type="number"
-                    min={0}
-                    max={99}
-                    placeholder="Max value is 99"
+                    type="text"
+                    placeholder="100 characters allowed"
+                    maxLength={100}
                     className="form-control m-b"
-                    value={this.state.courseLevel}
-                    onChange={this.handleCourseLevelChange.bind(this)}
+                    value={this.state.courseName}
+                    onChange={this.handleCourseChange.bind(this)}
                 />
               </div>
             </div>
@@ -430,16 +429,17 @@ class ObserveHeader extends Component{
 
           <div className="row">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Qualification</label>
+              <label className="col-sm-4 control-label">Level</label>
               <div className="col-sm-8">
                 <input
                     {...this.props.mode}
-                    type="text"
-                    placeholder="100 characters allowed"
-                    maxLength={100}
+                    type="number"
+                    min={0}
+                    max={99}
+                    placeholder="Max value is 99"
                     className="form-control m-b"
-                    value={this.state.programme}
-                    onChange={this.handleProgrammeChange.bind(this)}
+                    value={this.state.courseLevel}
+                    onChange={this.handleCourseLevelChange.bind(this)}
                 />
               </div>
             </div>
