@@ -28,7 +28,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "observation")
-public class Observation {
+public class Observation implements Comparable<Observation> {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -105,21 +105,27 @@ public class Observation {
 	@Transient
 	private Staff moderator;
 	@Transient
-	private String moderatorName;
+	private String moderatorFirstName;
+	@Transient
+	private String moderatorLastName;
 
 	@Column(name = "observer_primary", columnDefinition = "nvarchar(50)")
 	private String observerPrimaryId;
 	@Transient
 	private Staff observerPrimary;
 	@Transient
-	private String observerPrimaryName;
+	private String observerPrimaryFirstName;
+	@Transient
+	private String observerPrimaryLastName;
 
 	@Column(name = "observer_secondary", columnDefinition = "nvarchar(50)")
 	private String observerSecondaryId;
 	@Transient
 	private Staff observerSecondary;
 	@Transient
-	private String observerSecondaryName;
+	private String observerSecondaryFirstName;
+	@Transient
+	private String observerSecondaryLastName;
 	
 	@Column(name = "rating_reference_id", columnDefinition = "nvarchar(50)")
 	private String ratingReferenceId;
@@ -131,14 +137,18 @@ public class Observation {
 	@Transient
 	private Staff staff;
 	@Transient
-	private String staffName;
+	private String staffFirstName;
+	@Transient
+	private String staffLastName;
 
 	@Column(name = "learning_coach", columnDefinition = "nvarchar(50)")
 	private String learningCoachId;
 	@Transient
 	private Staff learningCoach;
 	@Transient
-	private String learningCoachName;
+	private String learningCoachFirstName;
+	@Transient
+	private String learningCoachLastName;
 
 	@OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
 	@JoinColumn(name = "observation_id")
@@ -153,14 +163,18 @@ public class Observation {
 	@Transient
 	private Staff lineManager;
 	@Transient
-	private String lineManagerName;
+	private String lineManagerFirstName;
+	@Transient
+	private String lineManagerLastName;
 
 	@Column(name = "head_of_department", columnDefinition = "nvarchar(50)")
 	private String hodId;
 	@Transient
 	private Staff HOD;
 	@Transient
-	private String hodName;
+	private String hodFirstName;
+	@Transient
+	private String hodLastName;
 
 	@Transient
 	private String access;
@@ -174,4 +188,17 @@ public class Observation {
 	public void finalize() throws Throwable {
 	}
 
+	@Override
+	public int compareTo(Observation obs) {
+		final int BEFORE = -1;
+		final int EQUAL = 0;
+		final int AFTER = 1;
+		
+//		
+//		if (Objects.equals(this.getStaffName(), obs.getStaffName()))
+//			return EQUAL;
+//		else if (this )
+//		
+		return EQUAL;		
+	}
 }
