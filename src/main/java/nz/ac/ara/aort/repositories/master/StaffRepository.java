@@ -14,8 +14,8 @@ import java.util.List;
  * Created by a9jr5626 on 8/12/16.
  */
 public interface StaffRepository extends JpaRepository<Staff, String> {
-    
-    @Query("SELECT s FROM Staff s WHERE s.lastName like %:name% or s.firstName like %:name%")
+
+    @Query("SELECT s FROM Staff s WHERE (s.firstName + ' ' + s.lastName) like %:name% ORDER BY s.firstName, s.lastName")
     Page<Staff> findByStaffName(@Param("name") String name, Pageable pageable);
     Staff findByUsername(@Param("username") String username);
 }

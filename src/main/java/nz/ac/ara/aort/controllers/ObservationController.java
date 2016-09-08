@@ -76,6 +76,7 @@ public class ObservationController {
     public ResponseEntity<Page> observationFindFilter(@RequestParam("filter") String filter, @RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
         List<Observation> observationList = new ArrayList<>();
+        //TODO learn querydsl
         try {
             // filter can be staff
             for (Staff staff : staffRepo.findByStaffName(filter, null)) {
@@ -195,25 +196,32 @@ public class ObservationController {
 
         for (Observation observation : observations) {
             if (!observation.getStaffId().isEmpty()) {
-                observation.setStaffName(staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
+                observation.setStaffFirstName(staffRepo.findOne(observation.getStaffId()).getFirstName());
+                observation.setStaffLastName(staffRepo.findOne(observation.getStaffId()).getLastName());
             }
             if (!observation.getModeratorId().isEmpty()) {
-                observation.setModeratorName(staffRepo.findOne(observation.getModeratorId()).getFirstName() + " " + staffRepo.findOne(observation.getModeratorId()).getLastName());
+                observation.setModeratorFirstName(staffRepo.findOne(observation.getModeratorId()).getFirstName());
+                observation.setModeratorLastName(staffRepo.findOne(observation.getModeratorId()).getLastName());
             }
             if (!observation.getObserverPrimaryId().isEmpty()) {
-                observation.setObserverPrimaryName(staffRepo.findOne(observation.getObserverPrimaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverPrimaryId()).getLastName());
+                observation.setObserverPrimaryFirstName(staffRepo.findOne(observation.getObserverPrimaryId()).getFirstName());
+                observation.setObserverPrimaryLastName(staffRepo.findOne(observation.getObserverPrimaryId()).getLastName());
             }
             if (!observation.getObserverSecondaryId().isEmpty()) {
-                observation.setObserverSecondaryName(staffRepo.findOne(observation.getObserverSecondaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverSecondaryId()).getLastName());
+                observation.setObserverSecondaryFirstName(staffRepo.findOne(observation.getObserverSecondaryId()).getFirstName());
+                observation.setObserverSecondaryLastName(staffRepo.findOne(observation.getObserverSecondaryId()).getLastName());
             }
             if (!observation.getLearningCoachId().isEmpty()) {
-                observation.setLearningCoachName(staffRepo.findOne(observation.getLearningCoachId()).getFirstName() + " " + staffRepo.findOne(observation.getLearningCoachId()).getLastName());
+                observation.setLearningCoachFirstName(staffRepo.findOne(observation.getLearningCoachId()).getFirstName());
+                observation.setLearningCoachLastName(staffRepo.findOne(observation.getLearningCoachId()).getLastName());
             }
             if (!observation.getLineManagerId().isEmpty()) {
-                observation.setLineManagerName(staffRepo.findOne(observation.getLineManagerId()).getFirstName() + " " + staffRepo.findOne(observation.getLineManagerId()).getLastName());
+                observation.setLineManagerFirstName(staffRepo.findOne(observation.getLineManagerId()).getFirstName());
+                observation.setLineManagerLastName(staffRepo.findOne(observation.getLineManagerId()).getLastName());
             }
             if (!observation.getHodId().isEmpty()) {
-                observation.setHodName(staffRepo.findOne(observation.getHodId()).getFirstName() + " " + staffRepo.findOne(observation.getHodId()).getLastName());
+                observation.setHodFirstName(staffRepo.findOne(observation.getHodId()).getFirstName());
+                observation.setHodLastName(staffRepo.findOne(observation.getHodId()).getLastName());
             }
         }
 

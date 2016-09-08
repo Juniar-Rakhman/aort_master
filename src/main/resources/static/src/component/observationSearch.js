@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import PageInfo from './pageInfo';
+import moment from 'moment';
 
 class ObservationRow extends Component {
     constructor(props){
@@ -14,11 +15,11 @@ class ObservationRow extends Component {
         var obsStatus = this.props.observation.completed == true ? "Completed" : "Open" ;
         return (
             <tr className="gradeX">
-                <td><a href='#' onClick={this.handleObservationView.bind(this)}>{this.props.observation.staffName}</a></td>
+                <td><a href='#' onClick={this.handleObservationView.bind(this)}>{this.props.observation.staffFirstName} {this.props.observation.staffLastName}</a></td>
                 <td>{this.props.observation.courseName}</td>
-                <td>{this.props.observation.observerPrimaryName}</td>
+                <td>{this.props.observation.observerPrimaryFirstName} {this.props.observation.observerPrimaryFirstName}</td>
                 <td>{obsStatus}</td>
-                <td>{this.props.observation.date} / {this.props.observation.time}</td>
+                <td>{moment(this.props.observation.date).format('DD/MM/YYYY')} / {this.props.observation.time.substring(0,5)}</td>
             </tr>
         );
     }
@@ -42,7 +43,7 @@ class ObservationTable extends Component {
                         <th width='20%'>Course Name</th>
                         <th width='25%'>Lead Observer</th>
                         <th width='10%'>Status</th>
-                        <th width='20%'>Date/Time</th>
+                        <th width='20%'>Date / Time</th>
                     </tr>
                 </thead>
                 <tbody>{rows}</tbody>
@@ -124,8 +125,10 @@ class ObservationSearch extends Component {
             type: 'GET',
             url: "api/observations/search?filter=" + filter + "&page=" + this.state.page + "&size=" + this.state.size,
             success: function(response) {
-                this.setState({observations: response["content"]});
-                this.setState({totalPages: response["totalPages"]});
+                this.setState({
+                    observations: response["content"],
+                    totalPages: response["totalPages"]
+                });
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
@@ -138,8 +141,10 @@ class ObservationSearch extends Component {
             type: 'GET',
             url: "/api/observations?page="+this.state.page+"&size="+this.state.size,
             success: function(response) {
-                this.setState({observations: response["content"]});
-                this.setState({totalPages: response["totalPages"]});
+                this.setState({
+                    observations: response["content"],
+                    totalPages: response["totalPages"]
+                });
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
