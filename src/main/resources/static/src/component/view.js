@@ -137,7 +137,7 @@ class ObserveHeader extends Component{
 
           <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Level</label>
+              <label className="col-sm-4 control-label">Course Credits</label>
               <div className="col-sm-8">
                 <input type="text" className="form-control m-b" value={this.props.observation.programmeLevel || init} disabled/>
               </div>
