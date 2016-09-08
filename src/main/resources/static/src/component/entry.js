@@ -1362,7 +1362,12 @@ class Entry extends Component {
   }
 
   handleComplete(){
-    var observation = Object.assign({}, this.state.observationData, {completed: true});
+    var date = moment(this.state.observationData.date, 'DD/MM/YYYY').format('YYYY-MM-DD');
+    var observation = Object.assign({}, this.state.observationData, {
+        date: date,
+        time: moment(date + 'T' + this.state.observationData.time).format('HH:mm:ss'),
+        completed: true
+    });
     this.updateMethod(observation);
   }
 
