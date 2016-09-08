@@ -76,6 +76,7 @@ public class ObservationController {
     public ResponseEntity<Page> observationFindFilter(@RequestParam("filter") String filter, @RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
         List<Observation> observationList = new ArrayList<>();
+        //TODO learn querydsl
         try {
             // filter can be staff
             for (Staff staff : staffRepo.findByStaffName(filter, null)) {
