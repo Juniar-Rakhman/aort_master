@@ -250,40 +250,33 @@ class ObserveHeader extends Component{
         <div className="form-group">
 
           <div className="row m-b">
-            <div className="col-sm-4">
-              <label className="col-sm-3 control-label">Teacher's Name</label>
-              <div className="col-sm-9">
-                <select id="teacher"
-                  className="form-control m-b"
-                  data-init={this.state.staff.firstName + ' ' + this.state.staff.lastName}
-                  style={{width: "100%"}}
-                  value={this.state.staffId}
-                  required={this.state.staffId === ''}>
-                    <option></option>
-                </select>
+            <div className="col-sm-6">
+              <div className="row">
+                  <label className="col-sm-4 control-label">Teacher's Name</label>
+                  <div className="col-sm-8">
+                    <select id="teacher"
+                      className="form-control m-b"
+                      data-init={this.state.staff.firstName + ' ' + this.state.staff.lastName}
+                      style={{width: "100%"}}
+                      value={this.state.staffId}
+                      required={this.state.staffId === ''}>
+                        <option></option>
+                    </select>
+                  </div>
               </div>
             </div>
-            <div className="col-sm-5">
-              <label className="col-sm-4 control-label">Line Manager's Name</label>
-              <div className="col-sm-7">
-                <select id="lineManager"
-                  className="form-control m-b"
-                  data-init={this.state.lineManager.firstName + ' ' + this.state.lineManager.lastName}
-                  style={{width: "100%"}}
-                  value={this.state.lineManagerId}>
-                  <option></option>
-                </select>
-              </div>
-            </div>
-            <div className="col-sm-3">
-              <label className="col-sm-3 control-label">Date</label>
-              <div className="col-sm-9">
-                <div className="input-group date" id="datePicker">
-                  <input type="text" className="form-control" value={this.state.date} />
-                  <span className="input-group-addon">
-                    <i className="fa fa-calendar" aria-hidden="true"></i>
-                  </span>
-                </div>
+            <div className="col-sm-6">
+              <div className="row">
+                  <label className="col-sm-4 control-label">Line Manager's Name</label>
+                  <div className="col-sm-8">
+                    <select id="lineManager"
+                      className="form-control m-b"
+                      data-init={this.state.lineManager.firstName + ' ' + this.state.lineManager.lastName}
+                      style={{width: "100%"}}
+                      value={this.state.lineManagerId}>
+                      <option></option>
+                    </select>
+                  </div>
               </div>
             </div>
           </div>
@@ -334,6 +327,17 @@ class ObserveHeader extends Component{
               </div>
             </div>
             <div className="col-sm-6">
+              <div className="row">
+                  <label className="col-sm-4 control-label">Date</label>
+                  <div className="col-sm-4">
+                    <div className="input-group date" id="datePicker">
+                      <input type="text" className="form-control" value={this.state.date} />
+                      <span className="input-group-addon">
+                        <i className="fa fa-calendar" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+              </div>
             </div>
           </div>
 

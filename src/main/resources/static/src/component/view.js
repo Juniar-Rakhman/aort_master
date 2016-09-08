@@ -17,28 +17,20 @@ class ObserveHeader extends Component{
       <div className="ibox-content">
         <div className="form-group">
           <div className="row m-b">
-            <div className="col-sm-4">
-              <label className="col-sm-3 control-label">Teacher's Name</label>
-              <div className="col-sm-9">
-                <input type="text" className="form-control m-b" value={this.props.staff.firstName + ' ' + this.props.staff.lastName || init} disabled/>
+            <div className="col-sm-6">
+              <div className="row">
+                  <label className="col-sm-4 control-label">Teacher's Name</label>
+                  <div className="col-sm-8">
+                    <input type="text" className="form-control m-b" value={this.props.staff.firstName + ' ' + this.props.staff.lastName || init} disabled/>
+                  </div>
               </div>
             </div>
-            <div className="col-sm-5">
-              <label className="col-sm-4 control-label">Line Manager's Name</label>
-              <div className="col-sm-7">
-                <input type="text" className="form-control m-b" value={this.props.lineManager.firstName + ' ' + this.props.lineManager.lastName || init} disabled/>
-              </div>
-            </div>
-            <div className="col-sm-3">
-              <label className="col-sm-3 control-label">Date</label>
-              <div className="col-sm-9">
-                <input
-                    {...this.props.mode}
-                    type="text"
-                    disabled
-                    value={moment(this.props.observation.date).format('DD/MM/YYYY') || init}
-                    className="form-control m-b"
-                />
+            <div className="col-sm-6">
+              <div className="row">
+                  <label className="col-sm-4 control-label">Line Manager's Name</label>
+                  <div className="col-sm-8">
+                    <input type="text" className="form-control m-b" value={this.props.lineManager.firstName + ' ' + this.props.lineManager.lastName || init} disabled/>
+                  </div>
               </div>
             </div>
           </div>
@@ -76,6 +68,20 @@ class ObserveHeader extends Component{
                   <input type="text" className="form-control m-b" value={this.props.observerSecondary.firstName + ' ' + this.props.observerSecondary.lastName || init} disabled/>
                 </div>
               </div>
+            </div>
+            <div className="col-sm-6">
+                <div className="row">
+                  <label className="col-sm-4 control-label">Date</label>
+                  <div className="col-sm-4">
+                    <input
+                        {...this.props.mode}
+                        type="text"
+                        disabled
+                        value={moment(this.props.observation.date).format('DD/MM/YYYY') || init}
+                        className="form-control m-b"
+                    />
+                  </div>
+                </div>
             </div>
           </div>
 
