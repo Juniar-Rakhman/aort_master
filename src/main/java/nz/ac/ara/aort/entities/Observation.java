@@ -55,7 +55,7 @@ public class Observation {
 	@Column(name = "programme_level")
 	private Integer programmeLevel;
 
-	@Column(name = "notes", columnDefinition = "nvarchar(1000)")
+	@Column(name = "notes", columnDefinition = "nvarchar(MAX)")
 	private String notes;
 	
 	@Column(name = "rating_summary_eval", columnDefinition = "nvarchar(250)")
