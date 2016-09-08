@@ -172,7 +172,7 @@ class ObserveHeader extends Component{
             <div className="col-sm-12">
               <label className="col-sm-2 control-label">Observation Notes</label>
               <div className="col-sm-10">
-                <textarea type="text" style={{width: "100%", height:"200px"}} className="form-control m-b" value={this.props.observation.notes || init} disabled/>
+                <textarea type="text" style={{width: "100%", height:"500px"}} className="form-control m-b" value={this.props.observation.notes || init} disabled/>
               </div>
             </div>
           </div>

@@ -535,7 +535,7 @@ class ObserveHeader extends Component{
                 <textarea
                     {...this.props.mode}
                     type="text"
-                    style={{width: "100%", height:"200px"}}
+                    style={{width: "100%", height:"500px"}}
                     className="form-control m-b"
                     value={this.state.notes}
                     onChange={this.handleNotesSessionChange.bind(this)}
