@@ -1240,7 +1240,7 @@ class ObserveRecommendations extends Component {
                     {this.state.recommendationRows}
                   </tbody>
               </table>
-              <button className="btn btn-primary" type="button" onClick={this.handleAddRecommendation.bind(this)} disabled={this.state.recommendationNum > 5}>Add Recommendation</button>
+              <button className="btn btn-primary" type="button" onClick={this.handleAddRecommendation.bind(this)} disabled={this.state.recommendationNum > 5}>Add Focus Area</button>
             </div>
           </div>
         </div>
