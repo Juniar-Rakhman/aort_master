@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import moment from 'moment';
 
 class ObserveHeader extends Component{
   constructor(props){
@@ -46,182 +45,220 @@ class ObserveHeader extends Component{
 
           <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Lead Observer's Name</label>
-              <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observerPrimary.firstName + ' ' + this.props.observerPrimary.lastName || init} disabled/>
+              <div className="row">
+                <label className="col-sm-4 control-label">Lead Observer's Name</label>
+                <div className="col-sm-8">
+                  <input type="text" className="form-control m-b" value={this.props.observerPrimary.firstName + ' ' + this.props.observerPrimary.lastName || init} disabled/>
+                </div>
               </div>
             </div>
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Time of Observation</label>
-              <div className="col-sm-4">
-                <input
-                    {...this.props.mode}
-                    type="text"
-                    disabled
-                    value={this.props.observation.time.substring(0,5) || init}
-                    className="form-control m-b"
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="row m-b">
-            <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Peer Observer's Name</label>
-              <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observerSecondary.firstName + ' ' + this.props.observerSecondary.lastName || init} disabled/>
-              </div>
-            </div>
-            <div className="col-sm-6">
-            </div>
-          </div>
-
-          <div className="row m-b">
-            <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Qualification</label>
-              <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.programme || init} disabled/>
-              </div>
-            </div>
-            <div className="col-sm-6">
-              <label className="col-sm-4 control-label">No of learners on register</label>
-              <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.registeredLearners || init} disabled/>
+              <div className="row">
+                <label className="col-sm-4 control-label">Time of Observation</label>
+                <div className="col-sm-4">
+                  <input
+                      {...this.props.mode}
+                      type="text"
+                      disabled
+                      value={this.props.observation.time.substring(0,5) || init}
+                      className="form-control m-b"
+                  />
+                </div>
               </div>
             </div>
           </div>
 
           <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Course Code</label>
-              <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.courseCode || init} disabled/>
+              <div className="row">
+                <label className="col-sm-4 control-label">Peer Observer's Name</label>
+                <div className="col-sm-8">
+                  <input type="text" className="form-control m-b" value={this.props.observerSecondary.firstName + ' ' + this.props.observerSecondary.lastName || init} disabled/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row m-b">
+            <div className="col-sm-6">
+              <div className="row">
+                <label className="col-sm-4 control-label">Qualification</label>
+                <div className="col-sm-8">
+                  <input type="text" className="form-control m-b" value={this.props.observation.programme || init} disabled/>
+                </div>
               </div>
             </div>
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">No of learners at start</label>
-              <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.startLearners || init} disabled/>
+              <div className="row">
+                <label className="col-sm-4 control-label">No of learners on register</label>
+                <div className="col-sm-8">
+                  <input type="text" className="form-control m-b" value={this.props.observation.registeredLearners || init} disabled/>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row m-b">
+            <div className="col-sm-6">
+              <div className="row">
+                <label className="col-sm-4 control-label">Course Code</label>
+                <div className="col-sm-8">
+                  <input type="text" className="form-control m-b" value={this.props.observation.courseCode || init} disabled/>
+                </div>
+              </div>
+            </div>
+            <div className="col-sm-6">
+              <div className="row">
+                <label className="col-sm-4 control-label">No of learners at start</label>
+                <div className="col-sm-8">
+                  <input type="text" className="form-control m-b" value={this.props.observation.startLearners || init} disabled/>
+                </div>
               </div>
             </div>
            </div>
 
           <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Course Title</label>
-              <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.courseName || init} disabled/>
+              <div className="row">
+                <label className="col-sm-4 control-label">Course Title</label>
+                <div className="col-sm-8">
+                  <input type="text" className="form-control m-b" value={this.props.observation.courseName || init} disabled/>
+                </div>
               </div>
             </div>
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">No of learners late</label>
-              <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.lateLearners || init} disabled/>
+              <div className="row">
+                <label className="col-sm-4 control-label">No of learners late</label>
+                <div className="col-sm-8">
+                  <input type="text" className="form-control m-b" value={this.props.observation.lateLearners || init} disabled/>
+                </div>
               </div>
             </div>
            </div>
 
           <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Level</label>
-              <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.courseLevel || init} disabled/>
+              <div className="row">
+                <label className="col-sm-4 control-label">Level</label>
+                <div className="col-sm-8">
+                  <input type="text" className="form-control m-b" value={this.props.observation.courseLevel || init} disabled/>
+                </div>
               </div>
             </div>
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Total no. of learners in session</label>
-              <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.totalLearners || init} disabled/>
+              <div className="row">
+                <label className="col-sm-4 control-label">Total no. of learners in session</label>
+                <div className="col-sm-8">
+                  <input type="text" className="form-control m-b" value={this.props.observation.totalLearners || init} disabled/>
+                </div>
               </div>
             </div>
           </div>
 
           <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Course Credits</label>
-              <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.programmeLevel || init} disabled/>
+              <div className="row">
+                <label className="col-sm-4 control-label">Course Credits</label>
+                <div className="col-sm-8">
+                  <input type="text" className="form-control m-b" value={this.props.observation.programmeLevel || init} disabled/>
+                </div>
               </div>
             </div>
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Department</label>
-              <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.department || init} disabled/>
+              <div className="row">
+                <label className="col-sm-4 control-label">Department</label>
+                <div className="col-sm-8">
+                  <input type="text" className="form-control m-b" value={this.props.observation.department || init} disabled/>
+                </div>
               </div>
             </div>
           </div>
 
           <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Campus Location</label>
-              <div className="col-sm-8">
-                <input type="text" className="form-control m-b" value={this.props.observation.location || init} disabled/>
+              <div className="row">
+                <label className="col-sm-4 control-label">Campus Location</label>
+                <div className="col-sm-8">
+                  <input type="text" className="form-control m-b" value={this.props.observation.location || init} disabled/>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="row m-b">
+          <div className="row">
             <div className="col-sm-12">
-              <label className="col-sm-2 control-label">Context of Session (include stage in programme)</label>
-              <div className="col-sm-10">
-                <textarea type="text" style={{width: "100%", height: "70px"}} className="form-control m-b" value={this.props.observation.sessionContext || init} disabled/>
+              <div className="row">
+                <label className="col-sm-2 control-label">Context of Session (include stage in programme)</label>
+                <div className="col-sm-10">
+                  <textarea type="text" style={{width: "100%", height: "70px"}} className="form-control m-b" value={this.props.observation.sessionContext || init} disabled/>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="row m-b">
-            <div className="col-sm-12">
-              <label className="col-sm-2 control-label">Observation Notes</label>
-              <div className="col-sm-10">
-                <textarea type="text" style={{width: "100%", height:"500px"}} className="form-control m-b" value={this.props.observation.notes || init} disabled/>
+          <div className="row">
+            <div className="row">
+              <div className="col-sm-12">
+                <label className="col-sm-2 control-label">Observation Notes</label>
+                <div className="col-sm-10">
+                  <textarea type="text" style={{width: "100%", height:"500px"}} className="form-control m-b" value={this.props.observation.notes || init} disabled/>
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="row m-b">
+          <div className="row">
             <div className="col-sm-3">
-              <label className="col-sm-8 control-label">Lesson Plan</label>
-              <div className="col-sm-4">
-                <input
-                  type="checkbox"
-                  checked={this.props.observation.lessonPlan || init}
-                  disabled
-                />
+              <div className="row">
+                <label className="col-sm-8 control-label">Lesson Plan</label>
+                <div className="col-sm-4">
+                  <input
+                    type="checkbox"
+                    checked={this.props.observation.lessonPlan || init}
+                    disabled
+                  />
+                </div>
               </div>
             </div>
             <div className="col-sm-9">
-              <label className="col-sm-2 control-label">Comments</label>
-              <div className="col-sm-10">
-                <textarea
-                    type="text"
-                    className="form-control m-b"
-                    value={this.props.observation.lessonPlanComment || init}
-                    disabled
-                />
+              <div className="row">
+                <label className="col-sm-2 control-label">Comments</label>
+                <div className="col-sm-10">
+                  <textarea
+                      type="text"
+                      className="form-control m-b"
+                      value={this.props.observation.lessonPlanComment || init}
+                      disabled
+                  />
+                </div>
               </div>
             </div>
           </div>
 
-          <div className="row m-b">
+          <div className="row">
             <div className="col-sm-3">
-              <label className="col-sm-8 control-label">Course Outline</label>
-              <div className="col-sm-4">
-                <input
-                  type="checkbox"
-                  checked={this.props.observation.courseOutline || init}
-                  disabled
-                />
+              <div className="row">
+                <label className="col-sm-8 control-label">Course Outline</label>
+                <div className="col-sm-4">
+                  <input
+                    type="checkbox"
+                    checked={this.props.observation.courseOutline || init}
+                    disabled
+                  />
+                </div>
               </div>
             </div>
             <div className="col-sm-9">
-              <label className="col-sm-2 control-label">Comments</label>
-              <div className="col-sm-10">
-                <textarea
-                    type="text"
-                    className="form-control m-b"
-                    value={this.props.observation.courseOutlineComment || init}
-                    disabled
-                />
+              <div className="row">
+                <label className="col-sm-2 control-label">Comments</label>
+                <div className="col-sm-10">
+                  <textarea
+                      type="text"
+                      className="form-control m-b"
+                      value={this.props.observation.courseOutlineComment || init}
+                      disabled
+                  />
+                </div>
               </div>
             </div>
           </div>
