@@ -1409,7 +1409,7 @@ class Entry extends Component {
 
     var observation = Object.assign({}, this.state.observationData, {
         date: moment(this.state.observationData.date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-        time: this.state.observationData.time.concat(':00'),
+        time: this.props.title==='Edit' ? this.state.observationData.time : this.state.observationData.time.concat(':00'),
         completed: false
     });
     if (this.props.title === 'Create') {
