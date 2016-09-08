@@ -17,7 +17,7 @@ class ObservationRow extends Component {
             <tr className="gradeX">
                 <td><a href='#' onClick={this.handleObservationView.bind(this)}>{this.props.observation.staffFirstName} {this.props.observation.staffLastName}</a></td>
                 <td>{this.props.observation.courseName}</td>
-                <td>{this.props.observation.observerPrimaryFirstName} {this.props.observation.observerPrimaryFirstName}</td>
+                <td>{this.props.observation.observerPrimaryFirstName} {this.props.observation.observerPrimaryLastName}</td>
                 <td>{obsStatus}</td>
                 <td>{moment(this.props.observation.date).format('DD/MM/YYYY')} / {this.props.observation.time.substring(0,5)}</td>
             </tr>
