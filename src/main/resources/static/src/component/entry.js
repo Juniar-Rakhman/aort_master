@@ -5,10 +5,10 @@ class ObserveHeader extends Component{
   constructor(props){
     super(props);
     var observerPrimary = props.mode === 'Create' ? props.staff : props.observation.observerPrimary;
-    var date = moment().format('YYYY-MM-DD');
+    var date = moment().format('DD/MM/YYYY');
     var time = moment().format('HH:mm');
     this.state = {
-        date: props.observation.date || date,
+        date: moment(props.observation.date).format('DD/MM/YYYY') || date,
         time: props.observation.time || time,
         staffId: props.observation.staffId || '',
         lineManagerId: props.observation.lineManagerId || '',
@@ -234,7 +234,7 @@ class ObserveHeader extends Component{
     }
 
     $('#datePicker').datetimepicker({
-        format: 'YYYY-MM-DD'
+        format: 'DD/MM/YYYY'
     });
     $('#datePicker').on('dp.change', this.handleDateChange.bind(this));
 
@@ -1364,7 +1364,8 @@ class Entry extends Component {
     this.setState({observationData: newObservationData});
 
     var observation = Object.assign({}, this.state.observationData, {
-        time : moment(this.state.observationData.date + "T" + this.state.observationData.time).format('HH:mm:ss'),
+        date: moment(this.state.observationData.date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
+        time: this.state.observationData.time.concat(':00'),
         completed: false
     });
     if (this.props.title === 'Create') {

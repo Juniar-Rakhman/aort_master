@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import moment from 'moment';
 
 class ObserveHeader extends Component{
   constructor(props){
@@ -36,7 +37,7 @@ class ObserveHeader extends Component{
                     {...this.props.mode}
                     type="text"
                     disabled
-                    value={this.props.observation.date}
+                    value={moment(this.props.observation.date).format('DD/MM/YYYY') || init}
                     className="form-control m-b"
                 />
               </div>
@@ -57,7 +58,7 @@ class ObserveHeader extends Component{
                     {...this.props.mode}
                     type="text"
                     disabled
-                    value={this.props.observation.time}
+                    value={this.props.observation.time.substring(0,5) || init}
                     className="form-control m-b"
                 />
               </div>
