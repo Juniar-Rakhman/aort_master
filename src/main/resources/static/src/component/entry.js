@@ -8,8 +8,8 @@ class ObserveHeader extends Component{
     var date = moment().format('DD/MM/YYYY');
     var time = moment().format('HH:mm');
     this.state = {
-        date: moment(props.observation.date).format('DD/MM/YYYY') || date,
-        time: props.observation.time || time,
+        date: props.observation.date != null ? moment(props.observation.date).format('DD/MM/YYYY') : date,
+        time: props.observation.time != null ? props.observation.time.substring(0,5) : time,
         staffId: props.observation.staffId || '',
         lineManagerId: props.observation.lineManagerId || '',
         observerPrimaryId: observerPrimary.id || '',
@@ -236,12 +236,12 @@ class ObserveHeader extends Component{
     $('#datePicker').datetimepicker({
         format: 'DD/MM/YYYY'
     });
-    $('#datePicker').on('dp.change', this.handleDateChange.bind(this));
+    $('#datePicker').on('dp.change', this.handleDateChange.bind(this)).trigger('dp.change');
 
     $('#timePicker').datetimepicker({
         format: 'HH:mm'
     });
-    $('#timePicker').on('dp.change', this.handleTimeChange.bind(this));
+    $('#timePicker').on('dp.change', this.handleTimeChange.bind(this)).trigger('dp.change');
   }
 
   render(){
@@ -1407,9 +1407,10 @@ class Entry extends Component {
 
     this.setState({observationData: newObservationData});
 
+    var date = moment(this.state.observationData.date, 'DD/MM/YYYY').format('YYYY-MM-DD');
     var observation = Object.assign({}, this.state.observationData, {
-        date: moment(this.state.observationData.date, 'DD/MM/YYYY').format('YYYY-MM-DD'),
-        time: this.props.title==='Edit' ? this.state.observationData.time : this.state.observationData.time.concat(':00'),
+        date: date,
+        time: moment(date + 'T' + this.state.observationData.time).format('HH:mm:ss'),
         completed: false
     });
     if (this.props.title === 'Create') {
