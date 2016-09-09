@@ -190,15 +190,13 @@ public class Observation implements Comparable<Observation> {
 
 	@Override
 	public int compareTo(Observation obs) {
-		final int BEFORE = -1;
-		final int EQUAL = 0;
-		final int AFTER = 1;
+		int firstNameCompare = this.staffFirstName.compareTo(obs.staffFirstName);
+		int lastNameCompare = this.staffLastName.compareTo(obs.staffLastName);
 		
-//		
-//		if (Objects.equals(this.getStaffName(), obs.getStaffName()))
-//			return EQUAL;
-//		else if (this )
-//		
-		return EQUAL;		
+		if (lastNameCompare == 0) {
+			return firstNameCompare;
+		}
+		
+		return firstNameCompare;
 	}
 }
