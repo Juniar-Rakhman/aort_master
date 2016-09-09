@@ -22,6 +22,9 @@ import java.util.List;
 @Entity
 @Table(name = "report")
 public class Report {
+    
+    //https://mtpc504.mitrais.com/ReportServer/Pages/ReportViewer.aspx?%2ftraining_ssrs%2fReport1&rs:Command=Render
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
