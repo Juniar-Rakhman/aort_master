@@ -8,7 +8,13 @@ import StaffSearch from "./staffSearch";
 import ObservationSearch from "./observationSearch";
 import View from "./view";
 import UserRoleSearch from "./userRoleSearch";
-import ViewUserRole from "./viewUserRole";
+import EntryUserRole from "./entryUserRole";
+import StrengthImprovementSearch from "./strengthImprovementSearch";
+import EntryStrengthImprovement from "./entryStrengthImprovement";
+import RatingSearch from "./ratingSearch";
+import EntryRating from "./entryRating";
+import PositionSearch from "./positionSearch";
+import UpdateCategory from "./updateCategory";
 
 class Container extends Component {
   constructor(props, context) {
@@ -91,10 +97,26 @@ class Container extends Component {
       content = <View title='View' observationId={this.state.data} staff={this.state.staff} redirectTo={this.handlePageNav}/>
     } else if (this.state.page === 'userRoleSearch') {
       content = <UserRoleSearch redirectTo={this.handlePageNav} />
-    } else if (this.state.page === 'viewUserRole') {
-      content = <ViewUserRole userRole={this.state.data} redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'entryUserRole') {
+      content = <EntryUserRole userRole={this.state.data} redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'edit') {
       content = <Entry title='Edit' observation={this.state.data} redirectTo={this.handlePageNav}/>;
+    } else if (this.state.page === 'strengthImprovementSearch') {
+      content = <StrengthImprovementSearch redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'entryStrengthImprovement') {
+      content = <EntryStrengthImprovement title='Create' redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'editStrengthImprovement') {
+      content = <EntryStrengthImprovement title='Edit' strengthImprovement={this.state.data} redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'ratingSearch') {
+      content = <RatingSearch redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'entryRating') {
+      content = <EntryRating title='Create' redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'editRating') {
+      content = <EntryRating title='Edit' rating={this.state.data} redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'positionSearch') {
+      content = <PositionSearch redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'updateCategory') {
+      content = <UpdateCategory category={this.state.data} redirectTo={this.handlePageNav} />
     }
 
     return content;
