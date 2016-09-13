@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import java.sql.Date;
 import java.util.List;
 
@@ -29,6 +30,9 @@ public class Report {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @Transient
+    private Long userId;
+    
     @Column(name = "name")
     private String name;
 
@@ -40,5 +44,5 @@ public class Report {
 
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "report_id")
-    private List<Parameter> params;
+    private List<Parameter> parameters;
 }

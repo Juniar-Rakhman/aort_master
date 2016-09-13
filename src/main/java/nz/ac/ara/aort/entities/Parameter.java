@@ -14,7 +14,7 @@ import javax.persistence.Table;
  */
 @Data
 @Entity
-@Table(name = "report_param")
+@Table(name = "parameter")
 public class Parameter {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
