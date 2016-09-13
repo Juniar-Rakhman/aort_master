@@ -29,6 +29,18 @@ class Navigation extends Component {
     this.props.handlePageNav('userRoleSearch')
   }
 
+  handleStrengthImprovementSearch() {
+    this.props.handlePageNav('strengthImprovementSearch');
+  }
+
+  handleRatingSearch() {
+    this.props.handlePageNav('ratingSearch');
+  }
+
+  handlePositionSearch() {
+    this.props.handlePageNav('positionSearch');
+  }
+
   setMenu() {
       console.log('role: '+ this.props.role);
       var role = this.props.role;
@@ -59,8 +71,11 @@ class Navigation extends Component {
           <li>
             <a href="#"><i className="fa fa-user"></i> <span className="nav-label">System Administration</span></a>
             <ul className="nav nav-second-level">
-              <li><a href="#" onClick={this.handleStaffSearch.bind(this)}>Users Management</a></li>
-              <li><a href="#" onClick={this.handleUserRoleSearch.bind(this)}>Roles Management</a></li>
+              <li><a href="#" onClick={this.handleStaffSearch.bind(this)}>User Management</a></li>
+              <li><a href="#" onClick={this.handleUserRoleSearch.bind(this)}>Role Management</a></li>
+              <li><a href="#" onClick={this.handlePositionSearch.bind(this)}>Position Management</a></li>
+              <li><a href="#" onClick={this.handleStrengthImprovementSearch.bind(this)}>Strength Improvement Management</a></li>
+              <li><a href="#" onClick={this.handleRatingSearch.bind(this)}>Rating Management</a></li>
             </ul>
           </li>
         );

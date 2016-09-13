@@ -106,23 +106,18 @@ class UserRoleForm extends Component {
 
 	render() {
     	return (
-            <div className="ibox-content">
-                <div className="ibox-title">
-                    <h2>Staff Role Update</h2>
-                </div>
+    	    <form className="form-horizontal">
                 <div className="ibox-content">
-                    <div className="form-group m-b">
-                        <div className="form-group">
-                            <div className="col-sm-12  m-b">
-                                <label className="col-sm-4 control-label">Name</label>
-                                <div className="col-sm-8">
-                                    <input type="text" className="form-control m-b" value={this.props.userRole.staff.firstName + ' ' + this.props.userRole.staff.lastName} disabled />
-                                </div>
+                    <div className="form-group">
+                        <div className="col-sm-12">
+                            <label className="col-sm-4 control-label">Name</label>
+                            <div className="col-sm-8">
+                                <input type="text" className="form-control m-b" value={this.props.userRole.staff.firstName + ' ' + this.props.userRole.staff.lastName} disabled />
                             </div>
                         </div>
                     </div>
                     <div className="form-group">
-                        <div className="col-sm-12  m-b">
+                        <div className="col-sm-12">
                             <label className="col-sm-4 control-label">Role</label>
                             <div className="col-sm-8">
                                 <input type="radio" name="role" value="general" checked={this.state.general} onChange={this.handleChange.bind(this)} /> General<br />
@@ -141,12 +136,12 @@ class UserRoleForm extends Component {
                       </div>
                     </div>
                 </div>
-            </div>
+            </form>
 		);
 	}
 }
 
-class ViewUserRole extends Component {
+class EntryUserRole extends Component {
 	constructor(props){
 		super(props);
   
@@ -158,14 +153,18 @@ class ViewUserRole extends Component {
 		        <div className="row">
 		          <div className="col-lg-12">
 		            <div className="ibox float-e-margins">
-		                <UserRoleForm userRole={this.props.userRole} redirectTo={this.props.redirectTo} />
+		                <div className="ibox-title">
+                            <h2>Staff Role Update</h2>
+                        </div>
+                        <div className="ibox-content">
+                            <UserRoleForm userRole={this.props.userRole} redirectTo={this.props.redirectTo} />
+                        </div>
 		            </div>
 		          </div>
 		        </div>
 		    </div>
 		);
 	}
- 
 }
 
-export default ViewUserRole
+export default EntryUserRole;

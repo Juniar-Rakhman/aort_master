@@ -27,6 +27,8 @@ public class Position {
 
 	@Column(name = "manager_position_id", columnDefinition = "nvarchar(50)")
 	private String lineManager;
+	@Transient
+	private String lineManagerTitle;
 
 	@Transient
 	@ManyToMany(mappedBy="positions")
