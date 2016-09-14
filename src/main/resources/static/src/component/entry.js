@@ -5,11 +5,11 @@ class ObserveHeader extends Component{
   constructor(props){
     super(props);
     var observerPrimary = props.mode === 'Create' ? props.staff : props.observation.observerPrimary;
-    var date = moment().format('YYYY-MM-DD');
+    var date = moment().format('DD/MM/YYYY');
     var time = moment().format('HH:mm');
     this.state = {
-        date: props.observation.date || date,
-        time: props.observation.time || time,
+        date: props.observation.date != null ? moment(props.observation.date).format('DD/MM/YYYY') : date,
+        time: props.observation.time != null ? props.observation.time.substring(0,5) : time,
         staffId: props.observation.staffId || '',
         lineManagerId: props.observation.lineManagerId || '',
         observerPrimaryId: observerPrimary.id || '',
@@ -234,14 +234,14 @@ class ObserveHeader extends Component{
     }
 
     $('#datePicker').datetimepicker({
-        format: 'YYYY-MM-DD'
+        format: 'DD/MM/YYYY'
     });
-    $('#datePicker').on('dp.change', this.handleDateChange.bind(this));
+    $('#datePicker').on('dp.change', this.handleDateChange.bind(this)).trigger('dp.change');
 
     $('#timePicker').datetimepicker({
         format: 'HH:mm'
     });
-    $('#timePicker').on('dp.change', this.handleTimeChange.bind(this));
+    $('#timePicker').on('dp.change', this.handleTimeChange.bind(this)).trigger('dp.change');
   }
 
   render(){
@@ -250,39 +250,62 @@ class ObserveHeader extends Component{
         <div className="form-group">
 
           <div className="row m-b">
-            <div className="col-sm-4">
-              <label className="col-sm-3 control-label">Teacher's Name</label>
-              <div className="col-sm-9">
-                <select id="teacher"
-                  className="form-control m-b"
-                  data-init={this.state.staff.firstName + ' ' + this.state.staff.lastName}
-                  style={{width: "100%"}}
-                  value={this.state.staffId}
-                  required={this.state.staffId === ''}>
+            <div className="col-sm-6">
+              <div className="row">
+                  <label className="col-sm-4 control-label">Teacher's Name</label>
+                  <div className="col-sm-8">
+                    <select id="teacher"
+                      className="form-control m-b"
+                      data-init={this.state.staff.firstName + ' ' + this.state.staff.lastName}
+                      style={{width: "100%"}}
+                      value={this.state.staffId}
+                      required={this.state.staffId === ''}>
+                        <option></option>
+                    </select>
+                  </div>
+              </div>
+            </div>
+            <div className="col-sm-6">
+              <div className="row">
+                  <label className="col-sm-4 control-label">Line Manager's Name</label>
+                  <div className="col-sm-8">
+                    <select id="lineManager"
+                      className="form-control m-b"
+                      data-init={this.state.lineManager.firstName + ' ' + this.state.lineManager.lastName}
+                      style={{width: "100%"}}
+                      value={this.state.lineManagerId}>
+                      <option></option>
+                    </select>
+                  </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row m-b">
+            <div className="col-sm-6">
+              <div className="row">
+                <label className="col-sm-4 control-label">Lead Observer's Name</label>
+                <div className="col-sm-8">
+                  <select id="observerPrimary"
+                    className="form-control m-b"
+                    data-init={this.state.observerPrimary.firstName + ' ' + this.state.observerPrimary.lastName}
+                    style={{width: "100%"}}
+                    value={this.state.observerPrimaryId}>
                     <option></option>
-                </select>
+                  </select>
+                </div>
               </div>
             </div>
-            <div className="col-sm-5">
-              <label className="col-sm-4 control-label">Line Manager's Name</label>
-              <div className="col-sm-7">
-                <select id="lineManager"
-                  className="form-control m-b"
-                  data-init={this.state.lineManager.firstName + ' ' + this.state.lineManager.lastName}
-                  style={{width: "100%"}}
-                  value={this.state.lineManagerId}>
-                  <option></option>
-                </select>
-              </div>
-            </div>
-            <div className="col-sm-3">
-              <label className="col-sm-3 control-label">Date</label>
-              <div className="col-sm-9">
-                <div className="input-group date" id="datePicker">
-                  <input type="text" className="form-control" value={this.state.date} />
-                  <span className="input-group-addon">
-                    <i className="fa fa-calendar" aria-hidden="true"></i>
-                  </span>
+            <div className="col-sm-6">
+              <div className="row">
+                <label className="col-sm-4 control-label">Time of Observation</label>
+                <div className="col-sm-4">
+                  <div className="input-group date" id="timePicker">
+                    <input type="text" className="form-control" value={this.state.time} />
+                    <span className="input-group-addon">
+                      <i className="fa fa-clock-o" aria-hidden="true"></i>
+                    </span>
+                  </div>
                 </div>
               </div>
             </div>
@@ -290,172 +313,175 @@ class ObserveHeader extends Component{
 
           <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Lead Observer's Name</label>
-              <div className="col-sm-8">
-                <select id="observerPrimary"
-                  className="form-control m-b"
-                  data-init={this.state.observerPrimary.firstName + ' ' + this.state.observerPrimary.lastName}
-                  style={{width: "100%"}}
-                  value={this.state.observerPrimaryId}>
-                  <option></option>
-                </select>
+              <div className="row">
+                <label className="col-sm-4 control-label">Peer Observer's Name</label>
+                <div className="col-sm-8">
+                  <select id="observerSecondary"
+                    className="form-control m-b"
+                    data-init={this.state.observerSecondary.firstName + ' ' + this.state.observerSecondary.lastName}
+                    style={{width: "100%"}}
+                    value={this.state.observerSecondaryId}>
+                    <option></option>
+                  </select>
+                </div>
               </div>
             </div>
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Time of Observation</label>
-              <div className="col-sm-4">
-                <div className="input-group date" id="timePicker">
-                  <input type="text" className="form-control" value={this.state.time} />
-                  <span className="input-group-addon">
-                    <i className="fa fa-clock-o" aria-hidden="true"></i>
-                  </span>
+              <div className="row">
+                  <label className="col-sm-4 control-label">Date</label>
+                  <div className="col-sm-4">
+                    <div className="input-group date" id="datePicker">
+                      <input type="text" className="form-control" value={this.state.date} />
+                      <span className="input-group-addon">
+                        <i className="fa fa-calendar" aria-hidden="true"></i>
+                      </span>
+                    </div>
+                  </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-sm-6">
+              <div className = "row">
+                <label className="col-sm-4 control-label">Qualification</label>
+                <div className="col-sm-8">
+                  <input
+                      {...this.props.mode}
+                      type="text"
+                      placeholder="100 characters allowed"
+                      maxLength={100}
+                      className="form-control m-b"
+                      value={this.state.programme}
+                      onChange={this.handleProgrammeChange.bind(this)}
+                  />
+                </div>
+              </div>
+            </div>
+            <div className="col-sm-6">
+              <div className="row">
+                <label className="col-sm-4 control-label">No of learners on register</label>
+                <div className="col-sm-8">
+                  <input
+                      {...this.props.mode}
+                      type="number"
+                      min={0}
+                      max={999}
+                      placeholder="Max value is 999"
+                      className="form-control m-b"
+                      value={this.state.registeredLearners}
+                      onChange={this.handleNumLearnerOnRegisterChange.bind(this)}
+                  />
                 </div>
               </div>
             </div>
           </div>
 
-          <div className="row m-b">
-            <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Peer Observer's Name</label>
-              <div className="col-sm-8">
-                <select id="observerSecondary"
-                  className="form-control m-b"
-                  data-init={this.state.observerSecondary.firstName + ' ' + this.state.observerSecondary.lastName}
-                  style={{width: "100%"}}
-                  value={this.state.observerSecondaryId}>
-                  <option></option>
-                </select>
-              </div>
-            </div>
-            <div className="col-sm-6">
-            </div>
-          </div>
-
           <div className="row">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Course Code</label>
-              <div className="col-sm-8">
-                <input
-                    {...this.props.mode}
-                    type="text"
-                    placeholder="20 characters allowed"
-                    maxLength={20}
-                    className="form-control m-b"
-                    value={this.state.courseCode}
-                    onChange={this.handleCourseCodeChange.bind(this)}
-                />
+              <div className="row">
+                <label className="col-sm-4 control-label">Course Code</label>
+                <div className="col-sm-8">
+                  <input
+                      {...this.props.mode}
+                      type="text"
+                      placeholder="20 characters allowed"
+                      maxLength={20}
+                      className="form-control m-b"
+                      value={this.state.courseCode}
+                      onChange={this.handleCourseCodeChange.bind(this)}
+                  />
+                </div>
               </div>
             </div>
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">No of learners on register</label>
-              <div className="col-sm-8">
-                <input
-                    {...this.props.mode}
-                    type="number"
-                    min={0}
-                    max={999}
-                    placeholder="Max value is 999"
-                    className="form-control m-b"
-                    value={this.state.registeredLearners}
-                    onChange={this.handleNumLearnerOnRegisterChange.bind(this)}
-                />
-              </div>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Course Title</label>
-              <div className="col-sm-8">
-                <input
-                    {...this.props.mode}
-                    type="text"
-                    placeholder="100 characters allowed"
-                    maxLength={100}
-                    className="form-control m-b"
-                    value={this.state.courseName}
-                    onChange={this.handleCourseChange.bind(this)}
-                />
-              </div>
-            </div>
-            <div className="col-sm-6">
-              <label className="col-sm-4 control-label">No of learners at start</label>
-              <div className="col-sm-8">
-                <input
-                    {...this.props.mode}
-                    type="number"
-                    min={0}
-                    max={999}
-                    placeholder="Max value is 999"
-                    className="form-control m-b"
-                    value={this.state.startLearners}
-                    onChange={this.handleNumLearnerAtStartChange.bind(this)}
-                />
+              <div className="row">
+                <label className="col-sm-4 control-label">No of learners at start</label>
+                <div className="col-sm-8">
+                  <input
+                      {...this.props.mode}
+                      type="number"
+                      min={0}
+                      max={999}
+                      placeholder="Max value is 999"
+                      className="form-control m-b"
+                      value={this.state.startLearners}
+                      onChange={this.handleNumLearnerAtStartChange.bind(this)}
+                  />
+                </div>
               </div>
             </div>
            </div>
 
           <div className="row">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Level</label>
-              <div className="col-sm-8">
-                <input
-                    {...this.props.mode}
-                    type="number"
-                    min={0}
-                    max={99}
-                    placeholder="Max value is 99"
-                    className="form-control m-b"
-                    value={this.state.courseLevel}
-                    onChange={this.handleCourseLevelChange.bind(this)}
-                />
+              <div className="row">
+                <label className="col-sm-4 control-label">Course Title</label>
+                <div className="col-sm-8">
+                  <input
+                      {...this.props.mode}
+                      type="text"
+                      placeholder="100 characters allowed"
+                      maxLength={100}
+                      className="form-control m-b"
+                      value={this.state.courseName}
+                      onChange={this.handleCourseChange.bind(this)}
+                  />
+                </div>
               </div>
             </div>
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">No of learners late</label>
-              <div className="col-sm-8">
-                <input
-                    {...this.props.mode}
-                    type="number"
-                    min={0}
-                    max={999}
-                    placeholder="Max value is 999"
-                    className="form-control m-b"
-                    value={this.state.lateLearners}
-                    onChange={this.handleNumLearnerLateChange.bind(this)}
-                />
+              <div className="row">
+                <label className="col-sm-4 control-label">No of learners late</label>
+                <div className="col-sm-8">
+                  <input
+                      {...this.props.mode}
+                      type="number"
+                      min={0}
+                      max={999}
+                      placeholder="Max value is 999"
+                      className="form-control m-b"
+                      value={this.state.lateLearners}
+                      onChange={this.handleNumLearnerLateChange.bind(this)}
+                  />
+                </div>
               </div>
             </div>
           </div>
 
           <div className="row">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Qualification</label>
-              <div className="col-sm-8">
-                <input
-                    {...this.props.mode}
-                    type="text"
-                    placeholder="100 characters allowed"
-                    maxLength={100}
-                    className="form-control m-b"
-                    value={this.state.programme}
-                    onChange={this.handleProgrammeChange.bind(this)}
-                />
+              <div className="row">
+                <label className="col-sm-4 control-label">Level</label>
+                <div className="col-sm-8">
+                  <input
+                      {...this.props.mode}
+                      type="number"
+                      min={0}
+                      max={99}
+                      placeholder="Max value is 99"
+                      className="form-control m-b"
+                      value={this.state.courseLevel}
+                      onChange={this.handleCourseLevelChange.bind(this)}
+                  />
+                </div>
               </div>
             </div>
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Total no. of learners in session</label>
-              <div className="col-sm-8">
-                <input
-                    {...this.props.mode}
-                    type="number"
-                    min={0}
-                    max={999}
-                    placeholder="Max value is 999"
-                    className="form-control m-b"
-                    value={this.state.totalLearners}
-                    onChange={this.handleTotalLearnerChange.bind(this)}
-                />
+              <div className="row">
+                <label className="col-sm-4 control-label">Total no. of learners in session</label>
+                <div className="col-sm-8">
+                  <input
+                      {...this.props.mode}
+                      type="number"
+                      min={0}
+                      max={999}
+                      placeholder="Max value is 999"
+                      className="form-control m-b"
+                      value={this.state.totalLearners}
+                      onChange={this.handleTotalLearnerChange.bind(this)}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -463,137 +489,155 @@ class ObserveHeader extends Component{
 
           <div className="row">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Level</label>
-              <div className="col-sm-8">
-                <input
-                    {...this.props.mode}
-                    type="number"
-                    min={0}
-                    max={99}
-                    placeholder="Max value is 99"
-                    className="form-control m-b"
-                    value={this.state.programmeLevel}
-                    onChange={this.handleProgrammeLevelChange.bind(this)}
-                />
+              <div className="row">
+                <label className="col-sm-4 control-label">Course Credits</label>
+                <div className="col-sm-8">
+                  <input
+                      {...this.props.mode}
+                      type="number"
+                      min={0}
+                      max={99}
+                      placeholder="Max value is 99"
+                      className="form-control m-b"
+                      value={this.state.programmeLevel}
+                      onChange={this.handleProgrammeLevelChange.bind(this)}
+                  />
+                </div>
               </div>
             </div>
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Department</label>
-              <div className="col-sm-8">
-                <input
-                    {...this.props.mode}
-                    type="text"
-                    placeholder="50 characters allowed"
-                    maxLength={50}
-                    className="form-control m-b"
-                    value={this.state.department}
-                    onChange={this.handleDepartmentChange.bind(this)}
-                />
+              <div className="row">
+                <label className="col-sm-4 control-label">Department</label>
+                <div className="col-sm-8">
+                  <input
+                      {...this.props.mode}
+                      type="text"
+                      placeholder="50 characters allowed"
+                      maxLength={50}
+                      className="form-control m-b"
+                      value={this.state.department}
+                      onChange={this.handleDepartmentChange.bind(this)}
+                  />
+                </div>
               </div>
             </div>
           </div>
 
           <div className="row m-b">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Campus Location</label>
-              <div className="col-sm-8">
-                <input
-                    {...this.props.mode}
-                    type="text"
-                    placeholder="50 characters allowed"
-                    maxLength={50}
-                    className="form-control m-b"
-                    value={this.state.location}
-                    onChange={this.handleCampusChange.bind(this)}
-                />
+              <div className="row">
+                <label className="col-sm-4 control-label">Campus Location</label>
+                <div className="col-sm-8">
+                  <input
+                      {...this.props.mode}
+                      type="text"
+                      placeholder="50 characters allowed"
+                      maxLength={50}
+                      className="form-control m-b"
+                      value={this.state.location}
+                      onChange={this.handleCampusChange.bind(this)}
+                  />
+                </div>
               </div>
             </div>
             </div>
 
           <div className="row">
             <div className="col-sm-12">
-              <label className="col-sm-2 control-label">Context of Session (include stage in programme)</label>
-              <div className="col-sm-10">
-                <textarea
-                    {...this.props.mode}
-                    maxLength={250}
-                    style={{width: "100%", height: "70px"}}
-                    placeholder="250 characters allowed"
-                    type="text"
-                    className="form-control m-b"
-                    value={this.state.sessionContext}
-                    onChange={this.handleContextSessionChange.bind(this)}
-                />
+              <div className="row">
+                <label className="col-sm-2 control-label">Context of Session (include stage in programme)</label>
+                <div className="col-sm-10">
+                  <textarea
+                      {...this.props.mode}
+                      maxLength={250}
+                      style={{width: "100%", height: "70px"}}
+                      placeholder="250 characters allowed"
+                      type="text"
+                      className="form-control m-b"
+                      value={this.state.sessionContext}
+                      onChange={this.handleContextSessionChange.bind(this)}
+                  />
+                </div>
               </div>
             </div>
           </div>
 
           <div className="row">
             <div className="col-sm-12">
-              <label className="col-sm-2 control-label">Observation Notes</label>
-              <div className="col-sm-10">
-                <textarea
-                    {...this.props.mode}
-                    type="text"
-                    style={{width: "100%", height:"200px"}}
-                    className="form-control m-b"
-                    value={this.state.notes}
-                    onChange={this.handleNotesSessionChange.bind(this)}
-                />
+              <div className="row">
+                <label className="col-sm-2 control-label">Observation Notes</label>
+                <div className="col-sm-10">
+                  <textarea
+                      {...this.props.mode}
+                      type="text"
+                      style={{width: "100%", height:"500px"}}
+                      className="form-control m-b"
+                      value={this.state.notes}
+                      onChange={this.handleNotesSessionChange.bind(this)}
+                  />
+                </div>
               </div>
             </div>
           </div>
 
           <div className="row m-b">
             <div className="col-sm-3">
-              <label className="col-sm-8 control-label">Lesson Plan</label>
-              <div className="col-sm-4">
-                <input
-                  type="checkbox"
-                  checked={this.state.lessonPlan}
-                  onClick={this.handleLessonPlanChange.bind(this)}
-                />
+              <div className="row">
+                <label className="col-sm-8 control-label">Lesson Plan</label>
+                <div className="col-sm-4">
+                  <input
+                    type="checkbox"
+                    checked={this.state.lessonPlan}
+                    onClick={this.handleLessonPlanChange.bind(this)}
+                  />
+                </div>
               </div>
             </div>
             <div className="col-sm-9">
-              <label className="col-sm-2 control-label">Comments</label>
-              <div className="col-sm-10">
-                <textarea
-                    {...this.props.mode}
-                    type="text"
-                    maxLength={250}
-                    placeholder="250 characters allowed"
-                    className="form-control"
-                    value={this.state.lessonPlanComment}
-                    onChange={this.handleLessonPlanCommentChange.bind(this)}
-                />
+              <div className="row">
+                <label className="col-sm-2 control-label">Comments</label>
+                <div className="col-sm-10">
+                  <textarea
+                      {...this.props.mode}
+                      type="text"
+                      maxLength={250}
+                      placeholder="250 characters allowed"
+                      className="form-control"
+                      value={this.state.lessonPlanComment}
+                      onChange={this.handleLessonPlanCommentChange.bind(this)}
+                  />
+                </div>
               </div>
             </div>
           </div>
 
           <div className="row">
             <div className="col-sm-3">
-              <label className="col-sm-8 control-label">Course Outline</label>
-              <div className="col-sm-4">
-                <input
-                  type="checkbox"
-                  checked={this.state.courseOutline}
-                  onClick={this.handleCourseOutlineChange.bind(this)}
-                />
+              <div className="row">
+                <label className="col-sm-8 control-label">Course Outline</label>
+                <div className="col-sm-4">
+                  <input
+                    type="checkbox"
+                    checked={this.state.courseOutline}
+                    onClick={this.handleCourseOutlineChange.bind(this)}
+                  />
+                </div>
               </div>
             </div>
             <div className="col-sm-9">
-              <label className="col-sm-2 control-label">Comments</label>
-              <div className="col-sm-10">
-                <textarea
-                    {...this.props.mode}
-                    type="text"
-                    maxLength={250}
-                    placeholder="250 characters allowed"
-                    className="form-control"
-                    value={this.state.courseOutlineComment}
-                    onChange={this.handleCourseOutlineCommentChange.bind(this)}
-                />
+              <div className="row">
+                <label className="col-sm-2 control-label">Comments</label>
+                <div className="col-sm-10">
+                  <textarea
+                      {...this.props.mode}
+                      type="text"
+                      maxLength={250}
+                      placeholder="250 characters allowed"
+                      className="form-control"
+                      value={this.state.courseOutlineComment}
+                      onChange={this.handleCourseOutlineCommentChange.bind(this)}
+                  />
+                </div>
               </div>
             </div>
           </div>
@@ -1240,7 +1284,7 @@ class ObserveRecommendations extends Component {
                     {this.state.recommendationRows}
                   </tbody>
               </table>
-              <button className="btn btn-primary" type="button" onClick={this.handleAddRecommendation.bind(this)} disabled={this.state.recommendationNum > 5}>Add Recommendation</button>
+              <button className="btn btn-primary" type="button" onClick={this.handleAddRecommendation.bind(this)} disabled={this.state.recommendationNum > 5}>Add Focus Area</button>
             </div>
           </div>
         </div>
@@ -1318,7 +1362,12 @@ class Entry extends Component {
   }
 
   handleComplete(){
-    var observation = Object.assign({}, this.state.observationData, {completed: true});
+    var date = moment(this.state.observationData.date, 'DD/MM/YYYY').format('YYYY-MM-DD');
+    var observation = Object.assign({}, this.state.observationData, {
+        date: date,
+        time: moment(date + 'T' + this.state.observationData.time).format('HH:mm:ss'),
+        completed: true
+    });
     this.updateMethod(observation);
   }
 
@@ -1363,8 +1412,10 @@ class Entry extends Component {
 
     this.setState({observationData: newObservationData});
 
+    var date = moment(this.state.observationData.date, 'DD/MM/YYYY').format('YYYY-MM-DD');
     var observation = Object.assign({}, this.state.observationData, {
-        time : moment(this.state.observationData.date + "T" + this.state.observationData.time).format('HH:mm:ss'),
+        date: date,
+        time: moment(date + 'T' + this.state.observationData.time).format('HH:mm:ss'),
         completed: false
     });
     if (this.props.title === 'Create') {
@@ -1455,7 +1506,7 @@ class Entry extends Component {
               <div className="col-lg-12">
                 <div className="ibox float-e-margins">
                   <div className="ibox-title">
-                      <h2>Observation {this.props.title}</h2>
+                      <h2>Observation Record - {this.props.title}</h2>
                   </div>
                   <div className="ibox-content">
                     <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
