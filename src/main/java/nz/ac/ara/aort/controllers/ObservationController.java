@@ -89,18 +89,13 @@ public class ObservationController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
-        Page<Observation> observationPage = getObservationPage(observationList, pageRequest);
-        return new ResponseEntity<>(observationPage, HttpStatus.OK);
+        return new ResponseEntity<>(fetchStaffName(observationList, pageRequest), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/api/observations", method = RequestMethod.GET)
     public ResponseEntity<Page> observationFindAll(@RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
-        List<Observation> observations = (List<Observation>)observationRepo.findAll();
-
-        Page<Observation> observationPage = getObservationPage(observations, pageRequest);
-        return new ResponseEntity<>(observationPage, HttpStatus.OK);
+        return new ResponseEntity<>(fetchStaffName((List<Observation>) observationRepo.findAll(), pageRequest), HttpStatus.OK);
     }
 
     @RequestMapping(value = "/api/observations/{id}/{staffId}", method = RequestMethod.GET)
@@ -197,7 +192,7 @@ public class ObservationController {
         return observation;
     }
 
-    private List<Observation> fetchStaffName(List<Observation> observations) {
+    private Page<Observation> fetchStaffName(List<Observation> observations, Pageable pageable) {
 
         for (Observation observation : observations) {
             if (!observation.getStaffId().isEmpty()) {
@@ -230,15 +225,12 @@ public class ObservationController {
             }
         }
 
-        return observations;
-    }
-
-    private Page<Observation> getObservationPage(List<Observation> observations, Pageable pageRequest) {
+        Collections.sort(observations);
+        
         PagedListHolder<Observation> pageList = new PagedListHolder<>(observations);
-        pageList.setPage(pageRequest.getPageNumber());
-        pageList.setPageSize(pageRequest.getPageSize());
+        pageList.setPage(pageable.getPageNumber());
+        pageList.setPageSize(pageable.getPageSize());
 
-        Page<Observation> observationPage = new PageImpl<>(fetchStaffName(pageList.getPageList()), pageRequest, observations.size());
-        return observationPage;
+        return new PageImpl<>(pageList.getPageList(), pageable, observations.size());
     }
 }
