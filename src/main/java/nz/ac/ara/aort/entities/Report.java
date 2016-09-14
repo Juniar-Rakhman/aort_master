@@ -32,6 +32,9 @@ public class Report {
 
     @Transient
     private Long userId;
+
+    @Transient
+    private String format;
     
     @Column(name = "name")
     private String name;
