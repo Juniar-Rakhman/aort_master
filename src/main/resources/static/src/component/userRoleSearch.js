@@ -13,7 +13,7 @@ class UserRoleRow extends Component {
         role : this.props.role
       };
 
-      this.props.redirectTo('viewUserRole', data);
+      this.props.redirectTo('entryUserRole', data);
   
   }
   render() {
@@ -104,7 +104,7 @@ class SearchBar extends Component {
         <div className="m-b">
             <form role="form" className="form-inline" onSubmit={this.handleChange.bind(this)}>
               <div className="form-group">
-                  <input type="text" placeholder="Find Staff's Role" name="search" className="form-control"
+                  <input type="text" placeholder="Find Staff" name="search" className="form-control"
                       ref="filterTextInput"
                       onChange={this.handleTextChange.bind(this)} /> &nbsp;
               </div>

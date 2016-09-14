@@ -1328,7 +1328,7 @@ class Entry extends Component {
           type: 'GET',
           url: "/api/ratingReferences",
           success: function(response) {
-              this.setState({ratingReferences: response["_embedded"]["ratingReferences"]});
+              this.setState({ratingReferences: response});
           }.bind(this),
           error: function(xhr, status, err) {
               console.error(this.props.url, status, err.toString());
@@ -1341,7 +1341,7 @@ class Entry extends Component {
           type: 'GET',
           url: "/api/strengthImprovementReferences",
           success: function(response) {
-              this.setState({strengthImprovementReferences: response["_embedded"]["strengthImprovementReferences"]});
+              this.setState({strengthImprovementReferences: response});
           }.bind(this),
           error: function(xhr, status, err) {
               console.error(this.props.url, status, err.toString());
