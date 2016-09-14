@@ -72,6 +72,7 @@ class Container extends Component {
         url: "api/userRoles/search/findByStaffId?staffId=" + staffId,
         success: function(response) {
             this.setState({role: response});
+            onReady();
         }.bind(this),
         error: function(xhr, status, err) {
             console.error(this.props.url, status, err.toString());
