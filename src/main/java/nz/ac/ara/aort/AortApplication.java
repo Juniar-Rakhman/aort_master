@@ -8,10 +8,15 @@ import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.web.support.SpringBootServletInitializer;
 
 @SpringBootApplication
-public class AortApplication {
+public class AortApplication extends SpringBootServletInitializer {
 
 	private static final Logger log = LoggerFactory.getLogger(AortApplication.class);
-
+	
+	@Override
+	protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
+		return application.sources(AortApplication.class);
+	}
+	
 	public static void main(String[] args) {
 		SpringApplication.run(AortApplication.class, args);
 	}

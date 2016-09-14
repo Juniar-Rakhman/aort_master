@@ -24,20 +24,20 @@ public class ReportController {
     @Autowired
     UserRoleRepository userRoleRepo;
     
-    @RequestMapping(value = "/api/reports/execute", method = RequestMethod.POST)
-    public ResponseEntity<Report> observationAdd(@RequestBody Report report) {
-        try {
-            //TODO: Check report exist
-            reportRepo.findOne(report.getId());
-
-            //TODO: Check user access based on roles
-            userRoleRepo.findOne(report.getUserId());            
-            
-            //TODO: Send redirect url to report server
-            
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(report, HttpStatus.OK);
-    }
+//    @RequestMapping(value = "/api/reports/execute", method = RequestMethod.POST)
+//    public ResponseEntity<Report> observationAdd(@RequestBody Report report) {
+//        try {
+//            //TODO: Check report exist
+//            reportRepo.findOne(report.getId());
+//
+//            //TODO: Check user access based on roles
+//            userRoleRepo.findOne(report.getUserId());            
+//            
+//            //TODO: Send redirect url to report server
+//            
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        return new ResponseEntity<>(report, HttpStatus.OK);
+//    }
 }
