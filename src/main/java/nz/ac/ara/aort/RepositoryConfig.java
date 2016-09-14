@@ -22,5 +22,7 @@ public class RepositoryConfig extends RepositoryRestConfigurerAdapter {
         config.exposeIdsFor(StrengthImprovement.class);
         config.exposeIdsFor(StrengthImprovementReference.class);
         config.exposeIdsFor(UserRole.class);
+        config.exposeIdsFor(Report.class);
+        config.exposeIdsFor(Parameter.class);
     }
 }

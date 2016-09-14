@@ -26,6 +26,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -239,7 +240,6 @@ public class ObservationController {
         pageList.setPage(pageRequest.getPageNumber());
         pageList.setPageSize(pageRequest.getPageSize());
 
-        Page<Observation> observationPage = new PageImpl<>(fetchStaffName(pageList.getPageList()), pageRequest, observations.size());
-        return observationPage;
+        return new PageImpl<>(fetchStaffName(pageList.getPageList()), pageRequest, observations.size());
     }
 }

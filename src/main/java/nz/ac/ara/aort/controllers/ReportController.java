@@ -5,6 +5,7 @@ import nz.ac.ara.aort.repositories.ReportRepository;
 import nz.ac.ara.aort.repositories.UserRoleRepository;
 import nz.ac.ara.aort.repositories.master.StaffRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -23,7 +24,10 @@ public class ReportController {
     
     @Autowired
     UserRoleRepository userRoleRepo;
-    
+
+    @Value("${spring.report.url}")
+    private String reportURL;
+
     @RequestMapping(value = "/api/reports/execute", method = RequestMethod.POST)
     public ResponseEntity<Report> observationAdd(@RequestBody Report report) {
         try {
