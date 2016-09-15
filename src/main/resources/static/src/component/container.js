@@ -15,6 +15,8 @@ import RatingSearch from "./ratingSearch";
 import EntryRating from "./entryRating";
 import PositionSearch from "./positionSearch";
 import UpdateCategory from "./updateCategory";
+import ReportSearch from "./reportSearch";
+import ReportParams from "./reportParams";
 
 class Container extends Component {
   constructor(props, context) {
@@ -118,6 +120,10 @@ class Container extends Component {
       content = <PositionSearch redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'updateCategory') {
       content = <UpdateCategory category={this.state.data} redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'reportSearch') {
+      content = <ReportSearch redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'reportParam') {
+      content = <ReportParams redirectTo={this.handlePageNav} reportId={this.state.data}/>
     }
 
     return content;

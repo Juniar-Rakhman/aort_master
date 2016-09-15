@@ -33,7 +33,12 @@ class ObservationTable extends Component {
     render() {
         var rows = [];
         this.props.observations.forEach(function (observation) {
-            rows.push(<ObservationRow observation={observation} key={observation.observationId} redirectTo={this.props.redirectTo} role={this.props.role} />);
+            rows.push(<ObservationRow
+                            observation={observation}
+                            key={observation.observationId}
+                            redirectTo={this.props.redirectTo}
+                            role={this.props.role}
+                       />);
         }, this);
         return (
             <table className="table table-striped table-bordered table-hover dataTables-example" >
