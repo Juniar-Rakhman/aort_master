@@ -1,8 +1,8 @@
 package nz.ac.ara.aort;
 
 import nz.ac.ara.aort.entities.*;
-import nz.ac.ara.aort.entities.master.Position;
-import nz.ac.ara.aort.entities.master.Staff;
+import nz.ac.ara.aort.entities.Position;
+import nz.ac.ara.aort.entities.Staff;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.rest.core.config.RepositoryRestConfiguration;
 import org.springframework.data.rest.webmvc.config.RepositoryRestConfigurerAdapter;

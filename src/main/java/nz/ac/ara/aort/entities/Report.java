@@ -28,7 +28,7 @@ public class Report {
     private Long id;
 
     @Transient
-    private Long userId;
+    private String userId;
 
     @Transient
     private String format;
@@ -45,4 +45,10 @@ public class Report {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "report_id")
     private List<Parameter> parameters;
+
+    public Report(){
+    }
+
+    public void finalize() throws Throwable {
+    }
 }

@@ -19,11 +19,12 @@ import java.util.HashMap;
 /**
  * Created by Sulthonyh on 8/16/2016.
  */
-@Configuration
-@EnableJpaRepositories(
-        entityManagerFactoryRef = "appEntityManagerFactory",
-        transactionManagerRef = "appTransactionManager",
-        basePackages = {"nz.ac.ara.aort.repositories"} )
+//@Configuration
+//@EnableJpaRepositories(
+//        entityManagerFactoryRef = "appEntityManagerFactory",
+//        transactionManagerRef = "appTransactionManager",
+//        basePackages = {"nz.ac.ara.aort.repositories"} )
+//TODO: Deprecated
 public class AppDataSourceConfig {
 
     @Autowired

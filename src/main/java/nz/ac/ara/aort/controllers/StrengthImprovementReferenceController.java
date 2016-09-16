@@ -2,7 +2,7 @@ package nz.ac.ara.aort.controllers;
 
 import nz.ac.ara.aort.entities.StrengthImprovementReference;
 import nz.ac.ara.aort.repositories.StrengthImprovementReferenceRepository;
-import nz.ac.ara.aort.utilities.Category;
+import nz.ac.ara.aort.entities.Category;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;

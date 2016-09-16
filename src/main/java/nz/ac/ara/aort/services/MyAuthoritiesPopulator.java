@@ -1,9 +1,9 @@
 package nz.ac.ara.aort.services;
 
 import nz.ac.ara.aort.entities.UserRole;
-import nz.ac.ara.aort.entities.master.Staff;
+import nz.ac.ara.aort.entities.Staff;
 import nz.ac.ara.aort.repositories.UserRoleRepository;
-import nz.ac.ara.aort.repositories.master.StaffRepository;
+import nz.ac.ara.aort.repositories.StaffRepository;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.ldap.core.DirContextOperations;

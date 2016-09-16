@@ -75,17 +75,17 @@ INSERT INTO dbo.observation VALUES ('testestsetst 18', 0, 'test aja 18', 1, 'tes
 INSERT INTO dbo.observation VALUES ('testestsetst 19', 0, 'test aja 19', 1, 'test 19', 1, null, '2016-08-25', 'test 19', '00000065', 2, '00000065', null, null, '00000065', 'test 19', 1, '00000065', 'testsetstset19', '00000065', '00000065', 'estset19setse', 1, '2', 'te19stetsetse', 2, 'tests19et', '00000065', 1, '03:45:38.0000000', 1);
 INSERT INTO dbo.observation VALUES ('testestsetst 20', 0, 'test aja 20', 1, 'test 20', 1, null, '2016-08-25', 'test 20', '00000065', 2, '00000065', null, null, '00000065', 'test 20', 1, '00000065', 'testsetstset20', '00000065', '00000065', 'estset20setse', 1, '2', 'te20stetsetse', 2, 'tests20et', '00000065', 1, '03:45:38.0000000', 1);
 
+INSERT INTO dbo.report (created_date, description, name) VALUES ('2016-08-24', 'observation report', 'observation');
+INSERT INTO dbo.report (created_date, description, name) VALUES ('2016-08-24', 'team observation report', 'team_observation');
+INSERT INTO dbo.report (created_date, description, name) VALUES ('2016-08-24', 'observer performance report', 'observer_performance');
+INSERT INTO dbo.report (created_date, description, name) VALUES ('2016-08-24', 'Academic Staff Observation Overview', 'academic_staff_observation_overview');
+
+INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value) VALUES (1,1,'Teachers Name', 'Staff', '00000065');
+INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value) VALUES (1,1,'Start Date', 'Date', '2016-01-01');
+INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value) VALUES (1,1,'End Date', 'Date', '3000-01-01');
+INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value) VALUES (4,1,'Department', 'Char', 'test');
+
 -- update dbo.staff set username = 'ben' where staff_id = '00000065';
 -- update dbo.staff set username = 'bob' where staff_id = '00000216';
 -- update dbo.staff set username = 'qauser' where staff_id = '00000332';
 -- update dbo.staff set username = 'admin' where staff_id = '00000486';
-
-INSERT INTO academic_observation.dbo.report (created_date, description, name) VALUES ('2016-08-24', 'observation report', 'observation');
-INSERT INTO academic_observation.dbo.report (created_date, description, name) VALUES ('2016-08-24', 'team observation report', 'team_observation');
-INSERT INTO academic_observation.dbo.report (created_date, description, name) VALUES ('2016-08-24', 'observer performance report', 'observer_performance');
-INSERT INTO academic_observation.dbo.report (created_date, description, name) VALUES ('2016-08-24', 'Academic Staff Observation Overview', 'academic_staff_observation_overview');
-
-INSERT INTO academic_observation.dbo.parameter (name, type, value, report_id) VALUES ('Teachers Name', 'Staff', '','1');
-INSERT INTO academic_observation.dbo.parameter (name, type, value, report_id) VALUES ('Start Date', 'Date', '','1');
-INSERT INTO academic_observation.dbo.parameter (name, type, value, report_id) VALUES ('End Date', 'Date', '','1');
-INSERT INTO academic_observation.dbo.parameter (name, type, value, report_id) VALUES ('Department', 'Char', '','4');

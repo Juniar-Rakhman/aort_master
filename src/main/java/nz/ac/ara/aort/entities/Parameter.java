@@ -27,5 +27,8 @@ public class Parameter {
     private String value;
 
     @Column(name = "type")
-    private String type;
+    private String type; //Date, Text, Options
+    
+    @Column(name = "mandatory")
+    private Boolean mandatory;
 }
