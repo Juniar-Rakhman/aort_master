@@ -123,7 +123,7 @@ class Container extends Component {
     } else if (this.state.page === 'reportSearch') {
       content = <ReportSearch redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'reportParam') {
-      content = <ReportParams redirectTo={this.handlePageNav} reportId={this.state.data}/>
+      content = <ReportParams redirectTo={this.handlePageNav} report={this.state.data}/>
     }
 
     return content;

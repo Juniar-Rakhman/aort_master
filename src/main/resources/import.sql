@@ -84,3 +84,8 @@ INSERT INTO academic_observation.dbo.report (created_date, description, name) VA
 INSERT INTO academic_observation.dbo.report (created_date, description, name) VALUES ('2016-08-24', 'team observation report', 'team_observation');
 INSERT INTO academic_observation.dbo.report (created_date, description, name) VALUES ('2016-08-24', 'observer performance report', 'observer_performance');
 INSERT INTO academic_observation.dbo.report (created_date, description, name) VALUES ('2016-08-24', 'Academic Staff Observation Overview', 'academic_staff_observation_overview');
+
+INSERT INTO academic_observation.dbo.parameter (name, type, value, report_id) VALUES ('Teachers Name', 'Staff', '','1');
+INSERT INTO academic_observation.dbo.parameter (name, type, value, report_id) VALUES ('Start Date', 'Date', '','1');
+INSERT INTO academic_observation.dbo.parameter (name, type, value, report_id) VALUES ('End Date', 'Date', '','1');
+INSERT INTO academic_observation.dbo.parameter (name, type, value, report_id) VALUES ('Department', 'Char', '','4');

@@ -7,8 +7,7 @@ class ReportRow extends Component {
     }
 
     handleReportParams() {
-
-        this.props.redirectTo('reportParam',this.props.report.id);
+        this.props.redirectTo('reportParam',this.props.report);
     }
 
     render() {
