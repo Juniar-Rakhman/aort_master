@@ -103,7 +103,7 @@ class Container extends Component {
     } else if (this.state.page === 'entryUserRole') {
       content = <EntryUserRole userRole={this.state.data} redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'edit') {
-      content = <Entry title='Edit' observation={this.state.data} redirectTo={this.handlePageNav}/>;
+      content = <Entry title='Edit' observation={this.state.data} staff={this.state.staff} redirectTo={this.handlePageNav}/>;
     } else if (this.state.page === 'strengthImprovementSearch') {
       content = <StrengthImprovementSearch redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'entryStrengthImprovement') {

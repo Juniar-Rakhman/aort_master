@@ -1300,6 +1300,7 @@ class Entry extends Component {
       staffs:null,
       ratingReferences:null,
       strengthImprovementReferences:null,
+      emailNotification:null
     };
 
     this.updateObservation = this.updateObservation.bind(this);
@@ -1431,6 +1432,23 @@ class Entry extends Component {
     this.props.redirectTo('observationSearch');
   }
 
+  handlePrint() {
+    alert("printing");
+  }
+
+  handleEmail() {
+      $.ajax({
+          type: 'GET',
+          url: "/api/mail/send?recipient=" + this.props.staff.email + "&observationId=" + this.state.observationData.id,
+          success: function(response) {
+              this.setState({emailNotification: response});
+          }.bind(this),
+          error: function(xhr, status, err) {
+              console.error(this.props.url, status, err.toString());
+          }.bind(this)
+      });
+  }
+
   createMethod(observation) {
     console.log('Creating data')
     var data = JSON.stringify(observation);
@@ -1482,12 +1500,19 @@ class Entry extends Component {
       marginRight: "5px"
     };
     var submitButtons = null;
+    var printEmailButtons = null;
     if(this.props.title === 'Edit') {
       submitButtons = (
         <div className="col-sm-4 col-sm-offset-9">
           <button {...this.props.mode} className="btn btn-white" style={btnStyle} type="button" onClick={this.handleBack.bind(this)}>Cancel</button>
           <button {...this.props.mode} className="btn btn-primary" style={btnStyle} type="button" onClick={this.handleComplete.bind(this)}>Complete</button>
           <button {...this.props.mode} className="btn btn-primary" type="submit" value="post">Save</button>
+        </div>
+      );
+      printEmailButtons = (
+        <div className="print-email-btn">
+          <i className="fa fa-envelope fa-lg" aria-hidden="true" onClick={this.handleEmail.bind(this)}></i>&nbsp;&nbsp;
+          <i className="fa fa-print fa-lg" aria-hidden="true" onClick={this.handlePrint.bind(this)}></i>
         </div>
       );
     }
@@ -1499,16 +1524,39 @@ class Entry extends Component {
         </div>
       );
     }
+
+    var emailMessage = null;
+    if(this.state.emailNotification != null) {
+        if(this.state.emailNotification.success) {
+            emailMessage = (
+                <div className="alert alert-success">
+                    <a href="#" className="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {this.state.emailNotification.message}
+                </div>
+            );
+        }
+        else {
+            emailMessage = (
+                <div className="alert alert-danger">
+                    <a href="#" className="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {this.state.emailNotification.message}
+                </div>
+            );
+        }
+    }
+
     if(this.state.staffs != null && this.state.ratingReferences != null && this.state.strengthImprovementReferences != null) {
         return (
           <div className="wrapper-content animated fadeInRight">
             <div className="row">
               <div className="col-lg-12">
                 <div className="ibox float-e-margins">
+                  {emailMessage}
                   <div className="ibox-title">
-                      <h2>Observation Record - {this.props.title}</h2>
+                    <h2>Observation Record - {this.props.title}</h2>
                   </div>
                   <div className="ibox-content">
+                    {printEmailButtons}
                     <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
                       <ObserveHeader
                         key={this.props.title+"-header"}

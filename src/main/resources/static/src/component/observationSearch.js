@@ -195,12 +195,12 @@ class ObservationSearch extends Component {
                 <div className="row">
                     <div className="col-lg-12">
                         <div className="ibox float-e-margins">
+                            {errorMessage}
                             <div className="ibox-title">
                                 <h2>Observation Search</h2>
                             </div>
                             <div className="ibox-content">
                                 <div className="table-responsive">
-                                    {errorMessage}
                                     <SearchBar
                                         onUserInput={this.handleUserInput}
                                     />

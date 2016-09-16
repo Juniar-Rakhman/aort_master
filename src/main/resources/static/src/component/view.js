@@ -624,7 +624,9 @@ class View extends Component {
     super(props);
     this.state = {
         observation: null,
-        strengthImprovementReferences: null
+        strengthImprovementReferences: null,
+        isViewAccess: false,
+        emailNotification:null
     };
   }
 
@@ -635,7 +637,12 @@ class View extends Component {
           success: function(response) {
             if (!response.success) {
               this.props.redirectTo('observationSearch', response.result);
-            } else if (response.result.access === 'view' || response.result.completed) {
+            } else if (response.result.access === 'view') {
+              this.setState({
+                observation: response.result,
+                isViewAccess: true
+              });
+            } else if(response.result.completed) {
               this.setState({observation: response.result});
             } else {
               this.props.redirectTo('edit', response.result);
@@ -660,6 +667,23 @@ class View extends Component {
       });
   }
 
+  handlePrint() {
+    alert("printing");
+  }
+
+  handleEmail() {
+      $.ajax({
+          type: 'GET',
+          url: "/api/mail/send?recipient=" + this.props.staff.email + "&observationId=" + this.props.observationId,
+          success: function(response) {
+              this.setState({emailNotification: response});
+          }.bind(this),
+          error: function(xhr, status, err) {
+              console.error(this.props.url, status, err.toString());
+          }.bind(this)
+      });
+  }
+
   componentWillMount() {
     this.getDataObservation();
     this.getDataStrengthImprovementReferences();
@@ -669,6 +693,35 @@ class View extends Component {
     var style = {
       paddingLeft: "55px"
     };
+    var printEmailButtons = null;
+    if(!this.state.isViewAccess) {
+      printEmailButtons = (
+        <div className="print-email-btn">
+          <i className="fa fa-envelope fa-lg" aria-hidden="true" onClick={this.handleEmail.bind(this)}></i>&nbsp;&nbsp;
+          <i className="fa fa-print fa-lg" aria-hidden="true" onClick={this.handlePrint.bind(this)}></i>
+        </div>
+      );
+    }
+
+    var emailMessage = null;
+    if(this.state.emailNotification != null) {
+        if(this.state.emailNotification.success) {
+            emailMessage = (
+                <div className="alert alert-success">
+                    <a href="#" className="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {this.state.emailNotification.message}
+                </div>
+            );
+        }
+        else {
+            emailMessage = (
+                <div className="alert alert-danger">
+                    <a href="#" className="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    {this.state.emailNotification.message}
+                </div>
+            );
+        }
+    }
 
     if (this.state.observation != null && this.state.strengthImprovementReferences != null){
         return (
@@ -676,10 +729,12 @@ class View extends Component {
                 <div className="row">
                   <div className="col-lg-12">
                     <div className="ibox float-e-margins">
+                      {emailMessage}
                       <div className="ibox-title">
-                          <h2>Observation Record - {this.props.title}</h2>
+                        <h2>Observation Record - {this.props.title}</h2>
                       </div>
                       <div className="ibox-content">
+                        {printEmailButtons}
                         <form method="get" className="form-horizontal">
                           <ObserveHeader observation = {this.state.observation}
                             staff = {this.state.observation.staff || {firstName: '', lastName: ''}}
