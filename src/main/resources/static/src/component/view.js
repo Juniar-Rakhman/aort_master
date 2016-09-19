@@ -673,7 +673,9 @@ class View extends Component {
           url: "/api/print?userId=" + this.props.staff.id + "&observationId=" + this.props.observationId,
           success: function(response) {
               if(response.success) {
-                 window.location = response.result;
+                 setTimeout(function(){
+                    window.open(response.result, '_blank');
+                    }, 1000);
               }
               else {
                  alert(response.result);
@@ -707,12 +709,15 @@ class View extends Component {
     var style = {
       paddingLeft: "55px"
     };
+    var printEmailStyle= {
+      cursor: 'pointer'
+    };
     var printEmailButtons = null;
     if(!this.state.isViewAccess) {
       printEmailButtons = (
         <div className="print-email-btn">
-          <i className="fa fa-envelope fa-lg" aria-hidden="true" onClick={this.handleEmail.bind(this)}></i>&nbsp;&nbsp;
-          <i className="fa fa-print fa-lg" aria-hidden="true" onClick={this.handlePrint.bind(this)}></i>
+          <i className="fa fa-envelope fa-lg" aria-hidden="true" style={printEmailStyle} onClick={this.handleEmail.bind(this)}></i>&nbsp;&nbsp;
+          <i className="fa fa-print fa-lg" aria-hidden="true" style={printEmailStyle} onClick={this.handlePrint.bind(this)}></i>
         </div>
       );
     }
