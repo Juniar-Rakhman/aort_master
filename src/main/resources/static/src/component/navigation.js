@@ -41,6 +41,10 @@ class Navigation extends Component {
     this.props.handlePageNav('positionSearch');
   }
 
+  handleReports(){
+    this.props.handlePageNav('reportSearch');
+  }
+
   setMenu() {
       console.log('role: '+ this.props.role);
       var role = this.props.role;
@@ -117,6 +121,12 @@ class Navigation extends Component {
               </ul>
             </li>
             {this.setMenu()}
+            <li>
+              <a href="#"><i className="fa fa-print"></i> <span className="nav-label">Reporting</span></a>
+              <ul className="nav nav-second-level">
+                <li><a href="#" onClick={this.handleReports.bind(this)}>Reports</a></li>
+              </ul>
+            </li>
           </ul>
         </div>
       </nav>

@@ -6,8 +6,7 @@
  */
 
 
-$(document).ready(function () {
-
+function onReady() {
 
     // Add body-small class if window less than 768px
     if ($(this).width() < 769) {
@@ -104,11 +103,11 @@ $(document).ready(function () {
     //});
 
     // Minimalize menu
-    //$('#navbar-minimalize').click(function () {
+//    $('#navbar-minimalize').click(function () {
 //        $("body").toggleClass("mini-navbar");
 //        SmoothlyMenu();
-
-    //});
+//
+//    });
 
     // Tooltips demo
     $('.tooltip-demo').tooltip({
@@ -179,24 +178,11 @@ $(document).ready(function () {
     // Add slimscroll to element
     $('.full-height-scroll').slimscroll({
         height: '100%'
-    })
-});
+    });
 
-
-// Minimalize menu when screen is less than 768px
-$(window).bind("resize", function () {
-    if ($(this).width() < 769) {
-        $('body').addClass('body-small')
-    } else {
-        $('body').removeClass('body-small')
-    }
-});
-
-// Local Storage functions
-// Set proper body class and plugins based on user configuration
-$(document).ready(function () {
+    // Local Storage
+    // Set proper body class and plugins based on user configuration
     if (localStorageSupport) {
-
         var collapse = localStorage.getItem("collapse_menu");
         var fixedsidebar = localStorage.getItem("fixedsidebar");
         var fixednavbar = localStorage.getItem("fixednavbar");
@@ -239,7 +225,65 @@ $(document).ready(function () {
             $(".footer").addClass('fixed');
         }
     }
+}
+
+// Minimalize menu when screen is less than 768px
+$(window).bind("resize", function () {
+    if ($(this).width() < 769) {
+        $('body').addClass('body-small')
+    } else {
+        $('body').removeClass('body-small')
+    }
 });
+
+// Local Storage functions
+// Set proper body class and plugins based on user configuration
+//$(document).ready(function () {
+//    if (localStorageSupport) {
+//
+//        var collapse = localStorage.getItem("collapse_menu");
+//        var fixedsidebar = localStorage.getItem("fixedsidebar");
+//        var fixednavbar = localStorage.getItem("fixednavbar");
+//        var boxedlayout = localStorage.getItem("boxedlayout");
+//        var fixedfooter = localStorage.getItem("fixedfooter");
+//
+//        var body = $('body');
+//
+//        if (fixedsidebar == 'on') {
+//            body.addClass('fixed-sidebar');
+//            $('.sidebar-collapse').slimScroll({
+//                height: '100%',
+//                railOpacity: 0.9
+//            });
+//        }
+//
+//        if (collapse == 'on') {
+//            if (body.hasClass('fixed-sidebar')) {
+//                if (!body.hasClass('body-small')) {
+//                    body.addClass('mini-navbar');
+//                }
+//            } else {
+//                if (!body.hasClass('body-small')) {
+//                    body.addClass('mini-navbar');
+//                }
+//
+//            }
+//        }
+//
+//        if (fixednavbar == 'on') {
+//            $(".navbar-static-top").removeClass('navbar-static-top').addClass('navbar-fixed-top');
+//            body.addClass('fixed-nav');
+//        }
+//
+//        if (boxedlayout == 'on') {
+//            body.addClass('boxed-layout');
+//        }
+//
+//        if (fixedfooter == 'on') {
+//            $(".footer").addClass('fixed');
+//        }
+//    }
+//});
 
 // check if browser support HTML5 local storage
 function localStorageSupport() {

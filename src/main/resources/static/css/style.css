@@ -8279,3 +8279,12 @@ input[type="password"] {
 .table>tbody+tbody {
   border-top: 0;
 }
+
+i:before {
+  cursor: pointer;
+}
+
+.print-email-btn {
+  float: right!important;
+  padding-bottom: 5px;
+}
