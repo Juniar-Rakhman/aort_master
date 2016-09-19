@@ -39,6 +39,9 @@ public class Report {
     @Column(name = "name")
     private String name;
 
+    @Column(name = "path")
+    private String path;
+    
     @Column(name = "description")
     private String description;
 

@@ -48,7 +48,7 @@ public class ReportController {
                 defaultMap.put(param.getName(), param.getValue());
             }
 
-            reportURL += "?/" + existingReport.getName() + "&rs:" + "Format=" + requestReport.getFormat();
+            reportURL += "?/" + existingReport.getPath() + "&rs:" + "Format=" + requestReport.getFormat();
             
             UserRole userRole = userRoleRepo.findByStaffId(requestReport.getUserId());
 
@@ -70,7 +70,6 @@ public class ReportController {
                 }
             }
             
-            //TODO: Add ssrs authentication
             URI redirect = new URI(reportURL);
             HttpHeaders httpHeaders = new HttpHeaders();
             httpHeaders.setLocation(redirect);

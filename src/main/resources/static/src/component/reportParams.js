@@ -16,13 +16,19 @@ class ParamRow extends Component{
         }
     }
     render(){
-
+        var inputId;
+        if (this.props.parameter.type == 'Date'){
+            inputId = "datePicker";
+        }
+        if (this.props.parameter.type == 'Staff'){
+            inputId = "teacher";
+        }
         return(
           <div className="row m-b">
             <div className="col-sm-6">
               <div className="row">
                   <label className="col-sm-4 control-label">{this.props.parameter.name}</label>
-                  <div className="col-sm-8">
+                  <div className="col-sm-8" id={inputId}>
                   <input
                       type="text"
                       className="form-control m-b"
