@@ -668,13 +668,27 @@ class View extends Component {
   }
 
   handlePrint() {
-    alert("printing");
+      $.ajax({
+          type: 'GET',
+          url: "/api/print?userId=" + this.props.staff.id + "&observationId=" + this.props.observationId,
+          success: function(response) {
+              if(response.success) {
+                 window.location = response.result;
+              }
+              else {
+                 alert(response.result);
+              }
+          }.bind(this),
+          error: function(xhr, status, err) {
+              console.error(this.props.url, status, err.toString());
+          }.bind(this)
+      });
   }
 
   handleEmail() {
       $.ajax({
           type: 'GET',
-          url: "/api/mail/send?recipient=" + this.props.staff.email + "&observationId=" + this.props.observationId,
+          url: "/api/mail/send?userId=" + this.props.staff.id + "&observationId=" + this.props.observationId,
           success: function(response) {
               this.setState({emailNotification: response});
           }.bind(this),
