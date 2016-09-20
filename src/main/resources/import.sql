@@ -88,7 +88,7 @@ INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,va
 INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value,path) VALUES (3,1,'Staff Name', 'Staff', '', 'staff');
 INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value,path) VALUES (3,1,'Start Date', 'Date', '', 'startdate');
 INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value,path) VALUES (3,1,'End Date', 'Date', '', 'enddate');
-INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value,path) VALUES (4,1,'Department', 'Char', '', 'department');
+INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value,path) VALUES (4,0,'Department', 'Char', '', 'department');
 
 -- update dbo.staff set username = 'ben' where staff_id = '00000065';
 -- update dbo.staff set username = 'bob' where staff_id = '00000216';

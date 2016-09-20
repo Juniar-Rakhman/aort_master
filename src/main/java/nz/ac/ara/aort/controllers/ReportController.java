@@ -62,11 +62,17 @@ public class ReportController {
 
             for (Parameter reqParam : requestReport.getParameters()) {
                 url += "&" + reqParam.getPath();
-                if (reqParam.getValue() != null) {
-                    url += "=" + reqParam.getValue();
-                } else {
-                    url += "=" + defaultMap.get(reqParam.getName());
+                if(!reqParam.getMandatory() && reqParam.getValue() == "") {
+                    url += ":isNull=true";
                 }
+                else {
+                    if (reqParam.getValue() != null) {
+                        url += "=" + reqParam.getValue();
+                    } else {
+                        url += "=" + defaultMap.get(reqParam.getName());
+                    }
+                }
+
             }
 
             response.put("result", url);
