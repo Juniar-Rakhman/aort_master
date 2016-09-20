@@ -33,7 +33,12 @@ class ObservationTable extends Component {
     render() {
         var rows = [];
         this.props.observations.forEach(function (observation) {
-            rows.push(<ObservationRow observation={observation} key={observation.observationId} redirectTo={this.props.redirectTo} role={this.props.role} />);
+            rows.push(<ObservationRow
+                            observation={observation}
+                            key={observation.observationId}
+                            redirectTo={this.props.redirectTo}
+                            role={this.props.role}
+                       />);
         }, this);
         return (
             <table className="table table-striped table-bordered table-hover dataTables-example" >
@@ -190,12 +195,12 @@ class ObservationSearch extends Component {
                 <div className="row">
                     <div className="col-lg-12">
                         <div className="ibox float-e-margins">
+                            {errorMessage}
                             <div className="ibox-title">
                                 <h2>Observation Search</h2>
                             </div>
                             <div className="ibox-content">
                                 <div className="table-responsive">
-                                    {errorMessage}
                                     <SearchBar
                                         onUserInput={this.handleUserInput}
                                     />

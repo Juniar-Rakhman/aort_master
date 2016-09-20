@@ -23,16 +23,25 @@ import java.util.List;
 @Entity
 @Table(name = "report")
 public class Report {
+    
+    //https://mtpc504.mitrais.com/ReportServer/Pages/ReportViewer.aspx?%2ftraining_ssrs%2fReport1&rs:Command=Render
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Transient
-    private Long userId;
+    private String userId;
+
+    @Transient
+    private String format;
     
     @Column(name = "name")
     private String name;
 
+    @Column(name = "path")
+    private String path;
+    
     @Column(name = "description")
     private String description;
 
@@ -42,4 +51,10 @@ public class Report {
     @OneToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "report_id")
     private List<Parameter> parameters;
+
+    public Report(){
+    }
+
+    public void finalize() throws Throwable {
+    }
 }

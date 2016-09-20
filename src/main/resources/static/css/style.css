@@ -8279,3 +8279,8 @@ input[type="password"] {
 .table>tbody+tbody {
   border-top: 0;
 }
+
+.print-email-btn {
+  float: right!important;
+  padding-bottom: 5px;
+}

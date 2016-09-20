@@ -2,7 +2,6 @@ package nz.ac.ara.aort.entities;
 
 
 import lombok.Data;
-import nz.ac.ara.aort.entities.master.Staff;
 
 import javax.persistence.*;
 

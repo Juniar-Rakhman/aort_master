@@ -15,6 +15,8 @@ import RatingSearch from "./ratingSearch";
 import EntryRating from "./entryRating";
 import PositionSearch from "./positionSearch";
 import UpdateCategory from "./updateCategory";
+import ReportSearch from "./reportSearch";
+import ReportParams from "./reportParams";
 
 class Container extends Component {
   constructor(props, context) {
@@ -72,6 +74,7 @@ class Container extends Component {
         url: "api/userRoles/search/findByStaffId?staffId=" + staffId,
         success: function(response) {
             this.setState({role: response});
+            onReady();
         }.bind(this),
         error: function(xhr, status, err) {
             console.error(this.props.url, status, err.toString());
@@ -100,7 +103,7 @@ class Container extends Component {
     } else if (this.state.page === 'entryUserRole') {
       content = <EntryUserRole userRole={this.state.data} redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'edit') {
-      content = <Entry title='Edit' observation={this.state.data} redirectTo={this.handlePageNav}/>;
+      content = <Entry title='Edit' observation={this.state.data} staff={this.state.staff} redirectTo={this.handlePageNav}/>;
     } else if (this.state.page === 'strengthImprovementSearch') {
       content = <StrengthImprovementSearch redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'entryStrengthImprovement') {
@@ -117,6 +120,10 @@ class Container extends Component {
       content = <PositionSearch redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'updateCategory') {
       content = <UpdateCategory category={this.state.data} redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'reportSearch') {
+      content = <ReportSearch redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'reportParam') {
+      content = <ReportParams redirectTo={this.handlePageNav} report={this.state.data}/>
     }
 
     return content;

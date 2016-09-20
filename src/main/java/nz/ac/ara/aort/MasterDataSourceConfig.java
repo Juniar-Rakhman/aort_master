@@ -18,11 +18,12 @@ import java.util.HashMap;
 /**
  * Created by Sulthonyh on 8/16/2016.
  */
-@Configuration
-@EnableJpaRepositories(
-        entityManagerFactoryRef = "masterEntityManagerFactory",
-        transactionManagerRef = "masterTransactionManager",
-        basePackages = {"nz.ac.ara.aort.repositories.master"})
+//@Configuration
+//@EnableJpaRepositories(
+//        entityManagerFactoryRef = "masterEntityManagerFactory",
+//        transactionManagerRef = "masterTransactionManager",
+//        basePackages = {"nz.ac.ara.aort.repositories.master"})
+//TODO: Deprecated
 public class MasterDataSourceConfig {
 
     @Autowired

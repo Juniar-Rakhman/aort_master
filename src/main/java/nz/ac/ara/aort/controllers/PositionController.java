@@ -1,7 +1,7 @@
 package nz.ac.ara.aort.controllers;
 
-import nz.ac.ara.aort.entities.master.Position;
-import nz.ac.ara.aort.repositories.master.PositionRepository;
+import nz.ac.ara.aort.entities.Position;
+import nz.ac.ara.aort.repositories.PositionRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
@@ -29,7 +29,7 @@ public class PositionController {
     @RequestMapping(value = "/api/positions", method = RequestMethod.GET)
     public ResponseEntity<Page> positionFindAll(@RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
-        List<Position> positions = (List<Position>)positionRepo.findAll();
+        List<Position> positions = positionRepo.findAll();
 
         PagedListHolder<Position> pageList = new PagedListHolder<>(positions);
         pageList.setPage(pageRequest.getPageNumber());
