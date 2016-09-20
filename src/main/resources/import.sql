@@ -89,10 +89,10 @@ INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Feed
 INSERT INTO dbo.strength_improvement_reference (category, criteria) VALUES('Feedback and assessment inform and improve student learning', 'Constructive feedback is given to learners');
 
 -- academic_observation.dbo.user_role
-INSERT INTO dbo.user_role VALUES(0, 1, 0, '00000065', 0);
-INSERT INTO dbo.user_role VALUES(1, 0, 0, '00000216', 0);
-INSERT INTO dbo.user_role VALUES(0, 0, 1, '00000332', 0);
-INSERT INTO dbo.user_role VALUES(0, 0, 0, '00000486', 1);
+INSERT INTO dbo.user_role VALUES(0, 1, 0, '00180224', 0);
+INSERT INTO dbo.user_role VALUES(1, 0, 0, '00180225', 0);
+INSERT INTO dbo.user_role VALUES(0, 0, 1, '00180226', 0);
+INSERT INTO dbo.user_role VALUES(0, 0, 0, '00180227', 1);
 
 INSERT INTO dbo.observation VALUES ('testestsetst 1', 0, 'test aja 1', 1, 'test 1', 1, null, '2016-08-24', 'test 1', '00000065', 2, '00000065', null, null, '00000065', 'test 1', 1, '00000065', 'testsetstset1', '00000065', '00000065', 'estset1setse', 1, '2', 'te1stetsetse', 2, 'tests1et', '00000065', 1, '03:45:38.0000000', 1);
 INSERT INTO dbo.observation VALUES ('testestsetst 2', 0, 'test aja 2', 1, 'test 2', 1, null, '2016-08-25', 'test 2', '00000065', 2, '00000065', null, null, '00000065', 'test 2', 1, '00000065', 'testsetstset2', '00000065', '00000065', 'estset2setse', 1, '2', 'te2stetsetse', 2, 'tests2et', '00000065', 1, '03:45:38.0000000', 1);
