@@ -1438,7 +1438,9 @@ class Entry extends Component {
           url: "/api/print?userId=" + this.props.staff.id + "&observationId=" + this.state.observationData.id,
           success: function(response) {
               if(response.success) {
-                 window.location = response.result;
+                 setTimeout(function(){
+                     window.open(response.result, '_blank');
+                     }, 1000);
               }
               else {
                  alert(response.result);
@@ -1513,6 +1515,9 @@ class Entry extends Component {
     var btnStyle = {
       marginRight: "5px"
     };
+    var printEmailStyle= {
+      cursor: 'pointer'
+    };
     var submitButtons = null;
     var printEmailButtons = null;
     if(this.props.title === 'Edit') {
@@ -1525,8 +1530,8 @@ class Entry extends Component {
       );
       printEmailButtons = (
         <div className="print-email-btn">
-          <i className="fa fa-envelope fa-lg" aria-hidden="true" onClick={this.handleEmail.bind(this)}></i>&nbsp;&nbsp;
-          <i className="fa fa-print fa-lg" aria-hidden="true" onClick={this.handlePrint.bind(this)}></i>
+          <i className="fa fa-envelope fa-lg" aria-hidden="true" style={printEmailStyle} onClick={this.handleEmail.bind(this)}></i>&nbsp;&nbsp;
+          <i className="fa fa-print fa-lg" aria-hidden="true" style={printEmailStyle} onClick={this.handlePrint.bind(this)}></i>
         </div>
       );
     }
