@@ -110,13 +110,13 @@ public class PrintController {
                     || BooleanUtils.isTrue((userRole.getSystemAdmin()))) {
                 String reportURLPDF = reportURL + "?/Observation&rs:Format=PDF&ObservationId=" + observationId;
                 
-//                response.put("result", reportURLPDF);
-//                response.put("success", true);
-
-                URI redirect = new URI(reportURLPDF);
-                HttpHeaders httpHeaders = new HttpHeaders();
-                httpHeaders.setLocation(redirect);
-                return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+                response.put("result", reportURLPDF);
+                response.put("success", true);
+//
+//                URI redirect = new URI(reportURLPDF);
+//                HttpHeaders httpHeaders = new HttpHeaders();
+//                httpHeaders.setLocation(redirect);
+//                return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
             }
             else {
                 throw new Exception("You do not have access to print observation.");

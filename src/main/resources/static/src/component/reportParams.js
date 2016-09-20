@@ -3,9 +3,21 @@ import React, { Component } from 'react';
 class ParamRow extends Component{
     constructor(props){
         super(props);
+        this.state = {
+            [this.props.parameter.name]: ""
+        };
     }
+    
     handleParamFieldUpdate(){
         console.log('update');
+    }
+
+    handleDateChange(e){
+        this.setState({[this.props.parameter.name]: e.target.childNodes[0].value});
+    }
+    
+    handleDataChange(e){
+        this.setState({[this.props.parameter.name]: e.target.value});
     }
 
     displayInfo(){
@@ -15,27 +27,81 @@ class ParamRow extends Component{
             return info;
         }
     }
+
+    componentDidMount() {
+        var configs =
+        {
+            ajax: {
+                url: 'api/staffs/search/findByStaffName',
+                data: function(params){
+                    return {
+                        name: params.term
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results: data["_embedded"]["staffs"]
+                    }
+                },
+                delay: 250
+            },
+            templateResult: function(staff){
+                return staff.firstName + " " + staff.lastName;
+            },
+            templateSelection: function formatRepoSelection (staff) {
+                if(staff===undefined){
+                    return "Please select";
+                }
+                else{
+                    if(staff.firstName != null){
+                        return staff.firstName + " " + staff.lastName;
+                    }
+                    else if(staff.name != null){
+                        return staff.name;
+                    }
+                    return "Please select";
+                }
+            }
+        };
+        $('#staff').select2(configs);
+        $('#staff').on('change', this.handleDataChange.bind(this));
+
+        $($('[id^=datePicker-]')).datetimepicker({
+            format: 'DD/MM/YYYY'
+        });
+        $($('[id^=datePicker-]')).on('dp.change', this.handleDateChange.bind(this)).trigger('dp.change');
+    }
+    
     render(){
-        var inputId;
+        var inputControl;
         if (this.props.parameter.type == 'Date'){
-            inputId = "datePicker";
-        }
-        if (this.props.parameter.type == 'Staff'){
-            inputId = "teacher";
+            inputControl = ( <div className="input-group date" id={"datePicker-" + this.props.parameter.name} >
+                                <input type="text" className="form-control" value=""/>
+                                  <span className="input-group-addon">
+                                    <i className="fa fa-calendar" aria-hidden="true"></i>
+                                  </span>
+                
+                            </div> );
+        } else if (this.props.parameter.type == 'Staff'){
+            inputControl = (<select id="staff"
+                                    className="form-control m-b"
+                                    style={{width: "100%"}}
+                                    value="">
+                                <option></option>
+                            </select>);
+        } else {
+            inputControl = (
+                <input type="text" className="form-control" value=""
+                       onChange={this.handleDataChange().bind(this)}/>
+                )
         }
         return(
           <div className="row m-b">
             <div className="col-sm-6">
               <div className="row">
                   <label className="col-sm-4 control-label">{this.props.parameter.name}</label>
-                  <div className="col-sm-8" id={inputId}>
-                  <input
-                      type="text"
-                      className="form-control m-b"
-                      onChange={this.handleParamFieldUpdate.bind(this)}
-                  />
+                  {inputControl}
                   {this.displayInfo()}
-                  </div>
               </div>
             </div>
             <div className="col-sm-6">
@@ -48,10 +114,18 @@ class ParamRow extends Component{
 class ParamsForm extends Component{
     constructor(props){
         super(props);
+        this.state = {
+            paramsData : {}
+        }
     }
 
     handleParamFieldUpdate(){
         console.log('update');
+    }
+    
+    updateParamsData(paramsData){
+        var newReport = Object.assign(this.state.paramsData, paramsData)
+        this.setState({observationData: newObservation});
     }
 
     render(){
@@ -76,8 +150,6 @@ class ParamsForm extends Component{
                     </div>
                 </div>
             </form>
-
-
         );
     }
 }
