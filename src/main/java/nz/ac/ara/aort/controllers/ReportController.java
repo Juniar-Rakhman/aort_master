@@ -1,5 +1,6 @@
 package nz.ac.ara.aort.controllers;
 
+import net.minidev.json.JSONObject;
 import nz.ac.ara.aort.entities.Parameter;
 import nz.ac.ara.aort.entities.Report;
 import nz.ac.ara.aort.entities.UserRole;
@@ -7,7 +8,6 @@ import nz.ac.ara.aort.repositories.ReportRepository;
 import nz.ac.ara.aort.repositories.UserRoleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -36,8 +35,8 @@ public class ReportController {
 
     @RequestMapping(value = "/api/reports/execute", method = RequestMethod.POST)
     public ResponseEntity<Object> reportExecute(@RequestBody Report requestReport) {
+        JSONObject response = new JSONObject();
         try {
-            
             //fetch exisiting report incase we want to use its default param value
             Report existingReport = reportRepo.findOne(requestReport.getId());
             if (existingReport == null) {
@@ -57,9 +56,9 @@ public class ReportController {
             }
             
             //TODO: add more validation
-            if (userRole.getGeneral()) {
-                throw new Exception("You do not have access to this report.");
-            }
+//            if (userRole.getGeneral()) {
+//                throw new Exception("You do not have access to this report.");
+//            }
 
             for (Parameter reqParam : requestReport.getParameters()) {
                 reportURL += "?" + reqParam.getName();
@@ -69,15 +68,20 @@ public class ReportController {
                     reportURL += "=" + defaultMap.get(reqParam.getName());
                 }
             }
+
+            response.put("result", reportURL);
+            response.put("success", true);
             
-            URI redirect = new URI(reportURL);
-            HttpHeaders httpHeaders = new HttpHeaders();
-            httpHeaders.setLocation(redirect);
-            return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
+//            URI redirect = new URI(reportURL);
+//            HttpHeaders httpHeaders = new HttpHeaders();
+//            httpHeaders.setLocation(redirect);
+//            return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
             
         } catch (Exception e) {
             e.printStackTrace();
-            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
+            response.put("result", e.getMessage());
+            response.put("success", false);
         }
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
