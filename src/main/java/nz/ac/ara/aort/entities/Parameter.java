@@ -31,4 +31,7 @@ public class Parameter {
     
     @Column(name = "mandatory")
     private Boolean mandatory;
+
+    @Column(name = "path")
+    private String path;
 }

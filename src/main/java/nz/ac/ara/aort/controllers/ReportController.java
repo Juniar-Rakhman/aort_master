@@ -47,7 +47,7 @@ public class ReportController {
                 defaultMap.put(param.getName(), param.getValue());
             }
 
-            reportURL += "?/" + existingReport.getPath() + "&rs:" + "Format=" + requestReport.getFormat();
+            String url = reportURL + "?/" + existingReport.getPath() + "&rs:" + "Format=" + requestReport.getFormat();
             
             UserRole userRole = userRoleRepo.findByStaffId(requestReport.getUserId());
 
@@ -61,15 +61,15 @@ public class ReportController {
 //            }
 
             for (Parameter reqParam : requestReport.getParameters()) {
-                reportURL += "?" + reqParam.getName();
+                url += "&" + reqParam.getPath();
                 if (reqParam.getValue() != null) {
-                    reportURL += "=" + reqParam.getValue();
+                    url += "=" + reqParam.getValue();
                 } else {
-                    reportURL += "=" + defaultMap.get(reqParam.getName());
+                    url += "=" + defaultMap.get(reqParam.getName());
                 }
             }
 
-            response.put("result", reportURL);
+            response.put("result", url);
             response.put("success", true);
             
 //            URI redirect = new URI(reportURL);
