@@ -81,7 +81,8 @@ INSERT INTO dbo.report (created_date, description, name, path) VALUES ('2016-08-
 INSERT INTO dbo.report (created_date, description, name, path) VALUES ('2016-08-24', 'Academic Staff Observation Overview', 'Academic Staff Observation Overview', 'AcademicStaffObsOverview');
 
 INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value) VALUES (1,1,'Observation Id', 'Char', '3000-01-01');
-INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value) VALUES (2,1,'Observation Id', 'Char', '3000-01-01');
+INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value) VALUES (2,1,'Observer Name', 'Staff', '00000065');
+INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value) VALUES (2,1,'Department', 'Char', 'test');
 INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value) VALUES (3,1,'Teachers Name', 'Staff', '00000065');
 INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value) VALUES (3,1,'Start Date', 'Date', '2016-01-01');
 INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value) VALUES (3,1,'End Date', 'Date', '3000-01-01');
