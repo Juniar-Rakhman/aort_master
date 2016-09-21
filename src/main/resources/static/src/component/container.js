@@ -121,7 +121,7 @@ class Container extends Component {
     } else if (this.state.page === 'updateCategory') {
       content = <UpdateCategory category={this.state.data} redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'reportSearch') {
-      content = <ReportSearch redirectTo={this.handlePageNav} />
+      content = <ReportSearch redirectTo={this.handlePageNav} role={this.state.role} />
     } else if (this.state.page === 'reportParam') {
       content = <ReportParams redirectTo={this.handlePageNav} report={this.state.data} staff={this.state.staff} />
     }

@@ -11,12 +11,17 @@ class ReportRow extends Component {
     }
 
     render() {
-        return (
-            <tr>
-                <td><a href="#" onClick={this.handleReportParams.bind(this)}>{this.props.report.name || ''}</a></td>
-                <td>{this.props.report.description || ''}</td>
-            </tr>
-        );
+        if(this.props.isRendered) {
+            return (
+                <tr>
+                    <td><a href="#" onClick={this.handleReportParams.bind(this)}>{this.props.report.name || ''}</a></td>
+                    <td>{this.props.report.description || ''}</td>
+                </tr>
+            );
+        }
+        else {
+            return null;
+        }
     }
 }
 
@@ -28,8 +33,18 @@ class ReportTable extends Component {
     render() {
         var rows = [];
         this.props.reports.forEach(function(report){
+            var isRendered = false;
+            if(report.path === 'ObserverPerformanceParent') {
+                isRendered = this.props.role.qualityAssurance || this.props.role.systemAdmin;
+            }
+            else if(report.path === 'TeamObservation') {
+                isRendered = this.props.role.general;
+            }
+            else if(report.path === 'AcademicStaffObsOverview' || report.path === 'ObservationRecordsParent') {
+                isRendered = this.props.role.general || this.props.role.qualityAssurance || this.props.role.systemAdmin;
+            }
             rows.push(
-                <ReportRow report={report} key={report.id} redirectTo={this.props.redirectTo} />
+                <ReportRow report={report} key={report.id} redirectTo={this.props.redirectTo} isRendered={isRendered} />
             );
         }, this);
 
@@ -49,86 +64,16 @@ class ReportTable extends Component {
     }
 }
 
-class SearchBar extends Component {
-    constructor(props){
-        super(props);
-        this.handleChange = this.handleChange.bind(this);
-        this.state = {inputTextVal: ''}
-    }
-
-    handleChange(e) {
-        this.props.onUserInput(
-            this.refs.filterTextInput.value
-        )
-        e.preventDefault();
-    }
-
-    handleTextChange(e){
-        this.setState({inputTextVal: e.target.value});
-    }
-    render() {
-        var style = {
-          "margin-bottom": "0px"
-        }
-        return (
-
-            <div className="m-b">
-                <form role="form" className="form-inline" onSubmit={this.handleChange.bind(this)}>
-                    <div className="form-group">
-                        <input type="text" placeholder="Find Report" name="search" className="form-control"
-                            ref="filterTextInput"
-                            onChange={this.handleTextChange.bind(this)}/> &nbsp;
-                    </div>
-
-                    <button
-                        style={style}
-                        className="btn btn-sm btn-primary"
-                        type="submit"
-                        disabled={this.state.inputTextVal === ''}>Search
-                    </button>
-
-                </form>
-            </div>
-        );
-    }
-}
-
 class ReportSearch extends Component {
     constructor(props) {
         super(props);
-        this.handleUserInput = this.handleUserInput.bind(this);
-        this.handlePage = this.handlePage.bind(this);
-        this.handleSize = this.handleSize.bind(this);
 
         this.state = {
             reports: [],
-            filterText: '',
             page: 0,
             size: 10,
             totalPages: 10
         };
-    }
-
-    handleUserInput(value){
-        this.setState({
-            page: 0,
-            filterText: value
-        });
-        this.getReportsBySearch(value);
-    }
-
-    getReportsBySearch(name) {
-//        $.ajax({
-//            type: 'GET',
-//            url: "api/reports/search/findByTitle?title=" + title + "&page=" + this.state.page + "&size=" + this.state.size,
-//            success: function(response) {
-//                this.setState({reports: response["_embedded"]["reports"]});
-//                this.setState({totalPages: response["page"]["totalPages"]});
-//            }.bind(this),
-//            error: function(xhr, status, err) {
-//                console.error(this.props.url, status, err.toString());
-//            }.bind(this)
-//        });
     }
 
     getReports() {
@@ -147,26 +92,13 @@ class ReportSearch extends Component {
         });
     }
 
-    handlePage(page) {
-        this.setState({page: page});
-    }
-
-    handleSize(size) {
-        this.setState({size: size});
-    }
-
     componentWillMount() {
         this.getReports();
     }
 
     componentDidUpdate(prevProps, prevState) {
         if ((prevState.page != this.state.page) || (prevState.size != this.state.size)) {
-            if (this.state.filterText != '') {
-                this.getReportsBySearch(this.state.filterText);
-            }
-            else {
-                this.getReports();
-            }
+            this.getReports();
         }
     }
 
@@ -177,23 +109,14 @@ class ReportSearch extends Component {
                     <div className="col-lg-12">
                         <div className="ibox float-e-margins">
                             <div className="ibox-title">
-                                <h2>Report Search</h2>
+                                <h2>Report List</h2>
                             </div>
                             <div className="ibox-content">
                                 <div className="table-responsive">
-                                    <SearchBar
-                                        onUserInput={this.handleUserInput}
-                                    />
                                     <ReportTable
                                         reports={this.state.reports}
                                         redirectTo={this.props.redirectTo}
-                                    />
-                                    <PageInfo
-                                        page={this.state.page}
-                                        totalPages={this.state.totalPages}
-                                        size={this.state.size}
-                                        handlePage={this.handlePage}
-                                        handleSize={this.handleSize}
+                                        role={this.props.role}
                                     />
                                 </div>
                             </div>

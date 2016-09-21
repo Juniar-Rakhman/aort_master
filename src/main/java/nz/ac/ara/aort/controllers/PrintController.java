@@ -79,7 +79,7 @@ public class PrintController {
                 helper.setText(body, true);
 
                 sender.send(message);
-                response.put("message", "Observation has been sent successfully");
+                response.put("message", "Observation has been sent successfully.");
                 response.put("success", true);
             }
             catch (Exception e) {

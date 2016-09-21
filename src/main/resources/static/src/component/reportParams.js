@@ -71,7 +71,7 @@ class ParamRow extends Component{
     
     render(){
         var inputControl;
-        if (this.props.parameter.type == 'Date'){
+        if (this.props.parameter.type === 'Date'){
             inputControl = (
                 <div className="input-group date" id={"datePicker-" + this.props.parameter.id} >
                     <input type="text" className="form-control" value={this.state.value} required={this.props.parameter.mandatory}/>
@@ -79,7 +79,7 @@ class ParamRow extends Component{
                         <i className="fa fa-calendar" aria-hidden="true"></i>
                       </span>
                 </div> );
-        } else if (this.props.parameter.type == 'Staff'){
+        } else if (this.props.parameter.type === 'Staff'){
             inputControl = (
                 <select id={"staff-" + this.props.parameter.id}
                         className="form-control m-b"
