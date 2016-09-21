@@ -24,7 +24,8 @@ import javax.mail.internet.MimeMessage;
 import javax.net.ssl.HttpsURLConnection;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
-import java.net.URI;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
 import java.net.URL;
 
 /**
@@ -45,6 +46,15 @@ public class PrintController {
     @Value("${spring.report.url}")
     private String reportURL;
 
+    @Value("${spring.report.auth.username}")
+    private String username;
+
+    @Value("${spring.report.auth.password}")
+    private String password;
+
+    @Value("${spring.report.smtp.server}")
+    private String smtpServer;
+
     @RequestMapping(value = "/api/mail/send", method = RequestMethod.GET)
     public ResponseEntity<Object> sendMail(@RequestParam("userId") String userId, @RequestParam("observationId") int observationId) {
 
@@ -60,6 +70,15 @@ public class PrintController {
             try {
                 String reportURLHTML = reportURL + "?/Observation&rs:Format=HTML4.0&rc:toolbar=false&ObservationId=" + observationId;
                 URL url = new URL(reportURLHTML);
+
+                //Set default authentication
+                Authenticator.setDefault(new Authenticator() {
+                    @Override
+                    protected PasswordAuthentication getPasswordAuthentication() {
+                        return new PasswordAuthentication(username, password.toCharArray());
+                    }
+                });
+                
                 HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
                 BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
                 String inputLine;
@@ -72,8 +91,9 @@ public class PrintController {
                 JavaMailSenderImpl sender = new JavaMailSenderImpl();
                 MimeMessage message = sender.createMimeMessage();
                 MimeMessageHelper helper = new MimeMessageHelper(message);
+                
                 // TODO: Need to change it into ARA SMTP server
-                sender.setHost("exchange.mitrais.com");
+                sender.setHost(smtpServer);
                 helper.setTo(staff.getEmail());
                 helper.setSubject("Observation Report #" + observationId);
                 helper.setText(body, true);
