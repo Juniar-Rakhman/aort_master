@@ -47,7 +47,7 @@ public class ReportController {
                 defaultMap.put(param.getName(), param.getValue());
             }
 
-            String url = reportURL + "?/" + existingReport.getPath() + "&rs:" + "Format=" + requestReport.getFormat();
+            String url = reportURL + "/Pages/ReportViewer.aspx?/" + existingReport.getPath() + "&rs:Command=Render";
             
             UserRole userRole = userRoleRepo.findByStaffId(requestReport.getUserId());
 
@@ -62,7 +62,7 @@ public class ReportController {
 
             for (Parameter reqParam : requestReport.getParameters()) {
                 url += "&" + reqParam.getPath();
-                if(!reqParam.getMandatory() && reqParam.getValue() == "") {
+                if(!reqParam.getMandatory() && reqParam.getValue().equals("")) {
                     url += ":isNull=true";
                 }
                 else {

@@ -180,7 +180,7 @@ class ParamsForm extends Component{
                     <div className="form-group">
                       <div className="col-sm-4 col-sm-offset-10">
                         <button className="btn btn-white" type="button" onClick={this.handleBack.bind(this)}>Cancel</button>&nbsp;
-                        <button className="btn btn-primary" type="submit">Print</button>
+                        <button className="btn btn-primary" type="submit">Generate</button>
                       </div>
                     </div>
                 </div>
