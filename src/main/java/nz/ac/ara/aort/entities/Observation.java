@@ -11,6 +11,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -41,9 +42,6 @@ public class Observation implements Comparable<Observation> {
 
 	@Column(name = "late_no_learners")
 	private Integer lateLearners;
-
-	@Column(name = "campus_location", columnDefinition = "nvarchar(50)")
-	private String location;
 	
 	@Column(name = "is_moderated")
 	private Boolean moderated;
@@ -84,7 +82,7 @@ public class Observation implements Comparable<Observation> {
 	@Column(name = "total_no_learners")
 	private Integer totalLearners;
 	
-	@Column(name = "additional_comments", columnDefinition = "nvarchar(250)")
+	@Column(name = "additional_comments", columnDefinition = "nvarchar(MAX)")
 	private String additionalComments;
 
 	@Column(name = "course_code", columnDefinition = "nvarchar(20)")
@@ -96,9 +94,30 @@ public class Observation implements Comparable<Observation> {
 	@Column(name = "course_name", columnDefinition = "nvarchar(100)")
 	private String courseName;
 
-	@Column(name = "department", columnDefinition = "nvarchar(50)")
-	private String department;
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "location_id")
+	private CampusReference location;
 
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "department_id")
+	private DepartmentReference department;
+
+	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinColumn(name = "session_id")
+	private SessionReference session;
+
+	@Column(name = "applied_feedback")
+	private Boolean appliedFeedback;
+
+	@Column(name = "moderator_comment1", columnDefinition = "nvarchar(MAX)")
+	private String moderatorComment1;
+
+	@Column(name = "moderator_comment2", columnDefinition = "nvarchar(MAX)")
+	private String moderatorComment2;
+
+	@Column(name = "moderator_comment3", columnDefinition = "nvarchar(MAX)")
+	private String moderatorComment3;
+	
 	@Column(name = "moderator", columnDefinition = "nvarchar(50)")
 	private String moderatorId;
 	@Transient
@@ -196,6 +215,6 @@ public class Observation implements Comparable<Observation> {
 			return firstNameCompare;
 		}
 		
-		return firstNameCompare;
+		return lastNameCompare;
 	}
 }
