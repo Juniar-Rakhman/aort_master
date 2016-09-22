@@ -66,5 +66,13 @@ public class RatingReferenceController {
         return new ResponseEntity<>(ratingReference, HttpStatus.OK);
     }
 
-
+    @RequestMapping(value = "/api/ratingReferences", method = RequestMethod.DELETE)
+    public ResponseEntity<String> ratingReferenceDelete(@RequestBody String id) {
+        try {
+            ratingRefRepo.delete(Long.parseLong(id));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(id, HttpStatus.OK);
+    }
 }

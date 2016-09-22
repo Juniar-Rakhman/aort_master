@@ -82,4 +82,14 @@ public class StrengthImprovementReferenceController {
         }
         return new ResponseEntity<>(category, HttpStatus.OK);
     }
+
+    @RequestMapping(value = "/api/strengthImprovementReferences", method = RequestMethod.DELETE)
+    public ResponseEntity<String> strengthImprovementReferenceDelete(@RequestBody String id) {
+        try {
+            strImpRefRepo.delete(Long.parseLong(id));
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return new ResponseEntity<>(id, HttpStatus.OK);
+    }
 }
