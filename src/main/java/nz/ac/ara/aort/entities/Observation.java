@@ -94,16 +94,19 @@ public class Observation implements Comparable<Observation> {
 	@Column(name = "course_name", columnDefinition = "nvarchar(100)")
 	private String courseName;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "location_id")
+	@Column(name = "location_id", columnDefinition = "nvarchar(50)")
+	private String locationId;
+	@Transient
 	private CampusReference location;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "department_id")
+	@Column(name = "department_id", columnDefinition = "nvarchar(50)")
+	private String departmentId;
+	@Transient
 	private DepartmentReference department;
 
-	@ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-	@JoinColumn(name = "session_id")
+	@Column(name = "session_id", columnDefinition = "nvarchar(50)")
+	private String sessionId;
+	@Transient
 	private SessionReference session;
 
 	@Column(name = "applied_feedback")
