@@ -1,19 +1,24 @@
 import React, { Component } from 'react';
 
-class RatingForm extends Component {
+class CampusForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            rating: this.props.rating.rating || ''
+            campus: this.props.campus.campus || '',
+            active: this.props.campus.active || true
         }
     }
 
-    handleRatingChange(e) {
-        this.setState({rating: e.target.value});
+    handleCampusChange(e) {
+        this.setState({campus: e.target.value});
+    }
+
+    handleActiveChange(e) {
+        this.setState({active: e.target.checked});
     }
 
     handleBack() {
-        this.props.redirectTo('ratingSearch');
+        this.props.redirectTo('campusSearch');
     }
 
     handleSubmit(e) {
@@ -23,12 +28,12 @@ class RatingForm extends Component {
             console.log(data);
             $.ajax({
                 type: 'POST',
-                url: "/api/ratingReferences",
+                url: "/api/campusReferences",
                 data: data,
                 contentType: "application/json",
                 success: function(response) {
                     console.log(response);
-                    this.props.redirectTo('ratingSearch');
+                    this.props.redirectTo('campusSearch');
                 }.bind(this),
                 error: function(xhr, status, err) {
                     console.error(this.props.url, status, err.toString());
@@ -36,17 +41,17 @@ class RatingForm extends Component {
             });
         }
         else if(this.props.mode === 'Edit') {
-            var rating = Object.assign(this.state, {id: this.props.rating.id});
-            var data = JSON.stringify(rating);
+            var campus = Object.assign(this.state, {id: this.props.campus.id});
+            var data = JSON.stringify(campus);
             console.log(data);
             $.ajax({
                 type: 'PUT',
-                url: "/api/ratingReferences",
+                url: "/api/campusReferences",
                 contentType: "application/json",
                 data: data,
                 success: function(response) {
                    console.log(response);
-                   this.props.redirectTo('ratingSearch');
+                   this.props.redirectTo('campusSearch');
                 }.bind(this),
                 error: function(xhr, status, err) {
                     console.error(this.props.url, status, err.toString());
@@ -59,17 +64,17 @@ class RatingForm extends Component {
 
     handleDelete() {
         if(confirm("Are you sure to delete this data?")){
-            var rating = Object.assign(this.state, {id: this.props.rating.id});
-            var data = JSON.stringify(rating);
+            var campus = Object.assign(this.state, {id: this.props.campus.id});
+            var data = JSON.stringify(campus);
             console.log(data);
             $.ajax({
                 type: 'DELETE',
-                url: "/api/ratingReferences",
+                url: "/api/campusReferences",
                 data: data,
                 contentType: "application/json",
                 success: function(response) {
                     console.log(response);
-                    this.props.redirectTo('ratingSearch');
+                    this.props.redirectTo('campusSearch');
                 }.bind(this),
                 error: function(xhr, status, err) {
                     console.error(this.props.url, status, err.toString());
@@ -101,18 +106,32 @@ class RatingForm extends Component {
             <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
                 <div className="ibox-content">
                     <div className="form-group">
-                        <div className="col-sm-12">
-                            <label className="col-sm-4 control-label">Rating</label>
-                            <div className="col-sm-8">
-                                <input
-                                    type="text"
-                                    placeholder="50 characters allowed"
-                                    maxLength={50}
-                                    className="form-control m-b"
-                                    onChange={this.handleRatingChange.bind(this)}
-                                    value={this.state.rating}
-                                    required
-                                />
+                        <div className="row m-b">
+                            <div className="col-sm-12">
+                                <label className="col-sm-4 control-label">Campus</label>
+                                <div className="col-sm-8">
+                                    <input
+                                        type="text"
+                                        placeholder="100 characters allowed"
+                                        maxLength={100}
+                                        className="form-control m-b"
+                                        onChange={this.handleCampusChange.bind(this)}
+                                        value={this.state.campus}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row m-b">
+                            <div className="col-sm-12">
+                                <label className="col-sm-4 control-label">Active</label>
+                                <div className="col-sm-8">
+                                    <input
+                                        type="checkbox"
+                                        checked={this.state.active}
+                                        onClick={this.handleActiveChange.bind(this)}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -127,7 +146,7 @@ class RatingForm extends Component {
     }
 }
 
-class EntryRating extends Component {
+class EntryCampus extends Component {
     constructor(props) {
         super(props);
     }
@@ -139,11 +158,11 @@ class EntryRating extends Component {
                   <div className="col-lg-12">
                     <div className="ibox float-e-margins">
                         <div className="ibox-title">
-                            <h2>Rating {this.props.title}</h2>
+                            <h2>Campus {this.props.title}</h2>
                         </div>
                         <div className="ibox-content">
-                            <RatingForm
-                                rating={this.props.rating || {}}
+                            <CampusForm
+                                campus={this.props.campus || {}}
                                 redirectTo={this.props.redirectTo}
                                 mode={this.props.title}
                             />
@@ -156,4 +175,4 @@ class EntryRating extends Component {
     }
 }
 
-export default EntryRating;
+export default EntryCampus;

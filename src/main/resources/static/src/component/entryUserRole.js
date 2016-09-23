@@ -109,21 +109,23 @@ class UserRoleForm extends Component {
     	    <form className="form-horizontal">
                 <div className="ibox-content">
                     <div className="form-group">
-                        <div className="col-sm-12">
-                            <label className="col-sm-4 control-label">Name</label>
-                            <div className="col-sm-8">
-                                <input type="text" className="form-control m-b" value={this.props.userRole.staff.firstName + ' ' + this.props.userRole.staff.lastName} disabled />
+                        <div className="row m-b">
+                            <div className="col-sm-12">
+                                <label className="col-sm-4 control-label">Name</label>
+                                <div className="col-sm-8">
+                                    <input type="text" className="form-control m-b" value={this.props.userRole.staff.firstName + ' ' + this.props.userRole.staff.lastName} disabled />
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="form-group">
-                        <div className="col-sm-12">
-                            <label className="col-sm-4 control-label">Role</label>
-                            <div className="col-sm-8">
-                                <input type="radio" name="role" value="general" checked={this.state.general} onChange={this.handleChange.bind(this)} /> General<br />
-                                <input type="radio" name="role" value="addObservation" checked={this.state.addObservation} onChange={this.handleChange.bind(this)} /> Create Obs Record<br />
-                                <input type="radio" name="role" value="systemAdmin" checked={this.state.systemAdmin} onChange={this.handleChange.bind(this)} /> System Admin<br />
-                                <input type="radio" name="role" value="qualityAssurance" checked={this.state.qualityAssurance} onChange={this.handleChange.bind(this)} /> Quality Assurance
+                        <div className="row m-b">
+                            <div className="col-sm-12">
+                                <label className="col-sm-4 control-label">Role</label>
+                                <div className="col-sm-8">
+                                    <input type="radio" name="role" value="general" checked={this.state.general} onChange={this.handleChange.bind(this)} /> General<br />
+                                    <input type="radio" name="role" value="addObservation" checked={this.state.addObservation} onChange={this.handleChange.bind(this)} /> Create Obs Record<br />
+                                    <input type="radio" name="role" value="systemAdmin" checked={this.state.systemAdmin} onChange={this.handleChange.bind(this)} /> System Admin<br />
+                                    <input type="radio" name="role" value="qualityAssurance" checked={this.state.qualityAssurance} onChange={this.handleChange.bind(this)} /> Quality Assurance
+                                </div>
                             </div>
                         </div>
                     </div>

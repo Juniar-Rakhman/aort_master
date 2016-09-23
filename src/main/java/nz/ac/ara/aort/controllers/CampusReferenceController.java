@@ -67,12 +67,12 @@ public class CampusReferenceController {
     }
 
     @RequestMapping(value = "/api/campusReferences", method = RequestMethod.DELETE)
-    public ResponseEntity<String> campusReferenceDelete(@RequestBody String id) {
+    public ResponseEntity<CampusReference> campusReferenceDelete(@RequestBody CampusReference campusReference) {
         try {
-            campusRefRepo.delete(Long.parseLong(id));
+            campusRefRepo.delete(campusReference.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(id, HttpStatus.OK);
+        return new ResponseEntity<>(campusReference, HttpStatus.OK);
     }
 }

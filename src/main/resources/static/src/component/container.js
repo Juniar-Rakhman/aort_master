@@ -17,6 +17,12 @@ import PositionSearch from "./positionSearch";
 import UpdateCategory from "./updateCategory";
 import ReportSearch from "./reportSearch";
 import ReportParams from "./reportParams";
+import CampusSearch from "./campusSearch";
+import EntryCampus from "./entryCampus";
+import DepartmentSearch from "./departmentSearch";
+import EntryDepartment from "./entryDepartment";
+import SessionSearch from "./sessionSearch";
+import EntrySession from "./entrySession";
 
 class Container extends Component {
   constructor(props, context) {
@@ -124,6 +130,24 @@ class Container extends Component {
       content = <ReportSearch redirectTo={this.handlePageNav} role={this.state.role} />
     } else if (this.state.page === 'reportParam') {
       content = <ReportParams redirectTo={this.handlePageNav} report={this.state.data} staff={this.state.staff} />
+    } else if (this.state.page === 'campusSearch') {
+      content = <CampusSearch redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'entryCampus') {
+      content = <EntryCampus title='Create' redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'editCampus') {
+      content = <EntryCampus title='Edit' campus={this.state.data} redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'departmentSearch') {
+      content = <DepartmentSearch redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'entryDepartment') {
+      content = <EntryDepartment title='Create' redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'editDepartment') {
+      content = <EntryDepartment title='Edit' department={this.state.data} redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'sessionSearch') {
+      content = <SessionSearch redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'entrySession') {
+      content = <EntrySession title='Create' redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'editSession') {
+      content = <EntrySession title='Edit' session={this.state.data} redirectTo={this.handlePageNav} />
     }
 
     return content;

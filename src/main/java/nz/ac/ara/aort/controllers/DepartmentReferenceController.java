@@ -67,12 +67,12 @@ public class DepartmentReferenceController {
     }
 
     @RequestMapping(value = "/api/departmentReferences", method = RequestMethod.DELETE)
-    public ResponseEntity<String> departmentReferenceDelete(@RequestBody String id) {
+    public ResponseEntity<DepartmentReference> departmentReferenceDelete(@RequestBody DepartmentReference departmentReference) {
         try {
-            departmentRefRepo.delete(Long.parseLong(id));
+            departmentRefRepo.delete(departmentReference.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(id, HttpStatus.OK);
+        return new ResponseEntity<>(departmentReference, HttpStatus.OK);
     }
 }

@@ -67,12 +67,12 @@ public class SessionReferenceController {
     }
 
     @RequestMapping(value = "/api/sessionReferences", method = RequestMethod.DELETE)
-    public ResponseEntity<String> sessionReferenceDelete(@RequestBody String id) {
+    public ResponseEntity<SessionReference> sessionReferenceDelete(@RequestBody SessionReference sessionReference) {
         try {
-            sessionRefRepo.delete(Long.parseLong(id));
+            sessionRefRepo.delete(sessionReference.getId());
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(id, HttpStatus.OK);
+        return new ResponseEntity<>(sessionReference, HttpStatus.OK);
     }
 }

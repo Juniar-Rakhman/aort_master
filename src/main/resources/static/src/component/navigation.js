@@ -41,6 +41,18 @@ class Navigation extends Component {
     this.props.handlePageNav('positionSearch');
   }
 
+  handleCampusSearch(){
+    this.props.handlePageNav('campusSearch');
+  }
+
+  handleDepartmentSearch(){
+    this.props.handlePageNav('departmentSearch');
+  }
+
+  handleSessionSearch(){
+    this.props.handlePageNav('sessionSearch');
+  }
+
   handleReports(){
     this.props.handlePageNav('reportSearch');
   }
@@ -91,6 +103,9 @@ class Navigation extends Component {
               <li><a href="#" onClick={this.handlePositionSearch.bind(this)}>Position Management</a></li>
               <li><a href="#" onClick={this.handleStrengthImprovementSearch.bind(this)}>Strength Improvement Management</a></li>
               <li><a href="#" onClick={this.handleRatingSearch.bind(this)}>Rating Management</a></li>
+              <li><a href="#" onClick={this.handleCampusSearch.bind(this)}>Campus Management</a></li>
+              <li><a href="#" onClick={this.handleDepartmentSearch.bind(this)}>Department Management</a></li>
+              <li><a href="#" onClick={this.handleSessionSearch.bind(this)}>Session Management</a></li>
             </ul>
           </li>
         );
