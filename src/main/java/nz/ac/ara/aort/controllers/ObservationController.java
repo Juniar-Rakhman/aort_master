@@ -80,16 +80,9 @@ public class ObservationController {
 
     @RequestMapping(value = "/api/observations", method = RequestMethod.POST)
     public ResponseEntity<Observation> observationAdd(@RequestBody Observation observation) {
-        JPQLQuery query = new JPAQuery(entityManager);
+
         try {
             observationRepo.save(observation);
-            
-            //test
-            QObservation qObservation = QObservation.observation;
-            
-            List<Observation> obs = query.from(qObservation).fetchAll().list(qObservation);
-
-            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -111,8 +104,10 @@ public class ObservationController {
         Pageable pageRequest = new PageRequest(page, size);
         List<Observation> observationList = new ArrayList<>();
         try {
-//            observationRepo.findAll(QObservation.observation.id.eq());
-            
+//            QObservation qObservation = QObservation.observation;
+//            List<Observation> obs = query.from(qObservation).fetchAll().list(qObservation);
+
+
         } catch (Exception e) {
             e.printStackTrace();
         }
