@@ -301,6 +301,31 @@ class ObserveHeader extends Component{
     return rows;
   }
 
+  displayModeratorComment1(){
+    var row = [];
+    if (this.props.mode === 'Edit') {
+        row.push(
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="row">
+                <label className="col-sm-2 control-label">Moderator Comment 1 - <i>Observation Notes</i></label>
+                <div className="col-sm-10">
+                  <textarea
+                      type="text"
+                      style={{width: "100%", height:"150px"}}
+                      className="form-control m-b"
+                      value={this.state.moderatorComment1}
+                      onChange={this.handleModeratorComment1Change.bind(this)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        );
+        return row;
+    }
+  }
+
   render(){
     return(
       <div className="ibox-content">
@@ -709,22 +734,7 @@ class ObserveHeader extends Component{
             </div>
           </div>
 
-          <div className="row">
-            <div className="col-sm-12">
-              <div className="row">
-                <label className="col-sm-2 control-label">Moderator Comment 1 - <i>Observation Notes</i></label>
-                <div className="col-sm-10">
-                  <textarea
-                      type="text"
-                      style={{width: "100%", height:"150px"}}
-                      className="form-control m-b"
-                      value={this.state.moderatorComment1}
-                      onChange={this.handleModeratorComment1Change.bind(this)}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
+          {this.displayModeratorComment1()}
         </div>
       </div>
     )
@@ -1140,17 +1150,41 @@ class ObserveModerate extends Component{
     if (this.props.mode === 'Edit') {
         row.push(<label className="col-sm-4 control-label">Moderator Feedback Provided</label>);
         row.push(<div className="col-sm-8"><input type="checkbox" checked={this.state.moderated} onClick={this.handleModeratedChange.bind(this)} /></div>);
+        return row;
     }
-    return row;
   }
 
   render(){
+    var moderatorFeedback = null;
+    var feedbackProvided = [];
+    if  (this.props.mode === 'Edit') {
+        moderatorFeedback = (
+          <div className="form-group">
+            <div className="col-sm-6">
+              <label className="col-sm-4 control-label">Record Updated with Moderator Feedback</label>
+              <div className="col-sm-8">
+                  <input
+                    type="checkbox"
+                    checked={this.state.appliedFeedback}
+                    onClick={this.handleAppliedFeedbackChange.bind(this)} />
+                </div>
+            </div>
+          </div>
+        );
+        feedbackProvided.push(<label className="col-sm-4 control-label">Moderator Feedback Provided</label>);
+        feedbackProvided.push(<div className="col-sm-8">
+            <input type="checkbox"
+              checked={this.state.moderated}
+              onClick={this.handleModeratedChange.bind(this)}
+            />
+          </div>);
+    }
     return(
       <div className="ibox-content">
         <div className="form-group">
           <div className="form-group">
             <div className="col-sm-6">
-              {this.displayModeratedInput()}
+              {feedbackProvided}
             </div>
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Moderator Name</label>
@@ -1193,19 +1227,8 @@ class ObserveModerate extends Component{
             </div>
           </div>
 
-          <div className="form-group">
-            <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Record Updated with Moderator Feedback</label>
-              <div className="col-sm-8">
-                  <input
-                    type="checkbox"
-                    checked={this.state.appliedFeedback}
-                    onClick={this.handleAppliedFeedbackChange.bind(this)} />
-                </div>
-            </div>
-            <div className="col-sm-6">
-            </div>
-          </div>
+          {moderatorFeedback}
+
         </div>
       </div>
     )
@@ -1752,6 +1775,8 @@ class Entry extends Component {
       cursor: 'pointer'
     };
     var submitButtons = null;
+    var comment2Component = null;
+    var comment3Component = null;
     var printEmailButtons = null;
     if(this.props.title === 'Edit') {
       submitButtons = (
@@ -1766,6 +1791,22 @@ class Entry extends Component {
           <i className="fa fa-envelope fa-lg" aria-hidden="true" style={printEmailStyle} onClick={this.handleEmail.bind(this)}></i>&nbsp;&nbsp;
           <i className="fa fa-print fa-lg" aria-hidden="true" style={printEmailStyle} onClick={this.handlePrint.bind(this)}></i>
         </div>
+      );
+      var comment2Component = (
+        <Comment2
+          key={this.props.title+"-comment2"}
+          mode={this.props.title}
+          updateObservation={this.updateObservation}
+          moderatorComment2 = {this.state.observationData.moderatorComment2}
+        />
+      );
+      var comment3Component = (
+        <Comment3
+          key={this.props.title+"-comment3"}
+          mode={this.props.title}
+          updateObservation={this.updateObservation}
+          moderatorComment3={this.state.observationData.moderatorComment3}
+        />
       );
     }
     else if(this.props.title === 'Create') {
@@ -1797,7 +1838,11 @@ class Entry extends Component {
         }
     }
 
-    if(this.state.staffs != null && this.state.ratingReferences != null && this.state.strengthImprovementReferences != null) {
+    if (this.state.staffs != null &&
+    this.state.ratingReferences != null &&
+    this.state.strengthImprovementReferences != null &&
+    this.state.departments !== null &&
+    this.state.sessionTypes) {
         return (
           <div className="wrapper-content animated fadeInRight">
             <div className="row">
@@ -1828,12 +1873,7 @@ class Entry extends Component {
                         mode={this.props.title}
                         updateObservation={this.updateObservation}
                       />
-                      <Comment2
-                        key={this.props.title+"-comment2"}
-                        mode={this.props.title}
-                        updateObservation={this.updateObservation}
-                        moderatorComment2 = {this.state.observationData.moderatorComment2}
-                      />
+                      {comment2Component}
                       <ObserveSummary
                         key={this.props.title+"-summary"}
                         mode={this.props.title}
@@ -1857,12 +1897,7 @@ class Entry extends Component {
                         recommendations={this.state.observationData.observationRecommendations || []}
                         categoryItems={this.state.strengthImprovementReferences}
                       />
-                      <Comment3
-                        key={this.props.title+"-comment3"}
-                        mode={this.props.title}
-                        updateObservation={this.updateObservation}
-                        moderatorComment3={this.state.observationData.moderatorComment3}
-                      />
+                      {comment3Component}
                       <div className="ibox-content">
                         <div className="form-group">
                           {submitButtons}
