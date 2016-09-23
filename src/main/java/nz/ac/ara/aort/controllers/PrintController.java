@@ -7,6 +7,7 @@ import nz.ac.ara.aort.entities.UserRole;
 import nz.ac.ara.aort.repositories.ObservationRepository;
 import nz.ac.ara.aort.repositories.StaffRepository;
 import nz.ac.ara.aort.repositories.UserRoleRepository;
+import nz.ac.ara.aort.utilities.EmailUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -56,7 +57,7 @@ public class PrintController {
     private String smtpServer;
 
     @RequestMapping(value = "/api/mail/send", method = RequestMethod.GET)
-    public ResponseEntity<Object> sendMail(@RequestParam("userId") String userId, @RequestParam("observationId") int observationId) {
+    public ResponseEntity<Object> sendReportMail(@RequestParam("userId") String userId, @RequestParam("observationId") int observationId) {
 
         JSONObject response = new JSONObject();
         Observation observation = observationRepository.findOne((long)observationId);
@@ -87,19 +88,8 @@ public class PrintController {
                     body += inputLine;
                 }
                 in.close();
-
-                JavaMailSenderImpl sender = new JavaMailSenderImpl();
-                MimeMessage message = sender.createMimeMessage();
-                MimeMessageHelper helper = new MimeMessageHelper(message);
-                
-                // TODO: Need to change it into ARA SMTP server
-                sender.setHost(smtpServer);
-                helper.setTo(staff.getEmail());
-                helper.setSubject("Observation Report #" + observationId);
-                helper.setText(body, true);
-
-                sender.send(message);
-                response.put("message", "Observation has been sent successfully.");
+                EmailUtils.sendEmail(staff.getEmail(),"Observation Report #" + observationId, body, true);
+                response.put("message", "Observation has been sent successfully to : " + staff.getEmail());
                 response.put("success", true);
             }
             catch (Exception e) {

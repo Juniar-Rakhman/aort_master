@@ -178,9 +178,17 @@ public class ObservationController {
             }
         }
 
-        observation.setLocation(campusRepo.findOne(Long.valueOf(observation.getLocationId())));
-        observation.setDepartment(departmentRepo.findOne(Long.valueOf(observation.getDepartmentId())));
-        observation.setSession(sessionRepo.findOne(Long.valueOf(observation.getSessionId())));
+        if (!observation.getLocationId().isEmpty()) {
+            observation.setLocation(campusRepo.findOne(Long.valueOf(observation.getLocationId())));
+        }
+        
+        if (!observation.getDepartmentId().isEmpty()) {
+            observation.setDepartment(departmentRepo.findOne(Long.valueOf(observation.getDepartmentId())));
+        }
+        
+        if (!observation.getSessionId().isEmpty()) {
+            observation.setSession(sessionRepo.findOne(Long.valueOf(observation.getSessionId())));
+        }
         
         if (!observation.getModeratorId().isEmpty()) {
             Staff moderator = staffRepo.findOne(observation.getModeratorId());
