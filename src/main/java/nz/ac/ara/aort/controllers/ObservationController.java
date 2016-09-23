@@ -178,54 +178,54 @@ public class ObservationController {
             }
         }
 
-        if (!observation.getLocationId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getLocationId())) {
             observation.setLocation(campusRepo.findOne(Long.valueOf(observation.getLocationId())));
         }
         
-        if (!observation.getDepartmentId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getDepartmentId())) {
             observation.setDepartment(departmentRepo.findOne(Long.valueOf(observation.getDepartmentId())));
         }
         
-        if (!observation.getSessionId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getSessionId())) {
             observation.setSession(sessionRepo.findOne(Long.valueOf(observation.getSessionId())));
         }
         
-        if (!observation.getModeratorId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getModeratorId())) {
             Staff moderator = staffRepo.findOne(observation.getModeratorId());
             observation.setModerator(moderator);
         }
 
-        if (!observation.getStaffId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getStaffId())) {
             Staff staff = staffRepo.findOne(observation.getStaffId());
             observation.setStaff(staff);
         }
 
-        if (!observation.getObserverPrimaryId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getObserverPrimaryId())) {
             Staff observerPrimary = staffRepo.findOne(observation.getObserverPrimaryId());
             observation.setObserverPrimary(observerPrimary);
         }
 
-        if (!observation.getObserverSecondaryId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getObserverSecondaryId())) {
             Staff observerSecondary = staffRepo.findOne(observation.getObserverSecondaryId());
             observation.setObserverSecondary(observerSecondary);
         }
 
-        if (!observation.getLineManagerId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getLineManagerId())) {
             Staff lineManager = staffRepo.findOne(observation.getLineManagerId());
             observation.setLineManager(lineManager);
         }
 
-        if (!observation.getLearningCoachId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getLearningCoachId())) {
             Staff learningCoach = staffRepo.findOne(observation.getLearningCoachId());
             observation.setLearningCoach(learningCoach);
         }
 
-        if (!observation.getHodId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getHodId())) {
             Staff hod = staffRepo.findOne(observation.getHodId());
             observation.setHOD(hod);
         }
 
-        if (!observation.getRatingReferenceId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getRatingReferenceId())) {
             RatingReference ratingReference = ratingRefRepo.findOne(Long.valueOf(observation.getRatingReferenceId()));
             observation.setRatingReference(ratingReference);
         }
