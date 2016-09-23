@@ -103,11 +103,10 @@ public class ObservationController {
     public ResponseEntity<Page> observationFindFilter(@RequestBody SearchFilter filter, @RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
         List<Observation> observationList = new ArrayList<>();
+        JPQLQuery query = new JPAQuery(entityManager);
         try {
-//            QObservation qObservation = QObservation.observation;
-//            List<Observation> obs = query.from(qObservation).fetchAll().list(qObservation);
-
-
+            QObservation observation = QObservation.observation;
+            observationList = query.from(observation).fetchAll().list(observation);
         } catch (Exception e) {
             e.printStackTrace();
         }

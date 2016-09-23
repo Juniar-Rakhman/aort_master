@@ -55,7 +55,7 @@ public class Observation implements Comparable<Observation> {
 	@Column(name = "notes", columnDefinition = "nvarchar(MAX)")
 	private String notes;
 	
-	@Column(name = "rating_summary_eval", columnDefinition = "nvarchar(250)")
+	@Column(name = "rating_summary_eval", columnDefinition = "nvarchar(MAX)")
 	private String ratingSummary;
 	
 	@Column(name = "register_no_learners")
