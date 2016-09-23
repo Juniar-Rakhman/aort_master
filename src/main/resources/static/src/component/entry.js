@@ -22,8 +22,8 @@ class ObserveHeader extends Component{
         startLearners: props.observation.startLearners || '' ,
         lateLearners: props.observation.lateLearners ||'' ,
         totalLearners: props.observation.totalLearners || '' ,
-        location: props.observation.location || '',
-        department: props.observation.department || '',
+        locationId: props.observation.locationId || '',
+        departmentId: props.observation.departmentId || '',
         sessionContext: props.observation.sessionContext || '',
         notes: props.observation.notes || '',
         courseCode: props.observation.courseCode || '',
@@ -34,7 +34,9 @@ class ObserveHeader extends Component{
         staff: props.observation.staff || {firstName:'', lastName:''},
         lineManager: props.observation.lineManager || {firstName:'', lastName:''},
         observerPrimary: observerPrimary || {firstName:'', lastName:''},
-        observerSecondary: props.observation.observerSecondary || {firstName:'', lastName:''}
+        observerSecondary: props.observation.observerSecondary || {firstName:'', lastName:''},
+        sessionId: props.observation.sessionId || '',
+        moderatorComment1: props.observation.moderatorComment1 || ''
     }
     console.log('ObserveHeader mode: '+ this.props.mode);
   }
@@ -117,15 +119,15 @@ class ObserveHeader extends Component{
     this.props.updateObservation(newState);
   }
 
-  handleCampusChange(e){
-    var newState = Object.assign(this.state, {location: e.target.value});
-    this.setState({location: e.target.value})
+  handleCampusLocationIdChange(e){
+    var newState = Object.assign(this.state, {locationId: e.target.value});
+    this.setState({locationId: e.target.value})
     this.props.updateObservation(newState);
   }
 
-  handleDepartmentChange(e){
-    var newState = Object.assign(this.state, {department: e.target.value});
-    this.setState({department: e.target.value})
+  handleDepartmentIdChange(e){
+    var newState = Object.assign(this.state, {departmentId: e.target.value});
+    this.setState({departmentId: e.target.value})
     this.props.updateObservation(newState);
   }
 
@@ -177,6 +179,18 @@ class ObserveHeader extends Component{
     this.props.updateObservation(newState);
   }
 
+  handleSessionTypeChange(e) {
+    var newState = Object.assign(this.state, {sessionId: e.target.value});
+    this.setState({sessionId: e.target.value})
+    this.props.updateObservation(newState);
+  }
+
+  handleModeratorComment1Change(e) {
+    var newState = Object.assign(this.state, {moderatorComment1: e.target.value});
+    this.setState({moderatorComment1: e.target.value})
+    this.props.updateObservation(newState);
+  }
+
   componentDidMount() {
     var configs =
        {
@@ -216,6 +230,7 @@ class ObserveHeader extends Component{
           callback({name: value});
         }
       };
+
     $('#teacher').select2(configs);
     $('#teacher').on('change', this.handleTeacherNameChange.bind(this));
 
@@ -227,6 +242,15 @@ class ObserveHeader extends Component{
 
     $('#observerSecondary').select2(configs);
     $('#observerSecondary').on('change', this.handleSecondObserverNameChange.bind(this));
+
+    $('#campusLocation').select2({placeholder: "Please Select"});
+    $('#campusLocation').on('change', this.handleCampusLocationIdChange.bind(this));
+
+    $('#department').select2({placeholder: "Please Select"});
+    $('#department').on('change', this.handleDepartmentIdChange.bind(this));
+
+    $('#sessionType').select2({placeholder: "Please Select"});
+    $('#sessionType').on('change', this.handleSessionTypeChange.bind(this));
 
     if(this.props.mode === 'Create') {
         var newState = Object.assign(this.state, {observerPrimaryId: this.props.staff.id});
@@ -242,6 +266,39 @@ class ObserveHeader extends Component{
         format: 'HH:mm'
     });
     $('#timePicker').on('dp.change', this.handleTimeChange.bind(this)).trigger('dp.change');
+  }
+
+  populateCampusLocation(){
+    var campusLocationValue='';
+    var rows = [];
+    var lastIndex = 0;
+    this.props.campusLocations.forEach(function(campusLocation){
+      campusLocationValue = campusLocation.campus;
+      rows.push(<option value={campusLocation.id}>{campusLocationValue}</option>);
+    });
+    return rows;
+  }
+
+  populateDepartment(){
+    var departmentValue='';
+    var rows = [];
+    var lastIndex = 0;
+    this.props.departments.forEach(function(department){
+      departmentValue = department.department;
+      rows.push(<option value={department.id}>{departmentValue}</option>);
+    });
+    return rows;
+  }
+
+  populateSessionType() {
+    var sessionTypeValue = '';
+    var rows = [];
+    var lastIndex = 0;
+    this.props.sessionTypes.forEach(function(sessionType){
+        sessionTypeValue = sessionType.session;
+        rows.push(<option value={sessionType.id}>{sessionTypeValue}</option>);
+    });
+    return rows;
   }
 
   render(){
@@ -509,15 +566,13 @@ class ObserveHeader extends Component{
               <div className="row">
                 <label className="col-sm-4 control-label">Department</label>
                 <div className="col-sm-8">
-                  <input
-                      {...this.props.mode}
-                      type="text"
-                      placeholder="50 characters allowed"
-                      maxLength={50}
-                      className="form-control m-b"
-                      value={this.state.department}
-                      onChange={this.handleDepartmentChange.bind(this)}
-                  />
+                  <select id="department"
+                    className="form-control m-b"
+                    value={this.state.departmentId}
+                    style={{width: "100%"}}>
+                    <option></option>
+                    {this.populateDepartment()}
+                  </select>
                 </div>
               </div>
             </div>
@@ -528,19 +583,31 @@ class ObserveHeader extends Component{
               <div className="row">
                 <label className="col-sm-4 control-label">Campus Location</label>
                 <div className="col-sm-8">
-                  <input
-                      {...this.props.mode}
-                      type="text"
-                      placeholder="50 characters allowed"
-                      maxLength={50}
-                      className="form-control m-b"
-                      value={this.state.location}
-                      onChange={this.handleCampusChange.bind(this)}
-                  />
+                  <select id="campusLocation"
+                    className="form-control m-b"
+                    value={this.state.locationId}
+                    style={{width: "100%"}}>
+                    <option></option>
+                    {this.populateCampusLocation()}
+                  </select>
                 </div>
               </div>
             </div>
+            <div className="col-sm-6">
+              <div className="row">
+                <label className="col-sm-4 control-label">Session Type</label>
+                <div className="col-sm-8">
+                  <select id="sessionType"
+                    className="form-control m-b"
+                    value={this.state.sessionId}
+                    style={{width: "100%"}}>
+                    <option></option>
+                    {this.populateSessionType()}
+                  </select>
+                </div>
+              </div>
             </div>
+          </div>
 
           <div className="row">
             <div className="col-sm-12">
@@ -556,24 +623,6 @@ class ObserveHeader extends Component{
                       className="form-control m-b"
                       value={this.state.sessionContext}
                       onChange={this.handleContextSessionChange.bind(this)}
-                  />
-                </div>
-              </div>
-            </div>
-          </div>
-
-          <div className="row">
-            <div className="col-sm-12">
-              <div className="row">
-                <label className="col-sm-2 control-label">Observation Notes</label>
-                <div className="col-sm-10">
-                  <textarea
-                      {...this.props.mode}
-                      type="text"
-                      style={{width: "100%", height:"500px"}}
-                      className="form-control m-b"
-                      value={this.state.notes}
-                      onChange={this.handleNotesSessionChange.bind(this)}
                   />
                 </div>
               </div>
@@ -611,7 +660,7 @@ class ObserveHeader extends Component{
             </div>
           </div>
 
-          <div className="row">
+          <div className="row m-b">
             <div className="col-sm-3">
               <div className="row">
                 <label className="col-sm-8 control-label">Course Outline</label>
@@ -636,6 +685,41 @@ class ObserveHeader extends Component{
                       className="form-control"
                       value={this.state.courseOutlineComment}
                       onChange={this.handleCourseOutlineCommentChange.bind(this)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="row">
+                <label className="col-sm-2 control-label">Observation Notes</label>
+                <div className="col-sm-10">
+                  <textarea
+                      {...this.props.mode}
+                      type="text"
+                      style={{width: "100%", height:"500px"}}
+                      className="form-control m-b"
+                      value={this.state.notes}
+                      onChange={this.handleNotesSessionChange.bind(this)}
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div className="row">
+            <div className="col-sm-12">
+              <div className="row">
+                <label className="col-sm-2 control-label">Moderator Comment 1 - <i>Observation Notes</i></label>
+                <div className="col-sm-10">
+                  <textarea
+                      type="text"
+                      style={{width: "100%", height:"150px"}}
+                      className="form-control m-b"
+                      value={this.state.moderatorComment1}
+                      onChange={this.handleModeratorComment1Change.bind(this)}
                   />
                 </div>
               </div>
@@ -792,6 +876,9 @@ class ObserveEntryCategory extends Component{
 }
 
 class ObserveEntries extends Component{
+  constructor(props){
+    super(props);
+  }
 
   render(){
     var rows = [];
@@ -854,6 +941,7 @@ class ObserveEntries extends Component{
                   </tbody>
               </table>
             </div>
+
           </div>
         </div>
     );
@@ -900,8 +988,8 @@ class ObserveSummary extends Component{
     this.props.ratingReferences.forEach(function(ratingReference){
       ratingValue = ratingReference.rating;
       rows.push(<option value={ratingReference.id}>{ratingValue}</option>);
-    })
-    return rows
+    });
+    return rows;
   }
 
   render(){
@@ -926,9 +1014,8 @@ class ObserveSummary extends Component{
             <div className="col-sm-12">
               <label className="col-sm-4 control-label">Summary Evaluation</label>
               <div className="col-sm-8">
-                <textarea {...this.props.mode} type="text" className="form-control"
-                    maxLength={250}
-                    placeholder="250 characters allowed"
+                <textarea type="text" className="form-control"
+                    style={{width: "100%", height:"150px"}}
                     onChange={this.handleRatingSummaryChange.bind(this)}
                     value={this.state.ratingSummary}
                 />
@@ -940,8 +1027,7 @@ class ObserveSummary extends Component{
               <label className="col-sm-4 control-label">Additional Comments</label>
               <div className="col-sm-8">
                 <textarea {...this.props.mode} type="text" className="form-control m-b"
-                    maxLength={250}
-                    placeholder="250 characters allowed"
+                    style={{width: "100%", height:"150px"}}
                     onChange={this.handleAdditionalCommentsChange.bind(this)}
                     value={this.state.additionalComments}
                 />
@@ -964,7 +1050,8 @@ class ObserveModerate extends Component{
         hodId: props.observation.hodId || '',
         moderator: props.observation.moderator || {firstName: '', lastName: ''},
         learningCoach: props.observation.learningCoach || {firstName: '', lastName: ''},
-        hod: props.observation.hod || {firstName: '', lastName: ''}
+        hod: props.observation.hod || {firstName: '', lastName: ''},
+        appliedFeedback: props.observation.appliedFeedback || false
     }
   }
 
@@ -989,6 +1076,12 @@ class ObserveModerate extends Component{
   handleHodIdChange(e){
     var newState = Object.assign(this.state, {hodId: e.target.value});
     this.setState({hodId: e.target.value})
+    this.props.updateObservation(newState);
+  }
+
+  handleAppliedFeedbackChange(e){
+    var newState = Object.assign(this.state, {appliedFeedback: e.target.checked});
+    this.setState({appliedFeedback: e.target.checked})
     this.props.updateObservation(newState);
   }
 
@@ -1042,20 +1135,22 @@ class ObserveModerate extends Component{
     $('#hod').on('change', this.handleHodIdChange.bind(this));
   }
 
+  displayModeratedInput() {
+    var row = [];
+    if (this.props.mode === 'Edit') {
+        row.push(<label className="col-sm-4 control-label">Moderator Feedback Provided</label>);
+        row.push(<div className="col-sm-8"><input type="checkbox" checked={this.state.moderated} onClick={this.handleModeratedChange.bind(this)} /></div>);
+    }
+    return row;
+  }
+
   render(){
     return(
       <div className="ibox-content">
         <div className="form-group">
           <div className="form-group">
             <div className="col-sm-6">
-              <label className="col-sm-4 control-label">Has been moderated</label>
-              <div className="col-sm-8">
-                <input
-                  type="checkbox"
-                  checked={this.state.moderated}
-                  onClick={this.handleModeratedChange.bind(this)}
-                />
-              </div>
+              {this.displayModeratedInput()}
             </div>
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Moderator Name</label>
@@ -1070,6 +1165,7 @@ class ObserveModerate extends Component{
               </div>
             </div>
           </div>
+
           <div className="form-group">
             <div className="col-sm-6">
               <label className="col-sm-4 control-label">Learning Coach Name</label>
@@ -1094,6 +1190,20 @@ class ObserveModerate extends Component{
                   <option></option>
                 </select>
               </div>
+            </div>
+          </div>
+
+          <div className="form-group">
+            <div className="col-sm-6">
+              <label className="col-sm-4 control-label">Record Updated with Moderator Feedback</label>
+              <div className="col-sm-8">
+                  <input
+                    type="checkbox"
+                    checked={this.state.appliedFeedback}
+                    onClick={this.handleAppliedFeedbackChange.bind(this)} />
+                </div>
+            </div>
+            <div className="col-sm-6">
             </div>
           </div>
         </div>
@@ -1286,8 +1396,82 @@ class ObserveRecommendations extends Component {
               </table>
               <button className="btn btn-primary" type="button" onClick={this.handleAddRecommendation.bind(this)} disabled={this.state.recommendationNum > 5}>Add Focus Area</button>
             </div>
+
+
           </div>
         </div>
+    );
+  }
+}
+
+class Comment2 extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      moderatorComment2: props.moderatorComment2 || ''
+    }
+  }
+
+  handleModeratorComment2Change(e) {
+    var newState = Object.assign(this.state, {moderatorComment2: e.target.value});
+    this.setState({moderatorComment2: e.target.value})
+    this.props.updateObservation(newState);
+  }
+
+  render(){
+    return(
+      <div className="row">
+        <div className="col-sm-12">
+          <div className="row">
+            <label className="col-sm-2 control-label">Moderator Comment 2 - <i>Strength and Area of Improvements</i></label>
+            <div className="col-sm-10">
+              <textarea
+                  type="text"
+                  style={{width: "100%", height:"150px"}}
+                  className="form-control m-b"
+                  value={this.state.moderatorComment2}
+                  onChange={this.handleModeratorComment2Change.bind(this)}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
+}
+
+class Comment3 extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      moderatorComment3: props.moderatorComment3 || ''
+    }
+  }
+
+  handleModeratorComment3Change(e) {
+    var newState = Object.assign(this.state, {moderatorComment3: e.target.value});
+    this.setState({moderatorComment3: e.target.value})
+    this.props.updateObservation(newState);
+  }
+
+  render(){
+    return (
+      <div className="row">
+        <div className="col-sm-12">
+          <div className="row">
+            <label className="col-sm-2 control-label">Moderator Comment 3 - <i>Rating and General Comments</i></label>
+            <div className="col-sm-10">
+              <textarea
+                  type="text"
+                  style={{width: "100%", height:"150px"}}
+                  className="form-control m-b"
+                  value={this.state.moderatorComment3}
+                  onChange={this.handleModeratorComment3Change.bind(this)}
+              />
+            </div>
+          </div>
+        </div>
+      </div>
     );
   }
 }
@@ -1300,7 +1484,10 @@ class Entry extends Component {
       staffs:null,
       ratingReferences:null,
       strengthImprovementReferences:null,
-      emailNotification:null
+      emailNotification:null,
+      campusLocations:null,
+      departments:null,
+      sessionType:null
     };
 
     this.updateObservation = this.updateObservation.bind(this);
@@ -1350,10 +1537,52 @@ class Entry extends Component {
       });
   }
 
+  getCampusLocations(){
+      $.ajax({
+          type: 'GET',
+          url: "/api/campusReferences",
+          success: function(response) {
+              this.setState({campusLocations: response});
+          }.bind(this),
+          error: function(xhr, status, err) {
+              console.error(this.props.url, status, err.toString());
+          }.bind(this)
+      });
+  }
+
+  getDepartments(){
+      $.ajax({
+          type: 'GET',
+          url: "/api/departmentReferences",
+          success: function(response) {
+              this.setState({departments: response});
+          }.bind(this),
+          error: function(xhr, status, err) {
+              console.error(this.props.url, status, err.toString());
+          }.bind(this)
+      });
+  }
+
+  getSessionTypes(){
+      $.ajax({
+          type: 'GET',
+          url: '/api/sessionReferences',
+          success: function(response) {
+              this.setState({sessionTypes: response});
+          }.bind(this),
+          error: function (xhr, status, err) {
+              console.error(this.props.url, status, err.toString());
+          }.bind(this)
+      });
+  }
+
   componentWillMount(){
     this.getStaffRecords();
     this.getRatingReferencesRecords();
     this.getDataStrengthImprovementReferences();
+    this.getCampusLocations();
+    this.getDepartments();
+    this.getSessionTypes();
   }
 
   componentWillReceiveProps(nextProps) {
@@ -1393,8 +1622,8 @@ class Entry extends Component {
         startLearners: this.state.observationData.startLearners || 0,
         lateLearners: this.state.observationData.lateLearners || 0,
         totalLearners: this.state.observationData.totalLearners || 0 ,
-        location: this.state.observationData.location || '',
-        department: this.state.observationData.department || '',
+        locationId: this.state.observationData.locationId || '',
+        departmentId: this.state.observationData.departmentId || '',
         sessionContext: this.state.observationData.sessionContext || '',
         notes: this.state.observationData.notes || '',
         courseCode: this.state.observationData.courseCode || '',
@@ -1408,7 +1637,11 @@ class Entry extends Component {
         moderated: this.state.observationData.moderated || false,
         moderatorId: this.state.observationData.moderatorId || '',
         learningCoachId: this.state.observationData.learningCoachId || '',
-        hodId: this.state.observationData.hodId || ''
+        hodId: this.state.observationData.hodId || '',
+        sessionId: this.state.observationData.sessionId || '',
+        moderatorComment1: this.state.observationData.moderatorComment1 || '',
+        moderatorComment2: this.state.observationData.moderatorComment2 || '',
+        moderatorComment3: this.state.observationData.moderatorComment3 || '',
     });
 
     this.setState({observationData: newObservationData});
@@ -1524,8 +1757,8 @@ class Entry extends Component {
       submitButtons = (
         <div className="col-sm-4 col-sm-offset-9">
           <button {...this.props.mode} className="btn btn-white" style={btnStyle} type="button" onClick={this.handleBack.bind(this)}>Cancel</button>
-          <button {...this.props.mode} className="btn btn-primary" style={btnStyle} type="button" onClick={this.handleComplete.bind(this)}>Complete</button>
-          <button {...this.props.mode} className="btn btn-primary" type="submit" value="post">Save</button>
+          <button {...this.props.mode} className="btn btn-primary" style={btnStyle} type="submit" value="post">Save</button>
+          <button {...this.props.mode} className="btn btn-primary" type="button" onClick={this.handleComplete.bind(this)}>Complete</button>
         </div>
       );
       printEmailButtons = (
@@ -1581,10 +1814,12 @@ class Entry extends Component {
                         key={this.props.title+"-header"}
                         observation={this.state.observationData}
                         mode={this.props.title}
-                        disabled='true'
                         updateObservation={this.updateObservation}
                         staffs={this.state.staffs}
                         staff={this.props.staff}
+                        campusLocations= {this.state.campusLocations}
+                        departments = {this.state.departments}
+                        sessionTypes ={this.state.sessionTypes}
                       />
                       <ObserveEntries
                         key={this.props.title+"-entries"}
@@ -1592,6 +1827,12 @@ class Entry extends Component {
                         strengthImprovements={this.state.observationData.strengthImprovements || []}
                         mode={this.props.title}
                         updateObservation={this.updateObservation}
+                      />
+                      <Comment2
+                        key={this.props.title+"-comment2"}
+                        mode={this.props.title}
+                        updateObservation={this.updateObservation}
+                        moderatorComment2 = {this.state.observationData.moderatorComment2}
                       />
                       <ObserveSummary
                         key={this.props.title+"-summary"}
@@ -1616,6 +1857,12 @@ class Entry extends Component {
                         recommendations={this.state.observationData.observationRecommendations || []}
                         categoryItems={this.state.strengthImprovementReferences}
                       />
+                      <Comment3
+                        key={this.props.title+"-comment3"}
+                        mode={this.props.title}
+                        updateObservation={this.updateObservation}
+                        moderatorComment3={this.state.observationData.moderatorComment3}
+                      />
                       <div className="ibox-content">
                         <div className="form-group">
                           {submitButtons}
@@ -1639,25 +1886,5 @@ class Entry extends Component {
     }
   }
 }
-
-// Just Dummy DATA
-
-var REFERENCES = [
-  { "ratingReferenceId" : "1", "rating": "A" },
-  { "ratingReferenceId" : "2", "rating": "B" },
-  { "ratingReferenceId" : "3", "rating": "C" },
-  { "ratingReferenceId" : "4", "rating": "D" },
-  { "ratingReferenceId" : "5", "rating": "E" },
-]
-
-var STAFFS = [
-  { "staffId" : '1', "firstName": "can", "lastName": "ndhie" },
-  { "staffId" : '2', "firstName": "khai", "lastName": "rul" },
-  { "staffId" : '3', "firstName": "ikh", "lastName": "wan" },
-  { "staffId" : '4', "firstName": "candhie", "lastName": "khairul" },
-  { "staffId" : '5', "firstName": "khairul", "lastName": "ikhwan" },
-  { "staffId" : '6', "firstName": "ikhwan", "lastName": "candhie" },
-]
-
 
 export default Entry;
