@@ -1,13 +1,24 @@
 package nz.ac.ara.aort.controllers;
 
+import com.mysema.query.jpa.JPQLQuery;
+import com.mysema.query.jpa.impl.JPAQuery;
 import net.minidev.json.JSONObject;
 import nz.ac.ara.aort.entities.Observation;
+import nz.ac.ara.aort.entities.QObservation;
 import nz.ac.ara.aort.entities.RatingReference;
+import nz.ac.ara.aort.entities.SearchFilter;
 import nz.ac.ara.aort.entities.StrengthImprovement;
 import nz.ac.ara.aort.entities.UserRole;
 import nz.ac.ara.aort.entities.Staff;
-import nz.ac.ara.aort.repositories.*;
+import nz.ac.ara.aort.repositories.CampusReferenceRepository;
+import nz.ac.ara.aort.repositories.DepartmentReferenceRepository;
+import nz.ac.ara.aort.repositories.ObservationRepository;
+import nz.ac.ara.aort.repositories.RatingReferenceRepository;
+import nz.ac.ara.aort.repositories.SessionReferenceRepository;
 import nz.ac.ara.aort.repositories.StaffRepository;
+import nz.ac.ara.aort.repositories.StrengthImprovementReferenceRepository;
+import nz.ac.ara.aort.repositories.StrengthImprovementRepository;
+import nz.ac.ara.aort.repositories.UserRoleRepository;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +36,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -52,11 +65,31 @@ public class ObservationController {
 
     @Autowired
     UserRoleRepository userRoleRepo;
+    
+    @Autowired
+    CampusReferenceRepository campusRepo;
+    
+    @Autowired
+    DepartmentReferenceRepository departmentRepo;
+    
+    @Autowired
+    SessionReferenceRepository sessionRepo;
+
+    @PersistenceContext
+    private EntityManager entityManager;
 
     @RequestMapping(value = "/api/observations", method = RequestMethod.POST)
     public ResponseEntity<Observation> observationAdd(@RequestBody Observation observation) {
+        JPQLQuery query = new JPAQuery(entityManager);
         try {
             observationRepo.save(observation);
+            
+            //test
+            QObservation qObservation = QObservation.observation;
+            
+            List<Observation> obs = query.from(qObservation).fetchAll().list(qObservation);
+
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -74,18 +107,12 @@ public class ObservationController {
     }
 
     @RequestMapping(value = "/api/observations/search", method = RequestMethod.GET)
-    public ResponseEntity<Page> observationFindFilter(@RequestParam("filter") String filter, @RequestParam("page") int page, @RequestParam("size") int size) {
+    public ResponseEntity<Page> observationFindFilter(@RequestBody SearchFilter filter, @RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
         List<Observation> observationList = new ArrayList<>();
         try {
-            // filter can be staff
-            for (Staff staff : staffRepo.findByStaffName(filter, null)) {
-                observationList.addAll(observationRepo.findByStaffId(staff.getId()));
-            }
-            // or course name
-            if (observationList.isEmpty()) {
-                observationList.addAll(observationRepo.findByCourseName(filter));
-            }
+//            observationRepo.findAll(QObservation.observation.id.eq());
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -150,6 +177,10 @@ public class ObservationController {
             }
         }
 
+        observation.setLocation(campusRepo.findOne(Long.valueOf(observation.getLocationId())));
+        observation.setDepartment(departmentRepo.findOne(Long.valueOf(observation.getDepartmentId())));
+        observation.setSession(sessionRepo.findOne(Long.valueOf(observation.getSessionId())));
+        
         if (!observation.getModeratorId().isEmpty()) {
             Staff moderator = staffRepo.findOne(observation.getModeratorId());
             observation.setModerator(moderator);
