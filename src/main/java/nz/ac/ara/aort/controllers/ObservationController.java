@@ -2,6 +2,7 @@ package nz.ac.ara.aort.controllers;
 
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
+import com.mysema.query.types.Predicate;
 import net.minidev.json.JSONObject;
 import nz.ac.ara.aort.entities.Observation;
 import nz.ac.ara.aort.entities.QObservation;
@@ -99,14 +100,21 @@ public class ObservationController {
         return new ResponseEntity<>(observation, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/api/observations/search", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/observations/search", method = RequestMethod.POST)
     public ResponseEntity<Page> observationFindFilter(@RequestBody SearchFilter filter, @RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
         List<Observation> observationList = new ArrayList<>();
         JPQLQuery query = new JPAQuery(entityManager);
         try {
             QObservation observation = QObservation.observation;
-            observationList = query.from(observation).fetchAll().list(observation);
+            
+            //TODO: need further testing
+            Predicate condition = observation.staffId.eq(filter.getStaff())
+                    .and(observation.date.eq(filter.getDate()))
+                    .and(observation.completed.eq(filter.getCompleted()));
+            
+            observationList = query.from(observation)
+                    .where(condition).list(observation);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -119,7 +127,6 @@ public class ObservationController {
     public ResponseEntity<Page> observationFindAll(@RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
         List<Observation> observations = (List<Observation>)observationRepo.findAll();
-
         Page<Observation> observationPage = getObservationPage(observations, pageRequest);
         return new ResponseEntity<>(observationPage, HttpStatus.OK);
     }
