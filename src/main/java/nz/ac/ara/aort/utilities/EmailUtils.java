@@ -12,13 +12,10 @@ import javax.mail.internet.MimeMessage;
  */
 public final class EmailUtils {
 
-    @Value("${spring.report.smtp.server}")
-    private static String smtpServer;
-
     private EmailUtils() {
     }
     
-    public static void sendEmail(String destination, String subject, String body, boolean html) throws MessagingException {
+    public static void sendEmail(String smtpServer, String destination, String subject, String body, boolean html) throws MessagingException {
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message);

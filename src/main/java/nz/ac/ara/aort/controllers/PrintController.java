@@ -88,7 +88,7 @@ public class PrintController {
                     body += inputLine;
                 }
                 in.close();
-                EmailUtils.sendEmail(staff.getEmail(),"Observation Report #" + observationId, body, true);
+                EmailUtils.sendEmail(smtpServer, staff.getEmail(),"Observation Report #" + observationId, body, true);
                 response.put("message", "Observation has been sent successfully to : " + staff.getEmail());
                 response.put("success", true);
             }
