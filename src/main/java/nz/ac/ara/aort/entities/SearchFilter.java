@@ -10,8 +10,8 @@ import java.sql.Date;
  */
 @Data
 public class SearchFilter {
-    private String staff;
-    private String leadObserver;
-    private Date date;
-    private Boolean completed;
+    private String staff; //string, ""
+    private String leadObserver; //string, ""
+    private Date date;  //date, ""
+    private String completed; //true, false, ""
 }

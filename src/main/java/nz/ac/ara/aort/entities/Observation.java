@@ -28,7 +28,7 @@ import java.util.List;
 @Data
 @Entity
 @Table(name = "observation")
-public class Observation implements Comparable<Observation> {
+public class Observation implements Comparable<Observation>, Cloneable {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -209,6 +209,11 @@ public class Observation implements Comparable<Observation> {
 	public void finalize() throws Throwable {
 	}
 
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		return super.clone();
+	}
+	
 	@Override
 	public int compareTo(Observation obs) {
 		int firstNameCompare = this.staffFirstName.compareTo(obs.staffFirstName);

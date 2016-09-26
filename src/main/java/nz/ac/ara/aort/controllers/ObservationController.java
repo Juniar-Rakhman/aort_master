@@ -1,5 +1,6 @@
 package nz.ac.ara.aort.controllers;
 
+import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
 import com.mysema.query.types.Predicate;
@@ -20,9 +21,12 @@ import nz.ac.ara.aort.repositories.StaffRepository;
 import nz.ac.ara.aort.repositories.StrengthImprovementReferenceRepository;
 import nz.ac.ara.aort.repositories.StrengthImprovementRepository;
 import nz.ac.ara.aort.repositories.UserRoleRepository;
+import nz.ac.ara.aort.utilities.EmailUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -37,6 +41,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.ArrayList;
@@ -79,6 +84,9 @@ public class ObservationController {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Value("${spring.report.smtp.server}")
+    private String smtpServer;
+    
     @RequestMapping(value = "/api/observations", method = RequestMethod.POST)
     public ResponseEntity<Observation> observationAdd(@RequestBody Observation observation) {
 
@@ -93,7 +101,9 @@ public class ObservationController {
     @RequestMapping(value = "/api/observations", method = RequestMethod.PUT)
     public ResponseEntity<Observation> observationModify(@RequestBody Observation observation) {
         try {
+            Observation oldObservation = (Observation) observation.clone();
             observationRepo.save(observation);
+            notifyChanges(oldObservation, observation);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -107,14 +117,28 @@ public class ObservationController {
         JPQLQuery query = new JPAQuery(entityManager);
         try {
             QObservation observation = QObservation.observation;
+
+            BooleanBuilder condition = new BooleanBuilder();
             
-            //TODO: need further testing
-            Predicate condition = observation.staffId.eq(filter.getStaff())
-                    .and(observation.date.eq(filter.getDate()))
-                    .and(observation.completed.eq(filter.getCompleted()));
+            if (!StringUtils.isEmpty(filter.getStaff())) {
+                condition = condition.and(observation.staffId.eq(filter.getStaff()));
+            }
+            
+            if (!StringUtils.isEmpty(filter.getLeadObserver())) {
+                condition = condition.and(observation.observerPrimaryId.eq(filter.getLeadObserver()));
+            }
+            
+            if (filter.getDate() != null) {
+                condition = condition.and(observation.date.eq(filter.getDate()));
+            }
+            
+            if (!StringUtils.isEmpty(filter.getCompleted()) && !StringUtils.equals(filter.getCompleted(), "all")) {
+                condition = condition.and(observation.completed.eq(BooleanUtils.toBoolean(filter.getCompleted())));
+            }
             
             observationList = query.from(observation)
                     .where(condition).list(observation);
+            
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -145,6 +169,77 @@ public class ObservationController {
         return new ResponseEntity<>(entity, HttpStatus.OK);
     }
 
+    private void notifyChanges(Observation oldObs, Observation newObs) throws MessagingException {
+        Staff moderator = staffRepo.findOne(newObs.getModeratorId());
+        Staff leadObserver = staffRepo.findOne(newObs.getObserverPrimaryId());
+        Staff peerObserver = staffRepo.findOne(newObs.getObserverSecondaryId());
+        Staff teacher = staffRepo.findOne(newObs.getStaffId());
+
+        // Moderator/QA Ticks ‘Moderator Feedback Provided’ and click ‘Save’
+        if (oldObs.getModerated() != newObs.getModerated()) {
+            String subject = "Moderation Feedback Complete";
+            String ccs[] = {peerObserver.getEmail()};
+            
+            String body = "Dear " + leadObserver.getFirstName() + " " + leadObserver.getLastName() + ",\n" +
+                    "\n" +
+                    "The initial moderation for the observation record for " + teacher.getFirstName() + " " + teacher.getLastName() + " on " + newObs.getDate() + ", has been complete.\n" +
+                    "\n" +
+                    "Please note the following areas were commented on:\n" +
+                    "\n" +
+                    "Observation Notes\n" +
+                    newObs.getModeratorComment1() + "\n" +
+                    "\n" +
+                    "Strengths & Improvements\n" +
+                    newObs.getModeratorComment2() + "\n" +
+                    "\n" +
+                    "Rating and General Comment\n" +
+                    newObs.getModeratorComment3() + "\n" +
+                    "\n" +
+                    "Please log into the formal teaching observation tool, to respond to the feedback. Once you have completed this process, please make sure to tick ‘Record Updated with Moderator Feedback’ and then click ‘Save’.\n" +
+                    "\n" +
+                    "Regards\n" +
+                    "\n" +
+                    moderator.getFirstName() + " " + moderator.getLastName();
+
+            EmailUtils.sendEmail(smtpServer, moderator.getEmail(), moderator.getEmail(), ccs, subject, body, true);
+        }
+
+        //Lead Observer Ticks ‘Record Updated with Moderator Feedback’ and click ‘Save’
+        if (oldObs.getAppliedFeedback() != newObs.getAppliedFeedback()) {
+
+            String subject = "Applied Feedback";
+
+            String body = "Dear " + moderator.getFirstName() + " " + moderator.getLastName() + ",\n" +
+                    "\n" +
+                    "I have applied your feedback " +
+                    "to the observation record for " + teacher.getFirstName() + " " + teacher.getLastName() + " " +
+                    "on " + newObs.getDate() + ".\n" +
+                    "Please review my latest changes.\n" +
+                    "\n" +
+                    "Regards\n" +
+                    "\n" +
+                    leadObserver.getFirstName() + " " + leadObserver.getLastName();
+
+            EmailUtils.sendEmail(smtpServer, leadObserver.getEmail(), moderator.getEmail(), null, subject, body, true);
+        }
+
+        //Moderator clicks ‘Complete’ for an observation record
+        if (oldObs.getCompleted() != newObs.getCompleted()) {
+
+            String subject = "Observation Record Complete";
+
+            String body = "Dear " + leadObserver.getFirstName() + " " + leadObserver.getLastName() + ", \n" +
+                    "\n" +
+                    "The observation record for " + teacher.getFirstName() + " " + teacher.getLastName() + " on " + newObs.getDate() + ", has now been completed.\n" +
+                    "You can now arrange the professional conversation with this teacher.\n" +
+                    "Regards\n" +
+                    "\n" +
+                    moderator.getFirstName() + " " + moderator.getLastName();
+
+            EmailUtils.sendEmail(smtpServer, moderator.getEmail(), leadObserver.getEmail(), null, subject, body, true);
+        }
+    }
+    
     private Observation findObservation(String obsId, String staffId) throws Exception {
 
         Observation observation = observationRepo.findOne(Long.valueOf(obsId));
