@@ -301,10 +301,11 @@ class ObserveHeader extends Component{
     return rows;
   }
 
-  displayModeratorComment1(){
-    var row = [];
+  render(){
+    var disabledUser = this.props.role.qualityAssurance;
+    var displayComment1 = null;
     if (this.props.mode === 'Edit') {
-        row.push(
+      displayComment1 = (
           <div className="row">
             <div className="col-sm-12">
               <div className="row">
@@ -312,6 +313,7 @@ class ObserveHeader extends Component{
                 <div className="col-sm-10">
                   <textarea
                       type="text"
+                      disabled = {!disabledUser && !this.props.role.systemAdmin}
                       style={{width: "100%", height:"150px"}}
                       className="form-control m-b"
                       value={this.state.moderatorComment1}
@@ -321,12 +323,8 @@ class ObserveHeader extends Component{
               </div>
             </div>
           </div>
-        );
-        return row;
+      );
     }
-  }
-
-  render(){
     return(
       <div className="ibox-content">
         <div className="form-group">
@@ -337,6 +335,7 @@ class ObserveHeader extends Component{
                   <label className="col-sm-4 control-label">Teacher's Name</label>
                   <div className="col-sm-8">
                     <select id="teacher"
+                      disabled={disabledUser}
                       className="form-control m-b"
                       data-init={this.state.staff.firstName + ' ' + this.state.staff.lastName}
                       style={{width: "100%"}}
@@ -353,6 +352,7 @@ class ObserveHeader extends Component{
                   <div className="col-sm-8">
                     <select id="lineManager"
                       className="form-control m-b"
+                      disabled={disabledUser}
                       data-init={this.state.lineManager.firstName + ' ' + this.state.lineManager.lastName}
                       style={{width: "100%"}}
                       value={this.state.lineManagerId}>
@@ -370,6 +370,7 @@ class ObserveHeader extends Component{
                 <div className="col-sm-8">
                   <select id="observerPrimary"
                     className="form-control m-b"
+                    disabled={disabledUser}
                     data-init={this.state.observerPrimary.firstName + ' ' + this.state.observerPrimary.lastName}
                     style={{width: "100%"}}
                     value={this.state.observerPrimaryId}>
@@ -383,7 +384,7 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">Time of Observation</label>
                 <div className="col-sm-4">
                   <div className="input-group date" id="timePicker">
-                    <input type="text" className="form-control" value={this.state.time} />
+                    <input type="text" className="form-control" value={this.state.time} disabled={disabledUser} />
                     <span className="input-group-addon">
                       <i className="fa fa-clock-o" aria-hidden="true"></i>
                     </span>
@@ -401,6 +402,7 @@ class ObserveHeader extends Component{
                   <select id="observerSecondary"
                     className="form-control m-b"
                     data-init={this.state.observerSecondary.firstName + ' ' + this.state.observerSecondary.lastName}
+                    disabled={disabledUser}
                     style={{width: "100%"}}
                     value={this.state.observerSecondaryId}>
                     <option></option>
@@ -413,7 +415,7 @@ class ObserveHeader extends Component{
                   <label className="col-sm-4 control-label">Date</label>
                   <div className="col-sm-4">
                     <div className="input-group date" id="datePicker">
-                      <input type="text" className="form-control" value={this.state.date} />
+                      <input type="text" className="form-control" value={this.state.date} disabled={disabledUser} />
                       <span className="input-group-addon">
                         <i className="fa fa-calendar" aria-hidden="true"></i>
                       </span>
@@ -429,7 +431,7 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">Qualification</label>
                 <div className="col-sm-8">
                   <input
-                      {...this.props.mode}
+                      disabled={disabledUser}
                       type="text"
                       placeholder="100 characters allowed"
                       maxLength={100}
@@ -445,7 +447,7 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">No of learners on register</label>
                 <div className="col-sm-8">
                   <input
-                      {...this.props.mode}
+                      disabled={disabledUser}
                       type="number"
                       min={0}
                       max={999}
@@ -465,7 +467,7 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">Course Code</label>
                 <div className="col-sm-8">
                   <input
-                      {...this.props.mode}
+                      disabled={disabledUser}
                       type="text"
                       placeholder="20 characters allowed"
                       maxLength={20}
@@ -481,8 +483,8 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">No of learners at start</label>
                 <div className="col-sm-8">
                   <input
-                      {...this.props.mode}
                       type="number"
+                      disabled={disabledUser}
                       min={0}
                       max={999}
                       placeholder="Max value is 999"
@@ -501,7 +503,7 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">Course Title</label>
                 <div className="col-sm-8">
                   <input
-                      {...this.props.mode}
+                      disabled={disabledUser}
                       type="text"
                       placeholder="100 characters allowed"
                       maxLength={100}
@@ -517,7 +519,7 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">No of learners late</label>
                 <div className="col-sm-8">
                   <input
-                      {...this.props.mode}
+                      disabled={disabledUser}
                       type="number"
                       min={0}
                       max={999}
@@ -537,7 +539,7 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">Level</label>
                 <div className="col-sm-8">
                   <input
-                      {...this.props.mode}
+                      disabled={disabledUser}
                       type="number"
                       min={0}
                       max={99}
@@ -554,7 +556,7 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">Total no. of learners in session</label>
                 <div className="col-sm-8">
                   <input
-                      {...this.props.mode}
+                      disabled={disabledUser}
                       type="number"
                       min={0}
                       max={999}
@@ -575,7 +577,7 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">Course Credits</label>
                 <div className="col-sm-8">
                   <input
-                      {...this.props.mode}
+                      disabled={disabledUser}
                       type="number"
                       min={0}
                       max={99}
@@ -593,6 +595,7 @@ class ObserveHeader extends Component{
                 <div className="col-sm-8">
                   <select id="department"
                     className="form-control m-b"
+                    disabled={disabledUser}
                     value={this.state.departmentId}
                     style={{width: "100%"}}>
                     <option></option>
@@ -610,6 +613,7 @@ class ObserveHeader extends Component{
                 <div className="col-sm-8">
                   <select id="campusLocation"
                     className="form-control m-b"
+                    disabled={disabledUser}
                     value={this.state.locationId}
                     style={{width: "100%"}}>
                     <option></option>
@@ -624,6 +628,7 @@ class ObserveHeader extends Component{
                 <div className="col-sm-8">
                   <select id="sessionType"
                     className="form-control m-b"
+                    disabled={disabledUser}
                     value={this.state.sessionId}
                     style={{width: "100%"}}>
                     <option></option>
@@ -640,7 +645,7 @@ class ObserveHeader extends Component{
                 <label className="col-sm-2 control-label">Context of Session (include stage in programme)</label>
                 <div className="col-sm-10">
                   <textarea
-                      {...this.props.mode}
+                      disabled={disabledUser}
                       maxLength={250}
                       style={{width: "100%", height: "70px"}}
                       placeholder="250 characters allowed"
@@ -662,6 +667,7 @@ class ObserveHeader extends Component{
                   <input
                     type="checkbox"
                     checked={this.state.lessonPlan}
+                    disabled={disabledUser}
                     onClick={this.handleLessonPlanChange.bind(this)}
                   />
                 </div>
@@ -672,7 +678,7 @@ class ObserveHeader extends Component{
                 <label className="col-sm-2 control-label">Comments</label>
                 <div className="col-sm-10">
                   <textarea
-                      {...this.props.mode}
+                      disabled={disabledUser}
                       type="text"
                       maxLength={250}
                       placeholder="250 characters allowed"
@@ -693,6 +699,7 @@ class ObserveHeader extends Component{
                   <input
                     type="checkbox"
                     checked={this.state.courseOutline}
+                    disabled={disabledUser}
                     onClick={this.handleCourseOutlineChange.bind(this)}
                   />
                 </div>
@@ -703,7 +710,7 @@ class ObserveHeader extends Component{
                 <label className="col-sm-2 control-label">Comments</label>
                 <div className="col-sm-10">
                   <textarea
-                      {...this.props.mode}
+                      disabled={disabledUser}
                       type="text"
                       maxLength={250}
                       placeholder="250 characters allowed"
@@ -722,7 +729,7 @@ class ObserveHeader extends Component{
                 <label className="col-sm-2 control-label">Observation Notes</label>
                 <div className="col-sm-10">
                   <textarea
-                      {...this.props.mode}
+                      disabled={disabledUser}
                       type="text"
                       style={{width: "100%", height:"500px"}}
                       className="form-control m-b"
@@ -734,7 +741,7 @@ class ObserveHeader extends Component{
             </div>
           </div>
 
-          {this.displayModeratorComment1()}
+          {displayComment1}
         </div>
       </div>
     )
@@ -790,6 +797,7 @@ class ObserveEntryRow extends Component{
   }
 
   render(){
+    var disabledUser = this.props.role.qualityAssurance;
     return(
         <tr className={this.props.category}>
             <td>
@@ -800,6 +808,7 @@ class ObserveEntryRow extends Component{
             <td align="center">
                 <input className="form-control"
                   type="checkbox"
+                  disabled={disabledUser}
                   checked={this.state.categoryItem.strength}
                   onClick={this.handleStrengthChange.bind(this)}
                 />
@@ -807,12 +816,13 @@ class ObserveEntryRow extends Component{
             <td align="center">
                 <input className="form-control"
                   type="checkbox"
+                  disabled={disabledUser}
                   checked={this.state.categoryItem.improvement}
                   onClick={this.handleImprovementChange.bind(this)}
                 />
             </td>
             <td>
-                <textArea {...this.props.mode} type="text"
+                <textArea disabled={disabledUser} type="text"
                   maxLength={250}
                   placeholder="250 characters allowed"
                   className="form-control"
@@ -927,6 +937,7 @@ class ObserveEntries extends Component{
                   mode={this.props.mode}
                   updateObservation={this.props.updateObservation}
                   strengthImprovements={this.props.strengthImprovements || []}
+                  role = {this.props.role}
                 />);
       }
 
@@ -1003,6 +1014,7 @@ class ObserveSummary extends Component{
   }
 
   render(){
+    var disabledUser = this.props.role.qualityAssurance;
     return(
       <div className="ibox-content">
         <div className="form-group">
@@ -1012,6 +1024,7 @@ class ObserveSummary extends Component{
               <div className="col-sm-8">
                 <select id="rating"
                   className="form-control m-b"
+                  disabled={disabledUser}
                   value={this.state.ratingReferenceId}
                   style={{width: "100%"}}>
                   <option></option>
@@ -1026,6 +1039,7 @@ class ObserveSummary extends Component{
               <div className="col-sm-8">
                 <textarea type="text" className="form-control"
                     style={{width: "100%", height:"150px"}}
+                    disabled={disabledUser}
                     onChange={this.handleRatingSummaryChange.bind(this)}
                     value={this.state.ratingSummary}
                 />
@@ -1036,7 +1050,7 @@ class ObserveSummary extends Component{
             <div className="col-sm-12">
               <label className="col-sm-4 control-label">Additional Comments</label>
               <div className="col-sm-8">
-                <textarea {...this.props.mode} type="text" className="form-control m-b"
+                <textarea disabled={disabledUser} type="text" className="form-control m-b"
                     style={{width: "100%", height:"150px"}}
                     onChange={this.handleAdditionalCommentsChange.bind(this)}
                     value={this.state.additionalComments}
@@ -1145,18 +1159,10 @@ class ObserveModerate extends Component{
     $('#hod').on('change', this.handleHodIdChange.bind(this));
   }
 
-  displayModeratedInput() {
-    var row = [];
-    if (this.props.mode === 'Edit') {
-        row.push(<label className="col-sm-4 control-label">Moderator Feedback Provided</label>);
-        row.push(<div className="col-sm-8"><input type="checkbox" checked={this.state.moderated} onClick={this.handleModeratedChange.bind(this)} /></div>);
-        return row;
-    }
-  }
-
   render(){
     var moderatorFeedback = null;
     var feedbackProvided = [];
+    var disabledUser = this.props.role.qualityAssurance;
     if  (this.props.mode === 'Edit') {
         moderatorFeedback = (
           <div className="form-group">
@@ -1165,6 +1171,7 @@ class ObserveModerate extends Component{
               <div className="col-sm-8">
                   <input
                     type="checkbox"
+                    disabled = {disabledUser}
                     checked={this.state.appliedFeedback}
                     onClick={this.handleAppliedFeedbackChange.bind(this)} />
                 </div>
@@ -1175,6 +1182,7 @@ class ObserveModerate extends Component{
         feedbackProvided.push(<div className="col-sm-8">
             <input type="checkbox"
               checked={this.state.moderated}
+              disabled = {!disabledUser && !this.props.role.systemAdmin}
               onClick={this.handleModeratedChange.bind(this)}
             />
           </div>);
@@ -1191,6 +1199,7 @@ class ObserveModerate extends Component{
               <div className="col-sm-8">
                 <select id="moderator"
                   className="form-control m-b"
+                  disabled = {disabledUser}
                   style={{width: "100%"}}
                   data-init={this.state.moderator.firstName + " " + this.state.moderator.lastName}
                   value={this.state.moderatorId}>
@@ -1206,6 +1215,7 @@ class ObserveModerate extends Component{
               <div className="col-sm-8">
                 <select id="coach"
                   style={{width: "100%"}}
+                  disabled = {disabledUser}
                   className="form-control m-b"
                   data-init={this.state.learningCoach.firstName + " " + this.state.learningCoach.lastName}
                   value={this.state.learningCoachId}>
@@ -1218,6 +1228,7 @@ class ObserveModerate extends Component{
               <div className="col-sm-8">
                 <select id="hod"
                   style={{width: "100%"}}
+                  disabled = {disabledUser}
                   className="form-control m-b"
                   data-init={this.state.hod.firstName + " " + this.state.hod.lastName}
                   value={this.state.hodId}>
@@ -1300,11 +1311,13 @@ class ObserveRecommendation extends Component {
   }
 
   render() {
+    var disabledUser = this.props.role.qualityAssurance;
     return (
         <tr>
             <td>
                 <select className="form-control"
                   onChange={this.handleFocusAreaChange.bind(this)}
+                  disabled={disabledUser}
                   value={this.state.recommendation.focusArea}>
                   <option></option>
                   {this.populateFocusArea()}
@@ -1313,6 +1326,7 @@ class ObserveRecommendation extends Component {
             <td align="center">
                 <input className="form-control"
                   type="checkbox"
+                  disabled={disabledUser}
                   checked={this.state.recommendation.strength}
                   onClick={this.handleStrengthChange.bind(this)}
                 />
@@ -1320,12 +1334,13 @@ class ObserveRecommendation extends Component {
             <td align="center">
                 <input className="form-control"
                   type="checkbox"
+                  disabled={disabledUser}
                   checked={this.state.recommendation.improvement}
                   onClick={this.handleImprovementChange.bind(this)}
                 />
             </td>
             <td>
-                <textArea {...this.props.mode} type="text"
+                <textArea disabled={disabledUser} type="text"
                   maxLength={250}
                   placeholder="250 characters allowed"
                   className="form-control"
@@ -1347,6 +1362,7 @@ class ObserveRecommendations extends Component {
         recommendationRows: [],
         recommendationNum: 0
     };
+
   }
 
   handleAddRecommendation() {
@@ -1360,7 +1376,8 @@ class ObserveRecommendations extends Component {
                                                            updateObservation={this.props.updateObservation}
                                                            recommendations={this.state.recommendations}
                                                            recommendation={recommendation}
-                                                           categoryItems={this.props.categoryItems} />);
+                                                           categoryItems={this.props.categoryItems}
+                                                           role = {this.props.role} />);
     this.setState({
         recommendationRows: this.state.recommendationRows,
         recommendationNum: this.state.recommendationNum + 1
@@ -1380,7 +1397,8 @@ class ObserveRecommendations extends Component {
                                                                updateObservation={this.props.updateObservation}
                                                                recommendations={this.state.recommendations}
                                                                recommendation={recommendation}
-                                                               categoryItems={this.props.categoryItems} />);
+                                                               categoryItems={this.props.categoryItems}
+                                                               role = {this.props.role} />);
       count++;
     }
     else {
@@ -1389,7 +1407,8 @@ class ObserveRecommendations extends Component {
                                                                  updateObservation={this.props.updateObservation}
                                                                  recommendations={this.state.recommendations}
                                                                  recommendation={recommendation}
-                                                                 categoryItems={this.props.categoryItems} />);
+                                                                 categoryItems={this.props.categoryItems}
+                                                                 role = {this.props.role} />);
         count++;
       }, this);
     }
@@ -1400,6 +1419,7 @@ class ObserveRecommendations extends Component {
   }
 
   render() {
+    var disabledUser = this.props.role.qualityAssurance;
     return (
         <div className="ibox-content">
           <div className="form-group">
@@ -1417,7 +1437,7 @@ class ObserveRecommendations extends Component {
                     {this.state.recommendationRows}
                   </tbody>
               </table>
-              <button className="btn btn-primary" type="button" onClick={this.handleAddRecommendation.bind(this)} disabled={this.state.recommendationNum > 5}>Add Focus Area</button>
+              <button className="btn btn-primary" type="button" onClick={this.handleAddRecommendation.bind(this)} disabled={this.state.recommendationNum > 5  || disabledUser}>Add Focus Area</button>
             </div>
 
 
@@ -1442,6 +1462,7 @@ class Comment2 extends Component {
   }
 
   render(){
+    var disabledUser = this.props.role.qualityAssurance;
     return(
       <div className="row">
         <div className="col-sm-12">
@@ -1451,6 +1472,7 @@ class Comment2 extends Component {
               <textarea
                   type="text"
                   style={{width: "100%", height:"150px"}}
+                  disabled={!disabledUser && !this.props.role.systemAdmin}
                   className="form-control m-b"
                   value={this.state.moderatorComment2}
                   onChange={this.handleModeratorComment2Change.bind(this)}
@@ -1478,6 +1500,7 @@ class Comment3 extends Component {
   }
 
   render(){
+    var disabledUser = this.props.role.qualityAssurance;
     return (
       <div className="row">
         <div className="col-sm-12">
@@ -1488,6 +1511,7 @@ class Comment3 extends Component {
                   type="text"
                   style={{width: "100%", height:"150px"}}
                   className="form-control m-b"
+                  disabled={!disabledUser && !this.props.role.systemAdmin}
                   value={this.state.moderatorComment3}
                   onChange={this.handleModeratorComment3Change.bind(this)}
               />
@@ -1778,12 +1802,16 @@ class Entry extends Component {
     var comment2Component = null;
     var comment3Component = null;
     var printEmailButtons = null;
+    var completeButton = null;
     if(this.props.title === 'Edit') {
+      if (this.props.role.qualityAssurance || this.props.role.systemAdmin) {
+        completeButton = (<button {...this.props.mode} className="btn btn-primary" type="button" onClick={this.handleComplete.bind(this)}>Complete</button>);
+      }
       submitButtons = (
         <div className="col-sm-4 col-sm-offset-9">
           <button {...this.props.mode} className="btn btn-white" style={btnStyle} type="button" onClick={this.handleBack.bind(this)}>Cancel</button>
           <button {...this.props.mode} className="btn btn-primary" style={btnStyle} type="submit" value="post">Save</button>
-          <button {...this.props.mode} className="btn btn-primary" type="button" onClick={this.handleComplete.bind(this)}>Complete</button>
+          {completeButton}
         </div>
       );
       printEmailButtons = (
@@ -1798,6 +1826,7 @@ class Entry extends Component {
           mode={this.props.title}
           updateObservation={this.updateObservation}
           moderatorComment2 = {this.state.observationData.moderatorComment2}
+          role={this.props.role}
         />
       );
       var comment3Component = (
@@ -1806,6 +1835,7 @@ class Entry extends Component {
           mode={this.props.title}
           updateObservation={this.updateObservation}
           moderatorComment3={this.state.observationData.moderatorComment3}
+          role={this.props.role}
         />
       );
     }
@@ -1865,6 +1895,7 @@ class Entry extends Component {
                         campusLocations= {this.state.campusLocations}
                         departments = {this.state.departments}
                         sessionTypes ={this.state.sessionTypes}
+                        role={this.props.role}
                       />
                       <ObserveEntries
                         key={this.props.title+"-entries"}
@@ -1872,6 +1903,7 @@ class Entry extends Component {
                         strengthImprovements={this.state.observationData.strengthImprovements || []}
                         mode={this.props.title}
                         updateObservation={this.updateObservation}
+                        role={this.props.role}
                       />
                       {comment2Component}
                       <ObserveSummary
@@ -1883,6 +1915,7 @@ class Entry extends Component {
                         additionalComments={this.state.observationData.additionalComments}
                         ratingReferenceId={this.state.observationData.ratingReferenceId}
                         ratingReferences={this.state.ratingReferences}
+                        role={this.props.role}
                       />
                       <ObserveModerate
                         key={this.props.title+"-moderate"}
@@ -1890,12 +1923,15 @@ class Entry extends Component {
                         updateObservation={this.updateObservation}
                         observation={this.state.observationData}
                         staffs={this.state.staffs}
+                        role={this.props.role}
                       />
                       <ObserveRecommendations
                         key={this.props.title+"-recommendations"}
                         updateObservation={this.updateObservation}
                         recommendations={this.state.observationData.observationRecommendations || []}
+                        mode={this.props.title}
                         categoryItems={this.state.strengthImprovementReferences}
+                        role={this.props.role}
                       />
                       {comment3Component}
                       <div className="ibox-content">
