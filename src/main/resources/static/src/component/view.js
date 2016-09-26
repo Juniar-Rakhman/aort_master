@@ -174,7 +174,7 @@ class ObserveHeader extends Component{
               <div className="row">
                 <label className="col-sm-4 control-label">Department</label>
                 <div className="col-sm-8">
-                  <input type="text" className="form-control m-b" value={this.props.observation.department.department || init} disabled/>
+                  <input type="text" className="form-control m-b" value={this.props.departmentRef.department || init} disabled/>
                 </div>
               </div>
             </div>
@@ -185,7 +185,7 @@ class ObserveHeader extends Component{
               <div className="row">
                 <label className="col-sm-4 control-label">Campus Location</label>
                 <div className="col-sm-8">
-                  <input type="text" className="form-control m-b" value={this.props.observation.location.campus || init} disabled/>
+                  <input type="text" className="form-control m-b" value={this.props.locationRef.campus || init} disabled/>
                 </div>
               </div>
             </div>
@@ -193,7 +193,7 @@ class ObserveHeader extends Component{
               <div className="row">
                 <label className="col-sm-4 control-label">Session Type</label>
                 <div className="col-sm-8">
-                  <input type="text" className="form-control m-b" value={this.props.observation.session.session || init} disabled/>
+                  <input type="text" className="form-control m-b" value={this.props.sessionRef.session || init} disabled/>
                 </div>
               </div>
             </div>
@@ -760,6 +760,9 @@ class View extends Component {
                             lineManager = {this.state.observation.lineManager || {firstName: '', lastName: ''}}
                             observerPrimary = {this.state.observation.observerPrimary || {firstName: '', lastName: ''}}
                             observerSecondary = {this.state.observation.observerSecondary || {firstName: '', lastName: ''}}
+                            departmentRef = {this.state.observation.department || {department: ''}}
+                            sessionRef = {this.state.observation.session || {session: ''}}
+                            locationRef = {this.state.observation.location || {location: ''}}
                           />
                           <ObserveEntries strengthImprovements = {this.state.observation.strengthImprovements || []}
                             categoryItems = {this.state.strengthImprovementReferences}/>
