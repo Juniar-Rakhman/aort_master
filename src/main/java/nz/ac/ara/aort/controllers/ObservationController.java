@@ -21,6 +21,7 @@ import nz.ac.ara.aort.repositories.StrengthImprovementReferenceRepository;
 import nz.ac.ara.aort.repositories.StrengthImprovementRepository;
 import nz.ac.ara.aort.repositories.UserRoleRepository;
 import nz.ac.ara.aort.utilities.EmailUtils;
+import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,11 +39,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.supercsv.io.CsvBeanWriter;
+import org.supercsv.io.CsvListWriter;
+import org.supercsv.io.ICsvBeanWriter;
+import org.supercsv.io.ICsvListWriter;
+import org.supercsv.prefs.CsvPreference;
 
 import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Field;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
 import java.util.List;
 
@@ -112,35 +122,11 @@ public class ObservationController {
     public ResponseEntity<Page> observationFindFilter(@RequestBody SearchFilter filter, @RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
         List<Observation> observationList = new ArrayList<>();
-        JPQLQuery query = new JPAQuery(entityManager);
         try {
-            QObservation observation = QObservation.observation;
-
-            BooleanBuilder condition = new BooleanBuilder();
-            
-            if (!StringUtils.isEmpty(filter.getStaff())) {
-                condition = condition.and(observation.staffId.eq(filter.getStaff()));
-            }
-            
-            if (!StringUtils.isEmpty(filter.getLeadObserver())) {
-                condition = condition.and(observation.observerPrimaryId.eq(filter.getLeadObserver()));
-            }
-            
-            if (filter.getDate() != null) {
-                condition = condition.and(observation.date.eq(filter.getDate()));
-            }
-            
-            if (!StringUtils.isEmpty(filter.getCompleted())) {
-                condition = condition.and(observation.completed.eq(BooleanUtils.toBoolean(filter.getCompleted())));
-            }
-            
-            observationList = query.from(observation)
-                    .where(condition).list(observation);
-            
+            observationList = searchObservationByFilter(filter);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         Page<Observation> observationPage = getObservationPage(observationList, pageRequest);
         return new ResponseEntity<>(observationPage, HttpStatus.OK);
     }
@@ -167,6 +153,76 @@ public class ObservationController {
         return new ResponseEntity<>(entity, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/api/observations/export", method = RequestMethod.GET)
+    public void observationExport(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, HttpServletResponse response) {
+        try {
+            SearchFilter sf = new SearchFilter();
+            if (!StringUtils.isEmpty(startDate)) {
+                sf.setStartDate(Date.valueOf(startDate));
+            }
+            if (!StringUtils.isEmpty(endDate)) {
+                sf.setEndDate(Date.valueOf(endDate));
+            }
+            List<Observation> observationList = searchObservationByFilter(sf);
+
+            response.setContentType("data:text/csv;charset=utf-8");
+            String reportName = "Formal Observation Records <" + new java.sql.Date(Calendar.getInstance().getTime().getTime()) + ">.csv";
+            response.setHeader("Content-disposition", "attachment;filename=" + reportName);
+
+            ICsvListWriter listWriter = new CsvListWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
+
+            ArrayList<String> header = new ArrayList<>();
+
+            Field[] fields = Observation.class.getDeclaredFields();
+
+            for (Field field : fields) {
+                header.add(field.getName());
+            }
+
+            listWriter.writeHeader(header.toArray(new String[header.size()]));
+
+            for (Observation observation : observationList) {
+                listWriter.write(observation, header.toArray(new String[header.size()]));
+            }
+            listWriter.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private List<Observation> searchObservationByFilter(SearchFilter filter) {
+        JPQLQuery query = new JPAQuery(entityManager);
+        QObservation observation = QObservation.observation;
+        BooleanBuilder condition = new BooleanBuilder();
+
+        if (!StringUtils.isEmpty(filter.getStaff())) {
+            condition = condition.and(observation.staffId.eq(filter.getStaff()));
+        }
+
+        if (!StringUtils.isEmpty(filter.getLeadObserver())) {
+            condition = condition.and(observation.observerPrimaryId.eq(filter.getLeadObserver()));
+        }
+
+        if (filter.getCreateDate() != null) {
+            condition = condition.and(observation.date.eq(filter.getCreateDate()));
+        }
+
+        if (filter.getStartDate() != null) {
+            condition = condition.and(observation.date.goe(filter.getStartDate()));
+        }
+
+        if (filter.getEndDate() != null) {
+            condition = condition.and(observation.date.loe(filter.getEndDate()));
+        }
+
+        if (!StringUtils.isEmpty(filter.getCompleted())) {
+            condition = condition.and(observation.completed.eq(BooleanUtils.toBoolean(filter.getCompleted())));
+        }
+
+        return query.from(observation).where(condition).list(observation);
+    }
+    
     private void notifyChanges(Observation oldObs, Observation newObs) throws MessagingException {
         Staff moderator = staffRepo.findOne(newObs.getModeratorId());
         Staff leadObserver = staffRepo.findOne(newObs.getObserverPrimaryId());

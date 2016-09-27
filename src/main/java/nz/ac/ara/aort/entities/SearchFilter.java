@@ -1,6 +1,5 @@
 package nz.ac.ara.aort.entities;
 
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.Data;
 
 import java.sql.Date;
@@ -12,6 +11,8 @@ import java.sql.Date;
 public class SearchFilter {
     private String staff; //string, ""
     private String leadObserver; //string, ""
-    private Date date;  //date, ""
+    private Date createDate;  //date, ""
+    private Date startDate;
+    private Date endDate;
     private String completed; //true, false, ""
 }
