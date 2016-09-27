@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ConfirmDialog from './confirmDialog';
 
 class StrengthImprovementForm extends Component {
     constructor(props){
@@ -6,7 +7,9 @@ class StrengthImprovementForm extends Component {
         this.state = {
             category: props.strengthImprovement.category || '',
             criteria: props.strengthImprovement.criteria || ''
-        };
+        }
+        this.handleYes = this.handleYes.bind(this);
+        this.handleNo = this.handleNo.bind(this);
     }
 
     handleCategoryChange(e) {
@@ -59,24 +62,30 @@ class StrengthImprovementForm extends Component {
     }
 
     handleDelete() {
-        if(confirm("Are you sure to delete this data?")){
-            var strengthImprovement = Object.assign(this.state, {id: this.props.strengthImprovement.id});
-            var data = JSON.stringify(strengthImprovement);
-            console.log(data);
-            $.ajax({
-                type: 'DELETE',
-                url: "/api/strengthImprovementReferences",
-                data: data,
-                contentType: "application/json",
-                success: function(response) {
-                    console.log(response);
-                    this.props.redirectTo('strengthImprovementSearch');
-                }.bind(this),
-                error: function(xhr, status, err) {
-                    console.error(this.props.url, status, err.toString());
-                }.bind(this)
-            });
-        }
+        $('#confirm-dialog').modal('show');
+    }
+
+    handleYes() {
+        var strengthImprovement = Object.assign(this.state, {id: this.props.strengthImprovement.id});
+        var data = JSON.stringify(strengthImprovement);
+        console.log(data);
+        $.ajax({
+            type: 'DELETE',
+            url: "/api/strengthImprovementReferences",
+            data: data,
+            contentType: "application/json",
+            success: function(response) {
+                console.log(response);
+                this.props.redirectTo('strengthImprovementSearch');
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    }
+
+    handleNo() {
+        return;
     }
 
     handleBack() {
@@ -116,6 +125,15 @@ class StrengthImprovementForm extends Component {
         }
         return (
             <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
+                <ConfirmDialog
+                    title="Delete"
+                    body={<div>
+                            <p>You are about to delete this data.</p>
+                            <p>Do you want to proceed?</p>
+                          </div>}
+                    handleYes={this.handleYes}
+                    handleNo={this.handleNo}
+                />
                 <div className="ibox-content">
                     <div className="form-group">
                         <div className="row m-b">
@@ -192,7 +210,7 @@ class EntryStrengthImprovement extends Component {
                       <div className="col-lg-12">
                         <div className="ibox float-e-margins">
                             <div className="ibox-title">
-                                <h2>Strength Improvement {this.props.title}</h2>
+                                <h2>Strength Improvement - {this.props.title}</h2>
                             </div>
                             <div className="ibox-content">
                                 <StrengthImprovementForm

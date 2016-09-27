@@ -156,7 +156,7 @@ class EntryUserRole extends Component {
 		          <div className="col-lg-12">
 		            <div className="ibox float-e-margins">
 		                <div className="ibox-title">
-                            <h2>Staff Role Update</h2>
+                            <h2>Staff Role - Update</h2>
                         </div>
                         <div className="ibox-content">
                             <UserRoleForm userRole={this.props.userRole} redirectTo={this.props.redirectTo} />

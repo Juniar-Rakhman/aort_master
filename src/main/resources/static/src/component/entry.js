@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import moment from 'moment';
+import ConfirmDialog from './confirmDialog';
 
 class ObserveHeader extends Component{
   constructor(props){
@@ -44,13 +45,13 @@ class ObserveHeader extends Component{
   handleDateChange(e){
     var newState = Object.assign(this.state, {date: e.target.childNodes[0].value});
     this.setState({date: e.target.childNodes[0].value});
-    this.props.updateObservation(newState);
+    this.props.updateObservation(newState, false);
   }
 
   handleTimeChange(e){
     var newState = Object.assign(this.state, {time: e.target.childNodes[0].value});
     this.setState({time: e.target.childNodes[0].value});
-    this.props.updateObservation(newState);
+    this.props.updateObservation(newState, false);
   }
 
   handleTeacherNameChange(e){
@@ -254,7 +255,7 @@ class ObserveHeader extends Component{
 
     if(this.props.mode === 'Create') {
         var newState = Object.assign(this.state, {observerPrimaryId: this.props.staff.id});
-        this.props.updateObservation(newState);
+        this.props.updateObservation(newState, false);
     }
 
     $('#datePicker').datetimepicker({
@@ -1538,11 +1539,14 @@ class Entry extends Component {
     };
 
     this.updateObservation = this.updateObservation.bind(this);
+    this.handleYes = this.handleYes.bind(this);
+    this.handleNo = this.handleNo.bind(this);
   }
 
-  updateObservation(observation){
+  updateObservation(observation, showDialog = true){
     var newObservation = Object.assign(this.state.observationData, observation)
     this.setState({observationData: newObservation});
+    this.props.showDialog(showDialog);
   }
 
   getStaffRecords(){
@@ -1712,6 +1716,15 @@ class Entry extends Component {
     this.props.redirectTo('observationSearch');
   }
 
+  handleYes(e) {
+    $('#confirm-dialog').find('[type="submit"]').trigger('click');
+  }
+
+  handleNo(e) {
+    var data = $('#confirm-dialog').data();
+    this.props.redirectTo(data.page, data.data, false);
+  }
+
   handlePrint() {
       $.ajax({
           type: 'GET',
@@ -1756,7 +1769,13 @@ class Entry extends Component {
         data: data,
         success: function(response) {
            console.log(response);
-           this.props.redirectTo('observationSearch');
+           var data = $('#confirm-dialog').data();
+           if(Object.keys(data).length === 0 && data.constructor === Object) {
+              this.props.redirectTo('observationSearch', null, false);
+           }
+           else {
+              this.props.redirectTo(data.page, data.data, false);
+           }
         }.bind(this),
         error: function(xhr, status, err) {
             console.error(this.props.url, status, err.toString());
@@ -1783,7 +1802,13 @@ class Entry extends Component {
         data: data,
         success: function(response) {
            console.log(response);
-           this.props.redirectTo('observationSearch');
+           var data = $('#confirm-dialog').data();
+           if(Object.keys(data).length === 0 && data.constructor === Object) {
+              this.props.redirectTo('observationSearch', null, false);
+           }
+           else {
+              this.props.redirectTo(data.page, data.data, false);
+           }
         }.bind(this),
         error: function(xhr, status, err) {
             console.error(this.props.url, status, err.toString());
@@ -1868,11 +1893,12 @@ class Entry extends Component {
         }
     }
 
-    if (this.state.staffs != null &&
-    this.state.ratingReferences != null &&
-    this.state.strengthImprovementReferences != null &&
-    this.state.departments !== null &&
-    this.state.sessionTypes) {
+    if(this.state.staffs != null
+        && this.state.ratingReferences != null
+        && this.state.strengthImprovementReferences != null
+        && this.state.campusLocations != null
+        && this.state.departments != null
+        && this.state.sessionTypes != null) {
         return (
           <div className="wrapper-content animated fadeInRight">
             <div className="row">
@@ -1885,6 +1911,15 @@ class Entry extends Component {
                   <div className="ibox-content">
                     {printEmailButtons}
                     <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
+                      <ConfirmDialog
+                        title="Save"
+                        body={<div>
+                                <p>You are about to navigate away from observation entry page.</p>
+                                <p>Do you want to save observation?</p>
+                              </div>}
+                        handleYes={this.handleYes}
+                        handleNo={this.handleNo}
+                      />
                       <ObserveHeader
                         key={this.props.title+"-header"}
                         observation={this.state.observationData}

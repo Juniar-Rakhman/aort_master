@@ -60,8 +60,43 @@ class ParamRow extends Component{
                 }
             }
         };
+
+        var deptConfigs =
+        {
+            ajax: {
+                url: '/api/departmentReferences',
+                data: function(params){
+                    return {
+                        name: params.term
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results: data
+                    }
+                },
+                delay: 250
+            },
+            templateResult: function(dept){
+                return dept.department;
+            },
+            templateSelection: function formatRepoSelection (dept) {
+                if(dept===undefined){
+                    return "Please select";
+                }
+                else{
+                    if(dept.department != null){
+                        return dept.department;
+                    }
+                    return "Please select";
+                }
+            }
+        };
         $('#staff-'+this.props.parameter.id).select2(configs);
         $('#staff-'+this.props.parameter.id).on('change', this.handleDataChange.bind(this));
+
+        $('#department-'+this.props.parameter.id).select2(deptConfigs);
+        $('#department-'+this.props.parameter.id).on('change', this.handleDataChange.bind(this));
 
         $('#datePicker-'+this.props.parameter.id).datetimepicker({
             format: 'DD/MM/YYYY'
@@ -88,7 +123,17 @@ class ParamRow extends Component{
                         required={this.props.parameter.mandatory}>
                     <option></option>
                 </select> );
-        } else {
+        } else if(this.props.parameter.type == 'Department'){
+            inputControl = (
+                <select id={"department-" + this.props.parameter.id}
+                        className="form-control m-b"
+                        style={{width: "100%"}}
+                        value={this.state.value}
+                        required={this.props.parameter.mandatory}>
+                        <option></option>
+                </select>
+            );
+        }else {
             inputControl = (
                 <input type="text" className="form-control" value={this.state.value}
                        onChange={this.handleDataChange.bind(this)} required={this.props.parameter.mandatory}/>
