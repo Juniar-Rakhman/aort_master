@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ConfirmDialog from './confirmDialog';
 
 class CampusForm extends Component {
     constructor(props) {
@@ -7,6 +8,8 @@ class CampusForm extends Component {
             campus: this.props.campus.campus || '',
             active: this.props.campus.active || true
         }
+        this.handleYes = this.handleYes.bind(this);
+        this.handleNo = this.handleNo.bind(this);
     }
 
     handleCampusChange(e) {
@@ -63,24 +66,30 @@ class CampusForm extends Component {
     }
 
     handleDelete() {
-        if(confirm("Are you sure to delete this data?")){
-            var campus = Object.assign(this.state, {id: this.props.campus.id});
-            var data = JSON.stringify(campus);
-            console.log(data);
-            $.ajax({
-                type: 'DELETE',
-                url: "/api/campusReferences",
-                data: data,
-                contentType: "application/json",
-                success: function(response) {
-                    console.log(response);
-                    this.props.redirectTo('campusSearch');
-                }.bind(this),
-                error: function(xhr, status, err) {
-                    console.error(this.props.url, status, err.toString());
-                }.bind(this)
-            });
-        }
+        $('#confirm-dialog').modal('show');
+    }
+
+    handleYes() {
+        var campus = Object.assign(this.state, {id: this.props.campus.id});
+        var data = JSON.stringify(campus);
+        console.log(data);
+        $.ajax({
+            type: 'DELETE',
+            url: "/api/campusReferences",
+            data: data,
+            contentType: "application/json",
+            success: function(response) {
+                console.log(response);
+                this.props.redirectTo('campusSearch');
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    }
+
+    handleNo() {
+        return;
     }
 
     render() {
@@ -104,6 +113,15 @@ class CampusForm extends Component {
         }
         return (
             <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
+                <ConfirmDialog
+                    title="Delete"
+                    body={<div>
+                            <p>You are about to delete this data.</p>
+                            <p>Do you want to proceed?</p>
+                          </div>}
+                    handleYes={this.handleYes}
+                    handleNo={this.handleNo}
+                />
                 <div className="ibox-content">
                     <div className="form-group">
                         <div className="row m-b">
@@ -158,7 +176,7 @@ class EntryCampus extends Component {
                   <div className="col-lg-12">
                     <div className="ibox float-e-margins">
                         <div className="ibox-title">
-                            <h2>Campus {this.props.title}</h2>
+                            <h2>Campus - {this.props.title}</h2>
                         </div>
                         <div className="ibox-content">
                             <CampusForm

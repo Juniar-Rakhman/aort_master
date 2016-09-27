@@ -33,17 +33,32 @@ class Container extends Component {
       data: null,
       username: null,
       staff: null,
-      role: null
+      role: null,
+      showDialog: false
     };
 
     this.handlePageNav = this.handlePageNav.bind(this);
+    this.handleShowDialog = this.handleShowDialog.bind(this);
   };
 
-  handlePageNav(state, data = null) {
-    this.setState({
-      page: state,
-      data: data
-    });
+  handlePageNav(state, data = null, showDialog = true) {
+    if(this.state.showDialog && showDialog) {
+      $('#confirm-dialog').data({
+        page: state,
+        data: data
+      }).modal('show');
+    }
+    else {
+      this.setState({
+        page: state,
+        data: data,
+        showDialog: false
+      });
+    }
+  }
+
+  handleShowDialog(showDialog) {
+    this.setState({showDialog: showDialog});
   }
 
   getUsername() {
@@ -92,12 +107,16 @@ class Container extends Component {
     this.getUsername();
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return !nextState.showDialog;
+  }
+
   renderContent() {
     var content;
     if (this.state.page === '') {
       content = <Home />;
     } else if (this.state.page === 'entry') {
-      content = <Entry title='Create' observation={this.state.data} staff={this.state.staff} redirectTo={this.handlePageNav} role={this.state.role}/>;
+      content = <Entry title='Create' observation={this.state.data} staff={this.state.staff} redirectTo={this.handlePageNav} role={this.state.role} showDialog={this.handleShowDialog}/>;
     } else if (this.state.page === 'staffSearch') {
       content = <StaffSearch />
     } else if (this.state.page === 'observationSearch') {
@@ -109,7 +128,7 @@ class Container extends Component {
     } else if (this.state.page === 'entryUserRole') {
       content = <EntryUserRole userRole={this.state.data} redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'edit') {
-      content = <Entry title='Edit' observation={this.state.data} staff={this.state.staff} redirectTo={this.handlePageNav} role={this.state.role}/>;
+      content = <Entry title='Edit' observation={this.state.data} staff={this.state.staff} redirectTo={this.handlePageNav} role={this.state.role} showDialog={this.handleShowDialog}/>;
     } else if (this.state.page === 'strengthImprovementSearch') {
       content = <StrengthImprovementSearch redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'entryStrengthImprovement') {
@@ -175,8 +194,8 @@ class Container extends Component {
                   />
                 <div id="page-wrapper" className="gray-bg">
                   <Header />
-                  {this.renderContent() }
-                  {this.renderFooter() }
+                  {this.renderContent()}
+                  {this.renderFooter()}
                 </div>
               </div>
             );

@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ConfirmDialog from './confirmDialog';
 
 class RatingForm extends Component {
     constructor(props) {
@@ -6,6 +7,8 @@ class RatingForm extends Component {
         this.state = {
             rating: this.props.rating.rating || ''
         }
+        this.handleYes = this.handleYes.bind(this);
+        this.handleNo = this.handleNo.bind(this);
     }
 
     handleRatingChange(e) {
@@ -58,24 +61,30 @@ class RatingForm extends Component {
     }
 
     handleDelete() {
-        if(confirm("Are you sure to delete this data?")){
-            var rating = Object.assign(this.state, {id: this.props.rating.id});
-            var data = JSON.stringify(rating);
-            console.log(data);
-            $.ajax({
-                type: 'DELETE',
-                url: "/api/ratingReferences",
-                data: data,
-                contentType: "application/json",
-                success: function(response) {
-                    console.log(response);
-                    this.props.redirectTo('ratingSearch');
-                }.bind(this),
-                error: function(xhr, status, err) {
-                    console.error(this.props.url, status, err.toString());
-                }.bind(this)
-            });
-        }
+        $('#confirm-dialog').modal('show');
+    }
+
+    handleYes() {
+        var rating = Object.assign(this.state, {id: this.props.rating.id});
+        var data = JSON.stringify(rating);
+        console.log(data);
+        $.ajax({
+            type: 'DELETE',
+            url: "/api/ratingReferences",
+            data: data,
+            contentType: "application/json",
+            success: function(response) {
+                console.log(response);
+                this.props.redirectTo('ratingSearch');
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    }
+
+    handleNo() {
+        return;
     }
 
     render() {
@@ -99,6 +108,15 @@ class RatingForm extends Component {
         }
         return (
             <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
+                <ConfirmDialog
+                    title="Delete"
+                    body={<div>
+                            <p>You are about to delete this data.</p>
+                            <p>Do you want to proceed?</p>
+                          </div>}
+                    handleYes={this.handleYes}
+                    handleNo={this.handleNo}
+                />
                 <div className="ibox-content">
                     <div className="form-group">
                         <div className="col-sm-12">
@@ -139,7 +157,7 @@ class EntryRating extends Component {
                   <div className="col-lg-12">
                     <div className="ibox float-e-margins">
                         <div className="ibox-title">
-                            <h2>Rating {this.props.title}</h2>
+                            <h2>Rating - {this.props.title}</h2>
                         </div>
                         <div className="ibox-content">
                             <RatingForm
