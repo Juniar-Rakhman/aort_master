@@ -11,7 +11,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.Table;
 import javax.persistence.Transient;
@@ -44,7 +43,7 @@ public class Observation implements Comparable<Observation>, Cloneable {
 	private Integer lateLearners;
 	
 	@Column(name = "is_moderated")
-	private Boolean moderated;
+	private Boolean moderated = false;
 
 	@Column(name = "programme", columnDefinition = "nvarchar(100)")
 	private String programme;
@@ -65,13 +64,13 @@ public class Observation implements Comparable<Observation>, Cloneable {
 	private String sessionContext;
 
 	@Column(name = "lesson_plan")
-	private Boolean lessonPlan;
+	private Boolean lessonPlan = false;
 	
 	@Column(name = "lesson_plan_comment", columnDefinition = "nvarchar(250)") 
 	private String lessonPlanComment;
 	
 	@Column(name = "course_outline")
-	private Boolean courseOutline;
+	private Boolean courseOutline = false;
 	
 	@Column(name = "course_outline_comment", columnDefinition = "nvarchar(250)")
 	private String courseOutlineComment;
@@ -110,7 +109,7 @@ public class Observation implements Comparable<Observation>, Cloneable {
 	private SessionReference session;
 
 	@Column(name = "applied_feedback")
-	private Boolean appliedFeedback;
+	private Boolean appliedFeedback = false;
 
 	@Column(name = "moderator_comment1", columnDefinition = "nvarchar(MAX)")
 	private String moderatorComment1;
@@ -201,7 +200,7 @@ public class Observation implements Comparable<Observation>, Cloneable {
 	private String access;
 
 	@Column(name = "completed")
-	private Boolean completed;
+	private Boolean completed = false;
 	
 	public Observation(){
 	}

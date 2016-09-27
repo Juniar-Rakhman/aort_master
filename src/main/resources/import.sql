@@ -54,9 +54,9 @@ INSERT INTO dbo.user_role VALUES(1, 0, 0, '00000216', 0);
 INSERT INTO dbo.user_role VALUES(0, 0, 1, '00000332', 0);
 INSERT INTO dbo.user_role VALUES(0, 0, 0, '00000486', 1);
 
-INSERT INTO academic_observation.dbo.observation VALUES ('wew', null, null, null, 12, '12', null, null, '2016-08-23', null, '00001221', 15, '00001221', null, null, '00000332', '1', 1, null, null, null, '00001061', '12', '00001491', '00001221', '12', 12, '2', 'wew', 12, '12', null, '00000065', 12, '02:34:33.0000000', 12);
-INSERT INTO academic_observation.dbo.observation VALUES ('wew', null, null, null, 12, '12', null, null, '2016-08-23', null, '00001221', 15, '00001221', null, null, '00000332', '1', 1, null, null, null, '00001061', '12', '00001491', '00001221', '12', 12, '2', 'wew', 12, '12', null, '00000065', 12, '02:34:33.0000000', 12);
-INSERT INTO academic_observation.dbo.observation VALUES ('wew', null, null, null, 12, '12', null, null, '2016-08-23', null, '00001221', 15, '00001221', null, null, '00000332', '1', 1, null, null, null, '00001061', '12', '00001491', '00001221', '12', 12, '2', 'wew', 12, '12', null, '00000065', 12, '02:34:33.0000000', 12);
+INSERT INTO dbo.observation VALUES ('wew', null, 1, null, 12, '12', null, null, '2016-08-23', null, '00001221', 15, '00001221', null, null, '00000332', '1', 1, null, null, null, '00001061', '12', '00001491', '00001221', '12', 12, '2', 'wew', 12, '12', null, '00000065', 12, '02:34:33.0000000', 12);
+INSERT INTO dbo.observation VALUES ('wew', null, 0, null, 12, '12', null, null, '2016-08-23', null, '00001221', 15, '00001221', null, null, '00000332', '1', 1, null, null, null, '00001061', '12', '00001491', '00001221', '12', 12, '2', 'wew', 12, '12', null, '00000065', 12, '02:34:33.0000000', 12);
+INSERT INTO dbo.observation VALUES ('wew', null, 0, null, 12, '12', null, null, '2016-08-23', null, '00001221', 15, '00001221', null, null, '00000332', '1', 1, null, null, null, '00001061', '12', '00001491', '00001221', '12', 12, '2', 'wew', 12, '12', null, '00000065', 12, '02:34:33.0000000', 12);
 
 INSERT INTO dbo.report (created_date, description, name, path) VALUES ('2016-08-24', 'Observation Report', 'Observation', 'ObservationRecordsParent');
 INSERT INTO dbo.report (created_date, description, name, path) VALUES ('2016-08-24', 'Team Observation Report', 'Team Observation', 'TeamObservation');

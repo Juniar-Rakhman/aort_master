@@ -3,7 +3,6 @@ package nz.ac.ara.aort.controllers;
 import com.mysema.query.BooleanBuilder;
 import com.mysema.query.jpa.JPQLQuery;
 import com.mysema.query.jpa.impl.JPAQuery;
-import com.mysema.query.types.Predicate;
 import net.minidev.json.JSONObject;
 import nz.ac.ara.aort.entities.Observation;
 import nz.ac.ara.aort.entities.QObservation;
@@ -24,7 +23,6 @@ import nz.ac.ara.aort.repositories.UserRoleRepository;
 import nz.ac.ara.aort.utilities.EmailUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.support.PagedListHolder;
@@ -101,7 +99,7 @@ public class ObservationController {
     @RequestMapping(value = "/api/observations", method = RequestMethod.PUT)
     public ResponseEntity<Observation> observationModify(@RequestBody Observation observation) {
         try {
-            Observation oldObservation = (Observation) observation.clone();
+            Observation oldObservation = (Observation) observationRepo.findOne(observation.getId()).clone();
             observationRepo.save(observation);
             notifyChanges(oldObservation, observation);
         } catch (Exception e) {
@@ -132,7 +130,7 @@ public class ObservationController {
                 condition = condition.and(observation.date.eq(filter.getDate()));
             }
             
-            if (!StringUtils.isEmpty(filter.getCompleted()) && !StringUtils.equals(filter.getCompleted(), "all")) {
+            if (!StringUtils.isEmpty(filter.getCompleted())) {
                 condition = condition.and(observation.completed.eq(BooleanUtils.toBoolean(filter.getCompleted())));
             }
             
