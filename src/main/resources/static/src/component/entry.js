@@ -1770,11 +1770,11 @@ class Entry extends Component {
         success: function(response) {
            console.log(response);
            var data = $('#confirm-dialog').data();
-           if(Object.keys(data).length === 0 && data.constructor === Object) {
-              this.props.redirectTo('observationSearch', null, false);
+           if(data.page != null) {
+              this.props.redirectTo(data.page, data.data, false);
            }
            else {
-              this.props.redirectTo(data.page, data.data, false);
+              this.props.redirectTo('observationSearch', null, false);
            }
         }.bind(this),
         error: function(xhr, status, err) {
@@ -1803,11 +1803,11 @@ class Entry extends Component {
         success: function(response) {
            console.log(response);
            var data = $('#confirm-dialog').data();
-           if(Object.keys(data).length === 0 && data.constructor === Object) {
-              this.props.redirectTo('observationSearch', null, false);
+           if(data.page != null) {
+              this.props.redirectTo(data.page, data.data, false);
            }
            else {
-              this.props.redirectTo(data.page, data.data, false);
+              this.props.redirectTo('observationSearch', null, false);
            }
         }.bind(this),
         error: function(xhr, status, err) {
