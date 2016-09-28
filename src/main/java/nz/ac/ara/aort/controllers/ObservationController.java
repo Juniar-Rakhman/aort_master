@@ -20,6 +20,7 @@ import nz.ac.ara.aort.repositories.StaffRepository;
 import nz.ac.ara.aort.repositories.StrengthImprovementReferenceRepository;
 import nz.ac.ara.aort.repositories.StrengthImprovementRepository;
 import nz.ac.ara.aort.repositories.UserRoleRepository;
+import nz.ac.ara.aort.utilities.CsvUtils;
 import nz.ac.ara.aort.utilities.EmailUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
@@ -39,8 +40,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.supercsv.cellprocessor.ift.CellProcessor;
 import org.supercsv.io.CsvListWriter;
+import org.supercsv.io.CsvMapWriter;
 import org.supercsv.io.ICsvListWriter;
+import org.supercsv.io.ICsvMapWriter;
 import org.supercsv.prefs.CsvPreference;
 
 import javax.mail.MessagingException;
@@ -52,7 +56,9 @@ import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by a9jr5626 on 8/12/16.
@@ -155,42 +161,99 @@ public class ObservationController {
     public void observationExport(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, HttpServletResponse response) {
         try {
             SearchFilter sf = new SearchFilter();
+
             if (!StringUtils.isEmpty(startDate)) {
                 sf.setStartDate(Date.valueOf(startDate));
             }
+
             if (!StringUtils.isEmpty(endDate)) {
                 sf.setEndDate(Date.valueOf(endDate));
             }
+
             List<Observation> observationList = searchObservationByFilter(sf);
 
             response.setContentType("data:text/csv;charset=utf-8");
             String reportName = "Formal Observation Records <" + new Date(Calendar.getInstance().getTime().getTime()) + ">.csv";
             response.setHeader("Content-disposition", "attachment;filename=" + reportName);
 
-            ICsvListWriter listWriter = new CsvListWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
+            ICsvMapWriter mapWriter = new CsvMapWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
+            Map<String, Object> obsMap = new HashMap<>();
 
-            ArrayList<String> header = new ArrayList<>();
+            final String[] headers = new String[]{
+                    "Id",
+                    "Date",
+                    "Time",
+                    "Late Learners",
+                    "Moderated",
+                    "Moderated",
+                    "Programme",
+                    "Programme Level",
+                    "Notes",
+                    "Rating Summary",
+                    "Registered Learners",
+                    "Session Context",
+                    "Lesson Plan",
+                    "Lesson Plan Comment",
+                    "Course Outline",
+                    "Course Outline Comment",
+                    "Start Learners",
+                    "Total Learners",
+                    "Additional Comments",
+                    "Course Code",
+                    "Course Level",
+                    "Course Name"
+            };
 
-            Field[] fields = Observation.class.getDeclaredFields();
-
-            for (Field field : fields) {
-                header.add(field.getName());
-            }
-
-            listWriter.writeHeader(header.toArray(new String[header.size()]));
+            mapWriter.writeHeader(headers);
 
             for (Observation observation : observationList) {
-                
-                String teachersEmail = staffRepo.findOne(observation.getStaffId()).getEmail();
-                String teachersPhone = staffRepo.findOne(observation.getStaffId()).getOfficePhone();
-                String teachersDept = staffRepo.findOne(observation.getStaffId()).getDepartment();
-                String leadObserverEmail = staffRepo.findOne(observation.getObserverPrimaryId()).getEmail();
-                String leadObserverPhone = staffRepo.findOne(observation.getObserverPrimaryId()).getOfficePhone();
-                String peerObserverEmail = staffRepo.findOne(observation.getObserverSecondaryId()).getEmail();
-                String peerObserverPhone = staffRepo.findOne(observation.getObserverSecondaryId()).getOfficePhone();
 
+                obsMap.put(headers[0], observation.getId());
+                obsMap.put(headers[1], observation.getDate());
+                obsMap.put(headers[2], observation.getTime());
+                obsMap.put(headers[3], observation.getLateLearners());
+                obsMap.put(headers[4], observation.getModerated());
+                obsMap.put(headers[5], observation.getModerated());
+                obsMap.put(headers[6], observation.getProgramme());
+                obsMap.put(headers[7], observation.getProgrammeLevel());
+                obsMap.put(headers[8], observation.getNotes());
+                obsMap.put(headers[9], observation.getRatingSummary());
+                obsMap.put(headers[10], observation.getRegisteredLearners());
+                obsMap.put(headers[11], observation.getSessionContext());
+                obsMap.put(headers[12], observation.getLessonPlan());
+                obsMap.put(headers[13], observation.getLessonPlanComment());
+                obsMap.put(headers[14], observation.getCourseOutline());
+                obsMap.put(headers[15], observation.getCourseOutlineComment());
+                obsMap.put(headers[16], observation.getStartLearners());
+                obsMap.put(headers[17], observation.getTotalLearners());
+                obsMap.put(headers[18], observation.getAdditionalComments());
+                obsMap.put(headers[19], observation.getCourseCode());
+                obsMap.put(headers[20], observation.getCourseLevel());
+                obsMap.put(headers[21], observation.getCourseName());
+
+//                obsMap.put(headers.get(22), campusRepo.findOne(Long.valueOf(observation.getLocationId())).getCampus());
+//                obsMap.put(headers.get(23), departmentRepo.findOne(Long.valueOf(observation.getDepartmentId())).getDepartment());
+//                obsMap.put(headers.get(24), sessionRepo.findOne(Long.valueOf(observation.getSessionId())).getSession());
+//                obsMap.put(headers.get(25), observation.getAppliedFeedback());
+//                obsMap.put(headers.get(26), observation.getModeratorComment1());
+//                obsMap.put(headers.get(27), observation.getModeratorComment2());
+//                obsMap.put(headers.get(28), observation.getModeratorComment3());
+//                obsMap.put(headers.get(29), staffRepo.findOne(observation.getModeratorId()).getFirstName() + " " + staffRepo.findOne(observation.getModeratorId()).getLastName());
+//                obsMap.put(headers.get(29), staffRepo.findOne(observation.getObserverPrimaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverPrimaryId()).getLastName());
+//                obsMap.put(headers.get(29), staffRepo.findOne(observation.getObserverSecondaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverSecondaryId()).getLastName());
+//                obsMap.put(headers.get(30), ratingRefRepo.findOne(Long.valueOf(observation.getRatingReferenceId())).getRating());
+//                obsMap.put(headers.get(31), staffRepo.findOne(observation.getLearningCoachId()).getFirstName() + " " + staffRepo.findOne(observation.getLearningCoachId()).getLastName());
+//                String teachersEmail = staffRepo.findOne(observation.getStaffId()).getEmail();
+//                String teachersPhone = staffRepo.findOne(observation.getStaffId()).getOfficePhone();
+//                String teachersDept = staffRepo.findOne(observation.getStaffId()).getDepartment();
+//                String leadObserverEmail = staffRepo.findOne(observation.getObserverPrimaryId()).getEmail();
+//                String leadObserverPhone = staffRepo.findOne(observation.getObserverPrimaryId()).getOfficePhone();
+//                String peerObserverEmail = staffRepo.findOne(observation.getObserverSecondaryId()).getEmail();
+//                String peerObserverPhone = staffRepo.findOne(observation.getObserverSecondaryId()).getOfficePhone();
+
+                mapWriter.write(obsMap, headers, CsvUtils.getProcessors());
             }
-            listWriter.close();
+            mapWriter.close();
 
         } catch (Exception e) {
             e.printStackTrace();
