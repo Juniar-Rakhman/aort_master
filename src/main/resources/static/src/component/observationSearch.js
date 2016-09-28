@@ -64,7 +64,8 @@ class SearchBar extends Component {
         var date = moment().format('DD/MM/YYYY');
         this.state = {staff: props.searchCriteria.staff || '',
             leadObserver: props.searchCriteria.leadObserver || '',
-            date: props.searchCriteria.date != null ? moment(props.searchCriteria.date).format('DD/MM/YYYY') : date,
+            startDate: props.searchCriteria.date != null ? moment(props.searchCriteria.startDate).format('DD/MM/YYYY') : date,
+            endDate: props.searchCriteria.date != null ? moment(props.searchCriteria.endDate).format('DD/MM/YYYY') : date,
             completed: props.searchCriteria.completed || '',
             lead: {firstName: '', lastName:''},
             teacher: {firstName:'',lastName:''},
@@ -89,9 +90,15 @@ class SearchBar extends Component {
         this.props.updateSearchCriteria(newState);
     }
 
-    handleDateChange(e) {
-        var newState = Object.assign(this.state, {date: e.target.childNodes[0].value});
-        this.setState({date: e.target.childNodes[0].value});
+    handleStartDateChange(e) {
+        var newState = Object.assign(this.state, {startDate: e.target.childNodes[0].value});
+        this.setState({startDate: e.target.childNodes[0].value});
+        this.props.updateSearchCriteria(newState);
+    }
+
+    handleEndDateChange(e) {
+        var newState = Object.assign(this.state, {endDate: e.target.childNodes[0].value});
+        this.setState({endDate: e.target.childNodes[0].value});
         this.props.updateSearchCriteria(newState);
     }
 
@@ -147,10 +154,18 @@ class SearchBar extends Component {
     $('#lead').select2(configs);
     $('#lead').on('change', this.handleLeadChange.bind(this));
 
-    $('#datePicker').datetimepicker({
+    $('#status').select2({placeholder: "Please select"});
+    $('#status').on('change', this.handleStatusChange.bind(this));
+
+    $('#datePicker-start').datetimepicker({
         format: 'DD/MM/YYYY'
     });
-    $('#datePicker').on('dp.change', this.handleDateChange.bind(this)).trigger('dp.change');
+    $('#datePicker-start').on('dp.change', this.handleStartDateChange.bind(this)).trigger('dp.change');
+
+    $('#datePicker-end').datetimepicker({
+        format: 'DD/MM/YYYY'
+    });
+    $('#datePicker-end').on('dp.change', this.handleEndDateChange.bind(this)).trigger('dp.change');
   }
     render() {
         var style = {
@@ -158,75 +173,88 @@ class SearchBar extends Component {
         }
         return (
           <div className="panel panel-default">
-            <div className="panel-heading">Search Criteria</div>
-            <div className="panel-body">
-                <form role="form" className="form-inline" onSubmit={this.handleChange.bind(this)}>
+            <div className="panel-heading" ><a data-toggle="collapse" href="#collapse1">Search Criteria</a></div>
+            <div id="collapse1" className="panel-collapse collapse">
+                <div className="panel-body">
+                    <form role="form" className="form-inline" onSubmit={this.handleChange.bind(this)}>
 
-                  <div className="col-lg-6">
-                    <label className="col-sm-4 control-label">Teacher's Name</label>
-                    <div className="col-sm-8 m-b">
-                        <select id="teacher"
-                          className="form-control"
-                          style={{width: "100%"}}
-                          data-init={this.state.teacher.firstName + ' ' + this.state.teacher.lastName}
-                          value={this.state.staff}>
-                            <option></option>
-                        </select>
-                    </div>
-                  </div>
-
-                  <div className="col-lg-6">
-                    <label className="col-sm-4 control-label">Lead Observer</label>
-                    <div className="col-sm-8 m-b">
-                        <select id="lead"
-                          className="form-control"
-                          style={{width: "100%"}}
-                          data-init={this.state.lead.firstName + ' ' + this.state.lead.lastName}
-                          value={this.state.leadObserver}>
-                            <option></option>
-                        </select>
-                    </div>
-                  </div>
-
-                  <div className="col-lg-6">
-                    <label className="col-sm-4 control-label">Date</label>
-                    <div className="col-sm-8 m-b">
-                    <div className="input-group date" id="datePicker">
-                      <input type="text" className="form-control" value={this.state.date} />
-                      <span className="input-group-addon">
-                        <i className="fa fa-calendar" aria-hidden="true"></i>
-                      </span>
-                    </div>
-                    </div>
-                  </div>
-
-                  <div className="col-lg-6">
-                    <label className="col-sm-4 control-label">Status</label>
-                    <div className="col-sm-8">
-                      <select
-                        className="form-control m-b"
-                        onChange={this.handleStatusChange.bind(this)}
-                        style={{width: "100%"}}>
-                        <option></option>
-                        <option value='false'>Open</option>
-                        <option value='true'>Completed</option>
-                      </select>
-                    </div>
-                  </div>
-
-                  <div className="col-lg-12">
-                      <div className="col-sm-4">
+                      <div className="col-lg-6">
+                        <label className="col-sm-4 control-label">Teacher's Name</label>
+                        <div className="col-sm-8 m-b">
+                            <select id="teacher"
+                              className="form-control"
+                              style={{width: "100%"}}
+                              data-init={this.state.teacher.firstName + ' ' + this.state.teacher.lastName}
+                              value={this.state.staff}>
+                                <option></option>
+                            </select>
+                        </div>
                       </div>
-                      <div className="col-sm-8">
-                          <button
-                            style={style}
-                            className="btn btn-sm btn-primary pull-right"
-                            type="submit">Search
-                          </button>
+
+                      <div className="col-lg-6">
+                        <label className="col-sm-4 control-label">Lead Observer</label>
+                        <div className="col-sm-8 m-b">
+                            <select id="lead"
+                              className="form-control"
+                              style={{width: "100%"}}
+                              data-init={this.state.lead.firstName + ' ' + this.state.lead.lastName}
+                              value={this.state.leadObserver}>
+                                <option></option>
+                            </select>
+                        </div>
                       </div>
-                   </div>
-                </form>
-            </div>
+
+                      <div className="col-lg-6">
+                        <label className="col-sm-4 control-label">Start Date</label>
+                        <div className="col-sm-8 m-b">
+                            <div className="input-group date" id="datePicker-start">
+                              <input type="text" className="form-control" value={this.state.startDate} />
+                              <span className="input-group-addon">
+                                <i className="fa fa-calendar" aria-hidden="true"></i>
+                              </span>
+                            </div>
+                        </div>
+                      </div>
+
+                      <div className="col-lg-6">
+                        <label className="col-sm-4 control-label">End Date</label>
+                        <div className="col-sm-8 m-b">
+                            <div className="input-group date" id="datePicker-end">
+                              <input type="text" className="form-control" value={this.state.endDate} />
+                              <span className="input-group-addon">
+                                <i className="fa fa-calendar" aria-hidden="true"></i>
+                              </span>
+                            </div>
+                        </div>
+                      </div>
+
+                      <div className="col-lg-6">
+                        <label className="col-sm-4 control-label">Status</label>
+                        <div className="col-sm-8">
+                          <select id="status"
+                            className="form-control m-b"
+                            style={{width: "100%"}}>
+                            <option></option>
+                            <option value='false'>Open</option>
+                            <option value='true'>Completed</option>
+                          </select>
+                        </div>
+                      </div>
+
+                      <div className="col-lg-12">
+                          <div className="col-sm-4">
+                          </div>
+                          <div className="col-sm-8">
+                              <button
+                                style={style}
+                                className="btn btn-sm btn-primary pull-right"
+                                type="submit">Search
+                              </button>
+                          </div>
+                       </div>
+                    </form>
+                </div>
+              </div>
           </div>
         );
     }
@@ -252,8 +280,9 @@ class ObservationSearch extends Component {
     }
 
     handleUserInput(e){
-        var formattedDate = Object.assign(moment(this.state.searchCriteriaData.date, 'DD/MM/YYYY').format('YYYY-MM-DD'));
-        var data = Object.assign(this.state.searchCriteriaData, {date: formattedDate});
+        var formattedStartDate = Object.assign(moment(this.state.searchCriteriaData.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD'));
+        var formattedEndDate = Object.assign(moment(this.state.searchCriteriaData.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD'));
+        var data = Object.assign(this.state.searchCriteriaData, {startDate: formattedStartDate}, {endDate: formattedEndDate});
         this.getObservationBySearchCriteria(data)
     }
 

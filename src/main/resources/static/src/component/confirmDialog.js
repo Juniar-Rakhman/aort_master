@@ -22,7 +22,7 @@ class ConfirmDialog extends Component {
 
     render() {
         return (
-          <div className="modal fade" id="confirm-dialog" role="dialog" tabIndex="-1" data-backdrop={!this.checkIE()}>
+          <div className="modal fade" id="confirm-dialog" role="dialog" tabIndex="-1" data-backdrop={!this.checkIE() ? "static" : false}>
             <div className="modal-dialog">
               <div className="modal-content">
                 <div className="modal-header">
