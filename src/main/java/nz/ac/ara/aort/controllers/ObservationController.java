@@ -39,9 +39,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.supercsv.io.CsvBeanWriter;
 import org.supercsv.io.CsvListWriter;
-import org.supercsv.io.ICsvBeanWriter;
 import org.supercsv.io.ICsvListWriter;
 import org.supercsv.prefs.CsvPreference;
 
@@ -166,7 +164,7 @@ public class ObservationController {
             List<Observation> observationList = searchObservationByFilter(sf);
 
             response.setContentType("data:text/csv;charset=utf-8");
-            String reportName = "Formal Observation Records <" + new java.sql.Date(Calendar.getInstance().getTime().getTime()) + ">.csv";
+            String reportName = "Formal Observation Records <" + new Date(Calendar.getInstance().getTime().getTime()) + ">.csv";
             response.setHeader("Content-disposition", "attachment;filename=" + reportName);
 
             ICsvListWriter listWriter = new CsvListWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
@@ -182,7 +180,15 @@ public class ObservationController {
             listWriter.writeHeader(header.toArray(new String[header.size()]));
 
             for (Observation observation : observationList) {
-                listWriter.write(observation, header.toArray(new String[header.size()]));
+                
+                String teachersEmail = staffRepo.findOne(observation.getStaffId()).getEmail();
+                String teachersPhone = staffRepo.findOne(observation.getStaffId()).getOfficePhone();
+                String teachersDept = staffRepo.findOne(observation.getStaffId()).getDepartment();
+                String leadObserverEmail = staffRepo.findOne(observation.getObserverPrimaryId()).getEmail();
+                String leadObserverPhone = staffRepo.findOne(observation.getObserverPrimaryId()).getOfficePhone();
+                String peerObserverEmail = staffRepo.findOne(observation.getObserverSecondaryId()).getEmail();
+                String peerObserverPhone = staffRepo.findOne(observation.getObserverSecondaryId()).getOfficePhone();
+
             }
             listWriter.close();
 
@@ -202,10 +208,6 @@ public class ObservationController {
 
         if (!StringUtils.isEmpty(filter.getLeadObserver())) {
             condition = condition.and(observation.observerPrimaryId.eq(filter.getLeadObserver()));
-        }
-
-        if (filter.getCreateDate() != null) {
-            condition = condition.and(observation.date.eq(filter.getCreateDate()));
         }
 
         if (filter.getStartDate() != null) {

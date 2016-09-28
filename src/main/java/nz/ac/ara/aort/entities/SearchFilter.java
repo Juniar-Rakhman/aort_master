@@ -11,8 +11,7 @@ import java.sql.Date;
 public class SearchFilter {
     private String staff; //string, ""
     private String leadObserver; //string, ""
-    private Date createDate;  //date, ""
-    private Date startDate;
-    private Date endDate;
+    private Date startDate; //default today
+    private Date endDate; //default today
     private String completed; //true, false, ""
 }
