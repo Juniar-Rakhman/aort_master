@@ -17,6 +17,12 @@ import PositionSearch from "./positionSearch";
 import UpdateCategory from "./updateCategory";
 import ReportSearch from "./reportSearch";
 import ReportParams from "./reportParams";
+import CampusSearch from "./campusSearch";
+import EntryCampus from "./entryCampus";
+import DepartmentSearch from "./departmentSearch";
+import EntryDepartment from "./entryDepartment";
+import SessionSearch from "./sessionSearch";
+import EntrySession from "./entrySession";
 
 class Container extends Component {
   constructor(props, context) {
@@ -27,17 +33,32 @@ class Container extends Component {
       data: null,
       username: null,
       staff: null,
-      role: null
+      role: null,
+      showDialog: false
     };
 
     this.handlePageNav = this.handlePageNav.bind(this);
+    this.handleShowDialog = this.handleShowDialog.bind(this);
   };
 
-  handlePageNav(state, data = null) {
-    this.setState({
-      page: state,
-      data: data
-    });
+  handlePageNav(state, data = null, showDialog = true) {
+    if(this.state.showDialog && showDialog) {
+      $('#confirm-dialog').data({
+        page: state,
+        data: data
+      }).modal('show');
+    }
+    else {
+      this.setState({
+        page: state,
+        data: data,
+        showDialog: false
+      });
+    }
+  }
+
+  handleShowDialog(showDialog) {
+    this.setState({showDialog: showDialog});
   }
 
   getUsername() {
@@ -86,12 +107,16 @@ class Container extends Component {
     this.getUsername();
   }
 
+  shouldComponentUpdate(nextProps, nextState) {
+    return !nextState.showDialog;
+  }
+
   renderContent() {
     var content;
     if (this.state.page === '') {
       content = <Home />;
     } else if (this.state.page === 'entry') {
-      content = <Entry title='Create' observation={this.state.data} staff={this.state.staff} redirectTo={this.handlePageNav}/>;
+      content = <Entry title='Create' observation={this.state.data} staff={this.state.staff} redirectTo={this.handlePageNav} role={this.state.role} showDialog={this.handleShowDialog}/>;
     } else if (this.state.page === 'staffSearch') {
       content = <StaffSearch />
     } else if (this.state.page === 'observationSearch') {
@@ -103,7 +128,7 @@ class Container extends Component {
     } else if (this.state.page === 'entryUserRole') {
       content = <EntryUserRole userRole={this.state.data} redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'edit') {
-      content = <Entry title='Edit' observation={this.state.data} staff={this.state.staff} redirectTo={this.handlePageNav}/>;
+      content = <Entry title='Edit' observation={this.state.data} staff={this.state.staff} redirectTo={this.handlePageNav} role={this.state.role} showDialog={this.handleShowDialog}/>;
     } else if (this.state.page === 'strengthImprovementSearch') {
       content = <StrengthImprovementSearch redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'entryStrengthImprovement') {
@@ -121,9 +146,27 @@ class Container extends Component {
     } else if (this.state.page === 'updateCategory') {
       content = <UpdateCategory category={this.state.data} redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'reportSearch') {
-      content = <ReportSearch redirectTo={this.handlePageNav} />
+      content = <ReportSearch redirectTo={this.handlePageNav} role={this.state.role} />
     } else if (this.state.page === 'reportParam') {
       content = <ReportParams redirectTo={this.handlePageNav} report={this.state.data} staff={this.state.staff} />
+    } else if (this.state.page === 'campusSearch') {
+      content = <CampusSearch redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'entryCampus') {
+      content = <EntryCampus title='Create' redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'editCampus') {
+      content = <EntryCampus title='Edit' campus={this.state.data} redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'departmentSearch') {
+      content = <DepartmentSearch redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'entryDepartment') {
+      content = <EntryDepartment title='Create' redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'editDepartment') {
+      content = <EntryDepartment title='Edit' department={this.state.data} redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'sessionSearch') {
+      content = <SessionSearch redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'entrySession') {
+      content = <EntrySession title='Create' redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'editSession') {
+      content = <EntrySession title='Edit' session={this.state.data} redirectTo={this.handlePageNav} />
     }
 
     return content;
@@ -151,8 +194,8 @@ class Container extends Component {
                   />
                 <div id="page-wrapper" className="gray-bg">
                   <Header />
-                  {this.renderContent() }
-                  {this.renderFooter() }
+                  {this.renderContent()}
+                  {this.renderFooter()}
                 </div>
               </div>
             );

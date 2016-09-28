@@ -94,26 +94,9 @@ INSERT INTO dbo.user_role VALUES(1, 0, 0, '00180225', 0);
 INSERT INTO dbo.user_role VALUES(0, 0, 1, '00180226', 0);
 INSERT INTO dbo.user_role VALUES(0, 0, 0, '00180227', 1);
 
-INSERT INTO dbo.observation VALUES ('testestsetst 1', 0, 'test aja 1', 1, 'test 1', 1, null, '2016-08-24', 'test 1', '00000065', 2, '00000065', null, null, '00000065', 'test 1', 1, '00000065', 'testsetstset1', '00000065', '00000065', 'estset1setse', 1, '2', 'te1stetsetse', 2, 'tests1et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 2', 0, 'test aja 2', 1, 'test 2', 1, null, '2016-08-25', 'test 2', '00000065', 2, '00000065', null, null, '00000065', 'test 2', 1, '00000065', 'testsetstset2', '00000065', '00000065', 'estset2setse', 1, '2', 'te2stetsetse', 2, 'tests2et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 3', 0, 'test aja 3', 1, 'test 3', 1, null, '2016-08-25', 'test 3', '00000065', 2, '00000065', null, null, '00000065', 'test 3', 1, '00000065', 'testsetstset3', '00000065', '00000065', 'estset3setse', 1, '2', 'te3stetsetse', 2, 'tests3et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 4', 0, 'test aja 4', 1, 'test 4', 1, null, '2016-08-25', 'test 4', '00000065', 2, '00000065', null, null, '00000065', 'test 4', 1, '00000065', 'testsetstset4', '00000065', '00000065', 'estset4setse', 1, '2', 'te4stetsetse', 2, 'tests4et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 5', 0, 'test aja 5', 1, 'test 5', 1, null, '2016-08-25', 'test 5', '00000065', 2, '00000065', null, null, '00000065', 'test 5', 1, '00000065', 'testsetstset5', '00000065', '00000065', 'estset5setse', 1, '2', 'te5stetsetse', 2, 'tests5et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 6', 0, 'test aja 6', 1, 'test 6', 1, null, '2016-08-25', 'test 6', '00000065', 2, '00000065', null, null, '00000065', 'test 6', 1, '00000065', 'testsetstset6', '00000065', '00000065', 'estset6setse', 1, '2', 'te6stetsetse', 2, 'tests6et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 7', 0, 'test aja 7', 1, 'test 7', 1, null, '2016-08-25', 'test 7', '00000065', 2, '00000065', null, null, '00000065', 'test 7', 1, '00000065', 'testsetstset7', '00000065', '00000065', 'estset7setse', 1, '2', 'te7stetsetse', 2, 'tests7et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 8', 0, 'test aja 8', 1, 'test 8', 1, null, '2016-08-25', 'test 8', '00000065', 2, '00000065', null, null, '00000065', 'test 8', 1, '00000065', 'testsetstset8', '00000065', '00000065', 'estset8setse', 1, '2', 'te8stetsetse', 2, 'tests8et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 9', 0, 'test aja 9', 1, 'test 9', 1, null, '2016-08-25', 'test 9', '00000065', 2, '00000065', null, null, '00000065', 'test 9', 1, '00000065', 'testsetstset9', '00000065', '00000065', 'estset9setse', 1, '2', 'te9stetsetse', 2, 'tests9et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 10', 0, 'test aja 10', 1, 'test 10', 1, null, '2016-08-25', 'test 10', '00000065', 2, '00000065', null, null, '00000065', 'test 10', 1, '00000065', 'testsetstset10', '00000065', '00000065', 'estset10setse', 1, '2', 'te10stetsetse', 2, 'tests10et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 11', 0, 'test aja 11', 1, 'test 11', 1, null, '2016-08-25', 'test 11', '00000065', 2, '00000065', null, null, '00000065', 'test 11', 1, '00000065', 'testsetstset11', '00000065', '00000065', 'estset11setse', 1, '2', 'te11stetsetse', 2, 'tests11et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 12', 0, 'test aja 12', 1, 'test 12', 1, null, '2016-08-25', 'test 12', '00000065', 2, '00000065', null, null, '00000065', 'test 12', 1, '00000065', 'testsetstset12', '00000065', '00000065', 'estset12setse', 1, '2', 'te12stetsetse', 2, 'tests12et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 13', 0, 'test aja 13', 1, 'test 13', 1, null, '2016-08-25', 'test 13', '00000065', 2, '00000065', null, null, '00000065', 'test 13', 1, '00000065', 'testsetstset13', '00000065', '00000065', 'estset13setse', 1, '2', 'te13stetsetse', 2, 'tests13et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 14', 0, 'test aja 14', 1, 'test 14', 1, null, '2016-08-25', 'test 14', '00000065', 2, '00000065', null, null, '00000065', 'test 14', 1, '00000065', 'testsetstset14', '00000065', '00000065', 'estset14setse', 1, '2', 'te14stetsetse', 2, 'tests14et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 15', 0, 'test aja 15', 1, 'test 15', 1, null, '2016-08-25', 'test 15', '00000065', 2, '00000065', null, null, '00000065', 'test 15', 1, '00000065', 'testsetstset15', '00000065', '00000065', 'estset15setse', 1, '2', 'te15stetsetse', 2, 'tests15et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 16', 0, 'test aja 16', 1, 'test 16', 1, null, '2016-08-25', 'test 16', '00000065', 2, '00000065', null, null, '00000065', 'test 16', 1, '00000065', 'testsetstset16', '00000065', '00000065', 'estset16setse', 1, '2', 'te16stetsetse', 2, 'tests16et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 17', 0, 'test aja 17', 1, 'test 17', 1, null, '2016-08-25', 'test 17', '00000065', 2, '00000065', null, null, '00000065', 'test 17', 1, '00000065', 'testsetstset17', '00000065', '00000065', 'estset17setse', 1, '2', 'te17stetsetse', 2, 'tests17et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 18', 0, 'test aja 18', 1, 'test 18', 1, null, '2016-08-25', 'test 18', '00000065', 2, '00000065', null, null, '00000065', 'test 18', 1, '00000065', 'testsetstset18', '00000065', '00000065', 'estset18setse', 1, '2', 'te18stetsetse', 2, 'tests18et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 19', 0, 'test aja 19', 1, 'test 19', 1, null, '2016-08-25', 'test 19', '00000065', 2, '00000065', null, null, '00000065', 'test 19', 1, '00000065', 'testsetstset19', '00000065', '00000065', 'estset19setse', 1, '2', 'te19stetsetse', 2, 'tests19et', '00000065', 1, '03:45:38.0000000', 1);
-INSERT INTO dbo.observation VALUES ('testestsetst 20', 0, 'test aja 20', 1, 'test 20', 1, null, '2016-08-25', 'test 20', '00000065', 2, '00000065', null, null, '00000065', 'test 20', 1, '00000065', 'testsetstset20', '00000065', '00000065', 'estset20setse', 1, '2', 'te20stetsetse', 2, 'tests20et', '00000065', 1, '03:45:38.0000000', 1);
+INSERT INTO dbo.observation VALUES ('wew', null, 1, null, 12, '12', null, null, '2016-08-23', null, '00001221', 15, '00001221', null, null, '00000332', '1', 1, null, null, null, '00001061', '12', '00001491', '00001221', '12', 12, '2', 'wew', 12, '12', null, '00000065', 12, '02:34:33.0000000', 12);
+INSERT INTO dbo.observation VALUES ('wew', null, 0, null, 12, '12', null, null, '2016-08-23', null, '00001221', 15, '00001221', null, null, '00000332', '1', 1, null, null, null, '00001061', '12', '00001491', '00001221', '12', 12, '2', 'wew', 12, '12', null, '00000065', 12, '02:34:33.0000000', 12);
+INSERT INTO dbo.observation VALUES ('wew', null, 0, null, 12, '12', null, null, '2016-08-23', null, '00001221', 15, '00001221', null, null, '00000332', '1', 1, null, null, null, '00001061', '12', '00001491', '00001221', '12', 12, '2', 'wew', 12, '12', null, '00000065', 12, '02:34:33.0000000', 12);
 
 INSERT INTO dbo.report (created_date, description, name, path) VALUES ('2016-08-24', 'Observation Report', 'Observation', 'ObservationRecordsParent');
 INSERT INTO dbo.report (created_date, description, name, path) VALUES ('2016-08-24', 'Team Observation Report', 'Team Observation', 'TeamObservation');
@@ -128,7 +111,50 @@ INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,va
 INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value,path) VALUES (3,1,'Staff Name', 'Staff', '', 'staff');
 INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value,path) VALUES (3,1,'Start Date', 'Date', '', 'startdate');
 INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value,path) VALUES (3,1,'End Date', 'Date', '', 'enddate');
-INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value,path) VALUES (4,1,'Department', 'Char', '', 'department');
+INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value,path) VALUES (4,0,'Department', 'Char', '', 'department');
+
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Ashburton Campus')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Bishopdale Campus')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Brighton Campus')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Online / Distance / Extramural  Delivery')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Hornby Campus')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Madras Street Campus')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Madras Outer')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Oamaru Campus')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Rangiora Campus')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Sullivan Ave Campus')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Timaru Campus')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Washdyke Farm Campus')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Wainoni')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Aoraki Trade Academy Delivery')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'SIT Trade Academy Delivery')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Avonmore Trade Academy Delivery')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'E Campus TANZ ')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Kaikoura HS Trade Academy Delivery')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Linwood College Trade Academy Delivery')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Aranui HS Trade Academy Delivery')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Ellesmere College Trade Academy Delivery')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Design and Arts College')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Mainland Driving')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Christchurch Men''s Prison')
+
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Business')
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Computing')
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Creative Industries')
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Engineering and Architectural Studies')
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Hospitality and Service Industries')
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Humanities')
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Nursing and Human Services')
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Primary Industries')
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Applied Science and Allied Health')
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Trades')
+
+INSERT INTO dbo.session_reference(is_active, session) VALUES (1, 'Classroom')
+INSERT INTO dbo.session_reference(is_active, session) VALUES (1, 'Practical – Kitchen')
+INSERT INTO dbo.session_reference(is_active, session) VALUES (1, 'Practical – Restaurant')
+INSERT INTO dbo.session_reference(is_active, session) VALUES (1, 'Practical – Trades Workshop')
+INSERT INTO dbo.session_reference(is_active, session) VALUES (1, 'Practical Assessment')
+INSERT INTO dbo.session_reference(is_active, session) VALUES (1, 'In-work session')
 
 -- update dbo.staff set username = 'ben' where staff_id = '00000065';
 -- update dbo.staff set username = 'bob' where staff_id = '00000216';

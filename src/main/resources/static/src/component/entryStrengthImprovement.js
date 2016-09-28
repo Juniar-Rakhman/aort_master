@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ConfirmDialog from './confirmDialog';
 
 class StrengthImprovementForm extends Component {
     constructor(props){
@@ -6,7 +7,9 @@ class StrengthImprovementForm extends Component {
         this.state = {
             category: props.strengthImprovement.category || '',
             criteria: props.strengthImprovement.criteria || ''
-        };
+        }
+        this.handleYes = this.handleYes.bind(this);
+        this.handleNo = this.handleNo.bind(this);
     }
 
     handleCategoryChange(e) {
@@ -58,6 +61,33 @@ class StrengthImprovementForm extends Component {
         e.preventDefault();
     }
 
+    handleDelete() {
+        $('#confirm-dialog').modal('show');
+    }
+
+    handleYes() {
+        var strengthImprovement = Object.assign(this.state, {id: this.props.strengthImprovement.id});
+        var data = JSON.stringify(strengthImprovement);
+        console.log(data);
+        $.ajax({
+            type: 'DELETE',
+            url: "/api/strengthImprovementReferences",
+            data: data,
+            contentType: "application/json",
+            success: function(response) {
+                console.log(response);
+                this.props.redirectTo('strengthImprovementSearch');
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    }
+
+    handleNo() {
+        return;
+    }
+
     handleBack() {
         this.props.redirectTo('strengthImprovementSearch');
     }
@@ -75,45 +105,71 @@ class StrengthImprovementForm extends Component {
     }
 
     render() {
+        var buttons = null;
+        if(this.props.mode === 'Create') {
+            buttons = (
+                <div className="col-sm-4 col-sm-offset-10">
+                    <button className="btn btn-white" type="button" onClick={this.handleBack.bind(this)}>Cancel</button>&nbsp;
+                    <button className="btn btn-primary" type="submit">Save</button>
+                </div>
+            )
+        }
+        else if(this.props.mode === 'Edit') {
+            buttons = (
+                <div className="col-sm-4 col-sm-offset-9">
+                    <button className="btn btn-white" type="button" onClick={this.handleBack.bind(this)}>Cancel</button>&nbsp;
+                    <button className="btn btn-primary" type="submit">Save</button>&nbsp;
+                    <button className="btn btn-primary" type="button" onClick={this.handleDelete.bind(this)}>Delete</button>
+                </div>
+            );
+        }
         return (
             <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
+                <ConfirmDialog
+                    title="Delete"
+                    body={<div>
+                            <p>You are about to delete this data.</p>
+                            <p>Do you want to proceed?</p>
+                          </div>}
+                    handleYes={this.handleYes}
+                    handleNo={this.handleNo}
+                />
                 <div className="ibox-content">
                     <div className="form-group">
-                        <div className="col-sm-12">
-                            <label className="col-sm-4 control-label">Category</label>
-                            <div className="col-sm-8">
-                                <select id="category"
-                                    className="form-control m-b"
-                                    style={{width: "100%"}}
-                                    value={this.state.category}>
-                                    {this.populateCategories()}
-                                </select>
+                        <div className="row m-b">
+                            <div className="col-sm-12">
+                                <label className="col-sm-4 control-label">Category</label>
+                                <div className="col-sm-8">
+                                    <select id="category"
+                                        className="form-control m-b"
+                                        style={{width: "100%"}}
+                                        value={this.state.category}>
+                                        {this.populateCategories()}
+                                    </select>
+                                </div>
                             </div>
                         </div>
-                    </div>
-                    <div className="form-group">
-                        <div className="col-sm-12">
-                            <label className="col-sm-4 control-label">Criteria</label>
-                            <div className="col-sm-8">
-                                <input
-                                    type="text"
-                                    placeholder="100 characters allowed"
-                                    maxLength={100}
-                                    className="form-control m-b"
-                                    onChange={this.handleCriteriaChange.bind(this)}
-                                    value={this.state.criteria}
-                                    required
-                                />
+                        <div className="row m-b">
+                            <div className="col-sm-12">
+                                <label className="col-sm-4 control-label">Criteria</label>
+                                <div className="col-sm-8">
+                                    <input
+                                        type="text"
+                                        placeholder="100 characters allowed"
+                                        maxLength={100}
+                                        className="form-control m-b"
+                                        onChange={this.handleCriteriaChange.bind(this)}
+                                        value={this.state.criteria}
+                                        required
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="ibox-content">
                     <div className="form-group">
-                      <div className="col-sm-4 col-sm-offset-10">
-                        <button className="btn btn-white" type="button" onClick={this.handleBack.bind(this)}>Cancel</button>&nbsp;
-                        <button className="btn btn-primary" type="submit">Save</button>
-                      </div>
+                      {buttons}
                     </div>
                 </div>
             </form>
@@ -154,7 +210,7 @@ class EntryStrengthImprovement extends Component {
                       <div className="col-lg-12">
                         <div className="ibox float-e-margins">
                             <div className="ibox-title">
-                                <h2>Strength Improvement {this.props.title}</h2>
+                                <h2>Strength Improvement - {this.props.title}</h2>
                             </div>
                             <div className="ibox-content">
                                 <StrengthImprovementForm

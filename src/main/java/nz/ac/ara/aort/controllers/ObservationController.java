@@ -1,17 +1,32 @@
 package nz.ac.ara.aort.controllers;
 
+import com.mysema.query.BooleanBuilder;
+import com.mysema.query.jpa.JPQLQuery;
+import com.mysema.query.jpa.impl.JPAQuery;
 import net.minidev.json.JSONObject;
 import nz.ac.ara.aort.entities.Observation;
+import nz.ac.ara.aort.entities.QObservation;
 import nz.ac.ara.aort.entities.RatingReference;
+import nz.ac.ara.aort.entities.SearchFilter;
 import nz.ac.ara.aort.entities.StrengthImprovement;
 import nz.ac.ara.aort.entities.UserRole;
 import nz.ac.ara.aort.entities.Staff;
-import nz.ac.ara.aort.repositories.*;
+import nz.ac.ara.aort.repositories.CampusReferenceRepository;
+import nz.ac.ara.aort.repositories.DepartmentReferenceRepository;
+import nz.ac.ara.aort.repositories.ObservationRepository;
+import nz.ac.ara.aort.repositories.RatingReferenceRepository;
+import nz.ac.ara.aort.repositories.SessionReferenceRepository;
 import nz.ac.ara.aort.repositories.StaffRepository;
+import nz.ac.ara.aort.repositories.StrengthImprovementReferenceRepository;
+import nz.ac.ara.aort.repositories.StrengthImprovementRepository;
+import nz.ac.ara.aort.repositories.UserRoleRepository;
+import nz.ac.ara.aort.utilities.CsvUtils;
+import nz.ac.ara.aort.utilities.EmailUtils;
 import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -25,10 +40,25 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+import org.supercsv.cellprocessor.ift.CellProcessor;
+import org.supercsv.io.CsvListWriter;
+import org.supercsv.io.CsvMapWriter;
+import org.supercsv.io.ICsvListWriter;
+import org.supercsv.io.ICsvMapWriter;
+import org.supercsv.prefs.CsvPreference;
 
+import javax.mail.MessagingException;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpServletResponse;
+import java.lang.reflect.Field;
+import java.sql.Date;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by a9jr5626 on 8/12/16.
@@ -53,9 +83,25 @@ public class ObservationController {
 
     @Autowired
     UserRoleRepository userRoleRepo;
+    
+    @Autowired
+    CampusReferenceRepository campusRepo;
+    
+    @Autowired
+    DepartmentReferenceRepository departmentRepo;
+    
+    @Autowired
+    SessionReferenceRepository sessionRepo;
 
+    @PersistenceContext
+    private EntityManager entityManager;
+
+    @Value("${spring.report.smtp.server}")
+    private String smtpServer;
+    
     @RequestMapping(value = "/api/observations", method = RequestMethod.POST)
     public ResponseEntity<Observation> observationAdd(@RequestBody Observation observation) {
+
         try {
             observationRepo.save(observation);
         } catch (Exception e) {
@@ -67,31 +113,24 @@ public class ObservationController {
     @RequestMapping(value = "/api/observations", method = RequestMethod.PUT)
     public ResponseEntity<Observation> observationModify(@RequestBody Observation observation) {
         try {
+            Observation oldObservation = (Observation) observationRepo.findOne(observation.getId()).clone();
             observationRepo.save(observation);
+            notifyChanges(oldObservation, observation);
         } catch (Exception e) {
             e.printStackTrace();
         }
         return new ResponseEntity<>(observation, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/api/observations/search", method = RequestMethod.GET)
-    public ResponseEntity<Page> observationFindFilter(@RequestParam("filter") String filter, @RequestParam("page") int page, @RequestParam("size") int size) {
+    @RequestMapping(value = "/api/observations/search", method = RequestMethod.POST)
+    public ResponseEntity<Page> observationFindFilter(@RequestBody SearchFilter filter, @RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
         List<Observation> observationList = new ArrayList<>();
-        //TODO learn querydsl
         try {
-            // filter can be staff
-            for (Staff staff : staffRepo.findByStaffName(filter, null)) {
-                observationList.addAll(observationRepo.findByStaffId(staff.getId()));
-            }
-            // or course name
-            if (observationList.isEmpty()) {
-                observationList.addAll(observationRepo.findByCourseName(filter));
-            }
+            observationList = searchObservationByFilter(filter);
         } catch (Exception e) {
             e.printStackTrace();
         }
-
         Page<Observation> observationPage = getObservationPage(observationList, pageRequest);
         return new ResponseEntity<>(observationPage, HttpStatus.OK);
     }
@@ -100,7 +139,6 @@ public class ObservationController {
     public ResponseEntity<Page> observationFindAll(@RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
         List<Observation> observations = (List<Observation>)observationRepo.findAll();
-
         Page<Observation> observationPage = getObservationPage(observations, pageRequest);
         return new ResponseEntity<>(observationPage, HttpStatus.OK);
     }
@@ -119,6 +157,208 @@ public class ObservationController {
         return new ResponseEntity<>(entity, HttpStatus.OK);
     }
 
+    @RequestMapping(value = "/api/observations/export", method = RequestMethod.GET)
+    public void observationExport(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, HttpServletResponse response) {
+        try {
+            SearchFilter sf = new SearchFilter();
+
+            if (!StringUtils.isEmpty(startDate)) {
+                sf.setStartDate(Date.valueOf(startDate));
+            }
+
+            if (!StringUtils.isEmpty(endDate)) {
+                sf.setEndDate(Date.valueOf(endDate));
+            }
+
+            List<Observation> observationList = searchObservationByFilter(sf);
+
+            response.setContentType("data:text/csv;charset=utf-8");
+            String reportName = "Formal Observation Records <" + new Date(Calendar.getInstance().getTime().getTime()) + ">.csv";
+            response.setHeader("Content-disposition", "attachment;filename=" + reportName);
+
+            ICsvMapWriter mapWriter = new CsvMapWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
+            Map<String, Object> obsMap = new HashMap<>();
+
+            final String[] headers = new String[]{
+                    "Id",
+                    "Date",
+                    "Time",
+                    "Late Learners",
+                    "Moderated",
+                    "Moderated",
+                    "Programme",
+                    "Programme Level",
+                    "Notes",
+                    "Rating Summary",
+                    "Registered Learners",
+                    "Session Context",
+                    "Lesson Plan",
+                    "Lesson Plan Comment",
+                    "Course Outline",
+                    "Course Outline Comment",
+                    "Start Learners",
+                    "Total Learners",
+                    "Additional Comments",
+                    "Course Code",
+                    "Course Level",
+                    "Course Name"
+            };
+
+            mapWriter.writeHeader(headers);
+
+            for (Observation observation : observationList) {
+
+                obsMap.put(headers[0], observation.getId());
+                obsMap.put(headers[1], observation.getDate());
+                obsMap.put(headers[2], observation.getTime());
+                obsMap.put(headers[3], observation.getLateLearners());
+                obsMap.put(headers[4], observation.getModerated());
+                obsMap.put(headers[5], observation.getModerated());
+                obsMap.put(headers[6], observation.getProgramme());
+                obsMap.put(headers[7], observation.getProgrammeLevel());
+                obsMap.put(headers[8], observation.getNotes());
+                obsMap.put(headers[9], observation.getRatingSummary());
+                obsMap.put(headers[10], observation.getRegisteredLearners());
+                obsMap.put(headers[11], observation.getSessionContext());
+                obsMap.put(headers[12], observation.getLessonPlan());
+                obsMap.put(headers[13], observation.getLessonPlanComment());
+                obsMap.put(headers[14], observation.getCourseOutline());
+                obsMap.put(headers[15], observation.getCourseOutlineComment());
+                obsMap.put(headers[16], observation.getStartLearners());
+                obsMap.put(headers[17], observation.getTotalLearners());
+                obsMap.put(headers[18], observation.getAdditionalComments());
+                obsMap.put(headers[19], observation.getCourseCode());
+                obsMap.put(headers[20], observation.getCourseLevel());
+                obsMap.put(headers[21], observation.getCourseName());
+
+//                obsMap.put(headers.get(22), campusRepo.findOne(Long.valueOf(observation.getLocationId())).getCampus());
+//                obsMap.put(headers.get(23), departmentRepo.findOne(Long.valueOf(observation.getDepartmentId())).getDepartment());
+//                obsMap.put(headers.get(24), sessionRepo.findOne(Long.valueOf(observation.getSessionId())).getSession());
+//                obsMap.put(headers.get(25), observation.getAppliedFeedback());
+//                obsMap.put(headers.get(26), observation.getModeratorComment1());
+//                obsMap.put(headers.get(27), observation.getModeratorComment2());
+//                obsMap.put(headers.get(28), observation.getModeratorComment3());
+//                obsMap.put(headers.get(29), staffRepo.findOne(observation.getModeratorId()).getFirstName() + " " + staffRepo.findOne(observation.getModeratorId()).getLastName());
+//                obsMap.put(headers.get(29), staffRepo.findOne(observation.getObserverPrimaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverPrimaryId()).getLastName());
+//                obsMap.put(headers.get(29), staffRepo.findOne(observation.getObserverSecondaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverSecondaryId()).getLastName());
+//                obsMap.put(headers.get(30), ratingRefRepo.findOne(Long.valueOf(observation.getRatingReferenceId())).getRating());
+//                obsMap.put(headers.get(31), staffRepo.findOne(observation.getLearningCoachId()).getFirstName() + " " + staffRepo.findOne(observation.getLearningCoachId()).getLastName());
+//                String teachersEmail = staffRepo.findOne(observation.getStaffId()).getEmail();
+//                String teachersPhone = staffRepo.findOne(observation.getStaffId()).getOfficePhone();
+//                String teachersDept = staffRepo.findOne(observation.getStaffId()).getDepartment();
+//                String leadObserverEmail = staffRepo.findOne(observation.getObserverPrimaryId()).getEmail();
+//                String leadObserverPhone = staffRepo.findOne(observation.getObserverPrimaryId()).getOfficePhone();
+//                String peerObserverEmail = staffRepo.findOne(observation.getObserverSecondaryId()).getEmail();
+//                String peerObserverPhone = staffRepo.findOne(observation.getObserverSecondaryId()).getOfficePhone();
+
+                mapWriter.write(obsMap, headers, CsvUtils.getProcessors());
+            }
+            mapWriter.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    private List<Observation> searchObservationByFilter(SearchFilter filter) {
+        JPQLQuery query = new JPAQuery(entityManager);
+        QObservation observation = QObservation.observation;
+        BooleanBuilder condition = new BooleanBuilder();
+
+        if (!StringUtils.isEmpty(filter.getStaff())) {
+            condition = condition.and(observation.staffId.eq(filter.getStaff()));
+        }
+
+        if (!StringUtils.isEmpty(filter.getLeadObserver())) {
+            condition = condition.and(observation.observerPrimaryId.eq(filter.getLeadObserver()));
+        }
+
+        if (filter.getStartDate() != null) {
+            condition = condition.and(observation.date.goe(filter.getStartDate()));
+        }
+
+        if (filter.getEndDate() != null) {
+            condition = condition.and(observation.date.loe(filter.getEndDate()));
+        }
+
+        if (!StringUtils.isEmpty(filter.getCompleted())) {
+            condition = condition.and(observation.completed.eq(BooleanUtils.toBoolean(filter.getCompleted())));
+        }
+
+        return query.from(observation).where(condition).list(observation);
+    }
+    
+    private void notifyChanges(Observation oldObs, Observation newObs) throws MessagingException {
+        Staff moderator = staffRepo.findOne(newObs.getModeratorId());
+        Staff leadObserver = staffRepo.findOne(newObs.getObserverPrimaryId());
+        Staff peerObserver = staffRepo.findOne(newObs.getObserverSecondaryId());
+        Staff teacher = staffRepo.findOne(newObs.getStaffId());
+
+        // Moderator/QA Ticks ‘Moderator Feedback Provided’ and click ‘Save’
+        if (oldObs.getModerated() != newObs.getModerated()) {
+            String subject = "Moderation Feedback Complete";
+            String ccs[] = {peerObserver.getEmail()};
+            
+            String body = "Dear " + leadObserver.getFirstName() + " " + leadObserver.getLastName() + ",\n" +
+                    "\n" +
+                    "The initial moderation for the observation record for " + teacher.getFirstName() + " " + teacher.getLastName() + " on " + newObs.getDate() + ", has been complete.\n" +
+                    "\n" +
+                    "Please note the following areas were commented on:\n" +
+                    "\n" +
+                    "Observation Notes\n" +
+                    newObs.getModeratorComment1() + "\n" +
+                    "\n" +
+                    "Strengths & Improvements\n" +
+                    newObs.getModeratorComment2() + "\n" +
+                    "\n" +
+                    "Rating and General Comment\n" +
+                    newObs.getModeratorComment3() + "\n" +
+                    "\n" +
+                    "Please log into the formal teaching observation tool, to respond to the feedback. Once you have completed this process, please make sure to tick ‘Record Updated with Moderator Feedback’ and then click ‘Save’.\n" +
+                    "\n" +
+                    "Regards\n" +
+                    "\n" +
+                    moderator.getFirstName() + " " + moderator.getLastName();
+
+            EmailUtils.sendEmail(smtpServer, moderator.getEmail(), moderator.getEmail(), ccs, subject, body, true);
+        }
+
+        //Lead Observer Ticks ‘Record Updated with Moderator Feedback’ and click ‘Save’
+        if (oldObs.getAppliedFeedback() != newObs.getAppliedFeedback()) {
+
+            String subject = "Applied Feedback";
+
+            String body = "Dear " + moderator.getFirstName() + " " + moderator.getLastName() + ",\n" +
+                    "\n" +
+                    "I have applied your feedback " +
+                    "to the observation record for " + teacher.getFirstName() + " " + teacher.getLastName() + " " +
+                    "on " + newObs.getDate() + ".\n" +
+                    "Please review my latest changes.\n" +
+                    "\n" +
+                    "Regards\n" +
+                    "\n" +
+                    leadObserver.getFirstName() + " " + leadObserver.getLastName();
+
+            EmailUtils.sendEmail(smtpServer, leadObserver.getEmail(), moderator.getEmail(), null, subject, body, true);
+        }
+
+        //Moderator clicks ‘Complete’ for an observation record
+        if (oldObs.getCompleted() != newObs.getCompleted()) {
+
+            String subject = "Observation Record Complete";
+
+            String body = "Dear " + leadObserver.getFirstName() + " " + leadObserver.getLastName() + ", \n" +
+                    "\n" +
+                    "The observation record for " + teacher.getFirstName() + " " + teacher.getLastName() + " on " + newObs.getDate() + ", has now been completed.\n" +
+                    "You can now arrange the professional conversation with this teacher.\n" +
+                    "Regards\n" +
+                    "\n" +
+                    moderator.getFirstName() + " " + moderator.getLastName();
+
+            EmailUtils.sendEmail(smtpServer, moderator.getEmail(), leadObserver.getEmail(), null, subject, body, true);
+        }
+    }
+    
     private Observation findObservation(String obsId, String staffId) throws Exception {
 
         Observation observation = observationRepo.findOne(Long.valueOf(obsId));
@@ -152,42 +392,54 @@ public class ObservationController {
             }
         }
 
-        if (!observation.getModeratorId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getLocationId())) {
+            observation.setLocation(campusRepo.findOne(Long.valueOf(observation.getLocationId())));
+        }
+        
+        if (!StringUtils.isEmpty(observation.getDepartmentId())) {
+            observation.setDepartment(departmentRepo.findOne(Long.valueOf(observation.getDepartmentId())));
+        }
+        
+        if (!StringUtils.isEmpty(observation.getSessionId())) {
+            observation.setSession(sessionRepo.findOne(Long.valueOf(observation.getSessionId())));
+        }
+        
+        if (!StringUtils.isEmpty(observation.getModeratorId())) {
             Staff moderator = staffRepo.findOne(observation.getModeratorId());
             observation.setModerator(moderator);
         }
 
-        if (!observation.getStaffId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getStaffId())) {
             Staff staff = staffRepo.findOne(observation.getStaffId());
             observation.setStaff(staff);
         }
 
-        if (!observation.getObserverPrimaryId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getObserverPrimaryId())) {
             Staff observerPrimary = staffRepo.findOne(observation.getObserverPrimaryId());
             observation.setObserverPrimary(observerPrimary);
         }
 
-        if (!observation.getObserverSecondaryId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getObserverSecondaryId())) {
             Staff observerSecondary = staffRepo.findOne(observation.getObserverSecondaryId());
             observation.setObserverSecondary(observerSecondary);
         }
 
-        if (!observation.getLineManagerId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getLineManagerId())) {
             Staff lineManager = staffRepo.findOne(observation.getLineManagerId());
             observation.setLineManager(lineManager);
         }
 
-        if (!observation.getLearningCoachId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getLearningCoachId())) {
             Staff learningCoach = staffRepo.findOne(observation.getLearningCoachId());
             observation.setLearningCoach(learningCoach);
         }
 
-        if (!observation.getHodId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getHodId())) {
             Staff hod = staffRepo.findOne(observation.getHodId());
             observation.setHOD(hod);
         }
 
-        if (!observation.getRatingReferenceId().isEmpty()) {
+        if (!StringUtils.isEmpty(observation.getRatingReferenceId())) {
             RatingReference ratingReference = ratingRefRepo.findOne(Long.valueOf(observation.getRatingReferenceId()));
             observation.setRatingReference(ratingReference);
         }

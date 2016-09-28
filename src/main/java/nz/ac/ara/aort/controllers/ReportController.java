@@ -37,6 +37,27 @@ public class ReportController {
     public ResponseEntity<Object> reportExecute(@RequestBody Report requestReport) {
         JSONObject response = new JSONObject();
         try {
+            UserRole userRole = userRoleRepo.findByStaffId(requestReport.getUserId());
+            if (userRole == null) {
+                throw new Exception("User role not found.");
+            }
+
+            boolean hasAccess = false;
+            if (requestReport.getPath().equals("ObserverPerformanceParent")) {
+                hasAccess = userRole.getQualityAssurance() || userRole.getSystemAdmin();
+            }
+            else if (requestReport.getPath().equals("TeamObservation")) {
+                hasAccess = userRole.getGeneral();
+            }
+            else if (requestReport.getPath().equals("AcademicStaffObsOverview")
+                    || requestReport.getPath().equals("ObservationRecordsParent")) {
+                hasAccess = userRole.getGeneral() || userRole.getQualityAssurance() || userRole.getSystemAdmin();
+            }
+
+            if(!hasAccess) {
+                throw new Exception("You do not have access to this report.");
+            }
+
             //fetch exisiting report incase we want to use its default param value
             Report existingReport = reportRepo.findOne(requestReport.getId());
             if (existingReport == null) {
@@ -47,26 +68,24 @@ public class ReportController {
                 defaultMap.put(param.getName(), param.getValue());
             }
 
-            String url = reportURL + "?/" + existingReport.getPath() + "&rs:" + "Format=" + requestReport.getFormat();
-            
-            UserRole userRole = userRoleRepo.findByStaffId(requestReport.getUserId());
-
-            if (userRole == null) {
-                throw new Exception("User role not found");
-            }
-            
-            //TODO: add more validation
-//            if (userRole.getGeneral()) {
-//                throw new Exception("You do not have access to this report.");
-//            }
-
+            String url = reportURL + "/Pages/ReportViewer.aspx?/" + existingReport.getPath() + "&rs:Command=Render";
             for (Parameter reqParam : requestReport.getParameters()) {
                 url += "&" + reqParam.getPath();
-                if (reqParam.getValue() != null) {
-                    url += "=" + reqParam.getValue();
-                } else {
-                    url += "=" + defaultMap.get(reqParam.getName());
+                if(!reqParam.getMandatory() && reqParam.getValue().equals("")) {
+                    url += ":isNull=true";
                 }
+                else {
+                    if (reqParam.getValue() != null) {
+                        url += "=" + reqParam.getValue();
+                    } else {
+                        url += "=" + defaultMap.get(reqParam.getName());
+                    }
+                }
+            }
+
+            if(requestReport.getPath().equals("ObservationRecordsParent")
+                    || requestReport.getPath().equals("TeamObservation")) {
+                url += "&User=" + requestReport.getUserId();
             }
 
             response.put("result", url);

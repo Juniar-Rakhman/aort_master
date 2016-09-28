@@ -41,6 +41,18 @@ class Navigation extends Component {
     this.props.handlePageNav('positionSearch');
   }
 
+  handleCampusSearch(){
+    this.props.handlePageNav('campusSearch');
+  }
+
+  handleDepartmentSearch(){
+    this.props.handlePageNav('departmentSearch');
+  }
+
+  handleSessionSearch(){
+    this.props.handlePageNav('sessionSearch');
+  }
+
   handleReports(){
     this.props.handlePageNav('reportSearch');
   }
@@ -60,14 +72,25 @@ class Navigation extends Component {
         );
       }
       else if(role.general || role.qualityAssurance) {
-        return(
-          <li>
-            <a href="#"><i className="fa fa-book"></i> <span className="nav-label">Observation Record</span> </a>
-            <ul className="nav nav-second-level">
-              <li><a href="#" onClick={this.handleObservationSearch.bind(this)}>Data Search</a></li>
-            </ul>
-          </li>
+        var row = [];
+        row.push(
+            <li>
+              <a href="#"><i className="fa fa-book"></i> <span className="nav-label">Observation Record</span> </a>
+              <ul className="nav nav-second-level">
+                <li><a href="#" onClick={this.handleObservationSearch.bind(this)}>Data Search</a></li>
+              </ul>
+            </li>
         );
+        row.push(
+            <li>
+              <a href="#"><i className="fa fa-print"></i> <span className="nav-label">Reporting</span></a>
+              <ul className="nav nav-second-level">
+                <li><a href="#" onClick={this.handleReports.bind(this)}>Reports</a></li>
+              </ul>
+            </li>
+        );
+
+        return row;
       }
       else if(role.systemAdmin) {
         var row = [];
@@ -80,6 +103,9 @@ class Navigation extends Component {
               <li><a href="#" onClick={this.handlePositionSearch.bind(this)}>Position Management</a></li>
               <li><a href="#" onClick={this.handleStrengthImprovementSearch.bind(this)}>Strength Improvement Management</a></li>
               <li><a href="#" onClick={this.handleRatingSearch.bind(this)}>Rating Management</a></li>
+              <li><a href="#" onClick={this.handleCampusSearch.bind(this)}>Campus Management</a></li>
+              <li><a href="#" onClick={this.handleDepartmentSearch.bind(this)}>Department Management</a></li>
+              <li><a href="#" onClick={this.handleSessionSearch.bind(this)}>Session Management</a></li>
             </ul>
           </li>
         );
@@ -91,6 +117,14 @@ class Navigation extends Component {
               <li><a href="#" onClick={this.handleEntry.bind(this)}>Data Entry</a></li>
             </ul>
           </li>
+        );
+        row.push(
+            <li>
+              <a href="#"><i className="fa fa-print"></i> <span className="nav-label">Reporting</span></a>
+              <ul className="nav nav-second-level">
+                <li><a href="#" onClick={this.handleReports.bind(this)}>Reports</a></li>
+              </ul>
+            </li>
         );
 
         return row;
@@ -121,12 +155,6 @@ class Navigation extends Component {
               </ul>
             </li>
             {this.setMenu()}
-            <li>
-              <a href="#"><i className="fa fa-print"></i> <span className="nav-label">Reporting</span></a>
-              <ul className="nav nav-second-level">
-                <li><a href="#" onClick={this.handleReports.bind(this)}>Reports</a></li>
-              </ul>
-            </li>
           </ul>
         </div>
       </nav>

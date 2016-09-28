@@ -3301,7 +3301,7 @@ body.tour-open .animated {
 body {
   font-family: "open sans", "Helvetica Neue", Helvetica, Arial, sans-serif;
   background-color: #2f4050;
-  font-size: 12px;
+  font-size: 13px;
   color: #676a6c;
   overflow-x: hidden;
 }
@@ -8283,4 +8283,16 @@ input[type="password"] {
 .print-email-btn {
   float: right!important;
   padding-bottom: 5px;
+}
+
+.modal {
+  top: 30px;
+}
+
+.modal-footer .btn + .btn {
+  margin-bottom: 5px;
+}
+
+.modal-dialog {
+  width: 500px;
 }
