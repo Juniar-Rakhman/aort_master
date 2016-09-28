@@ -21,9 +21,9 @@ class ParamsForm extends Component {
     }
 
     checkValidity() {
-        if(this.state.startDate > this.state.endDate
-            && this.state.startDate !== ''
-            && this.state.endDate !== '') {
+        var startDate = moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+        var endDate = moment(this.state.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+        if(moment(startDate).isAfter(endDate)) {
             document.getElementById('startDate').setCustomValidity('Start Date must be less than End Date.');
         }
         else {
