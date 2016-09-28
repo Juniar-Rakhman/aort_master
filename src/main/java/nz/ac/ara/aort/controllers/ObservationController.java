@@ -158,78 +158,80 @@ public class ObservationController {
     }
 
     @RequestMapping(value = "/api/observations/export", method = RequestMethod.GET)
-    public void observationExport(@RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, HttpServletResponse response) {
+    public void observationExport(@RequestParam("userId") String userId, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, HttpServletResponse response) {
         try {
-            SearchFilter sf = new SearchFilter();
+            UserRole userRole = userRoleRepo.findByStaffId(userId);
+            if(BooleanUtils.isTrue(userRole.getSystemAdmin())) {
+                SearchFilter sf = new SearchFilter();
 
-            if (!StringUtils.isEmpty(startDate)) {
-                sf.setStartDate(Date.valueOf(startDate));
-            }
+                if (!StringUtils.isEmpty(startDate)) {
+                    sf.setStartDate(Date.valueOf(startDate));
+                }
 
-            if (!StringUtils.isEmpty(endDate)) {
-                sf.setEndDate(Date.valueOf(endDate));
-            }
+                if (!StringUtils.isEmpty(endDate)) {
+                    sf.setEndDate(Date.valueOf(endDate));
+                }
 
-            List<Observation> observationList = searchObservationByFilter(sf);
+                List<Observation> observationList = searchObservationByFilter(sf);
 
-            response.setContentType("data:text/csv;charset=utf-8");
-            String reportName = "Formal Observation Records <" + new Date(Calendar.getInstance().getTime().getTime()) + ">.csv";
-            response.setHeader("Content-disposition", "attachment;filename=" + reportName);
+                response.setContentType("data:text/csv;charset=utf-8");
+                String reportName = "Formal Observation Records <" + new Date(Calendar.getInstance().getTime().getTime()) + ">.csv";
+                response.setHeader("Content-disposition", "attachment;filename=" + reportName);
 
-            ICsvMapWriter mapWriter = new CsvMapWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
-            Map<String, Object> obsMap = new HashMap<>();
+                ICsvMapWriter mapWriter = new CsvMapWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);
+                Map<String, Object> obsMap = new HashMap<>();
 
-            final String[] headers = new String[]{
-                    "Id",
-                    "Date",
-                    "Time",
-                    "Late Learners",
-                    "Moderated",
-                    "Moderated",
-                    "Programme",
-                    "Programme Level",
-                    "Notes",
-                    "Rating Summary",
-                    "Registered Learners",
-                    "Session Context",
-                    "Lesson Plan",
-                    "Lesson Plan Comment",
-                    "Course Outline",
-                    "Course Outline Comment",
-                    "Start Learners",
-                    "Total Learners",
-                    "Additional Comments",
-                    "Course Code",
-                    "Course Level",
-                    "Course Name"
-            };
+                final String[] headers = new String[]{
+                        "Id",
+                        "Date",
+                        "Time",
+                        "Late Learners",
+                        "Moderated",
+                        "Moderated",
+                        "Programme",
+                        "Programme Level",
+                        "Notes",
+                        "Rating Summary",
+                        "Registered Learners",
+                        "Session Context",
+                        "Lesson Plan",
+                        "Lesson Plan Comment",
+                        "Course Outline",
+                        "Course Outline Comment",
+                        "Start Learners",
+                        "Total Learners",
+                        "Additional Comments",
+                        "Course Code",
+                        "Course Level",
+                        "Course Name"
+                };
 
-            mapWriter.writeHeader(headers);
+                mapWriter.writeHeader(headers);
 
-            for (Observation observation : observationList) {
+                for (Observation observation : observationList) {
 
-                obsMap.put(headers[0], observation.getId());
-                obsMap.put(headers[1], observation.getDate());
-                obsMap.put(headers[2], observation.getTime());
-                obsMap.put(headers[3], observation.getLateLearners());
-                obsMap.put(headers[4], observation.getModerated());
-                obsMap.put(headers[5], observation.getModerated());
-                obsMap.put(headers[6], observation.getProgramme());
-                obsMap.put(headers[7], observation.getProgrammeLevel());
-                obsMap.put(headers[8], observation.getNotes());
-                obsMap.put(headers[9], observation.getRatingSummary());
-                obsMap.put(headers[10], observation.getRegisteredLearners());
-                obsMap.put(headers[11], observation.getSessionContext());
-                obsMap.put(headers[12], observation.getLessonPlan());
-                obsMap.put(headers[13], observation.getLessonPlanComment());
-                obsMap.put(headers[14], observation.getCourseOutline());
-                obsMap.put(headers[15], observation.getCourseOutlineComment());
-                obsMap.put(headers[16], observation.getStartLearners());
-                obsMap.put(headers[17], observation.getTotalLearners());
-                obsMap.put(headers[18], observation.getAdditionalComments());
-                obsMap.put(headers[19], observation.getCourseCode());
-                obsMap.put(headers[20], observation.getCourseLevel());
-                obsMap.put(headers[21], observation.getCourseName());
+                    obsMap.put(headers[0], observation.getId());
+                    obsMap.put(headers[1], observation.getDate());
+                    obsMap.put(headers[2], observation.getTime());
+                    obsMap.put(headers[3], observation.getLateLearners());
+                    obsMap.put(headers[4], observation.getModerated());
+                    obsMap.put(headers[5], observation.getModerated());
+                    obsMap.put(headers[6], observation.getProgramme());
+                    obsMap.put(headers[7], observation.getProgrammeLevel());
+                    obsMap.put(headers[8], observation.getNotes());
+                    obsMap.put(headers[9], observation.getRatingSummary());
+                    obsMap.put(headers[10], observation.getRegisteredLearners());
+                    obsMap.put(headers[11], observation.getSessionContext());
+                    obsMap.put(headers[12], observation.getLessonPlan());
+                    obsMap.put(headers[13], observation.getLessonPlanComment());
+                    obsMap.put(headers[14], observation.getCourseOutline());
+                    obsMap.put(headers[15], observation.getCourseOutlineComment());
+                    obsMap.put(headers[16], observation.getStartLearners());
+                    obsMap.put(headers[17], observation.getTotalLearners());
+                    obsMap.put(headers[18], observation.getAdditionalComments());
+                    obsMap.put(headers[19], observation.getCourseCode());
+                    obsMap.put(headers[20], observation.getCourseLevel());
+                    obsMap.put(headers[21], observation.getCourseName());
 
 //                obsMap.put(headers.get(22), campusRepo.findOne(Long.valueOf(observation.getLocationId())).getCampus());
 //                obsMap.put(headers.get(23), departmentRepo.findOne(Long.valueOf(observation.getDepartmentId())).getDepartment());
@@ -251,10 +253,10 @@ public class ObservationController {
 //                String peerObserverEmail = staffRepo.findOne(observation.getObserverSecondaryId()).getEmail();
 //                String peerObserverPhone = staffRepo.findOne(observation.getObserverSecondaryId()).getOfficePhone();
 
-                mapWriter.write(obsMap, headers, CsvUtils.getProcessors());
+                    mapWriter.write(obsMap, headers, CsvUtils.getProcessors());
+                }
+                mapWriter.close();
             }
-            mapWriter.close();
-
         } catch (Exception e) {
             e.printStackTrace();
         }

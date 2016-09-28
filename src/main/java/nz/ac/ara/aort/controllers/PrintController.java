@@ -117,7 +117,7 @@ public class PrintController {
             if(observation.getObserverPrimaryId().equals(userId)
                     || observation.getObserverSecondaryId().equals(userId)
                     || BooleanUtils.isTrue(userRole.getQualityAssurance())
-                    || BooleanUtils.isTrue((userRole.getSystemAdmin()))) {
+                    || BooleanUtils.isTrue(userRole.getSystemAdmin())) {
                 String reportURLPDF = reportURL + "?/Observation&rs:Format=PDF&ObservationId=" + observationId;
                 
                 response.put("result", reportURLPDF);

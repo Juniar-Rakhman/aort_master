@@ -23,6 +23,7 @@ import DepartmentSearch from "./departmentSearch";
 import EntryDepartment from "./entryDepartment";
 import SessionSearch from "./sessionSearch";
 import EntrySession from "./entrySession";
+import ExportParams from "./exportParams";
 
 class Container extends Component {
   constructor(props, context) {
@@ -167,6 +168,8 @@ class Container extends Component {
       content = <EntrySession title='Create' redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'editSession') {
       content = <EntrySession title='Edit' session={this.state.data} redirectTo={this.handlePageNav} />
+    } else if (this.state.page === 'exportParam') {
+      content = <ExportParams staff={this.state.staff} />
     }
 
     return content;
