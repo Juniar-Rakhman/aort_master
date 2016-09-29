@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -70,13 +71,23 @@ public class ReportController {
 
             String url = reportURL + "/Pages/ReportViewer.aspx?/" + existingReport.getPath() + "&rs:Command=Render";
             for (Parameter reqParam : requestReport.getParameters()) {
-                url += "&" + reqParam.getPath();
+                if(!reqParam.getType().contains("Multi")) {
+                    url += "&" + reqParam.getPath();
+                }
                 if(!reqParam.getMandatory() && reqParam.getValue().equals("")) {
                     url += ":isNull=true";
                 }
                 else {
                     if (reqParam.getValue() != null) {
-                        url += "=" + reqParam.getValue();
+                        if(reqParam.getType().contains("Multi")) {
+                            String[] values = reqParam.getValue().split(";");
+                            for(String value : values) {
+                                url += "&" + reqParam.getPath() + "=" + value;
+                            }
+                        }
+                        else {
+                            url += "=" + reqParam.getValue();
+                        }
                     } else {
                         url += "=" + defaultMap.get(reqParam.getName());
                     }
