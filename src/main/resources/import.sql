@@ -73,48 +73,48 @@ INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,va
 INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value,path) VALUES (3,1,'End Date', 'Date', '', 'EndDate');
 INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value,path) VALUES (4,0,'Department', 'Department', '', 'Department');
 
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Ashburton Campus')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Bishopdale Campus')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Brighton Campus')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Online / Distance / Extramural  Delivery')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Hornby Campus')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Madras Street Campus')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Madras Outer')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Oamaru Campus')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Rangiora Campus')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Sullivan Ave Campus')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Timaru Campus')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Washdyke Farm Campus')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Wainoni')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Aoraki Trade Academy Delivery')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'SIT Trade Academy Delivery')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Avonmore Trade Academy Delivery')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'E Campus TANZ ')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Kaikoura HS Trade Academy Delivery')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Linwood College Trade Academy Delivery')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Aranui HS Trade Academy Delivery')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Ellesmere College Trade Academy Delivery')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Design and Arts College')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Mainland Driving')
-INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Christchurch Men''s Prison')
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Ashburton Campus');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Bishopdale Campus');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Brighton Campus');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Online / Distance / Extramural  Delivery');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Hornby Campus');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Madras Street Campus');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Madras Outer');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Oamaru Campus');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Rangiora Campus');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Sullivan Ave Campus');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Timaru Campus');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Washdyke Farm Campus');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Wainoni');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Aoraki Trade Academy Delivery');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'SIT Trade Academy Delivery');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Avonmore Trade Academy Delivery');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'E Campus TANZ ');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Kaikoura HS Trade Academy Delivery');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Linwood College Trade Academy Delivery');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Aranui HS Trade Academy Delivery');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Ellesmere College Trade Academy Delivery');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Design and Arts College');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Mainland Driving');
+INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Christchurch Men''s Prison');
 
-INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Business')
-INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Computing')
-INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Creative Industries')
-INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Engineering and Architectural Studies')
-INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Hospitality and Service Industries')
-INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Humanities')
-INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Nursing and Human Services')
-INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Primary Industries')
-INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Applied Science and Allied Health')
-INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Trades')
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Business');
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Computing');
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Creative Industries');
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Engineering and Architectural Studies');
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Hospitality and Service Industries');
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Humanities');
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Nursing and Human Services');
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Primary Industries');
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Applied Science and Allied Health');
+INSERT INTO dbo.department_reference (is_active, department) VALUES (1, 'Trades');
 
-INSERT INTO dbo.session_reference(is_active, session) VALUES (1, 'Classroom')
-INSERT INTO dbo.session_reference(is_active, session) VALUES (1, 'Practical – Kitchen')
-INSERT INTO dbo.session_reference(is_active, session) VALUES (1, 'Practical – Restaurant')
-INSERT INTO dbo.session_reference(is_active, session) VALUES (1, 'Practical – Trades Workshop')
-INSERT INTO dbo.session_reference(is_active, session) VALUES (1, 'Practical Assessment')
-INSERT INTO dbo.session_reference(is_active, session) VALUES (1, 'In-work session')
+INSERT INTO dbo.session_reference(is_active, session) VALUES (1, 'Classroom');
+INSERT INTO dbo.session_reference(is_active, session) VALUES (1, 'Practical – Kitchen');
+INSERT INTO dbo.session_reference(is_active, session) VALUES (1, 'Practical – Restaurant');
+INSERT INTO dbo.session_reference(is_active, session) VALUES (1, 'Practical – Trades Workshop');
+INSERT INTO dbo.session_reference(is_active, session) VALUES (1, 'Practical Assessment');
+INSERT INTO dbo.session_reference(is_active, session) VALUES (1, 'In-work session');
 
 -- update dbo.staff set username = 'ben' where staff_id = '00000065';
 -- update dbo.staff set username = 'bob' where staff_id = '00000216';
