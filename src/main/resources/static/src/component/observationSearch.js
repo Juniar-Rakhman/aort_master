@@ -94,18 +94,31 @@ class SearchBar extends Component {
         var newState = Object.assign(this.state, {startDate: e.target.childNodes[0].value});
         this.setState({startDate: e.target.childNodes[0].value});
         this.props.updateSearchCriteria(newState);
+        this.checkValidity();
     }
 
     handleEndDateChange(e) {
         var newState = Object.assign(this.state, {endDate: e.target.childNodes[0].value});
         this.setState({endDate: e.target.childNodes[0].value});
         this.props.updateSearchCriteria(newState);
+        this.checkValidity();
     }
 
     handleStatusChange(e) {
         var newState = Object.assign(this.state, {completed: e.target.value});
         this.setState({completed: e.target.value})
         this.props.updateSearchCriteria(newState);
+    }
+
+    checkValidity() {
+        var startDate = moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+        var endDate = moment(this.state.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
+        if(moment(startDate).isAfter(endDate)) {
+            document.getElementById('startDate').setCustomValidity('Start Date must be before End Date.');
+        }
+        else {
+            document.getElementById('startDate').setCustomValidity('');
+        }
     }
 
   componentDidMount() {
@@ -173,7 +186,7 @@ class SearchBar extends Component {
         }
         return (
           <div className="panel panel-default">
-            <div className="panel-heading" ><a data-toggle="collapse" href="#collapse1">Search Criteria</a></div>
+            <a data-toggle="collapse" href="#collapse1"><div className="panel-heading">Search Criteria</div></a>
             <div id="collapse1" className="panel-collapse collapse">
                 <div className="panel-body">
                     <form role="form" className="form-inline" onSubmit={this.handleChange.bind(this)}>
@@ -208,7 +221,7 @@ class SearchBar extends Component {
                         <label className="col-sm-4 control-label">Start Date</label>
                         <div className="col-sm-8 m-b">
                             <div className="input-group date" id="datePicker-start">
-                              <input type="text" className="form-control" value={this.state.startDate} />
+                              <input type="text" id="startDate" className="form-control" value={this.state.startDate} />
                               <span className="input-group-addon">
                                 <i className="fa fa-calendar" aria-hidden="true"></i>
                               </span>
