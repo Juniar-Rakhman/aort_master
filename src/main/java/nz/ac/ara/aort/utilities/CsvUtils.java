@@ -38,7 +38,29 @@ public final class CsvUtils {
                 new Optional(), // CourseCode
                 new Optional(), // CourseLevel
                 new Optional(), // CourseName
-                
+                new Optional(), // Location
+                new Optional(), // Department
+                new Optional(), // Session
+                new Optional(), // AppliedFeedback
+                new Optional(), // Moderator Comment 1
+                new Optional(), // Moderator Comment 2
+                new Optional(), // Moderator Comment 3
+                new Optional(), // Teacher
+                new Optional(), // Teacher Email
+                new Optional(), // Teacher Office Phone
+                new Optional(), // Teacher Department
+                new Optional(), // Moderator
+                new Optional(), // Lead Observer
+                new Optional(), // Lead Observer Email
+                new Optional(), // Lead Observer Office Phone
+                new Optional(), // Peer Observer
+                new Optional(), // Peer Observer Email
+                new Optional(), // Peer Observer Office Phone
+                new Optional(), // Rating Reference
+                new Optional(), // Learning Coach
+                new Optional(), // Line Manager
+                new Optional(), // HOD
+                new Optional(), // Status
         };
     }
 }
