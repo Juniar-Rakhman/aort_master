@@ -5,7 +5,7 @@ class ParamRow extends Component{
     constructor(props){
         super(props);
         this.state = {
-            value: ''
+            value: props.parameter.type === 'MultiStaff' ? [] : ''
         };
     }
     
@@ -23,6 +23,20 @@ class ParamRow extends Component{
         var paramsData = Object.assign(this.props.parameter, {value: e.target.value});
         this.setState({value: e.target.value});
         this.props.updateParamsData(paramsData);
+    }
+
+    handleArraySelected(e) {
+        this.state.value.push(e.params.data.id);
+        var paramsData = Object.assign(this.props.parameter, {value: this.state.value});
+        this.props.updateParamsData(paramsData);
+    }
+
+    handleArrayUnselected(e) {
+        this.state.value.forEach(function(data, index){
+            if(data === e.params.data.id) {
+                this.state.value.splice(index, 1);
+            }
+        }, this);
     }
 
     componentDidMount() {
@@ -61,6 +75,38 @@ class ParamRow extends Component{
             }
         };
 
+        var multiStaffConfigs =
+        {
+            ajax: {
+                url: 'api/staffs/search/findByStaffName',
+                data: function(params){
+                    return {
+                        name: params.term
+                    }
+                },
+                processResults: function (data) {
+                    return {
+                        results: data["_embedded"]["staffs"]
+                    }
+                },
+                delay: 250
+            },
+            templateResult: function(staff){
+                return staff.firstName + " " + staff.lastName;
+            },
+            templateSelection: function formatRepoSelection (staff) {
+                if(staff!==undefined){
+                    if(staff.firstName != null){
+                        return staff.firstName + " " + staff.lastName;
+                    }
+                    else if(staff.name != null){
+                        return staff.name;
+                    }
+                }
+            },
+            allowClear: true
+        };
+
         var deptConfigs =
         {
             ajax: {
@@ -95,6 +141,10 @@ class ParamRow extends Component{
         $('#staff-'+this.props.parameter.id).select2(configs);
         $('#staff-'+this.props.parameter.id).on('change', this.handleDataChange.bind(this));
 
+        $('#multiStaff-'+this.props.parameter.id).select2(multiStaffConfigs);
+        $('#multiStaff-'+this.props.parameter.id).on('select2:select', this.handleArraySelected.bind(this));
+        $('#multiStaff-'+this.props.parameter.id).on('select2:unselect', this.handleArrayUnselected.bind(this));
+
         $('#department-'+this.props.parameter.id).select2(deptConfigs);
         $('#department-'+this.props.parameter.id).on('change', this.handleDataChange.bind(this));
 
@@ -122,6 +172,15 @@ class ParamRow extends Component{
                         value={this.state.value}
                         required={this.props.parameter.mandatory}>
                     <option></option>
+                </select> );
+        } else if (this.props.parameter.type === 'MultiStaff'){
+            inputControl = (
+                <select id={"multiStaff-" + this.props.parameter.id}
+                        className="form-control m-b"
+                        style={{width: "100%"}}
+                        value={this.state.value}
+                        multiple="multiple"
+                        required={this.props.parameter.mandatory}>
                 </select> );
         } else if(this.props.parameter.type == 'Department'){
             inputControl = (
@@ -163,8 +222,7 @@ class ParamsForm extends Component{
     }
     
     updateParamsData(paramsData){
-        var parameters = this.state.reportData.parameters;
-        parameters.forEach(function(parameter){
+        this.state.reportData.parameters.forEach(function(parameter){
             if(parameter.id === paramsData.id){
                 var value = paramsData.value;
                 if(paramsData.type === 'Date') {
@@ -177,6 +235,15 @@ class ParamsForm extends Component{
 
     handlePrint(e) {
         console.log('Printing report');
+        this.state.reportData.parameters.forEach(function(parameter){
+            if(parameter.type === 'MultiStaff'){
+                var valueStr = '';
+                parameter.value.forEach(function(val) {
+                    valueStr += val + ';';
+                });
+                parameter.value = valueStr;
+            }
+        });
         var report = Object.assign(this.state.reportData, {
             userId: this.props.staff.id,
             format: "PDF"

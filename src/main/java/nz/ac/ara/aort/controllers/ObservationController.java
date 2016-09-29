@@ -203,7 +203,30 @@ public class ObservationController {
                         "Additional Comments",
                         "Course Code",
                         "Course Level",
-                        "Course Name"
+                        "Course Name",
+                        "Location",
+                        "Department",
+                        "Session",
+                        "Applied Feedback",
+                        "Moderator Comment 1",
+                        "Moderator Comment 2",
+                        "Moderator Comment 3",
+                        "Teacher",
+                        "Teacher Email",
+                        "Teacher Office Phone",
+                        "Teacher Department",
+                        "Moderator",
+                        "Lead Observer",
+                        "Lead Observer Email",
+                        "Lead Observer Office Phone",
+                        "Peer Observer",
+                        "Peer Observer Email",
+                        "Peer Observer Office Phone",
+                        "Rating Reference",
+                        "Learning Coach",
+                        "Line Manager",
+                        "HOD",
+                        "Status",
                 };
 
                 mapWriter.writeHeader(headers);
@@ -232,26 +255,46 @@ public class ObservationController {
                     obsMap.put(headers[19], observation.getCourseCode());
                     obsMap.put(headers[20], observation.getCourseLevel());
                     obsMap.put(headers[21], observation.getCourseName());
-
-//                obsMap.put(headers.get(22), campusRepo.findOne(Long.valueOf(observation.getLocationId())).getCampus());
-//                obsMap.put(headers.get(23), departmentRepo.findOne(Long.valueOf(observation.getDepartmentId())).getDepartment());
-//                obsMap.put(headers.get(24), sessionRepo.findOne(Long.valueOf(observation.getSessionId())).getSession());
-//                obsMap.put(headers.get(25), observation.getAppliedFeedback());
-//                obsMap.put(headers.get(26), observation.getModeratorComment1());
-//                obsMap.put(headers.get(27), observation.getModeratorComment2());
-//                obsMap.put(headers.get(28), observation.getModeratorComment3());
-//                obsMap.put(headers.get(29), staffRepo.findOne(observation.getModeratorId()).getFirstName() + " " + staffRepo.findOne(observation.getModeratorId()).getLastName());
-//                obsMap.put(headers.get(29), staffRepo.findOne(observation.getObserverPrimaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverPrimaryId()).getLastName());
-//                obsMap.put(headers.get(29), staffRepo.findOne(observation.getObserverSecondaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverSecondaryId()).getLastName());
-//                obsMap.put(headers.get(30), ratingRefRepo.findOne(Long.valueOf(observation.getRatingReferenceId())).getRating());
-//                obsMap.put(headers.get(31), staffRepo.findOne(observation.getLearningCoachId()).getFirstName() + " " + staffRepo.findOne(observation.getLearningCoachId()).getLastName());
-//                String teachersEmail = staffRepo.findOne(observation.getStaffId()).getEmail();
-//                String teachersPhone = staffRepo.findOne(observation.getStaffId()).getOfficePhone();
-//                String teachersDept = staffRepo.findOne(observation.getStaffId()).getDepartment();
-//                String leadObserverEmail = staffRepo.findOne(observation.getObserverPrimaryId()).getEmail();
-//                String leadObserverPhone = staffRepo.findOne(observation.getObserverPrimaryId()).getOfficePhone();
-//                String peerObserverEmail = staffRepo.findOne(observation.getObserverSecondaryId()).getEmail();
-//                String peerObserverPhone = staffRepo.findOne(observation.getObserverSecondaryId()).getOfficePhone();
+                    if (!StringUtils.isEmpty(observation.getLocationId()))
+                        obsMap.put(headers[22], campusRepo.findOne(Long.valueOf(observation.getLocationId())).getCampus());
+                    if (!StringUtils.isEmpty(observation.getDepartmentId()))
+                        obsMap.put(headers[23], departmentRepo.findOne(Long.valueOf(observation.getDepartmentId())).getDepartment());
+                    if (!StringUtils.isEmpty(observation.getSessionId()))
+                        obsMap.put(headers[24], sessionRepo.findOne(Long.valueOf(observation.getSessionId())).getSession());
+                    obsMap.put(headers[25], observation.getAppliedFeedback());
+                    obsMap.put(headers[26], observation.getModeratorComment1());
+                    obsMap.put(headers[27], observation.getModeratorComment2());
+                    obsMap.put(headers[28], observation.getModeratorComment3());
+                    if (!StringUtils.isEmpty(observation.getStaffId())) {
+                        obsMap.put(headers[29], staffRepo.findOne(observation.getStaffId()).getFirstName() + " " + staffRepo.findOne(observation.getStaffId()).getLastName());
+                        obsMap.put(headers[30], staffRepo.findOne(observation.getStaffId()).getEmail());
+                        obsMap.put(headers[31], staffRepo.findOne(observation.getStaffId()).getOfficePhone());
+                        obsMap.put(headers[32], staffRepo.findOne(observation.getStaffId()).getDepartment());
+                    }
+                    if (!StringUtils.isEmpty(observation.getModeratorId()))
+                        obsMap.put(headers[33], staffRepo.findOne(observation.getModeratorId()).getFirstName() + " " + staffRepo.findOne(observation.getModeratorId()).getLastName());
+                    if (!StringUtils.isEmpty(observation.getObserverPrimaryId())) {
+                        obsMap.put(headers[34], staffRepo.findOne(observation.getObserverPrimaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverPrimaryId()).getLastName());
+                        obsMap.put(headers[35], staffRepo.findOne(observation.getObserverPrimaryId()).getEmail());
+                        obsMap.put(headers[36], staffRepo.findOne(observation.getObserverPrimaryId()).getOfficePhone());
+                    }
+                    if (!StringUtils.isEmpty(observation.getObserverSecondaryId())) {
+                        obsMap.put(headers[37], staffRepo.findOne(observation.getObserverSecondaryId()).getFirstName() + " " + staffRepo.findOne(observation.getObserverSecondaryId()).getLastName());
+                        obsMap.put(headers[38], staffRepo.findOne(observation.getObserverSecondaryId()).getEmail());
+                        obsMap.put(headers[39], staffRepo.findOne(observation.getObserverSecondaryId()).getOfficePhone());
+                    }
+                    if (!StringUtils.isEmpty(observation.getRatingReferenceId()))
+                        obsMap.put(headers[40], ratingRefRepo.findOne(Long.valueOf(!StringUtils.isEmpty(observation.getRatingReferenceId()) ? observation.getRatingReferenceId() : "0")).getRating());
+                    if (!StringUtils.isEmpty(observation.getLearningCoachId()))
+                        obsMap.put(headers[41], staffRepo.findOne(observation.getLearningCoachId()).getFirstName() + " " + staffRepo.findOne(observation.getLearningCoachId()).getLastName());
+                    if (!StringUtils.isEmpty(observation.getLineManagerId()))
+                        obsMap.put(headers[42], staffRepo.findOne(observation.getLineManagerId()).getFirstName() + " " + staffRepo.findOne(observation.getLineManagerId()).getLastName());
+                    if (!StringUtils.isEmpty(observation.getHodId()))
+                        obsMap.put(headers[43], staffRepo.findOne(observation.getHodId()).getFirstName() + " " + staffRepo.findOne(observation.getHodId()).getLastName());
+                    obsMap.put(headers[44], observation.getCompleted() ? "completed" : "open");
+                    
+                    //strImprov
+                    //obsRecommend
 
                     mapWriter.write(obsMap, headers, CsvUtils.getProcessors());
                 }
