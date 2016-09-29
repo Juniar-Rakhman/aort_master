@@ -13,6 +13,7 @@ class ObserveHeader extends Component{
 
   render(){
     var init = this.initialValue();
+    var forCheckbox = {marginTop: "11px"};
     return(
       <div className="ibox-content">
         <div className="form-group">
@@ -218,6 +219,7 @@ class ObserveHeader extends Component{
                 <div className="col-sm-4">
                   <input
                     type="checkbox"
+                    style={forCheckbox}
                     checked={this.props.observation.lessonPlan || init}
                     disabled
                   />
@@ -246,6 +248,7 @@ class ObserveHeader extends Component{
                 <div className="col-sm-4">
                   <input
                     type="checkbox"
+                    style={forCheckbox}
                     checked={this.props.observation.courseOutline || init}
                     disabled
                   />
@@ -497,10 +500,21 @@ class ObserveModerate extends Component{
   }
 
   render(){
+    var forCheckbox = {marginTop: "11px"};
     return(
       <div className="ibox-content">
           <div className="form-group">
             <div className="row m-b">
+              <div className="col-sm-6">
+                <label className="col-sm-4 control-label">Moderator Feedback Provided</label>
+                <div className="col-sm-8">
+                  <input type="checkbox"
+                      style={forCheckbox}
+                      checked={this.props.observation.moderated}
+                      disabled
+                  />
+                </div>
+              </div>
               <div className="col-sm-6">
                 <label className="col-sm-4 control-label">Moderator Name</label>
                 <div className="col-sm-8">
@@ -523,6 +537,16 @@ class ObserveModerate extends Component{
                 </div>
               </div>
             </div>
+
+            <div className="row">
+              <div className="col-sm-6">
+                <label className="col-sm-4 control-label">Record Updated with Moderator Feedback</label>
+                <div className="col-sm-8">
+                  <input style={forCheckbox} type="checkbox" checked={this.props.appliedFeedback} disabled/>
+                </div>
+              </div>
+            </div>
+
           </div>
       </div>
     )
