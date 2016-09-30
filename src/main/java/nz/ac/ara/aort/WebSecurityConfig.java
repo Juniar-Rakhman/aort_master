@@ -1,20 +1,14 @@
 package nz.ac.ara.aort;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.authentication.configurers.GlobalAuthenticationConfigurerAdapter;
-import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
-import org.springframework.security.ldap.userdetails.LdapAuthoritiesPopulator;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
-@EnableWebSecurity
-@EnableGlobalMethodSecurity(securedEnabled = true, jsr250Enabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
@@ -42,28 +36,45 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Configuration
     protected static class AuthenticationConfiguration extends GlobalAuthenticationConfigurerAdapter {
 
-//        @Autowired
-//        @Qualifier("myAuthPopulator")
-//        LdapAuthoritiesPopulator authoritiesPopulator;
+        @Value("${app.security.use.ldif}")
+        private boolean useLDIF;
 
+        @Value("${app.ldap.user.search.filter}")
+        private String userSearchFilter;
+
+        @Value("${app.ldap.user.search.base}")
+        private String userSearchBase;
+
+        @Value("${app.ldap.group.search.base}")
+        private String groupSearchBase;
+
+        @Value("${app.ldap.url}")
+        private String ldapURL;
+
+        @Value("${app.ldap.manager.dn}")
+        private String managerDN;
+
+        @Value("${app.ldap.manager.password}")
+        private String managerPassword;
+        
         @Override
         public void init(AuthenticationManagerBuilder auth) throws Exception {
-            auth
-                    .ldapAuthentication()
-                    .userDnPatterns("uid={0},ou=people")
-                    .groupSearchBase("ou=groups")
-                    .contextSource().ldif("classpath:test-server.ldif");
-//                    .and()
-//                    .ldapAuthoritiesPopulator(authoritiesPopulator); 
-//          TODO: Use this in prod
-//            auth.ldapAuthentication()
-//                    .userSearchFilter("CN={0}")
-//                    .userSearchBase("OU=staff,O=LDAP")
-//                    .groupSearchBase("CN=BU-AllStaff,OU=groups,O=LDAP")
-//                    .contextSource()
-//                    .url("ldap://lds.cpit.ac.nz")
-//                    .managerDn("cn=webserver,ou=ServiceAccounts,o=LDAP")
-//                    .managerPassword("");
+            if (useLDIF) {
+                auth
+                        .ldapAuthentication()
+                        .userDnPatterns("uid={0},ou=people")
+                        .groupSearchBase("ou=groups")
+                        .contextSource().ldif("classpath:test-server.ldif");
+            } else {
+                auth.ldapAuthentication()
+                        .userSearchFilter(userSearchFilter)
+                        .userSearchBase(userSearchBase)
+                        .groupSearchBase(groupSearchBase)
+                        .contextSource()
+                        .url(ldapURL)
+                        .managerDn(managerDN)
+                        .managerPassword(managerPassword);
+            }
         }
     }
 }
