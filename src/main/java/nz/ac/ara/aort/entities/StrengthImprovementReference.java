@@ -25,6 +25,9 @@ public class StrengthImprovementReference {
 	
 	@Column(name = "criteria", columnDefinition = "nvarchar(100)")
 	public String criteria;
+
+	@Column(name = "is_active")
+	private Boolean active;
 	
 	public StrengthImprovementReference(){
 	}

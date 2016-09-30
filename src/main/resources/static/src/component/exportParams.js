@@ -106,14 +106,11 @@ class ExportParams extends Component {
                   <div className="col-lg-12">
                     <div className="ibox float-e-margins">
                         <div className="ibox-title">
-                            <h2>Export Parameters</h2>
+                            <h2>Export Observation Parameters</h2>
                         </div>
                         <div className="ibox-content">
                             <ParamsForm
-                                redirectTo={this.props.redirectTo}
-                                report={this.props.report}
                                 staff={this.props.staff}
-                                redirectTo={this.props.redirectTo}
                             />
                         </div>
                     </div>

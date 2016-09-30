@@ -244,13 +244,13 @@ class ObserveHeader extends Component{
     $('#observerSecondary').select2(configs);
     $('#observerSecondary').on('change', this.handleSecondObserverNameChange.bind(this));
 
-    $('#campusLocation').select2({placeholder: "Please Select"});
+    $('#campusLocation').select2({placeholder: "Please select"});
     $('#campusLocation').on('change', this.handleCampusLocationIdChange.bind(this));
 
-    $('#department').select2({placeholder: "Please Select"});
+    $('#department').select2({placeholder: "Please select"});
     $('#department').on('change', this.handleDepartmentIdChange.bind(this));
 
-    $('#sessionType').select2({placeholder: "Please Select"});
+    $('#sessionType').select2({placeholder: "Please select"});
     $('#sessionType').on('change', this.handleSessionTypeChange.bind(this));
 
     if(this.props.mode === 'Create') {
@@ -1565,9 +1565,9 @@ class Entry extends Component {
   getRatingReferencesRecords(){
       $.ajax({
           type: 'GET',
-          url: "/api/ratingReferences",
+          url: "/api/ratingReferences/search/findByActive?active=1",
           success: function(response) {
-              this.setState({ratingReferences: response});
+              this.setState({ratingReferences: response['_embedded']['ratingReferences']});
           }.bind(this),
           error: function(xhr, status, err) {
               console.error(this.props.url, status, err.toString());
@@ -1578,9 +1578,9 @@ class Entry extends Component {
   getDataStrengthImprovementReferences() {
       $.ajax({
           type: 'GET',
-          url: "/api/strengthImprovementReferences",
+          url: "/api/strengthImprovementReferences/search/findByActive?active=1",
           success: function(response) {
-              this.setState({strengthImprovementReferences: response});
+              this.setState({strengthImprovementReferences: response['_embedded']['strengthImprovementReferences']});
           }.bind(this),
           error: function(xhr, status, err) {
               console.error(this.props.url, status, err.toString());
@@ -1591,9 +1591,9 @@ class Entry extends Component {
   getCampusLocations(){
       $.ajax({
           type: 'GET',
-          url: "/api/campusReferences",
+          url: "/api/campusReferences/search/findByActive?active=1",
           success: function(response) {
-              this.setState({campusLocations: response});
+              this.setState({campusLocations: response['_embedded']['campusReferences']});
           }.bind(this),
           error: function(xhr, status, err) {
               console.error(this.props.url, status, err.toString());
@@ -1604,9 +1604,9 @@ class Entry extends Component {
   getDepartments(){
       $.ajax({
           type: 'GET',
-          url: "/api/departmentReferences",
+          url: "/api/departmentReferences/search/findByActive?active=1",
           success: function(response) {
-              this.setState({departments: response});
+              this.setState({departments: response['_embedded']['departmentReferences']});
           }.bind(this),
           error: function(xhr, status, err) {
               console.error(this.props.url, status, err.toString());
@@ -1617,9 +1617,9 @@ class Entry extends Component {
   getSessionTypes(){
       $.ajax({
           type: 'GET',
-          url: '/api/sessionReferences',
+          url: '/api/sessionReferences/search/findByActive?active=1',
           success: function(response) {
-              this.setState({sessionTypes: response});
+              this.setState({sessionTypes: response['_embedded']['sessionReferences']});
           }.bind(this),
           error: function (xhr, status, err) {
               console.error(this.props.url, status, err.toString());

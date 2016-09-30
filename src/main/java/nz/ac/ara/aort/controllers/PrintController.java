@@ -87,7 +87,7 @@ public class PrintController {
                         "\n" +
                         "Please find the observation report in the attachment.\n" +
                         "\n" +
-                        "This email sent from server, please do not reply.\n" +
+                        "This email is sent from server, please do not reply.\n" +
                         "\n";
                 EmailUtils.sendEmail(smtpServer, null, staff.getEmail(), null, "Observation Report #" + observationId, body, false, dest);
                 dest.delete();

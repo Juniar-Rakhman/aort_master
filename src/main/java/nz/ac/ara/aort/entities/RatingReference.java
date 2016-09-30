@@ -23,6 +23,9 @@ public class RatingReference {
 	@Column(name = "rating", columnDefinition = "nvarchar(50)")
 	private String rating;
 
+	@Column(name = "is_active")
+	private Boolean active;
+
 	public RatingReference(){
 
 	}
