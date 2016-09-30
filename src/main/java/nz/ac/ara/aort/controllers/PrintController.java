@@ -11,23 +11,21 @@ import nz.ac.ara.aort.utilities.EmailUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.mail.javamail.JavaMailSenderImpl;
-import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.mail.internet.MimeMessage;
 import javax.net.ssl.HttpsURLConnection;
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.File;
+import java.io.InputStream;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 
 /**
  * Created by Galih_P on 9/15/2016.
@@ -69,26 +67,31 @@ public class PrintController {
                 || BooleanUtils.isTrue((userRole.getSystemAdmin()))) {
             Staff staff = staffRepository.findOne(userId);
             try {
-                String reportURLHTML = reportURL + "?/Observation&rs:Format=HTML4.0&rc:toolbar=false&ObservationId=" + observationId;
-                URL url = new URL(reportURLHTML);
+                String reportUrl = reportURL + "?/Observation&rs:Format=PDF&ObservationId=" + observationId;
+                URL url = new URL(reportUrl);
 
-                //Set default authentication
+                // Set default authentication
                 Authenticator.setDefault(new Authenticator() {
                     @Override
                     protected PasswordAuthentication getPasswordAuthentication() {
                         return new PasswordAuthentication(username, password.toCharArray());
                     }
                 });
-                
+
                 HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-                BufferedReader in = new BufferedReader(new InputStreamReader(connection.getInputStream()));
-                String inputLine;
-                String body = "";
-                while((inputLine = in.readLine()) != null) {
-                    body += inputLine;
-                }
+                InputStream in = connection.getInputStream();
+                File dest = new File("ObservationReport#" + observationId + ".pdf");
+                Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 in.close();
-                EmailUtils.sendEmail(smtpServer, null, staff.getEmail(), null, "Observation Report #" + observationId, body, true);
+                String body = "Dear " + staff.getFirstName() + " " + staff.getLastName() + ",\n" +
+                        "\n" +
+                        "Please find the observation report in the attachment.\n" +
+                        "\n" +
+                        "This email is sent from server, please do not reply.\n" +
+                        "\n";
+                EmailUtils.sendEmail(smtpServer, null, staff.getEmail(), null, "Observation Report #" + observationId, body, false, dest);
+                dest.delete();
+
                 response.put("message", "Observation has been sent successfully to : " + staff.getEmail());
                 response.put("success", true);
             }
@@ -118,15 +121,9 @@ public class PrintController {
                     || observation.getObserverSecondaryId().equals(userId)
                     || BooleanUtils.isTrue(userRole.getQualityAssurance())
                     || BooleanUtils.isTrue(userRole.getSystemAdmin())) {
-                String reportURLPDF = reportURL + "?/Observation&rs:Format=PDF&ObservationId=" + observationId;
-                
-                response.put("result", reportURLPDF);
+                String reportUrl = reportURL + "?/Observation&rs:Format=PDF&ObservationId=" + observationId;
+                response.put("result", reportUrl);
                 response.put("success", true);
-//
-//                URI redirect = new URI(reportURLPDF);
-//                HttpHeaders httpHeaders = new HttpHeaders();
-//                httpHeaders.setLocation(redirect);
-//                return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
             }
             else {
                 throw new Exception("You do not have access to print observation.");

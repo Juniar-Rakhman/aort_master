@@ -22,7 +22,6 @@ import nz.ac.ara.aort.repositories.StrengthImprovementRepository;
 import nz.ac.ara.aort.repositories.UserRoleRepository;
 import nz.ac.ara.aort.utilities.CsvUtils;
 import nz.ac.ara.aort.utilities.EmailUtils;
-import org.apache.commons.lang.ArrayUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,10 +39,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.supercsv.cellprocessor.ift.CellProcessor;
-import org.supercsv.io.CsvListWriter;
 import org.supercsv.io.CsvMapWriter;
-import org.supercsv.io.ICsvListWriter;
 import org.supercsv.io.ICsvMapWriter;
 import org.supercsv.prefs.CsvPreference;
 
@@ -51,7 +47,6 @@ import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletResponse;
-import java.lang.reflect.Field;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -365,7 +360,7 @@ public class ObservationController {
                     "\n" +
                     moderator.getFirstName() + " " + moderator.getLastName();
 
-            EmailUtils.sendEmail(smtpServer, moderator.getEmail(), moderator.getEmail(), ccs, subject, body, true);
+            EmailUtils.sendEmail(smtpServer, moderator.getEmail(), moderator.getEmail(), ccs, subject, body, false, null);
         }
 
         //Lead Observer Ticks ‘Record Updated with Moderator Feedback’ and click ‘Save’
@@ -384,7 +379,7 @@ public class ObservationController {
                     "\n" +
                     leadObserver.getFirstName() + " " + leadObserver.getLastName();
 
-            EmailUtils.sendEmail(smtpServer, leadObserver.getEmail(), moderator.getEmail(), null, subject, body, true);
+            EmailUtils.sendEmail(smtpServer, leadObserver.getEmail(), moderator.getEmail(), null, subject, body, false, null);
         }
 
         //Moderator clicks ‘Complete’ for an observation record
@@ -400,7 +395,7 @@ public class ObservationController {
                     "\n" +
                     moderator.getFirstName() + " " + moderator.getLastName();
 
-            EmailUtils.sendEmail(smtpServer, moderator.getEmail(), leadObserver.getEmail(), null, subject, body, true);
+            EmailUtils.sendEmail(smtpServer, moderator.getEmail(), leadObserver.getEmail(), null, subject, body, false, null);
         }
     }
     

@@ -1,18 +1,20 @@
 import React, { Component } from 'react';
-import ConfirmDialog from './confirmDialog';
 
 class RatingForm extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            rating: this.props.rating.rating || ''
+            rating: props.rating.rating || '',
+            active: props.rating.active || false
         }
-        this.handleYes = this.handleYes.bind(this);
-        this.handleNo = this.handleNo.bind(this);
     }
 
     handleRatingChange(e) {
         this.setState({rating: e.target.value});
+    }
+
+    handleActiveChange(e) {
+        this.setState({active: e.target.checked});
     }
 
     handleBack() {
@@ -60,84 +62,47 @@ class RatingForm extends Component {
         e.preventDefault();
     }
 
-    handleDelete() {
-        $('#confirm-dialog').modal('show');
-    }
-
-    handleYes() {
-        var rating = Object.assign(this.state, {id: this.props.rating.id});
-        var data = JSON.stringify(rating);
-        console.log(data);
-        $.ajax({
-            type: 'DELETE',
-            url: "/api/ratingReferences",
-            data: data,
-            contentType: "application/json",
-            success: function(response) {
-                console.log(response);
-                this.props.redirectTo('ratingSearch');
-            }.bind(this),
-            error: function(xhr, status, err) {
-                console.error(this.props.url, status, err.toString());
-            }.bind(this)
-        });
-    }
-
-    handleNo() {
-        return;
-    }
-
     render() {
-        var buttons = null;
-        if(this.props.mode === 'Create') {
-            buttons = (
-                <div className="col-sm-4 col-sm-offset-10">
-                    <button className="btn btn-white" type="button" onClick={this.handleBack.bind(this)}>Cancel</button>&nbsp;
-                    <button className="btn btn-primary" type="submit">Save</button>
-                </div>
-            )
-        }
-        else if(this.props.mode === 'Edit') {
-            buttons = (
-                <div className="col-sm-4 col-sm-offset-9">
-                    <button className="btn btn-white" type="button" onClick={this.handleBack.bind(this)}>Cancel</button>&nbsp;
-                    <button className="btn btn-primary" type="submit">Save</button>&nbsp;
-                    <button className="btn btn-primary" type="button" onClick={this.handleDelete.bind(this)}>Delete</button>
-                </div>
-            );
-        }
         return (
             <form className="form-horizontal" onSubmit={this.handleSubmit.bind(this)}>
-                <ConfirmDialog
-                    title="Delete"
-                    body={<div>
-                            <p>You are about to delete this data.</p>
-                            <p>Do you want to proceed?</p>
-                          </div>}
-                    handleYes={this.handleYes}
-                    handleNo={this.handleNo}
-                />
                 <div className="ibox-content">
                     <div className="form-group">
-                        <div className="col-sm-12">
-                            <label className="col-sm-4 control-label">Rating</label>
-                            <div className="col-sm-8">
-                                <input
-                                    type="text"
-                                    placeholder="50 characters allowed"
-                                    maxLength={50}
-                                    className="form-control m-b"
-                                    onChange={this.handleRatingChange.bind(this)}
-                                    value={this.state.rating}
-                                    required
-                                />
+                        <div className="row m-b">
+                            <div className="col-sm-12">
+                                <label className="col-sm-4 control-label">Rating</label>
+                                <div className="col-sm-8">
+                                    <input
+                                        type="text"
+                                        placeholder="50 characters allowed"
+                                        maxLength={50}
+                                        className="form-control m-b"
+                                        onChange={this.handleRatingChange.bind(this)}
+                                        value={this.state.rating}
+                                        required
+                                    />
+                                </div>
+                            </div>
+                        </div>
+                        <div className="row m-b">
+                            <div className="col-sm-12">
+                                <label className="col-sm-4 control-label">Active</label>
+                                <div className="col-sm-8">
+                                    <input
+                                        type="checkbox"
+                                        checked={this.state.active}
+                                        onClick={this.handleActiveChange.bind(this)}
+                                    />
+                                </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="ibox-content">
                     <div className="form-group">
-                      {buttons}
+                        <div className="col-sm-4 col-sm-offset-10">
+                            <button className="btn btn-white" type="button" onClick={this.handleBack.bind(this)}>Cancel</button>&nbsp;
+                            <button className="btn btn-primary" type="submit">Save</button>
+                        </div>
                     </div>
                 </div>
             </form>

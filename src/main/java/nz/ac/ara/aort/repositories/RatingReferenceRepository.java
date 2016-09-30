@@ -7,6 +7,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.data.repository.query.Param;
 
+import java.util.List;
+
 /**
  * Created by a9jr5626 on 8/17/16.
  */
@@ -14,4 +16,7 @@ public interface RatingReferenceRepository extends CrudRepository<RatingReferenc
 
     @Query("SELECT r FROM RatingReference r WHERE r.rating LIKE %:rating%")
     Page<RatingReference> findByRating(@Param("rating") String rating, Pageable pageable);
+
+    @Query("SELECT r FROM RatingReference r WHERE r.active = :active")
+    List<RatingReference> findByActive(@Param("active") boolean active);
 }

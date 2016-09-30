@@ -11,9 +11,11 @@ class RatingRow extends Component {
     }
 
     render() {
+        var active = this.props.rating.active === true ? "Yes" : "No";
         return (
             <tr>
                 <td><a href='#' onClick={this.handleRatingView.bind(this)}>{this.props.rating.rating}</a></td>
+                <td>{active}</td>
             </tr>
         )
     }
@@ -36,7 +38,8 @@ class RatingTable extends Component {
             <table className="table table-striped table-bordered table-hover dataTables-example" >
                 <thead>
                     <tr>
-                        <th width='50%'>Rating</th>
+                        <th width='60%'>Rating</th>
+                        <th width='40%'>Active</th>
                     </tr>
                 </thead>
                 <tbody>

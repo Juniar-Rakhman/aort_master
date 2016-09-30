@@ -7,7 +7,11 @@ class StrengthImprovementRow extends Component {
     }
 
     handleStrengthImprovementView(index) {
-        this.props.redirectTo('editStrengthImprovement', {id: this.props.id[index], category: this.props.category, criteria: this.props.criteria[index]});
+        this.props.redirectTo('editStrengthImprovement', {
+            id: this.props.id[index],
+            category: this.props.category,
+            criteria: this.props.criteria[index],
+            active: this.props.active[index]});
     }
 
     handleCategoryUpdate() {
@@ -28,6 +32,7 @@ class StrengthImprovementRow extends Component {
                         {this.props.criteria[0]}
                      </a>
                 </td>
+                <td>{this.props.active[0] === true ? "Yes" : "No"}</td>
             </tr>
         );
         if(this.props.criteria.length > 1) {
@@ -39,6 +44,7 @@ class StrengthImprovementRow extends Component {
                                 {this.props.criteria[i]}
                             </a>
                         </td>
+                        <td>{this.props.active[i] === true ? "Yes" : "No"}</td>
                     </tr>
                 );
             }
@@ -57,16 +63,19 @@ class StrengthImprovementTable extends Component {
         var rows = [];
         var criteria = [];
         var id = [];
+        var active = [];
         var count = 1;
         this.props.strengthImprovements.forEach(function(strengthImprovement, index) {
             criteria.push(strengthImprovement.criteria);
             id.push(strengthImprovement.id);
+            active.push(strengthImprovement.active);
             if(this.props.strengthImprovements[index+1] != null) {
                 if(this.props.strengthImprovements[index+1].category != strengthImprovement.category) {
                     rows.push(<StrengthImprovementRow
                        category={strengthImprovement.category}
                        criteria={criteria}
                        id={id}
+                       active={active}
                        count={count}
                        key={strengthImprovement.id}
                        redirectTo={this.props.redirectTo}
@@ -74,6 +83,7 @@ class StrengthImprovementTable extends Component {
                     count = 1;
                     criteria = [];
                     id = [];
+                    active = [];
                 }
                 else {
                     count++;
@@ -84,6 +94,7 @@ class StrengthImprovementTable extends Component {
                    category={strengthImprovement.category}
                    criteria={criteria}
                    id={id}
+                   active={active}
                    count={count}
                    key={strengthImprovement.id}
                    redirectTo={this.props.redirectTo}
@@ -95,8 +106,9 @@ class StrengthImprovementTable extends Component {
             <table className="table table-striped table-bordered table-hover dataTables-example" >
                 <thead>
                     <tr>
-                        <th width='50%'>Category</th>
-                        <th width='50%'>Criteria</th>
+                        <th width='40%'>Category</th>
+                        <th width='40%'>Criteria</th>
+                        <th width='10%'>Active</th>
                     </tr>
                 </thead>
                 {rows}

@@ -39,6 +39,14 @@ class ParamRow extends Component{
         }, this);
     }
 
+    populateDepartment(){
+        var rows = [];
+        this.props.departments.forEach(function(department){
+          rows.push(<option value={department.id}>{department.department}</option>);
+        });
+        return rows;
+    }
+
     componentDidMount() {
         var configs =
         {
@@ -107,37 +115,6 @@ class ParamRow extends Component{
             allowClear: true
         };
 
-        var deptConfigs =
-        {
-            ajax: {
-                url: '/api/departmentReferences',
-                data: function(params){
-                    return {
-                        name: params.term
-                    }
-                },
-                processResults: function (data) {
-                    return {
-                        results: data
-                    }
-                },
-                delay: 250
-            },
-            templateResult: function(dept){
-                return dept.department;
-            },
-            templateSelection: function formatRepoSelection (dept) {
-                if(dept===undefined){
-                    return "Please select";
-                }
-                else{
-                    if(dept.department != null){
-                        return dept.department;
-                    }
-                    return "Please select";
-                }
-            }
-        };
         $('#staff-'+this.props.parameter.id).select2(configs);
         $('#staff-'+this.props.parameter.id).on('change', this.handleDataChange.bind(this));
 
@@ -145,7 +122,7 @@ class ParamRow extends Component{
         $('#multiStaff-'+this.props.parameter.id).on('select2:select', this.handleArraySelected.bind(this));
         $('#multiStaff-'+this.props.parameter.id).on('select2:unselect', this.handleArrayUnselected.bind(this));
 
-        $('#department-'+this.props.parameter.id).select2(deptConfigs);
+        $('#department-'+this.props.parameter.id).select2({placeholder: "Please select", allowClear: true});
         $('#department-'+this.props.parameter.id).on('change', this.handleDataChange.bind(this));
 
         $('#datePicker-'+this.props.parameter.id).datetimepicker({
@@ -190,6 +167,7 @@ class ParamRow extends Component{
                         value={this.state.value}
                         required={this.props.parameter.mandatory}>
                         <option></option>
+                        {this.populateDepartment()}
                 </select>
             );
         }else {
@@ -281,7 +259,7 @@ class ParamsForm extends Component{
         var parameters = this.props.report.parameters;
         var row=[];
         parameters.forEach(function(parameter){
-            row.push(<ParamRow key={parameter.id} parameter={parameter} updateParamsData={this.updateParamsData}/>)
+            row.push(<ParamRow key={parameter.id} parameter={parameter} updateParamsData={this.updateParamsData} departments={this.props.departments}/>)
         },this);
         return (
     	    <form className="form-horizontal" onSubmit={this.handlePrint.bind(this)}>
@@ -304,30 +282,60 @@ class ParamsForm extends Component{
 class ReportParams extends Component{
     constructor(props) {
         super(props);
+        this.state = {
+            departments : null
+        }
+    }
+
+    getDepartments(){
+        $.ajax({
+            type: 'GET',
+            url: "/api/departmentReferences/search/findByActive?active=1",
+            success: function(response) {
+              this.setState({departments: response['_embedded']['departmentReferences']});
+            }.bind(this),
+            error: function(xhr, status, err) {
+              console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
+    }
+
+    componentWillMount() {
+        this.getDepartments();
     }
 
     render(){
-        return(
-			<div className="wrapper-content animated fadeInRight">
-		        <div className="row">
-		          <div className="col-lg-12">
-		            <div className="ibox float-e-margins">
-		                <div className="ibox-title">
-                            <h2>{this.props.report.name} Report Parameters</h2>
+        if(this.state.departments != null) {
+            return(
+                <div className="wrapper-content animated fadeInRight">
+                    <div className="row">
+                      <div className="col-lg-12">
+                        <div className="ibox float-e-margins">
+                            <div className="ibox-title">
+                                <h2>{this.props.report.name} Report Parameters</h2>
+                            </div>
+                            <div className="ibox-content">
+                                <ParamsForm
+                                    redirectTo={this.props.redirectTo}
+                                    report={this.props.report}
+                                    staff={this.props.staff}
+                                    departments={this.state.departments}
+                                />
+                            </div>
                         </div>
-                        <div className="ibox-content">
-                            <ParamsForm
-                                redirectTo={this.props.redirectTo}
-                                report={this.props.report}
-                                staff={this.props.staff}
-                                redirectTo={this.props.redirectTo}
-                            />
-                        </div>
-		            </div>
-		          </div>
-		        </div>
-		    </div>
-        );
+                      </div>
+                    </div>
+                </div>
+            );
+        }
+        else {
+            return (
+              <div className="wrapper-content" style={{textAlign: 'center'}}>
+                <i className="fa fa-spinner fa-pulse fa-3x fa-fw" aria-hidden="true"></i>
+                <span className="sr-only">Loading...</span>
+              </div>
+            );
+        }
     }
 }
 
