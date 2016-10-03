@@ -6,15 +6,24 @@ import nz.ac.ara.aort.entities.Report;
 import nz.ac.ara.aort.entities.UserRole;
 import nz.ac.ara.aort.repositories.ReportRepository;
 import nz.ac.ara.aort.repositories.UserRoleRepository;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.InputStream;
+import java.net.Authenticator;
+import java.net.PasswordAuthentication;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -34,9 +43,12 @@ public class ReportController {
     @Value("${spring.report.url}")
     private String reportURL;
 
-    @RequestMapping(value = "/api/reports/execute", method = RequestMethod.POST)
-    public ResponseEntity<Object> reportExecute(@RequestBody Report requestReport) {
-        JSONObject response = new JSONObject();
+    @RequestMapping(value = "/api/reports/execute", method = RequestMethod.POST, produces = "application/pdf")
+    public ResponseEntity<byte[]> reportExecute(@RequestBody Report requestReport) {
+
+        byte[] pdfContent = null;
+        HttpHeaders headers = new HttpHeaders();
+
         try {
             UserRole userRole = userRoleRepo.findByStaffId(requestReport.getUserId());
             if (userRole == null) {
@@ -69,49 +81,55 @@ public class ReportController {
                 defaultMap.put(param.getName(), param.getValue());
             }
 
-            String url = reportURL + "/Pages/ReportViewer.aspx?/" + existingReport.getPath() + "&rs:Command=Render";
+            String reportUrl = reportURL + "/Pages/ReportViewer.aspx?/" + existingReport.getPath() + "&rs:Format=PDF";
             for (Parameter reqParam : requestReport.getParameters()) {
                 if(!reqParam.getType().contains("Multi")) {
-                    url += "&" + reqParam.getPath();
+                    reportUrl += "&" + reqParam.getPath();
                 }
                 if(!reqParam.getMandatory() && reqParam.getValue().equals("")) {
-                    url += ":isNull=true";
+                    reportUrl += ":isNull=true";
                 }
                 else {
                     if (reqParam.getValue() != null) {
                         if(reqParam.getType().contains("Multi")) {
                             String[] values = reqParam.getValue().split(";");
                             for(String value : values) {
-                                url += "&" + reqParam.getPath() + "=" + value;
+                                reportUrl += "&" + reqParam.getPath() + "=" + value;
                             }
                         }
                         else {
-                            url += "=" + reqParam.getValue();
+                            reportUrl += "=" + reqParam.getValue();
                         }
                     } else {
-                        url += "=" + defaultMap.get(reqParam.getName());
+                        reportUrl += "=" + defaultMap.get(reqParam.getName());
                     }
                 }
             }
 
             if(requestReport.getPath().equals("ObservationRecordsParent")
                     || requestReport.getPath().equals("TeamObservation")) {
-                url += "&User=" + requestReport.getUserId();
+                reportUrl += "&User=" + requestReport.getUserId();
             }
 
-            response.put("result", url);
-            response.put("success", true);
-            
-//            URI redirect = new URI(reportURL);
-//            HttpHeaders httpHeaders = new HttpHeaders();
-//            httpHeaders.setLocation(redirect);
-//            return new ResponseEntity<>(httpHeaders, HttpStatus.SEE_OTHER);
-            
+            URL url = new URL(reportUrl);
+            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+            InputStream in = connection.getInputStream();
+
+            File dir = new File("reports");
+            if(!dir.exists()) {
+                dir.mkdir();
+            }
+            File dest = new File("reports/" + requestReport.getPath() + ".pdf");
+            Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+            pdfContent = Base64.encodeBase64(Files.readAllBytes(dest.toPath()));
+            in.close();
+
+            headers.setContentType(MediaType.APPLICATION_PDF);
+            headers.add("content-disposition", "inline;filename=" + dest.getName());
+            dest.delete();
         } catch (Exception e) {
             e.printStackTrace();
-            response.put("result", e.getMessage());
-            response.put("success", false);
         }
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<byte[]>(pdfContent, headers, HttpStatus.OK);
     }
 }

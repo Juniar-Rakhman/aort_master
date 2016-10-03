@@ -48,6 +48,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletResponse;
 import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
@@ -333,15 +334,18 @@ public class ObservationController {
         Staff leadObserver = staffRepo.findOne(newObs.getObserverPrimaryId());
         Staff peerObserver = staffRepo.findOne(newObs.getObserverSecondaryId());
         Staff teacher = staffRepo.findOne(newObs.getStaffId());
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String strDate;
 
         // Moderator/QA Ticks ‘Moderator Feedback Provided’ and click ‘Save’
         if (oldObs.getModerated() != newObs.getModerated()) {
             String subject = "Moderation Feedback Complete";
             String ccs[] = {peerObserver.getEmail()};
+            strDate = sdf.format(newObs.getDate());
             
             String body = "Dear " + leadObserver.getFirstName() + " " + leadObserver.getLastName() + ",\n" +
                     "\n" +
-                    "The initial moderation for the observation record for " + teacher.getFirstName() + " " + teacher.getLastName() + " on " + newObs.getDate() + ", has been complete.\n" +
+                    "The initial moderation for the observation record for " + teacher.getFirstName() + " " + teacher.getLastName() + " on " + strDate + ", has been complete.\n" +
                     "\n" +
                     "Please note the following areas were commented on:\n" +
                     "\n" +
@@ -360,11 +364,12 @@ public class ObservationController {
                     "\n" +
                     moderator.getFirstName() + " " + moderator.getLastName();
 
-            EmailUtils.sendEmail(smtpServer, moderator.getEmail(), moderator.getEmail(), ccs, subject, body, false, null);
+            EmailUtils.sendEmail(smtpServer, moderator.getEmail(), leadObserver.getEmail(), ccs, subject, body, false, null);
         }
 
         //Lead Observer Ticks ‘Record Updated with Moderator Feedback’ and click ‘Save’
         if (oldObs.getAppliedFeedback() != newObs.getAppliedFeedback()) {
+            strDate = sdf.format(newObs.getDate());
 
             String subject = "Applied Feedback";
 
@@ -372,7 +377,7 @@ public class ObservationController {
                     "\n" +
                     "I have applied your feedback " +
                     "to the observation record for " + teacher.getFirstName() + " " + teacher.getLastName() + " " +
-                    "on " + newObs.getDate() + ".\n" +
+                    "on " + strDate + ".\n" +
                     "Please review my latest changes.\n" +
                     "\n" +
                     "Regards\n" +
@@ -384,12 +389,13 @@ public class ObservationController {
 
         //Moderator clicks ‘Complete’ for an observation record
         if (oldObs.getCompleted() != newObs.getCompleted()) {
+            strDate = sdf.format(newObs.getDate());
 
             String subject = "Observation Record Complete";
 
             String body = "Dear " + leadObserver.getFirstName() + " " + leadObserver.getLastName() + ", \n" +
                     "\n" +
-                    "The observation record for " + teacher.getFirstName() + " " + teacher.getLastName() + " on " + newObs.getDate() + ", has now been completed.\n" +
+                    "The observation record for " + teacher.getFirstName() + " " + teacher.getLastName() + " on " + strDate + ", has now been completed.\n" +
                     "You can now arrange the professional conversation with this teacher.\n" +
                     "Regards\n" +
                     "\n" +

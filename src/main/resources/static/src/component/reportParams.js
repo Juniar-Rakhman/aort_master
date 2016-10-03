@@ -223,9 +223,9 @@ class ParamsForm extends Component{
             }
         });
         var report = Object.assign(this.state.reportData, {
-            userId: this.props.staff.id,
-            format: "PDF"
+            userId: this.props.staff.id
         });
+        delete report["_links"];
         var data = JSON.stringify(report);
         console.log(data);
          $.ajax({
@@ -233,20 +233,16 @@ class ParamsForm extends Component{
             url: "/api/reports/execute",
             contentType: "application/json",
             data: data,
-            success: function(response) {
-                if(response.success) {
-                    setTimeout(function(){
-                        window.open(response.result, '_blank');
-                        }, 1000);
-                    }
-                else {
-                    alert(response.result);
-                }
+            success: function(data) {
+                window.open("data:application/pdf;base64, " + escape(data));
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
          });
+//         window.open(
+//            "/api/reports/execute?report=" + data,
+//            "_blank");
 
          e.preventDefault();
     }

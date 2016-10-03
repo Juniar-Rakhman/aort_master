@@ -1726,23 +1726,10 @@ class Entry extends Component {
   }
 
   handlePrint() {
-      $.ajax({
-          type: 'GET',
-          url: "/api/print?userId=" + this.props.staff.id + "&observationId=" + this.state.observationData.id,
-          success: function(response) {
-              if(response.success) {
-                 setTimeout(function(){
-                     window.open(response.result, '_blank');
-                     }, 1000);
-              }
-              else {
-                 alert(response.result);
-              }
-          }.bind(this),
-          error: function(xhr, status, err) {
-              console.error(this.props.url, status, err.toString());
-          }.bind(this)
-      });
+    window.open(
+        "/api/print?userId=" + this.props.staff.id + "&observationId=" + this.state.observationData.id,
+        "_blank");
+    e.preventDefault();
   }
 
   handleEmail() {
