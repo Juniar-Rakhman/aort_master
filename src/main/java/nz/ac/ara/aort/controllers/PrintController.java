@@ -8,10 +8,13 @@ import nz.ac.ara.aort.repositories.ObservationRepository;
 import nz.ac.ara.aort.repositories.StaffRepository;
 import nz.ac.ara.aort.repositories.UserRoleRepository;
 import nz.ac.ara.aort.utilities.EmailUtils;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -19,8 +22,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.net.ssl.HttpsURLConnection;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.Authenticator;
 import java.net.PasswordAuthentication;
 import java.net.URL;
@@ -71,12 +77,12 @@ public class PrintController {
                 URL url = new URL(reportUrl);
 
                 // Set default authentication
-                Authenticator.setDefault(new Authenticator() {
-                    @Override
-                    protected PasswordAuthentication getPasswordAuthentication() {
-                        return new PasswordAuthentication(username, password.toCharArray());
-                    }
-                });
+//                Authenticator.setDefault(new Authenticator() {
+//                    @Override
+//                    protected PasswordAuthentication getPasswordAuthentication() {
+//                        return new PasswordAuthentication(username, password.toCharArray());
+//                    }
+//                });
 
                 HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
                 InputStream in = connection.getInputStream();
@@ -109,32 +115,43 @@ public class PrintController {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/api/print", method = RequestMethod.GET)
-    public ResponseEntity<Object> print(@RequestParam("userId") String userId, @RequestParam("observationId") int observationId) {
+    @RequestMapping(value = "/api/print", method = RequestMethod.GET, produces = "application/pdf")
+    public ResponseEntity<byte[]> print(@RequestParam("userId") String userId, @RequestParam("observationId") int observationId) {
 
-        JSONObject response = new JSONObject();
-        Observation observation = observationRepository.findOne((long)observationId);
+        Observation observation = observationRepository.findOne((long) observationId);
         UserRole userRole = userRoleRepository.findByStaffId(userId);
+        byte[] pdfContent = null;
+        HttpHeaders headers = new HttpHeaders();
 
-        try{
-            if(observation.getObserverPrimaryId().equals(userId)
+        try {
+            if (observation.getObserverPrimaryId().equals(userId)
                     || observation.getObserverSecondaryId().equals(userId)
                     || BooleanUtils.isTrue(userRole.getQualityAssurance())
                     || BooleanUtils.isTrue(userRole.getSystemAdmin())) {
                 String reportUrl = reportURL + "?/Observation&rs:Format=PDF&ObservationId=" + observationId;
-                response.put("result", reportUrl);
-                response.put("success", true);
-            }
-            else {
+                URL url = new URL(reportUrl);
+                HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
+                InputStream in = connection.getInputStream();
+
+                File dir = new File("reports");
+                if(!dir.exists()) {
+                    dir.mkdir();
+                }
+                File dest = new File("reports/ObservationReport#" + observationId + ".pdf");
+                Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                pdfContent = Files.readAllBytes(dest.toPath());
+                in.close();
+
+                headers.setContentType(MediaType.APPLICATION_PDF);
+                headers.add("content-disposition", "inline;filename=" + dest.getName());
+                dest.delete();
+            } else {
                 throw new Exception("You do not have access to print observation.");
             }
-        }
-        catch(Exception e) {
+        } catch (Exception e) {
             e.printStackTrace();
-            response.put("result", e.getMessage());
-            response.put("success", false);
         }
 
-        return new ResponseEntity<>(response, HttpStatus.OK);
+        return new ResponseEntity<byte[]>(pdfContent, headers, HttpStatus.OK);
     }
 }
