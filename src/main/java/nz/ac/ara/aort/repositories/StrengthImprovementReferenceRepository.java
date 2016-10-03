@@ -30,6 +30,6 @@ public interface StrengthImprovementReferenceRepository extends CrudRepository<S
     @Query("UPDATE StrengthImprovementReference SET category = :newCategory WHERE category = :oldCategory")
     void updateCategory(@Param("oldCategory") String oldCategory, @Param("newCategory") String newCategory);
 
-    @Query("SELECT s FROM StrengthImprovementReference s WHERE s.active = :active")
+    @Query("SELECT s FROM StrengthImprovementReference s WHERE s.active = :active ORDER BY category ASC")
     List<StrengthImprovementReference> findByActive(@Param("active") boolean active);
 }
