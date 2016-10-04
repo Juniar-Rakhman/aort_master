@@ -933,7 +933,7 @@ class ObserveEntries extends Component{
 
         rows.push(<ObserveEntryRow
                   categoryItem={rowData}
-                  key={categoryItem.criteria}
+                  key={categoryItem.id}
                   criteria={categoryItem.criteria}
                   mode={this.props.mode}
                   updateObservation={this.props.updateObservation}
