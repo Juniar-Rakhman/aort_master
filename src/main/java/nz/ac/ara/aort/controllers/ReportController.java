@@ -86,7 +86,7 @@ public class ReportController {
                 defaultMap.put(param.getName(), param.getValue());
             }
 
-            String reportUrl = reportURL + "/Pages/ReportViewer.aspx?/" + existingReport.getPath() + "&rs:Format=PDF";
+            String reportUrl = reportURL + existingReport.getPath() + "&rs:Format=PDF";
             for (Parameter reqParam : requestReport.getParameters()) {
                 if(!reqParam.getType().contains("Multi")) {
                     reportUrl += "&" + reqParam.getPath();
@@ -117,7 +117,7 @@ public class ReportController {
             }
 
             InputStream in = ReportUtils.buildInputStream(reportUrl, secureReport, username, password);
-            File dest = new File("reports/" + requestReport.getPath() + ".pdf");
+            File dest = new File(requestReport.getPath() + ".pdf");
             Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
             pdfContent = Base64.encodeBase64(Files.readAllBytes(dest.toPath()));
             in.close();
