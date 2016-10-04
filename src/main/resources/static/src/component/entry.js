@@ -1468,7 +1468,7 @@ class Comment2 extends Component {
       <div className="row">
         <div className="col-sm-12">
           <div className="row">
-            <label className="col-sm-2 control-label">Moderator Comment 2 - <i>Strength and Area of Improvements</i></label>
+            <label className="col-sm-2 control-label">Moderator Comment 2 - <i>Strengths & Improvements</i></label>
             <div className="col-sm-10">
               <textarea
                   type="text"
@@ -1506,7 +1506,7 @@ class Comment3 extends Component {
       <div className="row">
         <div className="col-sm-12">
           <div className="row">
-            <label className="col-sm-2 control-label">Moderator Comment 3 - <i>Rating and General Comments</i></label>
+            <label className="col-sm-2 control-label">Moderator Comment 3 - <i>Rating & General Comments</i></label>
             <div className="col-sm-10">
               <textarea
                   type="text"
