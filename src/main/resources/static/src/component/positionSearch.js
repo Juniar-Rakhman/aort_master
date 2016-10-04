@@ -123,8 +123,10 @@ class PositionSearch extends Component {
             type: 'GET',
             url: "api/positions/search/findByTitle?title=" + title + "&page=" + this.state.page + "&size=" + this.state.size,
             success: function(response) {
-                this.setState({positions: response["_embedded"]["positions"]});
-                this.setState({totalPages: response["page"]["totalPages"]});
+                this.setState({
+                    positions: response["content"],
+                    totalPages: response["totalPages"]
+                });
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
