@@ -19,14 +19,14 @@ public final class ReportUtils {
     public static InputStream buildInputStream(String reportUrl, Boolean secureReport, String username, String password) throws IOException {
         URL url = new URL(reportUrl);
         InputStream in;
+        // Set default authentication
+        Authenticator.setDefault(new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(username, password.toCharArray());
+            }
+        });
         if (secureReport) {
-            // Set default authentication
-            Authenticator.setDefault(new Authenticator() {
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(username, password.toCharArray());
-                }
-            });
             HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
             in = connection.getInputStream();
         } else {
