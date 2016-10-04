@@ -29,7 +29,20 @@ public class PositionController {
     @RequestMapping(value = "/api/positions", method = RequestMethod.GET)
     public ResponseEntity<Page> positionFindAll(@RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
-        List<Position> positions = positionRepo.findAll();
+        List<Position> positions = (List<Position>)positionRepo.findAll();
+
+        PagedListHolder<Position> pageList = new PagedListHolder<>(positions);
+        pageList.setPage(pageRequest.getPageNumber());
+        pageList.setPageSize(pageRequest.getPageSize());
+
+        Page<Position> positionPage = new PageImpl<>(fetchPosition(pageList.getPageList()), pageRequest, positions.size());
+        return new ResponseEntity<>(positionPage, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/api/positions/search/findByTitle", method = RequestMethod.GET)
+    public ResponseEntity<Page> positionFindByTitle(@RequestParam("title") String title, @RequestParam("page") int page, @RequestParam("size") int size) {
+        Pageable pageRequest = new PageRequest(page, size);
+        List<Position> positions = positionRepo.findByTitle(title);
 
         PagedListHolder<Position> pageList = new PagedListHolder<>(positions);
         pageList.setPage(pageRequest.getPageNumber());
@@ -49,6 +62,5 @@ public class PositionController {
 
         return positions;
     }
-
 
 }
