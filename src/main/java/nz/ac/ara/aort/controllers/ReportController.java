@@ -1,11 +1,11 @@
 package nz.ac.ara.aort.controllers;
 
-import net.minidev.json.JSONObject;
 import nz.ac.ara.aort.entities.Parameter;
 import nz.ac.ara.aort.entities.Report;
 import nz.ac.ara.aort.entities.UserRole;
 import nz.ac.ara.aort.repositories.ReportRepository;
 import nz.ac.ara.aort.repositories.UserRoleRepository;
+import nz.ac.ara.aort.utilities.ReportUtils;
 import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -15,17 +15,11 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import javax.net.ssl.HttpsURLConnection;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.InputStream;
-import java.net.Authenticator;
-import java.net.PasswordAuthentication;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -43,6 +37,15 @@ public class ReportController {
     @Value("${spring.report.url}")
     private String reportURL;
 
+    @Value("${spring.report.auth.username}")
+    private String username;
+
+    @Value("${spring.report.auth.password}")
+    private String password;
+
+    @Value("${spring.report.url.secure}")
+    private Boolean secureReport;
+    
     @RequestMapping(value = "/api/reports/execute", method = RequestMethod.POST, produces = "application/pdf")
     public ResponseEntity<byte[]> reportExecute(@RequestBody Report requestReport) {
 
@@ -56,15 +59,17 @@ public class ReportController {
             }
 
             boolean hasAccess = false;
-            if (requestReport.getPath().equals("ObserverPerformanceParent")) {
-                hasAccess = userRole.getQualityAssurance() || userRole.getSystemAdmin();
-            }
-            else if (requestReport.getPath().equals("TeamObservation")) {
-                hasAccess = userRole.getGeneral();
-            }
-            else if (requestReport.getPath().equals("AcademicStaffObsOverview")
-                    || requestReport.getPath().equals("ObservationRecordsParent")) {
-                hasAccess = userRole.getGeneral() || userRole.getQualityAssurance() || userRole.getSystemAdmin();
+            switch (requestReport.getPath()) {
+                case "ObserverPerformanceParent":
+                    hasAccess = userRole.getQualityAssurance() || userRole.getSystemAdmin();
+                    break;
+                case "TeamObservation":
+                    hasAccess = userRole.getGeneral();
+                    break;
+                case "AcademicStaffObsOverview":
+                case "ObservationRecordsParent":
+                    hasAccess = userRole.getGeneral() || userRole.getQualityAssurance() || userRole.getSystemAdmin();
+                    break;
             }
 
             if(!hasAccess) {
@@ -111,14 +116,7 @@ public class ReportController {
                 reportUrl += "&User=" + requestReport.getUserId();
             }
 
-            URL url = new URL(reportUrl);
-            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-            InputStream in = connection.getInputStream();
-
-            File dir = new File("reports");
-            if(!dir.exists()) {
-                dir.mkdir();
-            }
+            InputStream in = ReportUtils.buildInputStream(reportUrl, secureReport, username, password);
             File dest = new File("reports/" + requestReport.getPath() + ".pdf");
             Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
             pdfContent = Base64.encodeBase64(Files.readAllBytes(dest.toPath()));
@@ -130,6 +128,6 @@ public class ReportController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<byte[]>(pdfContent, headers, HttpStatus.OK);
+        return new ResponseEntity<>(pdfContent, headers, HttpStatus.OK);
     }
 }

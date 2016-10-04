@@ -156,6 +156,8 @@ public class ObservationController {
     @RequestMapping(value = "/api/observations/export", method = RequestMethod.GET)
     public void observationExport(@RequestParam("userId") String userId, @RequestParam("startDate") String startDate, @RequestParam("endDate") String endDate, HttpServletResponse response) {
         try {
+            SimpleDateFormat sdf = new SimpleDateFormat("dd-MM-yyyy");
+            String formattedDate = sdf.format(new Date(Calendar.getInstance().getTime().getTime()));
             UserRole userRole = userRoleRepo.findByStaffId(userId);
             if(BooleanUtils.isTrue(userRole.getSystemAdmin())) {
                 SearchFilter sf = new SearchFilter();
@@ -171,7 +173,7 @@ public class ObservationController {
                 List<Observation> observationList = searchObservationByFilter(sf);
 
                 response.setContentType("data:text/csv;charset=utf-8");
-                String reportName = "Formal Observation Records <" + new Date(Calendar.getInstance().getTime().getTime()) + ">.csv";
+                String reportName = "Formal Observation Records <" + formattedDate + ">.csv";
                 response.setHeader("Content-disposition", "attachment;filename=" + reportName);
 
                 ICsvMapWriter mapWriter = new CsvMapWriter(response.getWriter(), CsvPreference.STANDARD_PREFERENCE);

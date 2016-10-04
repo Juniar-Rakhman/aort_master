@@ -8,6 +8,7 @@ import nz.ac.ara.aort.repositories.ObservationRepository;
 import nz.ac.ara.aort.repositories.StaffRepository;
 import nz.ac.ara.aort.repositories.UserRoleRepository;
 import nz.ac.ara.aort.utilities.EmailUtils;
+import nz.ac.ara.aort.utilities.ReportUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,15 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStream;
-import java.net.Authenticator;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.PasswordAuthentication;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 
@@ -61,7 +55,7 @@ public class PrintController {
 
     @Value("${spring.report.url.secure}")
     private Boolean secureReport;
-    
+
     @RequestMapping(value = "/api/mail/send", method = RequestMethod.GET)
     public ResponseEntity<Object> sendReportMail(@RequestParam("userId") String userId, @RequestParam("observationId") int observationId) {
 
@@ -75,9 +69,8 @@ public class PrintController {
                 || BooleanUtils.isTrue((userRole.getSystemAdmin()))) {
             Staff staff = staffRepository.findOne(userId);
             try {
-                String reportUrl = reportURL + "?/Observation&rs:Format=PDF&ObservationId=" + observationId;
-                URL url = new URL(reportUrl);
-                InputStream in = buildInputStream(reportUrl);
+                String reportUrl = reportURL + "Observation&rs:Format=PDF&ObservationId=" + observationId;
+                InputStream in = ReportUtils.buildInputStream(reportUrl, secureReport, username, password);
                 File dest = new File("ObservationReport#" + observationId + ".pdf");
                 Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 in.close();
@@ -120,8 +113,8 @@ public class PrintController {
                     || observation.getObserverSecondaryId().equals(userId)
                     || BooleanUtils.isTrue(userRole.getQualityAssurance())
                     || BooleanUtils.isTrue(userRole.getSystemAdmin())) {
-                String reportUrl = reportURL + "?/Observation&rs:Format=PDF&ObservationId=" + observationId;
-                InputStream in = buildInputStream(reportUrl);
+                String reportUrl = reportURL + "Observation&rs:Format=PDF&ObservationId=" + observationId;
+                InputStream in = ReportUtils.buildInputStream(reportUrl, secureReport, username, password);
                 File dest = new File("ObservationReport#" + observationId + ".pdf");
                 Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 pdfContent = Files.readAllBytes(dest.toPath());
@@ -136,26 +129,7 @@ public class PrintController {
             e.printStackTrace();
         }
 
-        return new ResponseEntity<byte[]>(pdfContent, headers, HttpStatus.OK);
+        return new ResponseEntity<>(pdfContent, headers, HttpStatus.OK);
     }
 
-    private InputStream buildInputStream(String reportUrl) throws IOException {
-        URL url = new URL(reportUrl);
-        InputStream in;
-        if (secureReport) {
-            // Set default authentication
-            Authenticator.setDefault(new Authenticator() {
-                @Override
-                protected PasswordAuthentication getPasswordAuthentication() {
-                    return new PasswordAuthentication(username, password.toCharArray());
-                }
-            });
-            HttpsURLConnection connection = (HttpsURLConnection) url.openConnection();
-            in = connection.getInputStream();
-        } else {
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            in = connection.getInputStream();
-        }
-        return in;
-    }
 }
