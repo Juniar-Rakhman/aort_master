@@ -228,23 +228,36 @@ class ParamsForm extends Component{
         delete report["_links"];
         var data = JSON.stringify(report);
         console.log(data);
-         $.ajax({
+        $.ajax({
             type: 'POST',
             url: "/api/reports/execute",
             contentType: "application/json",
             data: data,
             success: function(data) {
-                window.open("data:application/pdf;base64, " + escape(data));
+                // decode base64 string
+                var binary = atob(data);
+                // create ArrayBuffer with binary length
+                var buffer = new ArrayBuffer(binary.length);
+                // create 8-bit Array
+                var view = new Uint8Array(buffer);
+                // save unicode of binary data into 8-bit Array
+                for (var i = 0; i < binary.length; i++) {
+                    view[i] = binary.charCodeAt(i);
+                }
+                // create pdf blob file
+                var blob = new Blob([view], {type: "application/pdf"});
+                // create object URL
+                var url = URL.createObjectURL(blob);
+                // construct the viewer and open it in new tab
+                var viewerUrl = "/viewer?file=" + encodeURIComponent(url);
+                window.open(viewerUrl, "_blank");
             }.bind(this),
             error: function(xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
-         });
-//         window.open(
-//            "/api/reports/execute?report=" + data,
-//            "_blank");
+        });
 
-         e.preventDefault();
+        e.preventDefault();
     }
 
     handleBack() {

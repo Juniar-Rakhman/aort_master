@@ -45,7 +45,7 @@ public class ReportController {
 
     @Value("${spring.report.url.secure}")
     private Boolean secureReport;
-    
+
     @RequestMapping(value = "/api/reports/execute", method = RequestMethod.POST, produces = "application/pdf")
     public ResponseEntity<byte[]> reportExecute(@RequestBody Report requestReport) {
 
@@ -128,6 +128,7 @@ public class ReportController {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return new ResponseEntity<>(pdfContent, headers, HttpStatus.OK);
+
+        return new ResponseEntity<byte[]>(pdfContent, headers, HttpStatus.OK);
     }
 }

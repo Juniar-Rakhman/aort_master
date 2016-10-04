@@ -10,6 +10,7 @@ import nz.ac.ara.aort.repositories.UserRoleRepository;
 import nz.ac.ara.aort.utilities.EmailUtils;
 import nz.ac.ara.aort.utilities.ReportUtils;
 import org.apache.commons.lang.BooleanUtils;
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -117,7 +118,7 @@ public class PrintController {
                 InputStream in = ReportUtils.buildInputStream(reportUrl, secureReport, username, password);
                 File dest = new File("ObservationReport#" + observationId + ".pdf");
                 Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-                pdfContent = Files.readAllBytes(dest.toPath());
+                pdfContent = Base64.encodeBase64(Files.readAllBytes(dest.toPath()));
                 in.close();
                 headers.setContentType(MediaType.APPLICATION_PDF);
                 headers.add("content-disposition", "inline;filename=" + dest.getName());
