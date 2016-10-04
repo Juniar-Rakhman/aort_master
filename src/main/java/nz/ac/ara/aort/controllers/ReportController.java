@@ -113,7 +113,12 @@ public class ReportController {
 
             if(requestReport.getPath().equals("ObservationRecordsParent")
                     || requestReport.getPath().equals("TeamObservation")) {
-                reportUrl += "&User=" + requestReport.getUserId();
+                if(userRole.getGeneral()) {
+                    reportUrl += "&User=" + requestReport.getUserId();
+                }
+                else {
+                    reportUrl += "&User:isNull=true";
+                }
             }
 
             InputStream in = ReportUtils.buildInputStream(reportUrl, secureReport, username, password);
