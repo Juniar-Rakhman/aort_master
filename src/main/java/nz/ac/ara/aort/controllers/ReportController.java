@@ -126,7 +126,7 @@ public class ReportController {
             }
 
             InputStream in = ReportUtils.buildInputStream(reportUrl, secureReport, username, password);
-            logger.info("info report url : " + reportUrl);
+            logger.error("info report url : " + reportUrl);
             File dest = new File(requestReport.getPath() + ".pdf");
             Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
             pdfContent = Base64.encodeBase64(Files.readAllBytes(dest.toPath()));

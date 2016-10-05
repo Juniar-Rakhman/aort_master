@@ -119,7 +119,7 @@ public class PrintController {
                     || BooleanUtils.isTrue(userRole.getQualityAssurance())
                     || BooleanUtils.isTrue(userRole.getSystemAdmin())) {
                 String reportUrl = reportURL + "Observation&rs:Format=PDF&ObservationId=" + observationId;
-                logger.info("info report url : " + reportUrl);
+                logger.error("info report url : " + reportUrl);
                 InputStream in = ReportUtils.buildInputStream(reportUrl, secureReport, username, password);
                 File dest = new File("ObservationReport#" + observationId + ".pdf");
                 Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
