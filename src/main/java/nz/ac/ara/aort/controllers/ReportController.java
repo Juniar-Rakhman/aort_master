@@ -7,6 +7,8 @@ import nz.ac.ara.aort.repositories.ReportRepository;
 import nz.ac.ara.aort.repositories.UserRoleRepository;
 import nz.ac.ara.aort.utilities.ReportUtils;
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -46,6 +48,8 @@ public class ReportController {
     @Value("${spring.report.url.secure}")
     private Boolean secureReport;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    
     @RequestMapping(value = "/api/reports/execute", method = RequestMethod.POST, produces = "application/pdf")
     public ResponseEntity<byte[]> reportExecute(@RequestBody Report requestReport) {
 
@@ -122,15 +126,16 @@ public class ReportController {
             }
 
             InputStream in = ReportUtils.buildInputStream(reportUrl, secureReport, username, password);
-            File dest = new File("reports/" + requestReport.getPath() + ".pdf");
+            logger.info("info report url : " + reportUrl);
+            File dest = new File(requestReport.getPath() + ".pdf");
             Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
             pdfContent = Base64.encodeBase64(Files.readAllBytes(dest.toPath()));
             in.close();
-
             headers.setContentType(MediaType.APPLICATION_PDF);
             headers.add("content-disposition", "inline;filename=" + dest.getName());
             dest.delete();
         } catch (Exception e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
 

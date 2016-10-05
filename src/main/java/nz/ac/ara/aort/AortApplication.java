@@ -10,8 +10,6 @@ import org.springframework.boot.web.support.SpringBootServletInitializer;
 @SpringBootApplication
 public class AortApplication {
 
-	private static final Logger log = LoggerFactory.getLogger(AortApplication.class);
-
 	public static void main(String[] args) {
 		SpringApplication.run(AortApplication.class, args);
 	}
