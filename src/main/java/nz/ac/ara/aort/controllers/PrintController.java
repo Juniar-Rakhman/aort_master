@@ -11,6 +11,8 @@ import nz.ac.ara.aort.utilities.EmailUtils;
 import nz.ac.ara.aort.utilities.ReportUtils;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.codec.binary.Base64;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpHeaders;
@@ -57,6 +59,8 @@ public class PrintController {
     @Value("${spring.report.url.secure}")
     private Boolean secureReport;
 
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
+    
     @RequestMapping(value = "/api/mail/send", method = RequestMethod.GET)
     public ResponseEntity<Object> sendReportMail(@RequestParam("userId") String userId, @RequestParam("observationId") int observationId) {
 
@@ -115,6 +119,7 @@ public class PrintController {
                     || BooleanUtils.isTrue(userRole.getQualityAssurance())
                     || BooleanUtils.isTrue(userRole.getSystemAdmin())) {
                 String reportUrl = reportURL + "Observation&rs:Format=PDF&ObservationId=" + observationId;
+                logger.info("info report url : " + reportUrl);
                 InputStream in = ReportUtils.buildInputStream(reportUrl, secureReport, username, password);
                 File dest = new File("ObservationReport#" + observationId + ".pdf");
                 Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
@@ -127,6 +132,7 @@ public class PrintController {
                 throw new Exception("You do not have access to print observation.");
             }
         } catch (Exception e) {
+            logger.error(e.getMessage());
             e.printStackTrace();
         }
 
