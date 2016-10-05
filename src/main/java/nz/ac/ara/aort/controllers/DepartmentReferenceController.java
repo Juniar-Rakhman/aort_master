@@ -2,6 +2,8 @@ package nz.ac.ara.aort.controllers;
 
 import nz.ac.ara.aort.entities.DepartmentReference;
 import nz.ac.ara.aort.repositories.DepartmentReferenceRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
@@ -27,7 +29,9 @@ public class DepartmentReferenceController {
     @Autowired
     DepartmentReferenceRepository departmentRefRepo;
 
-    @RequestMapping(value = "/api/departmentReferencesPage", method = RequestMethod.GET)
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @RequestMapping(value = "/api/departmentReferences/page", method = RequestMethod.GET)
     public ResponseEntity<Page> campusReferencesPage(@RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
         List<DepartmentReference> departmentReferences = (List<DepartmentReference>)departmentRefRepo.findAll();
@@ -52,16 +56,7 @@ public class DepartmentReferenceController {
             departmentRefRepo.save(departmentReference);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        return new ResponseEntity<>(departmentReference, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/api/departmentReferences", method = RequestMethod.PUT)
-    public ResponseEntity<DepartmentReference> departmentReferenceModify(@RequestBody DepartmentReference departmentReference) {
-        try {
-            departmentRefRepo.save(departmentReference);
-        } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return new ResponseEntity<>(departmentReference, HttpStatus.OK);
     }
@@ -72,6 +67,7 @@ public class DepartmentReferenceController {
             departmentRefRepo.delete(departmentReference.getId());
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.getMessage());
         }
         return new ResponseEntity<>(departmentReference, HttpStatus.OK);
     }

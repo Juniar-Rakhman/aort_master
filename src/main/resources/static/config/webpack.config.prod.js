@@ -24,7 +24,6 @@ if (!publicPath.endsWith('/')) {
 
 module.exports = {
   bail: true,
-  devtool: 'source-map',
   entry: [
     require.resolve('./polyfills'),
     path.join(paths.appSrc, 'index')

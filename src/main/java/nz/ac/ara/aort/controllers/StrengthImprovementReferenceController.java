@@ -3,6 +3,8 @@ package nz.ac.ara.aort.controllers;
 import nz.ac.ara.aort.entities.StrengthImprovementReference;
 import nz.ac.ara.aort.repositories.StrengthImprovementReferenceRepository;
 import nz.ac.ara.aort.entities.Category;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
@@ -28,7 +30,9 @@ public class StrengthImprovementReferenceController {
     @Autowired
     StrengthImprovementReferenceRepository strImpRefRepo;
 
-    @RequestMapping(value = "/api/strengthImprovementReferencesPage", method = RequestMethod.GET)
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @RequestMapping(value = "/api/strengthImprovementReferences/page", method = RequestMethod.GET)
     public ResponseEntity<Page> strengthImprovementReferencesPage(@RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
         List<StrengthImprovementReference> strengthImprovementReferences = (List<StrengthImprovementReference>)strImpRefRepo.findAllOrderByCategory();
@@ -59,26 +63,18 @@ public class StrengthImprovementReferenceController {
             strImpRefRepo.save(strengthImprovementReference);
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.getMessage());
         }
         return new ResponseEntity<>(strengthImprovementReference, HttpStatus.OK);
     }
 
-    @RequestMapping(value = "/api/strengthImprovementReferences", method = RequestMethod.PUT)
-    public ResponseEntity<StrengthImprovementReference> strengthImprovementReferenceModify(@RequestBody StrengthImprovementReference strengthImprovementReference) {
-        try {
-            strImpRefRepo.save(strengthImprovementReference);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return new ResponseEntity<>(strengthImprovementReference, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/api/strengthImprovementReferences/updateCategory", method = RequestMethod.PUT)
+    @RequestMapping(value = "/api/strengthImprovementReferences/category", method = RequestMethod.PUT)
     public ResponseEntity<Category> strengthImprovementReferenceModifyCategory(@RequestBody Category category) {
         try {
             strImpRefRepo.updateCategory(category.getOldCategory(), category.getNewCategory());
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.getMessage());
         }
         return new ResponseEntity<>(category, HttpStatus.OK);
     }
@@ -89,6 +85,7 @@ public class StrengthImprovementReferenceController {
             strImpRefRepo.delete(strengthImprovementReference.getId());
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.getMessage());
         }
         return new ResponseEntity<>(strengthImprovementReference, HttpStatus.OK);
     }

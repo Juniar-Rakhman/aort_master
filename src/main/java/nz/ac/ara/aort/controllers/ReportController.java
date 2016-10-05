@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by Juniar_R on 9/13/2016.
@@ -49,7 +50,7 @@ public class ReportController {
     private Boolean secureReport;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
-    
+
     @RequestMapping(value = "/api/reports/execute", method = RequestMethod.POST, produces = "application/pdf")
     public ResponseEntity<byte[]> reportExecute(@RequestBody Report requestReport) {
 
@@ -125,12 +126,15 @@ public class ReportController {
                 }
             }
 
+            Random random = new Random();
+            long randomNum = Math.abs(random.nextLong());
             InputStream in = ReportUtils.buildInputStream(reportUrl, secureReport, username, password);
             logger.info("info report url : " + reportUrl);
-            File dest = new File(requestReport.getPath() + ".pdf");
+            File dest = new File(requestReport.getPath() +"_" + randomNum +".pdf");
             Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
             pdfContent = Base64.encodeBase64(Files.readAllBytes(dest.toPath()));
             in.close();
+
             headers.setContentType(MediaType.APPLICATION_PDF);
             headers.add("content-disposition", "inline;filename=" + dest.getName());
             dest.delete();

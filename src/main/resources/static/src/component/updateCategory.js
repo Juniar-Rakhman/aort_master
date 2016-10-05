@@ -17,14 +17,12 @@ class UpdateCategory extends Component {
             oldCategory: this.props.category,
             newCategory: this.state.category
         });
-        console.log(data);
         $.ajax({
             type: 'PUT',
-            url: "/api/strengthImprovementReferences/updateCategory",
+            url: "/api/strengthImprovementReferences/category",
             data: data,
             contentType: "application/json",
             success: function(response) {
-                console.log(response);
                 this.props.redirectTo('strengthImprovementSearch');
             }.bind(this),
             error: function(xhr, status, err) {

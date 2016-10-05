@@ -39,7 +39,6 @@ class ObserveHeader extends Component{
         sessionId: props.observation.sessionId || '',
         moderatorComment1: props.observation.moderatorComment1 || ''
     }
-    console.log('ObserveHeader mode: '+ this.props.mode);
   }
 
   handleDateChange(e){
@@ -1524,7 +1523,7 @@ class Comment3 extends Component {
   }
 }
 
-class Entry extends Component {
+class EntryObservation extends Component {
   constructor(props){
     super(props)
     this.state = {
@@ -1653,8 +1652,6 @@ class Entry extends Component {
   }
 
   handleSubmit(e){
-    console.log('observation:' + this.state.observationData);
-
     /*
       newObservationData is updated with initial value in case user didn't change the observation fields.
       if it is not initialized, the data will be saved in null value and caused an error.
@@ -1728,7 +1725,7 @@ class Entry extends Component {
   handlePrint() {
     $.ajax({
         type: 'GET',
-        url: "/api/print?userId=" + this.props.staff.id + "&observationId=" + this.state.observationData.id,
+        url: "/api/observations/print?userId=" + this.props.staff.id + "&observationId=" + this.state.observationData.id,
         success: function(data) {
             // decode base64 string
             var binary = atob(data);
@@ -1759,7 +1756,7 @@ class Entry extends Component {
   handleEmail() {
       $.ajax({
           type: 'GET',
-          url: "/api/mail/send?userId=" + this.props.staff.id + "&observationId=" + this.state.observationData.id,
+          url: "/api/observations/send?userId=" + this.props.staff.id + "&observationId=" + this.state.observationData.id,
           success: function(response) {
               this.setState({emailNotification: response});
           }.bind(this),
@@ -1770,16 +1767,13 @@ class Entry extends Component {
   }
 
   createMethod(observation) {
-    console.log('Creating data')
     var data = JSON.stringify(observation);
-    console.log(data);
      $.ajax({
         type: 'POST',
         url: "/api/observations",
         contentType: "application/json",
         data: data,
         success: function(response) {
-           console.log(response);
            var data = $('#confirm-dialog').data();
            if(data.page != null) {
               this.props.redirectTo(data.page, data.data, false);
@@ -1795,8 +1789,6 @@ class Entry extends Component {
   }
 
   updateMethod(observation) {
-    console.log('Updating data')
-
     // Before use JSON.stringify remove key that isn't necessary to update
     // Make a constant array of key that unnecessary like
     var removeKey = ["_links", "staff", "hod", "learningCoach", "lineManager", "observerPrimary", "moderator", "observerSecondary", "ratingReference","page"]
@@ -1805,14 +1797,12 @@ class Entry extends Component {
       delete observation[value];
     })
     var data = JSON.stringify(observation);
-    console.log(data);
     $.ajax({
         type: 'PUT',
         url: "/api/observations",
         contentType: "application/json",
         data: data,
         success: function(response) {
-           console.log(response);
            var data = $('#confirm-dialog').data();
            if(data.page != null) {
               this.props.redirectTo(data.page, data.data, false);
@@ -2004,4 +1994,4 @@ class Entry extends Component {
   }
 }
 
-export default Entry;
+export default EntryObservation;

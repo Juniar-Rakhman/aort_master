@@ -1,7 +1,10 @@
 package nz.ac.ara.aort.controllers;
 
+import nz.ac.ara.aort.entities.Observation;
 import nz.ac.ara.aort.entities.Position;
 import nz.ac.ara.aort.repositories.PositionRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
@@ -26,16 +29,13 @@ public class PositionController {
     @Autowired
     PositionRepository positionRepo;
 
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
     @RequestMapping(value = "/api/positions", method = RequestMethod.GET)
     public ResponseEntity<Page> positionFindAll(@RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
         List<Position> positions = (List<Position>)positionRepo.findAll();
-
-        PagedListHolder<Position> pageList = new PagedListHolder<>(positions);
-        pageList.setPage(pageRequest.getPageNumber());
-        pageList.setPageSize(pageRequest.getPageSize());
-
-        Page<Position> positionPage = new PageImpl<>(fetchPosition(pageList.getPageList()), pageRequest, positions.size());
+        Page<Position> positionPage = getPositionPage(positions, pageRequest);
         return new ResponseEntity<>(positionPage, HttpStatus.OK);
     }
 
@@ -43,13 +43,15 @@ public class PositionController {
     public ResponseEntity<Page> positionFindByTitle(@RequestParam("title") String title, @RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
         List<Position> positions = positionRepo.findByTitle(title);
+        Page<Position> positionPage = getPositionPage(positions, pageRequest);
+        return new ResponseEntity<>(positionPage, HttpStatus.OK);
+    }
 
+    private Page<Position> getPositionPage(List<Position> positions, Pageable pageRequest) {
         PagedListHolder<Position> pageList = new PagedListHolder<>(positions);
         pageList.setPage(pageRequest.getPageNumber());
         pageList.setPageSize(pageRequest.getPageSize());
-
-        Page<Position> positionPage = new PageImpl<>(fetchPosition(pageList.getPageList()), pageRequest, positions.size());
-        return new ResponseEntity<>(positionPage, HttpStatus.OK);
+        return new PageImpl<>(fetchPosition(pageList.getPageList()), pageRequest, positions.size());
     }
 
     private List<Position> fetchPosition(List<Position> positions) {

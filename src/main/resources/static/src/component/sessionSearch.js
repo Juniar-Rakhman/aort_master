@@ -134,7 +134,7 @@ class SessionSearch extends Component {
     getSession() {
         $.ajax({
             type: 'GET',
-            url: "/api/sessionReferencesPage?page=" + this.state.page + "&size=" + this.state.size,
+            url: "/api/sessionReferences/page?page=" + this.state.page + "&size=" + this.state.size,
             success: function(response) {
                 this.setState({
                     sessions: response["content"],

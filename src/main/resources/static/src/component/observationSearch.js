@@ -301,7 +301,6 @@ class ObservationSearch extends Component {
 
     getObservationBySearchCriteria(searchCriteria){
         var data = JSON.stringify(searchCriteria);
-        console.log(data);
         $.ajax ({
             type: 'POST',
             url: '/api/observations/search?page=' + this.state.page + '&size=' + this.state.size,

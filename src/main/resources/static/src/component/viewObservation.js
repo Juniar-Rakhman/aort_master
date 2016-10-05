@@ -643,7 +643,7 @@ class ObserveRecommendations extends Component {
   }
 }
 
-class View extends Component {
+class ViewObservation extends Component {
   constructor(props){
     super(props);
     this.state = {
@@ -694,7 +694,7 @@ class View extends Component {
   handlePrint() {
     $.ajax({
         type: 'GET',
-        url: "/api/print?userId=" + this.props.staff.id + "&observationId=" + this.props.observationId,
+        url: "/api/observations/print?userId=" + this.props.staff.id + "&observationId=" + this.props.observationId,
         success: function(data) {
             // decode base64 string
             var binary = atob(data);
@@ -725,7 +725,7 @@ class View extends Component {
   handleEmail() {
       $.ajax({
           type: 'GET',
-          url: "/api/mail/send?userId=" + this.props.staff.id + "&observationId=" + this.props.observationId,
+          url: "/api/observations/send?userId=" + this.props.staff.id + "&observationId=" + this.props.observationId,
           success: function(response) {
               this.setState({emailNotification: response});
           }.bind(this),
@@ -827,260 +827,4 @@ class View extends Component {
   }
 }
 
-/*
-var CATEGITEMS =
-  [ {
-      "id" : 1,
-      "category" : "Learner-centred teaching enables all learners to achieve",
-      "criteria" : "Learning strategies cater for the needs of the learners",
-    },{
-      "id" : 2,
-      "category" : "Learner-centred teaching enables all learners to achieve",
-      "criteria" : "Learning activities are varied and interesting",
-  },{
-      "id" : 3,
-      "category" : "Learner-centred teaching enables all learners to achieve",
-      "criteria" : "Learning time is managed effectively",
-  },{
-      "id" : 4,
-      "category" : "Learner-centred teaching enables all learners to achieve",
-      "criteria" : "Questioning techniques progress learning",
-  },{
-      "id" : 5,
-      "category" : "Learning environments ensure participation and engagement",
-      "criteria" : "Learning environment is positive and respectful",
-  },{
-      "id" : 6,
-      "category" : "Learning environments ensure participation and engagement",
-      "criteria" : "Instructions, explanations and expectations are clear",
-  },{
-      "id" : 7,
-      "category" : "Learning environments ensure participation and engagement",
-      "criteria" : "Learning environment is well organised",
-  },{
-      "id" : 8,
-      "category" : "Learning environments ensure participation and engagement",
-      "criteria" : "Variety of interactive and independent activity",
-  },{
-      "id" : 9,
-      "category" : "Learning environments ensure participation and engagement",
-      "criteria" : "Good use of learning technologies",
-  }];
-
-var RATING = [
-  {
-    "id" : 1,
-    "rating" : "Excellent"
-  },
-  {
-    "id" : 2,
-    "rating" : "Good"
-  },
-  {
-    "id" : 3,
-    "rating" : "Requires Improvement"
-  },
-  {
-    "id" : 4,
-    "rating" : "Requires Intervention and Support"
-  }
-];
-
-var OBSERVATION =
-      {
-        "id" : 1,
-        "date": "2016-08-18",
-        "time": null,
-        "lateLearners": null,
-        "location": null,
-        "moderated": null,
-        "programme": null,
-        "programmeLevel": null,
-        "notes": null,
-        "ratingSummary": null,
-        "registeredLearners": null,
-        "sessionContext": null,
-        "startLearners": null,
-        "strengthsShare": null,
-        "totalLearners": null,
-        "additionalComments": null,
-        "courseLevel": null,
-        "courseName": "test 1",
-        "department": "test 2",
-        "staff": {
-          "id": "1",
-          "department": "Department of Computing",
-          "email": "Richard.Smith1@ara.ac.nz",
-          "firstName": "Richard",
-          "lastName": "Smith1",
-          "location": null,
-          "officePhone": "1984432418",
-          "username": "Smith1R"
-        },
-        "hod": {
-          "department": "Department of Computing",
-          "email": "Richard.Smith1@ara.ac.nz",
-          "firstName": "Richard",
-          "lastName": "Smith1",
-          "location": null,
-          "officePhone": "1984432418",
-          "username": "Smith1R"
-        },
-        "learningCoach": {
-          "department": "Department of Computing",
-          "email": "Richard.Smith1@ara.ac.nz",
-          "firstName": "Richard",
-          "lastName": "Smith1",
-          "location": null,
-          "officePhone": "1984432418",
-          "username": "Smith1R"
-        },
-        "lineManager": {
-          "department": "Department of Computing",
-          "email": "Richard.Smith1@ara.ac.nz",
-          "firstName": "Richard",
-          "lastName": "Smith1",
-          "location": null,
-          "officePhone": "1984432418",
-          "username": "Smith1R"
-        },
-        "observerPrimary": {
-          "department": "Department of Computing",
-          "email": "Richard.Smith1@ara.ac.nz",
-          "firstName": "Richard",
-          "lastName": "Smith1",
-          "location": null,
-          "officePhone": "1984432418",
-          "username": "Smith1R"
-        },
-        "moderator": {
-          "department": "Department of Computing",
-          "email": "Richard.Smith1@ara.ac.nz",
-          "firstName": "Richard",
-          "lastName": "Smith1",
-          "location": null,
-          "officePhone": "1984432418",
-          "username": "Smith1R"
-        },
-        "observerSecondary": {
-          "department": "Department of Computing",
-          "email": "Richard.Smith1@ara.ac.nz",
-          "firstName": "Richard",
-          "lastName": "Smith1",
-          "location": null,
-          "officePhone": "1984432418",
-          "username": "Smith1R"
-        },
-        "strengthImprovements": [
-            {
-              "improvement": "true",
-              "strength": "false",
-              "evidence": "test1",
-              "strImpRef": {
-                "category": "Learner-centred teaching enables all learners to achieve",
-                "criteria": "Learning strategies cater for the needs of the learners"
-              }
-            },
-            {
-              "improvement": "false",
-              "strength": "true",
-              "evidence": "test2",
-              "strImpRef": {
-                "category": "Learner-centred teaching enables all learners to achieve",
-                "criteria": "Learning activities are varied and interesting"
-              }
-            }
-        ],
-        "ratingReference": {
-          "rating": "Excellent"
-        },
-        "_links": {
-          "self": {
-            "href": "http://localhost:8080/api/observations/1"
-          },
-          "observation": {
-            "href": "http://localhost:8080/api/observations/1"
-          },
-          "learningCoach": {
-            "href": "http://localhost:8080/api/observations/1/learningCoach"
-          },
-          "HOD": {
-            "href": "http://localhost:8080/api/observations/1/HOD"
-          },
-          "strengthImprovements": {
-            "href": "http://localhost:8080/api/observations/1/strengthImprovements"
-          },
-          "lineManager": {
-            "department" : "Learning Design Department",
-            "email" : "Selena.Smith2@ara.ac.nz",
-            "firstName" : "Selena",
-            "lastName" : "Gomes",
-            "location" : null,
-            "officePhone" : "467398155",
-            "username" : "Smith2S",
-            "_links" : {
-              "self" : {
-                "href" : "http://localhost:8080/api/staffs/00000216"
-              },
-              "staff" : {
-                "href" : "http://localhost:8080/api/staffs/00000216"
-              },
-              "positions" : {
-                "href" : "http://localhost:8080/api/staffs/00000216/positions"
-              }
-            }
-          },
-          "observerPrimary": {
-            "department" : "Learning Design Department",
-            "email" : "Selena.Smith2@ara.ac.nz",
-            "firstName" : "Selena",
-            "lastName" : "Gomes",
-            "location" : null,
-            "officePhone" : "467398155",
-            "username" : "Smith2S",
-            "_links" : {
-              "self" : {
-                "href" : "http://localhost:8080/api/staffs/00000216"
-              },
-              "staff" : {
-                "href" : "http://localhost:8080/api/staffs/00000216"
-              },
-              "positions" : {
-                "href" : "http://localhost:8080/api/staffs/00000216/positions"
-              }
-            }
-          },
-          "moderator": {
-            "href": "http://localhost:8080/api/observations/1/moderator"
-          },
-          "observerSecondary": {
-            "department" : "Learning Design Department",
-            "email" : "Selena.Smith2@ara.ac.nz",
-            "firstName" : "Selena",
-            "lastName" : "Gomes",
-            "location" : null,
-            "officePhone" : "467398155",
-            "username" : "Smith2S",
-            "_links" : {
-              "self" : {
-                "href" : "http://localhost:8080/api/staffs/00000216"
-              },
-              "staff" : {
-                "href" : "http://localhost:8080/api/staffs/00000216"
-              },
-              "positions" : {
-                "href" : "http://localhost:8080/api/staffs/00000216/positions"
-              }
-            }
-          },
-          "ratingReference": {
-            "href": "http://localhost:8080/api/observations/1/ratingReference"
-          },
-          "staff": {
-            "href": "http://localhost:8080/api/observations/1/staff"
-          }
-        }
-      };
-*/
-
-export default View;
+export default ViewObservation;

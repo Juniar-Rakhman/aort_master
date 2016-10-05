@@ -32,7 +32,6 @@ class ParamsForm extends Component {
     }
 
     handleExport(e) {
-        console.log('Exporting...');
         var startDate = moment(this.state.startDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
         var endDate = moment(this.state.endDate, 'DD/MM/YYYY').format('YYYY-MM-DD');
         window.open(

@@ -22,42 +22,22 @@ class CampusForm extends Component {
     }
 
     handleSubmit(e) {
-        if(this.props.mode === 'Create') {
-            console.log('Creating data')
-            var data = JSON.stringify(this.state);
-            console.log(data);
-            $.ajax({
-                type: 'POST',
-                url: "/api/campusReferences",
-                data: data,
-                contentType: "application/json",
-                success: function(response) {
-                    console.log(response);
-                    this.props.redirectTo('campusSearch');
-                }.bind(this),
-                error: function(xhr, status, err) {
-                    console.error(this.props.url, status, err.toString());
-                }.bind(this)
-            });
+        if(this.props.mode === 'Edit') {
+            Object.assign(this.state, {id: this.props.campus.id});
         }
-        else if(this.props.mode === 'Edit') {
-            var campus = Object.assign(this.state, {id: this.props.campus.id});
-            var data = JSON.stringify(campus);
-            console.log(data);
-            $.ajax({
-                type: 'PUT',
-                url: "/api/campusReferences",
-                contentType: "application/json",
-                data: data,
-                success: function(response) {
-                   console.log(response);
-                   this.props.redirectTo('campusSearch');
-                }.bind(this),
-                error: function(xhr, status, err) {
-                    console.error(this.props.url, status, err.toString());
-                }.bind(this)
-             });
-        }
+        var data = JSON.stringify(this.state);
+        $.ajax({
+            type: 'POST',
+            url: "/api/campusReferences",
+            data: data,
+            contentType: "application/json",
+            success: function(response) {
+                this.props.redirectTo('campusSearch');
+            }.bind(this),
+            error: function(xhr, status, err) {
+                console.error(this.props.url, status, err.toString());
+            }.bind(this)
+        });
 
         e.preventDefault();
     }
