@@ -202,7 +202,7 @@ class StrengthImprovementSearch extends Component {
     getStrengthImprovements() {
         $.ajax({
             type: 'GET',
-            url: "api/strengthImprovementReferencesPage?page=" + this.state.page + "&size=" + this.state.size,
+            url: "api/strengthImprovementReferences/page?page=" + this.state.page + "&size=" + this.state.size,
             success: function(response) {
               this.setState({
                   strengthImprovements: response["content"],

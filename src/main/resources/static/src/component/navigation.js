@@ -62,7 +62,6 @@ class Navigation extends Component {
   }
 
   setMenu() {
-      console.log('role: '+ this.props.role);
       var role = this.props.role;
       if(role.addObservation) {
         return(

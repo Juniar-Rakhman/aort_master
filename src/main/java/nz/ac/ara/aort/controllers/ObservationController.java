@@ -22,8 +22,12 @@ import nz.ac.ara.aort.repositories.StrengthImprovementRepository;
 import nz.ac.ara.aort.repositories.UserRoleRepository;
 import nz.ac.ara.aort.utilities.CsvUtils;
 import nz.ac.ara.aort.utilities.EmailUtils;
+import nz.ac.ara.aort.utilities.ReportUtils;
+import org.apache.commons.codec.binary.Base64;
 import org.apache.commons.lang.BooleanUtils;
 import org.apache.commons.lang.StringUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.support.PagedListHolder;
@@ -31,7 +35,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -47,14 +53,13 @@ import javax.mail.MessagingException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpServletResponse;
+import java.io.File;
+import java.io.InputStream;
+import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * Created by a9jr5626 on 8/12/16.
@@ -94,14 +99,28 @@ public class ObservationController {
 
     @Value("${spring.report.smtp.server}")
     private String smtpServer;
+
+    @Value("${spring.report.url}")
+    private String reportURL;
+
+    @Value("${spring.report.auth.username}")
+    private String username;
+
+    @Value("${spring.report.auth.password}")
+    private String password;
+
+    @Value("${spring.report.url.secure}")
+    private Boolean secureReport;
+
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
     
     @RequestMapping(value = "/api/observations", method = RequestMethod.POST)
     public ResponseEntity<Observation> observationAdd(@RequestBody Observation observation) {
-
         try {
             observationRepo.save(observation);
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.getMessage());
         }
         return new ResponseEntity<>(observation, HttpStatus.OK);
     }
@@ -114,6 +133,7 @@ public class ObservationController {
             notifyChanges(oldObservation, observation);
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.getMessage());
         }
         return new ResponseEntity<>(observation, HttpStatus.OK);
     }
@@ -126,6 +146,7 @@ public class ObservationController {
             observationList = searchObservationByFilter(filter);
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.getMessage());
         }
         Page<Observation> observationPage = getObservationPage(observationList, pageRequest);
         return new ResponseEntity<>(observationPage, HttpStatus.OK);
@@ -149,6 +170,7 @@ public class ObservationController {
             e.printStackTrace();
             entity.put("result", e.getMessage());
             entity.put("success", false);
+            log.error(e.getMessage());
         }
         return new ResponseEntity<>(entity, HttpStatus.OK);
     }
@@ -300,7 +322,94 @@ public class ObservationController {
             }
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.getMessage());
         }
+    }
+
+    @RequestMapping(value = "/api/observations/send", method = RequestMethod.GET)
+    public ResponseEntity<Object> sendReportMail(@RequestParam("userId") String userId, @RequestParam("observationId") int observationId) {
+
+        JSONObject response = new JSONObject();
+        Observation observation = observationRepo.findOne((long)observationId);
+        UserRole userRole = userRoleRepo.findByStaffId(userId);
+
+        try {
+            if(observation.getObserverPrimaryId().equals(userId)
+                    || observation.getObserverSecondaryId().equals(userId)
+                    || BooleanUtils.isTrue(userRole.getQualityAssurance())
+                    || BooleanUtils.isTrue((userRole.getSystemAdmin()))) {
+                Staff staff = staffRepo.findOne(userId);
+                String reportUrl = reportURL + "Observation&rs:Format=PDF&ObservationId=" + observationId;
+                InputStream in = ReportUtils.buildInputStream(reportUrl, secureReport, username, password);
+
+                Random random = new Random();
+                long randomNum = Math.abs(random.nextLong());
+                File dest = new File("ObservationReport_" + randomNum + ".pdf");
+                Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                in.close();
+
+                String body = "Dear " + staff.getFirstName() + " " + staff.getLastName() + ",\n" +
+                        "\n" +
+                        "Please find the observation report in the attachment.\n" +
+                        "\n" +
+                        "This email is sent from server, please do not reply.\n" +
+                        "\n";
+                EmailUtils.sendEmail(smtpServer, null, staff.getEmail(), null, "Observation Report #" + observationId, body, false, dest);
+                dest.delete();
+
+                response.put("message", "Observation has been sent successfully to : " + staff.getEmail());
+                response.put("success", true);
+            }
+            else {
+                throw new Exception("You do not have access to send observation.");
+            }
+        }
+        catch (Exception e) {
+            e.printStackTrace();
+            response.put("message", "Failed to send observation. " + e.getMessage());
+            response.put("success", false);
+            log.error(e.getMessage());
+        }
+
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/api/observations/print", method = RequestMethod.GET, produces = "application/pdf")
+    public ResponseEntity<byte[]> print(@RequestParam("userId") String userId, @RequestParam("observationId") int observationId) {
+
+        Observation observation = observationRepo.findOne((long) observationId);
+        UserRole userRole = userRoleRepo.findByStaffId(userId);
+        byte[] pdfContent = null;
+        HttpHeaders headers = new HttpHeaders();
+
+        try {
+            if (observation.getObserverPrimaryId().equals(userId)
+                    || observation.getObserverSecondaryId().equals(userId)
+                    || BooleanUtils.isTrue(userRole.getQualityAssurance())
+                    || BooleanUtils.isTrue(userRole.getSystemAdmin())) {
+                String reportUrl = reportURL + "Observation&rs:Format=PDF&ObservationId=" + observationId;
+                log.info("info report url : " + reportUrl);
+                InputStream in = ReportUtils.buildInputStream(reportUrl, secureReport, username, password);
+
+                Random random = new Random();
+                long randomNum = Math.abs(random.nextLong());
+                File dest = new File("ObservationReport_" + randomNum +".pdf");
+                Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
+                pdfContent = Base64.encodeBase64(Files.readAllBytes(dest.toPath()));
+                in.close();
+
+                headers.setContentType(MediaType.APPLICATION_PDF);
+                headers.add("content-disposition", "inline;filename=" + dest.getName());
+                dest.delete();
+            } else {
+                throw new Exception("You do not have access to print observation.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error(e.getMessage());
+        }
+
+        return new ResponseEntity<>(pdfContent, headers, HttpStatus.OK);
     }
 
     private List<Observation> searchObservationByFilter(SearchFilter filter) {

@@ -3,10 +3,10 @@ import './container.css';
 import Navigation from './navigation';
 import Home from './home';
 import Header from './header';
-import Entry from "./entry";
+import EntryObservation from "./entryObservation";
 import StaffSearch from "./staffSearch";
 import ObservationSearch from "./observationSearch";
-import View from "./view";
+import ViewObservation from "./viewObservation";
 import UserRoleSearch from "./userRoleSearch";
 import EntryUserRole from "./entryUserRole";
 import StrengthImprovementSearch from "./strengthImprovementSearch";
@@ -117,19 +117,19 @@ class Container extends Component {
     if (this.state.page === '') {
       content = <Home />;
     } else if (this.state.page === 'entry') {
-      content = <Entry title='Create' observation={this.state.data} staff={this.state.staff} redirectTo={this.handlePageNav} role={this.state.role} showDialog={this.handleShowDialog}/>;
+      content = <EntryObservation title='Create' observation={this.state.data} staff={this.state.staff} redirectTo={this.handlePageNav} role={this.state.role} showDialog={this.handleShowDialog}/>;
     } else if (this.state.page === 'staffSearch') {
       content = <StaffSearch />
     } else if (this.state.page === 'observationSearch') {
       content = <ObservationSearch redirectTo={this.handlePageNav} errorMessage={this.state.data}/>
     } else if (this.state.page === 'view') {
-      content = <View title='View' observationId={this.state.data} staff={this.state.staff} redirectTo={this.handlePageNav}/>
+      content = <ViewObservation title='View' observationId={this.state.data} staff={this.state.staff} redirectTo={this.handlePageNav}/>
     } else if (this.state.page === 'userRoleSearch') {
       content = <UserRoleSearch redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'entryUserRole') {
       content = <EntryUserRole userRole={this.state.data} redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'edit') {
-      content = <Entry title='Edit' observation={this.state.data} staff={this.state.staff} redirectTo={this.handlePageNav} role={this.state.role} showDialog={this.handleShowDialog}/>;
+      content = <EntryObservation title='Edit' observation={this.state.data} staff={this.state.staff} redirectTo={this.handlePageNav} role={this.state.role} showDialog={this.handleShowDialog}/>;
     } else if (this.state.page === 'strengthImprovementSearch') {
       content = <StrengthImprovementSearch redirectTo={this.handlePageNav} />
     } else if (this.state.page === 'entryStrengthImprovement') {

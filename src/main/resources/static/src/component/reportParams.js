@@ -8,10 +8,6 @@ class ParamRow extends Component{
             value: props.parameter.type === 'MultiStaff' ? [] : ''
         };
     }
-    
-    handleParamFieldUpdate(){
-        console.log('update');
-    }
 
     handleDateChange(e){
         var paramsData = Object.assign(this.props.parameter, {value: e.target.childNodes[0].value});
@@ -212,7 +208,6 @@ class ParamsForm extends Component{
     }
 
     handlePrint(e) {
-        console.log('Printing report');
         this.state.reportData.parameters.forEach(function(parameter){
             if(parameter.type === 'MultiStaff'){
                 var valueStr = '';
@@ -227,7 +222,6 @@ class ParamsForm extends Component{
         });
         delete report["_links"];
         var data = JSON.stringify(report);
-        console.log(data);
         $.ajax({
             type: 'POST',
             url: "/api/reports/execute",

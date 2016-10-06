@@ -12,64 +12,18 @@ class UserRoleForm extends Component {
 	}
 
     handleSubmit() {
+        var userRole = Object.assign(this.state, {staffId : this.props.userRole.staff.id});
         // check if userRole.role object is empty
-        if(Object.keys(this.props.userRole.role).length === 0 && this.props.userRole.role.constructor === Object) {
-            this.onCreate();
+        if(this.props.userRole.role != null) {
+            Object.assign(userRole, {id : this.props.userRole.role.id});
         }
-        else {
-            this.onUpdate();
-        }
-    }
-
-    onCreate() {
-        var userRole = {
-            "addObservation" : this.state.addObservation,
-            "general" : this.state.general,
-            "systemAdmin" : this.state.systemAdmin,
-            "qualityAssurance" : this.state.qualityAssurance,
-            "staffId" : this.props.userRole.staff.id
-        };
-
-        console.log('DATA CREATED')
         var data = JSON.stringify(userRole);
-        console.log(data);
-
         $.ajax({
             type: 'POST',
             url: "/api/userRoles",
             data: data,
             contentType: "application/json",
             success: function(response) {
-                console.log(response);
-                this.props.redirectTo('userRoleSearch');
-            }.bind(this),
-            error: function(xhr, status, err) {
-                console.error(this.props.url, status, err.toString());
-            }.bind(this)
-        });
-    }
-
-    onUpdate() {
-        var userRole = {
-            "id" : this.props.userRole.role.id,
-            "addObservation" : this.state.addObservation,
-            "general" : this.state.general,
-            "systemAdmin" : this.state.systemAdmin,
-            "qualityAssurance" : this.state.qualityAssurance,
-            "staffId" : this.props.userRole.staff.id
-        };
-
-        console.log('DATA UPDATED')
-        var data = JSON.stringify(userRole);
-        console.log(data);
-
-        $.ajax({
-            type: 'PUT',
-            url: "/api/userRoles/modify",
-            data: data,
-            contentType: "application/json",
-            success: function(response) {
-                console.log(response);
                 this.props.redirectTo('userRoleSearch');
             }.bind(this),
             error: function(xhr, status, err) {

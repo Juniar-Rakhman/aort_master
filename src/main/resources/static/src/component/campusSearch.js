@@ -136,7 +136,7 @@ class CampusSearch extends Component {
     getCampus() {
         $.ajax({
             type: 'GET',
-            url: "/api/campusReferencesPage?page=" + this.state.page + "&size=" + this.state.size,
+            url: "/api/campusReferences/page?page=" + this.state.page + "&size=" + this.state.size,
             success: function(response) {
                 this.setState({
                     campus: response["content"],

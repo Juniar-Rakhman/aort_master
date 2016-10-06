@@ -2,6 +2,8 @@ package nz.ac.ara.aort.controllers;
 
 import nz.ac.ara.aort.entities.RatingReference;
 import nz.ac.ara.aort.repositories.RatingReferenceRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
@@ -27,7 +29,9 @@ public class RatingReferenceController {
     @Autowired
     RatingReferenceRepository ratingRefRepo;
 
-    @RequestMapping(value = "/api/ratingReferencesPage", method = RequestMethod.GET)
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @RequestMapping(value = "/api/ratingReferences/page", method = RequestMethod.GET)
     public ResponseEntity<Page> ratingReferencesPage(@RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
         List<RatingReference> ratingReferences = (List<RatingReference>)ratingRefRepo.findAll();
@@ -52,16 +56,7 @@ public class RatingReferenceController {
             ratingRefRepo.save(ratingReference);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        return new ResponseEntity<>(ratingReference, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/api/ratingReferences", method = RequestMethod.PUT)
-    public ResponseEntity<RatingReference> ratingReferenceModify(@RequestBody RatingReference ratingReference) {
-        try {
-            ratingRefRepo.save(ratingReference);
-        } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return new ResponseEntity<>(ratingReference, HttpStatus.OK);
     }
@@ -72,6 +67,7 @@ public class RatingReferenceController {
             ratingRefRepo.delete(ratingReference.getId());
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.getMessage());
         }
         return new ResponseEntity<>(ratingReference, HttpStatus.OK);
     }

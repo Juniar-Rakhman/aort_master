@@ -2,6 +2,8 @@ package nz.ac.ara.aort.controllers;
 
 import nz.ac.ara.aort.entities.SessionReference;
 import nz.ac.ara.aort.repositories.SessionReferenceRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.support.PagedListHolder;
 import org.springframework.data.domain.Page;
@@ -27,7 +29,9 @@ public class SessionReferenceController {
     @Autowired
     SessionReferenceRepository sessionRefRepo;
 
-    @RequestMapping(value = "/api/sessionReferencesPage", method = RequestMethod.GET)
+    private final Logger log = LoggerFactory.getLogger(this.getClass());
+
+    @RequestMapping(value = "/api/sessionReferences/page", method = RequestMethod.GET)
     public ResponseEntity<Page> sessionReferencesPage(@RequestParam("page") int page, @RequestParam("size") int size) {
         Pageable pageRequest = new PageRequest(page, size);
         List<SessionReference> sessionReferences = (List<SessionReference>)sessionRefRepo.findAll();
@@ -52,16 +56,7 @@ public class SessionReferenceController {
             sessionRefRepo.save(sessionReference);
         } catch (Exception e) {
             e.printStackTrace();
-        }
-        return new ResponseEntity<>(sessionReference, HttpStatus.OK);
-    }
-
-    @RequestMapping(value = "/api/sessionReferences", method = RequestMethod.PUT)
-    public ResponseEntity<SessionReference> sessionReferenceModify(@RequestBody SessionReference sessionReference) {
-        try {
-            sessionRefRepo.save(sessionReference);
-        } catch (Exception e) {
-            e.printStackTrace();
+            log.error(e.getMessage());
         }
         return new ResponseEntity<>(sessionReference, HttpStatus.OK);
     }
@@ -72,6 +67,7 @@ public class SessionReferenceController {
             sessionRefRepo.delete(sessionReference.getId());
         } catch (Exception e) {
             e.printStackTrace();
+            log.error(e.getMessage());
         }
         return new ResponseEntity<>(sessionReference, HttpStatus.OK);
     }

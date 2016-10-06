@@ -24,7 +24,9 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers("/").authenticated()
                 .antMatchers("/api/**").authenticated()
-                .antMatchers("/home").authenticated();
+                .antMatchers("/home").authenticated()
+                .antMatchers("/v2/api-docs").authenticated()
+                .antMatchers("/swagger**").authenticated();
 
         http.formLogin()
                 .defaultSuccessUrl("/home")
