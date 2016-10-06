@@ -406,7 +406,7 @@ public class ObservationController {
             }
         } catch (Exception e) {
             e.printStackTrace();
-            log.error(e.getMessage());
+            log.error("CRITICAL ERROR" + e.getMessage());
         }
 
         return new ResponseEntity<>(pdfContent, headers, HttpStatus.OK);

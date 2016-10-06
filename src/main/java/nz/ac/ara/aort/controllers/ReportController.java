@@ -23,6 +23,7 @@ import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 
 /**
  * Created by Juniar_R on 9/13/2016.
@@ -138,7 +139,7 @@ public class ReportController {
             headers.add("content-disposition", "inline;filename=" + dest.getName());
             dest.delete();
         } catch (Exception e) {
-            logger.error(e.getMessage());
+            logger.error("critical error : " + e.getMessage());
             e.printStackTrace();
         }
 

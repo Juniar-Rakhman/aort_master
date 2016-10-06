@@ -1,25 +1,22 @@
 package nz.ac.ara.aort.utilities;
 
-import com.sun.xml.internal.ws.api.policy.PolicyResolver;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.NTCredentials;
 import org.apache.http.client.CredentialsProvider;
+import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.client.protocol.ClientContext;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.protocol.HttpContext;
 import org.apache.http.impl.client.BasicCredentialsProvider;
 import org.apache.http.protocol.BasicHttpContext;
 
-import javax.net.ssl.HttpsURLConnection;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.Authenticator;
-import java.net.HttpURLConnection;
-import java.net.PasswordAuthentication;
-import java.net.URL;
 
 
 /**
@@ -31,7 +28,6 @@ public final class ReportUtils {
     }
 
     public static InputStream buildInputStream(String reportUrl, Boolean secureReport, String username, String password) throws IOException {
-        URL url = new URL(reportUrl);
         InputStream in;
         // Set default authentication
 //        Authenticator.setDefault(new Authenticator() {
@@ -48,14 +44,13 @@ public final class ReportUtils {
 //            in = connection.getInputStream();
 //        }
 
-        DefaultHttpClient httpclient = new DefaultHttpClient();
+        HttpClient httpclient = HttpClientBuilder.create().build();
         HttpContext localContext = new BasicHttpContext();
         HttpGet httpget = new HttpGet(reportUrl);
         CredentialsProvider credsProvider = new BasicCredentialsProvider();
-        credsProvider.setCredentials(AuthScope.ANY, new NTCredentials(username, password, null, "MITRAIS"));
-        localContext.setAttribute(ClientContext.CREDS_PROVIDER, credsProvider);
+        credsProvider.setCredentials(AuthScope.ANY, new NTCredentials(username, password, null, "CPIT"));
+        localContext.setAttribute(HttpClientContext.CREDS_PROVIDER, credsProvider);
         HttpResponse response = httpclient.execute(httpget, localContext);
-//        logger.debug("jun test response: " + response);
         HttpEntity entity = response.getEntity();
         in = entity.getContent();
 
