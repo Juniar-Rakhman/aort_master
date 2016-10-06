@@ -46,8 +46,8 @@ public class ReportController {
     @Value("${spring.report.auth.password}")
     private String password;
 
-    @Value("${spring.report.url.secure}")
-    private Boolean secureReport;
+    @Value("${spring.report.auth.domain}")
+    private String domain;
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     
@@ -128,7 +128,7 @@ public class ReportController {
 
             Random random = new Random();
             long randomNum = Math.abs(random.nextLong());
-            InputStream in = ReportUtils.buildInputStream(reportUrl, secureReport, username, password);
+            InputStream in = ReportUtils.buildInputStream(reportUrl, domain, username, password);
             logger.info("info report url : " + reportUrl);
             File dest = new File(requestReport.getPath() +"_" + randomNum +".pdf");
             Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);

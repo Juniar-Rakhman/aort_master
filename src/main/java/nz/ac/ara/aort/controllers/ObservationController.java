@@ -109,8 +109,8 @@ public class ObservationController {
     @Value("${spring.report.auth.password}")
     private String password;
 
-    @Value("${spring.report.url.secure}")
-    private Boolean secureReport;
+    @Value("${spring.report.auth.domain}")
+    private String domain;
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
     
@@ -340,7 +340,7 @@ public class ObservationController {
                     || BooleanUtils.isTrue((userRole.getSystemAdmin()))) {
                 Staff staff = staffRepo.findOne(userId);
                 String reportUrl = reportURL + "Observation&rs:Format=PDF&ObservationId=" + observationId;
-                InputStream in = ReportUtils.buildInputStream(reportUrl, secureReport, username, password);
+                InputStream in = ReportUtils.buildInputStream(reportUrl, domain, username, password);
 
                 Random random = new Random();
                 long randomNum = Math.abs(random.nextLong());
@@ -388,16 +388,18 @@ public class ObservationController {
                     || BooleanUtils.isTrue(userRole.getQualityAssurance())
                     || BooleanUtils.isTrue(userRole.getSystemAdmin())) {
                 String reportUrl = reportURL + "Observation&rs:Format=PDF&ObservationId=" + observationId;
-                log.info("info report url : " + reportUrl);
-                InputStream in = ReportUtils.buildInputStream(reportUrl, secureReport, username, password);
-
+                log.error("info report username : " + username);
+                log.error("info report password : " + password);
+                log.error("info report url : " + reportUrl);
+                InputStream in = ReportUtils.buildInputStream(reportUrl, domain, username, password);
+                
                 Random random = new Random();
                 long randomNum = Math.abs(random.nextLong());
                 File dest = new File("ObservationReport_" + randomNum +".pdf");
                 Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 pdfContent = Base64.encodeBase64(Files.readAllBytes(dest.toPath()));
                 in.close();
-
+                log.error(String.format("info pdf content : %s", Arrays.toString(pdfContent)));
                 headers.setContentType(MediaType.APPLICATION_PDF);
                 headers.add("content-disposition", "inline;filename=" + dest.getName());
                 dest.delete();
