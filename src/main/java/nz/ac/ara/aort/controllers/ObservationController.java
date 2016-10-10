@@ -368,7 +368,7 @@ public class ObservationController {
             e.printStackTrace();
             response.put("message", "Failed to send observation. " + e.getMessage());
             response.put("success", false);
-            log.error(e.getMessage());
+            log.error("Email Send Error: " + e.getMessage());
         }
 
         return new ResponseEntity<>(response, HttpStatus.OK);

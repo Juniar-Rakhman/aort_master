@@ -8,6 +8,7 @@ import org.springframework.util.StringUtils;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 import java.io.File;
+import java.util.Properties;
 
 /**
  * Created by Juniar_R on 9/23/2016.
@@ -22,12 +23,22 @@ public final class EmailUtils {
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         sender.setHost(smtpServer);
+        sender.setPort(25);
+        Properties prop = sender.getJavaMailProperties();
+        prop.put("mail.transport.protocol", "smtp");
+        prop.put("mail.smtp.auth", "false");
+        prop.put("smtp.ssl.enable", "false");
+        prop.put("mail.smtp.starttls.enable", "false");
+        prop.put("mail.smtp.starttls.required", "false");
+        prop.put("mail.debug", "true");
+        sender.setJavaMailProperties(prop);
         if (!StringUtils.isEmpty(origin)) {
             helper.setFrom(origin);
         }
         if (!ArrayUtils.isEmpty(ccs)) {
             helper.setCc(ccs);
         }
+        
         helper.setTo(destination);
         helper.setSubject(subject);
         helper.setText(body, html);
