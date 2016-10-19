@@ -506,10 +506,14 @@ public class ObservationController {
 
             String body = "Dear " + leadObserver.getFirstName() + " " + leadObserver.getLastName() + ", \n" +
                     "\n" +
-                    "The observation record for " + teacher.getFirstName() + " " + teacher.getLastName() + " on " + strDate + ", has now been completed.\n" +
+                    "The observation record for " + teacher.getFirstName() + " " + teacher.getLastName() + " on " + strDate + ", has now been completed. " +
                     "You can now arrange the professional conversation with this teacher.\n" +
-                    "Regards\n" +
+                    "After you have had your conversation with the teacher, please email this record to the teacher with a copy to the manager.\n" +
+                    "Ensure your standard email states:\n" +
+                    "“Thank you for the opportunity to observe your teaching practice.\n" +
+                    "If you have any queries about the observation or process, please discuss these with your manager in the first instance.”\n" +
                     "\n" +
+                    "Regards\n" +
                     moderator.getFirstName() + " " + moderator.getLastName();
 
             EmailUtils.sendEmail(smtpServer, moderator.getEmail(), leadObserver.getEmail(), null, subject, body, false, null);
