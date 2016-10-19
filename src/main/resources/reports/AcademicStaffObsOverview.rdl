@@ -180,7 +180,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!first_name.Value &amp; " " &amp; Fields!last_name.Value</Value>
+                              <Value>=Fields!first_name.Value +" "+Fields!last_name.Value</Value>
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                               </Style>
@@ -212,7 +212,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!staff_department.Value</Value>
+                              <Value>=Fields!department.Value</Value>
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                               </Style>
@@ -244,7 +244,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!being_observed.Value</Value>
+                              <Value>=IIF(isNothing(Fields!last_observation.Value), 0, Fields!count_observed.Value)</Value>
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                               </Style>
@@ -278,7 +278,7 @@
                         <Paragraph>
                           <TextRuns>
                             <TextRun>
-                              <Value>=Fields!last_observation.Value</Value>
+                              <Value>=IIF(isNothing(Fields!last_observation.Value),"-",Fields!last_observation.Value)</Value>
                               <Style>
                                 <FontFamily>Tahoma</FontFamily>
                                 <Format>dd MMMM, yyyy</Format>
@@ -327,7 +327,7 @@
           </TablixMembers>
         </TablixRowHierarchy>
         <DataSetName>StaffOverview</DataSetName>
-        <Top>0.29503in</Top>
+        <Top>0.04503in</Top>
         <Height>0.5in</Height>
         <Width>7.67716in</Width>
         <Style>
@@ -336,72 +336,8 @@
           </Border>
         </Style>
       </Tablix>
-      <Textbox Name="Textbox13">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>Department:</Value>
-                <Style>
-                  <FontFamily>Tahoma</FontFamily>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>Textbox13</rd:DefaultName>
-        <Top>0cm</Top>
-        <Left>0cm</Left>
-        <Height>0.6cm</Height>
-        <Width>2.5cm</Width>
-        <ZIndex>1</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
-      <Textbox Name="department">
-        <CanGrow>true</CanGrow>
-        <KeepTogether>true</KeepTogether>
-        <Paragraphs>
-          <Paragraph>
-            <TextRuns>
-              <TextRun>
-                <Value>=IIF(Parameters!Department.Value="","All Departments",First(Fields!department.Value, "StaffOverview"))</Value>
-                <Style>
-                  <FontFamily>Tahoma</FontFamily>
-                </Style>
-              </TextRun>
-            </TextRuns>
-            <Style />
-          </Paragraph>
-        </Paragraphs>
-        <rd:DefaultName>department</rd:DefaultName>
-        <Top>0cm</Top>
-        <Left>2.67639cm</Left>
-        <Height>0.6cm</Height>
-        <Width>10.32361cm</Width>
-        <ZIndex>2</ZIndex>
-        <Style>
-          <Border>
-            <Style>None</Style>
-          </Border>
-          <PaddingLeft>2pt</PaddingLeft>
-          <PaddingRight>2pt</PaddingRight>
-          <PaddingTop>2pt</PaddingTop>
-          <PaddingBottom>2pt</PaddingBottom>
-        </Style>
-      </Textbox>
     </ReportItems>
-    <Height>2.17814cm</Height>
+    <Height>1.38438cm</Height>
     <Style />
   </Body>
   <Width>19.5cm</Width>
@@ -581,21 +517,13 @@
     <DataSet Name="StaffOverview">
       <Query>
         <DataSourceName>DataSource1</DataSourceName>
-        <QueryParameters>
-          <QueryParameter Name="@Department">
-            <Value>=Parameters!Department.Value</Value>
-          </QueryParameter>
-        </QueryParameters>
-        <CommandText>SELECT        table1.staff_id, table1.department_id, dr.department, table1.last_observation, table1.being_observed, staff.first_name, staff.last_name, staff.department AS staff_department
-FROM            (SELECT        TOP (100) PERCENT staff_id, department_id, MAX(observation_date) AS last_observation, COUNT(*) AS being_observed
-                          FROM            observation
-                          WHERE        (department_id = @Department) OR
-                                                    (@Department IS NULL)
-                          GROUP BY staff_id, department_id
-                          ORDER BY staff_id) AS table1 INNER JOIN
-                         staff ON table1.staff_id = staff.staff_id INNER JOIN
-                         department_reference AS dr ON table1.department_id = dr.id
-ORDER BY staff.first_name, staff.last_name</CommandText>
+        <CommandText>SELECT        table1.staff_id, table1.department, table1.last_observation, table1.count_observed, st.first_name, st.last_name
+FROM            (SELECT        TOP (100) PERCENT s.staff_id, s.department, MAX(o.observation_date) AS last_observation, COUNT(*) AS count_observed
+                          FROM            staff AS s LEFT OUTER JOIN
+                                                    observation AS o ON s.staff_id = o.staff_id
+                          GROUP BY s.staff_id, s.department) AS table1 INNER JOIN
+                         staff AS st ON table1.staff_id = st.staff_id
+ORDER BY st.first_name, st.last_name, table1.department</CommandText>
       </Query>
       <Fields>
         <Field Name="staff_id">
@@ -606,17 +534,13 @@ ORDER BY staff.first_name, staff.last_name</CommandText>
           <DataField>last_observation</DataField>
           <rd:TypeName>System.DateTime</rd:TypeName>
         </Field>
-        <Field Name="department_id">
-          <DataField>department_id</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
+        <Field Name="count_observed">
+          <DataField>count_observed</DataField>
+          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="department">
           <DataField>department</DataField>
           <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="being_observed">
-          <DataField>being_observed</DataField>
-          <rd:TypeName>System.Int32</rd:TypeName>
         </Field>
         <Field Name="first_name">
           <DataField>first_name</DataField>
@@ -624,10 +548,6 @@ ORDER BY staff.first_name, staff.last_name</CommandText>
         </Field>
         <Field Name="last_name">
           <DataField>last_name</DataField>
-          <rd:TypeName>System.String</rd:TypeName>
-        </Field>
-        <Field Name="staff_department">
-          <DataField>staff_department</DataField>
           <rd:TypeName>System.String</rd:TypeName>
         </Field>
       </Fields>

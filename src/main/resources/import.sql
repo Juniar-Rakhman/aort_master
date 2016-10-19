@@ -111,7 +111,6 @@ INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,va
 INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value,path) VALUES (3,1,'Staff Name', 'MultiStaff', '', 'Staff');
 INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value,path) VALUES (3,1,'Start Date', 'Date', '', 'StartDate');
 INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value,path) VALUES (3,1,'End Date', 'Date', '', 'EndDate');
-INSERT INTO academic_observation.dbo.parameter (report_id,mandatory,name,type,value,path) VALUES (4,0,'Department', 'Department', '', 'Department');
 
 INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Ashburton Campus');
 INSERT INTO dbo.campus_reference (is_active, campus) VALUES (1, 'Bishopdale Campus');
