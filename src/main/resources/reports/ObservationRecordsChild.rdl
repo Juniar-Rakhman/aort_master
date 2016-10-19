@@ -1619,7 +1619,7 @@
                 <Top>0cm</Top>
                 <Left>0cm</Left>
                 <Height>0.6cm</Height>
-                <Width>2.11308cm</Width>
+                <Width>2.37766cm</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -1648,9 +1648,9 @@
                 </Paragraphs>
                 <rd:DefaultName>lesson_plan_comment</rd:DefaultName>
                 <Top>0cm</Top>
-                <Left>2.22189cm</Left>
+                <Left>2.65989cm</Left>
                 <Height>0.6cm</Height>
-                <Width>13.05411cm</Width>
+                <Width>12.61611cm</Width>
                 <ZIndex>1</ZIndex>
                 <Style>
                   <Border>
@@ -1804,7 +1804,7 @@
                 <Top>0cm</Top>
                 <Left>0cm</Left>
                 <Height>0.6cm</Height>
-                <Width>2.11308cm</Width>
+                <Width>2.37766cm</Width>
                 <Style>
                   <Border>
                     <Style>None</Style>
@@ -1833,9 +1833,9 @@
                 </Paragraphs>
                 <rd:DefaultName>course_outline_comment</rd:DefaultName>
                 <Top>0.03203cm</Top>
-                <Left>2.22189cm</Left>
+                <Left>2.65989cm</Left>
                 <Height>0.56797cm</Height>
-                <Width>13.05411cm</Width>
+                <Width>12.61611cm</Width>
                 <ZIndex>1</ZIndex>
                 <Style>
                   <Border>
@@ -2882,7 +2882,6 @@
                         <PaddingBottom>2pt</PaddingBottom>
                       </Style>
                     </Textbox>
-                    <rd:Selected>true</rd:Selected>
                   </CellContents>
                 </TablixCell>
                 <TablixCell>
