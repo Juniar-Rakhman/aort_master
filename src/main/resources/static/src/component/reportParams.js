@@ -261,6 +261,11 @@ class ParamsForm extends Component{
     render(){
         var parameters = this.props.report.parameters;
         var row=[];
+
+        if (parameters.length == 0){
+            row.push("No parameter for this report");
+        }
+
         parameters.forEach(function(parameter){
             row.push(<ParamRow key={parameter.id} parameter={parameter} updateParamsData={this.updateParamsData} departments={this.props.departments}/>)
         },this);
