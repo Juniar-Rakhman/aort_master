@@ -100,6 +100,9 @@ public class ObservationController {
     @Value("${spring.report.smtp.server}")
     private String smtpServer;
 
+    @Value("${spring.report.smtp.port}")
+    private String smptPort;
+
     @Value("${spring.report.url}")
     private String reportURL;
 
@@ -354,7 +357,7 @@ public class ObservationController {
                         "\n" +
                         "This email is sent from server, please do not reply.\n" +
                         "\n";
-                EmailUtils.sendEmail(smtpServer, null, staff.getEmail(), null, "Observation Report #" + observationId, body, false, dest);
+                EmailUtils.sendEmail(smtpServer, Integer.valueOf(smptPort), null, staff.getEmail(), null, "Observation Report #" + observationId, body, false, dest);
                 dest.delete();
 
                 response.put("message", "Observation has been sent successfully to : " + staff.getEmail());
@@ -451,7 +454,7 @@ public class ObservationController {
         String strDate;
 
         // Moderator/QA Ticks ‘Moderator Feedback Provided’ and click ‘Save’
-        if (oldObs.getModerated() != newObs.getModerated()) {
+        if (oldObs.getModerated() != newObs.getModerated() && newObs.getModerated()) {
             String subject = "Moderation Feedback Complete";
             String ccs[] = {peerObserver.getEmail()};
             strDate = sdf.format(newObs.getDate());
@@ -477,7 +480,7 @@ public class ObservationController {
                     "\n" +
                     moderator.getFirstName() + " " + moderator.getLastName();
 
-            EmailUtils.sendEmail(smtpServer, moderator.getEmail(), leadObserver.getEmail(), ccs, subject, body, false, null);
+            EmailUtils.sendEmail(smtpServer, Integer.valueOf(smptPort), moderator.getEmail(), leadObserver.getEmail(), ccs, subject, body, false, null);
         }
 
         //Lead Observer Ticks ‘Record Updated with Moderator Feedback’ and click ‘Save’
@@ -497,7 +500,7 @@ public class ObservationController {
                     "\n" +
                     leadObserver.getFirstName() + " " + leadObserver.getLastName();
 
-            EmailUtils.sendEmail(smtpServer, leadObserver.getEmail(), moderator.getEmail(), null, subject, body, false, null);
+            EmailUtils.sendEmail(smtpServer, Integer.valueOf(smptPort), leadObserver.getEmail(), moderator.getEmail(), null, subject, body, false, null);
         }
 
         //Moderator clicks ‘Complete’ for an observation record
@@ -518,7 +521,7 @@ public class ObservationController {
                     "Regards\n" +
                     moderator.getFirstName() + " " + moderator.getLastName();
 
-            EmailUtils.sendEmail(smtpServer, moderator.getEmail(), leadObserver.getEmail(), null, subject, body, false, null);
+            EmailUtils.sendEmail(smtpServer, Integer.valueOf(smptPort), moderator.getEmail(), leadObserver.getEmail(), null, subject, body, false, null);
         }
     }
     
