@@ -101,14 +101,18 @@ class Navigation extends Component {
           <li>
             <a href="#"><i className="fa fa-user"></i> <span className="nav-label">System Administration</span></a>
             <ul className="nav nav-second-level">
-              <li><a href="#" onClick={this.handleStaffSearch.bind(this)}>User Management</a></li>
+              <li><a href="#" onClick={this.handleStaffSearch.bind(this)}>Staff Management</a></li>
               <li><a href="#" onClick={this.handleUserRoleSearch.bind(this)}>Role Management</a></li>
-              <li><a href="#" onClick={this.handlePositionSearch.bind(this)}>Position Management</a></li>
-              <li><a href="#" onClick={this.handleStrengthImprovementSearch.bind(this)}>Strength Improvement Management</a></li>
-              <li><a href="#" onClick={this.handleRatingSearch.bind(this)}>Rating Management</a></li>
-              <li><a href="#" onClick={this.handleCampusSearch.bind(this)}>Campus Management</a></li>
-              <li><a href="#" onClick={this.handleDepartmentSearch.bind(this)}>Department Management</a></li>
-              <li><a href="#" onClick={this.handleSessionSearch.bind(this)}>Session Management</a></li>
+              <li>
+                <a href="#">Reference Data<span class="fa arrow"></span></a>
+                <ul className="nav nav-third-level">
+                  <li><a href="#" onClick={this.handleStrengthImprovementSearch.bind(this)}>Strength Improvement</a></li>
+                  <li><a href="#" onClick={this.handleRatingSearch.bind(this)}>Rating</a></li>
+                  <li><a href="#" onClick={this.handleCampusSearch.bind(this)}>Campus</a></li>
+                  <li><a href="#" onClick={this.handleDepartmentSearch.bind(this)}>Department</a></li>
+                  <li><a href="#" onClick={this.handleSessionSearch.bind(this)}>Session</a></li>
+                </ul>
+              </li>
             </ul>
           </li>
         );
