@@ -7,6 +7,7 @@ import nz.ac.ara.aort.repositories.ReportRepository;
 import nz.ac.ara.aort.repositories.UserRoleRepository;
 import nz.ac.ara.aort.utilities.ReportUtils;
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.codec.binary.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +18,14 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 import java.util.Random;
 
 /**
@@ -51,10 +54,11 @@ public class ReportController {
 
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     
-    @RequestMapping(value = "/api/reports/execute", method = RequestMethod.POST, produces = "application/pdf")
+    @RequestMapping(value = "/api/reports/execute", method = RequestMethod.POST)
     public ResponseEntity<byte[]> reportExecute(@RequestBody Report requestReport) {
 
-        byte[] pdfContent = null;
+        byte[] content = null;
+        String format;
         HttpHeaders headers = new HttpHeaders();
 
         try {
@@ -91,7 +95,15 @@ public class ReportController {
                 defaultMap.put(param.getName(), param.getValue());
             }
 
-            String reportUrl = reportURL + existingReport.getPath() + "&rs:Format=PDF";
+            if (Objects.equals(requestReport.getPath(), "AcademicStaffObsOverview")) {
+                headers.setContentType(MediaType.APPLICATION_OCTET_STREAM);
+                format = "excel";
+            } else {
+                headers.setContentType(MediaType.APPLICATION_PDF);
+                format = "pdf";
+            }
+            
+            String reportUrl = reportURL + existingReport.getPath() + "&rs:Format=" + format;
             for (Parameter reqParam : requestReport.getParameters()) {
                 if(!reqParam.getType().contains("Multi")) {
                     reportUrl += "&" + reqParam.getPath();
@@ -132,10 +144,9 @@ public class ReportController {
             logger.info("info report url : " + reportUrl);
             File dest = new File(requestReport.getPath() +"_" + randomNum +".pdf");
             Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
-            pdfContent = Base64.encodeBase64(Files.readAllBytes(dest.toPath()));
+            content = Base64.encodeBase64(Files.readAllBytes(dest.toPath()));
             in.close();
 
-            headers.setContentType(MediaType.APPLICATION_PDF);
             headers.add("content-disposition", "inline;filename=" + dest.getName());
             dest.delete();
         } catch (Exception e) {
@@ -143,6 +154,6 @@ public class ReportController {
             e.printStackTrace();
         }
 
-        return new ResponseEntity<byte[]>(pdfContent, headers, HttpStatus.OK);
+        return new ResponseEntity<>(content, headers, HttpStatus.OK);
     }
 }

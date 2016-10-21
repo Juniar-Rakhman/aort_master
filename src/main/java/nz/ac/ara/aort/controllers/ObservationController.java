@@ -402,7 +402,6 @@ public class ObservationController {
                 Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 pdfContent = Base64.encodeBase64(Files.readAllBytes(dest.toPath()));
                 in.close();
-                log.error(String.format("info pdf content : %s", Arrays.toString(pdfContent)));
                 headers.setContentType(MediaType.APPLICATION_PDF);
                 headers.add("content-disposition", "inline;filename=" + dest.getName());
                 dest.delete();
