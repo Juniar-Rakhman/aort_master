@@ -18,12 +18,12 @@ public final class EmailUtils {
     private EmailUtils() {
     }
     
-    public static void sendEmail(String smtpServer, String origin, String destination, String[] ccs, String subject, String body, boolean html, File attachment) throws MessagingException {
+    public static void sendEmail(String smtpServer, Integer smptPort, String origin, String destination, String[] ccs, String subject, String body, boolean html, File attachment) throws MessagingException {
         JavaMailSenderImpl sender = new JavaMailSenderImpl();
         MimeMessage message = sender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(message, true);
         sender.setHost(smtpServer);
-        sender.setPort(25);
+        sender.setPort(smptPort);
         Properties prop = sender.getJavaMailProperties();
         prop.put("mail.transport.protocol", "smtp");
         prop.put("mail.smtp.auth", "false");

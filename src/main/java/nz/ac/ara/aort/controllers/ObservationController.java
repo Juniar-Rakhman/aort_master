@@ -100,6 +100,9 @@ public class ObservationController {
     @Value("${spring.report.smtp.server}")
     private String smtpServer;
 
+    @Value("${spring.report.smtp.port}")
+    private String smptPort;
+
     @Value("${spring.report.url}")
     private String reportURL;
 
@@ -354,7 +357,7 @@ public class ObservationController {
                         "\n" +
                         "This email is sent from server, please do not reply.\n" +
                         "\n";
-                EmailUtils.sendEmail(smtpServer, null, staff.getEmail(), null, "Observation Report #" + observationId, body, false, dest);
+                EmailUtils.sendEmail(smtpServer, Integer.valueOf(smptPort), null, staff.getEmail(), null, "Observation Report #" + observationId, body, false, dest);
                 dest.delete();
 
                 response.put("message", "Observation has been sent successfully to : " + staff.getEmail());
@@ -399,7 +402,6 @@ public class ObservationController {
                 Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
                 pdfContent = Base64.encodeBase64(Files.readAllBytes(dest.toPath()));
                 in.close();
-                log.error(String.format("info pdf content : %s", Arrays.toString(pdfContent)));
                 headers.setContentType(MediaType.APPLICATION_PDF);
                 headers.add("content-disposition", "inline;filename=" + dest.getName());
                 dest.delete();
@@ -451,7 +453,7 @@ public class ObservationController {
         String strDate;
 
         // Moderator/QA Ticks ‘Moderator Feedback Provided’ and click ‘Save’
-        if (oldObs.getModerated() != newObs.getModerated()) {
+        if (oldObs.getModerated() != newObs.getModerated() && newObs.getModerated()) {
             String subject = "Moderation Feedback Complete";
             String ccs[] = {peerObserver.getEmail()};
             strDate = sdf.format(newObs.getDate());
@@ -477,7 +479,7 @@ public class ObservationController {
                     "\n" +
                     moderator.getFirstName() + " " + moderator.getLastName();
 
-            EmailUtils.sendEmail(smtpServer, moderator.getEmail(), leadObserver.getEmail(), ccs, subject, body, false, null);
+            EmailUtils.sendEmail(smtpServer, Integer.valueOf(smptPort), moderator.getEmail(), leadObserver.getEmail(), ccs, subject, body, false, null);
         }
 
         //Lead Observer Ticks ‘Record Updated with Moderator Feedback’ and click ‘Save’
@@ -497,7 +499,7 @@ public class ObservationController {
                     "\n" +
                     leadObserver.getFirstName() + " " + leadObserver.getLastName();
 
-            EmailUtils.sendEmail(smtpServer, leadObserver.getEmail(), moderator.getEmail(), null, subject, body, false, null);
+            EmailUtils.sendEmail(smtpServer, Integer.valueOf(smptPort), leadObserver.getEmail(), moderator.getEmail(), null, subject, body, false, null);
         }
 
         //Moderator clicks ‘Complete’ for an observation record
@@ -508,13 +510,17 @@ public class ObservationController {
 
             String body = "Dear " + leadObserver.getFirstName() + " " + leadObserver.getLastName() + ", \n" +
                     "\n" +
-                    "The observation record for " + teacher.getFirstName() + " " + teacher.getLastName() + " on " + strDate + ", has now been completed.\n" +
+                    "The observation record for " + teacher.getFirstName() + " " + teacher.getLastName() + " on " + strDate + ", has now been completed. " +
                     "You can now arrange the professional conversation with this teacher.\n" +
-                    "Regards\n" +
+                    "After you have had your conversation with the teacher, please email this record to the teacher with a copy to the manager.\n" +
+                    "Ensure your standard email states:\n" +
+                    "“Thank you for the opportunity to observe your teaching practice.\n" +
+                    "If you have any queries about the observation or process, please discuss these with your manager in the first instance.”\n" +
                     "\n" +
+                    "Regards\n" +
                     moderator.getFirstName() + " " + moderator.getLastName();
 
-            EmailUtils.sendEmail(smtpServer, moderator.getEmail(), leadObserver.getEmail(), null, subject, body, false, null);
+            EmailUtils.sendEmail(smtpServer, Integer.valueOf(smptPort), moderator.getEmail(), leadObserver.getEmail(), null, subject, body, false, null);
         }
     }
     

@@ -335,7 +335,6 @@ class ObserveHeader extends Component{
                   <label className="col-sm-4 control-label">Teacher's Name</label>
                   <div className="col-sm-8">
                     <select id="teacher"
-                      disabled={disabledUser}
                       className="form-control m-b"
                       data-init={this.state.staff.firstName + ' ' + this.state.staff.lastName}
                       style={{width: "100%"}}
@@ -352,7 +351,6 @@ class ObserveHeader extends Component{
                   <div className="col-sm-8">
                     <select id="lineManager"
                       className="form-control m-b"
-                      disabled={disabledUser}
                       data-init={this.state.lineManager.firstName + ' ' + this.state.lineManager.lastName}
                       style={{width: "100%"}}
                       value={this.state.lineManagerId}>
@@ -370,7 +368,6 @@ class ObserveHeader extends Component{
                 <div className="col-sm-8">
                   <select id="observerPrimary"
                     className="form-control m-b"
-                    disabled={disabledUser}
                     data-init={this.state.observerPrimary.firstName + ' ' + this.state.observerPrimary.lastName}
                     style={{width: "100%"}}
                     value={this.state.observerPrimaryId}>
@@ -384,7 +381,7 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">Time of Observation</label>
                 <div className="col-sm-4">
                   <div className="input-group date" id="timePicker">
-                    <input type="text" className="form-control" value={this.state.time} disabled={disabledUser} />
+                    <input type="text" className="form-control" value={this.state.time} />
                     <span className="input-group-addon">
                       <i className="fa fa-clock-o" aria-hidden="true"></i>
                     </span>
@@ -402,7 +399,6 @@ class ObserveHeader extends Component{
                   <select id="observerSecondary"
                     className="form-control m-b"
                     data-init={this.state.observerSecondary.firstName + ' ' + this.state.observerSecondary.lastName}
-                    disabled={disabledUser}
                     style={{width: "100%"}}
                     value={this.state.observerSecondaryId}>
                     <option></option>
@@ -415,7 +411,7 @@ class ObserveHeader extends Component{
                   <label className="col-sm-4 control-label">Date</label>
                   <div className="col-sm-4">
                     <div className="input-group date" id="datePicker">
-                      <input type="text" className="form-control" value={this.state.date} disabled={disabledUser} />
+                      <input type="text" className="form-control" value={this.state.date} />
                       <span className="input-group-addon">
                         <i className="fa fa-calendar" aria-hidden="true"></i>
                       </span>
@@ -431,7 +427,6 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">Qualification</label>
                 <div className="col-sm-8">
                   <input
-                      disabled={disabledUser}
                       type="text"
                       placeholder="100 characters allowed"
                       maxLength={100}
@@ -447,7 +442,6 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">No of learners on register</label>
                 <div className="col-sm-8">
                   <input
-                      disabled={disabledUser}
                       type="number"
                       min={0}
                       max={999}
@@ -467,7 +461,6 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">Course Code</label>
                 <div className="col-sm-8">
                   <input
-                      disabled={disabledUser}
                       type="text"
                       placeholder="20 characters allowed"
                       maxLength={20}
@@ -484,7 +477,6 @@ class ObserveHeader extends Component{
                 <div className="col-sm-8">
                   <input
                       type="number"
-                      disabled={disabledUser}
                       min={0}
                       max={999}
                       placeholder="Max value is 999"
@@ -503,7 +495,6 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">Course Title</label>
                 <div className="col-sm-8">
                   <input
-                      disabled={disabledUser}
                       type="text"
                       placeholder="100 characters allowed"
                       maxLength={100}
@@ -519,7 +510,6 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">No of learners late</label>
                 <div className="col-sm-8">
                   <input
-                      disabled={disabledUser}
                       type="number"
                       min={0}
                       max={999}
@@ -539,7 +529,6 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">Level</label>
                 <div className="col-sm-8">
                   <input
-                      disabled={disabledUser}
                       type="number"
                       min={0}
                       max={99}
@@ -556,7 +545,6 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">Total no. of learners in session</label>
                 <div className="col-sm-8">
                   <input
-                      disabled={disabledUser}
                       type="number"
                       min={0}
                       max={999}
@@ -577,7 +565,6 @@ class ObserveHeader extends Component{
                 <label className="col-sm-4 control-label">Course Credits</label>
                 <div className="col-sm-8">
                   <input
-                      disabled={disabledUser}
                       type="number"
                       min={0}
                       max={99}
@@ -595,7 +582,6 @@ class ObserveHeader extends Component{
                 <div className="col-sm-8">
                   <select id="department"
                     className="form-control m-b"
-                    disabled={disabledUser}
                     value={this.state.departmentId}
                     style={{width: "100%"}}>
                     <option></option>
@@ -613,7 +599,6 @@ class ObserveHeader extends Component{
                 <div className="col-sm-8">
                   <select id="campusLocation"
                     className="form-control m-b"
-                    disabled={disabledUser}
                     value={this.state.locationId}
                     style={{width: "100%"}}>
                     <option></option>
@@ -628,7 +613,6 @@ class ObserveHeader extends Component{
                 <div className="col-sm-8">
                   <select id="sessionType"
                     className="form-control m-b"
-                    disabled={disabledUser}
                     value={this.state.sessionId}
                     style={{width: "100%"}}>
                     <option></option>
@@ -645,7 +629,6 @@ class ObserveHeader extends Component{
                 <label className="col-sm-2 control-label">Context of Session (include stage in programme)</label>
                 <div className="col-sm-10">
                   <textarea
-                      disabled={disabledUser}
                       maxLength={250}
                       style={{width: "100%", height: "70px"}}
                       placeholder="250 characters allowed"
@@ -667,7 +650,6 @@ class ObserveHeader extends Component{
                   <input
                     type="checkbox"
                     checked={this.state.lessonPlan}
-                    disabled={disabledUser}
                     onClick={this.handleLessonPlanChange.bind(this)}
                   />
                 </div>
@@ -678,7 +660,6 @@ class ObserveHeader extends Component{
                 <label className="col-sm-2 control-label">Comments</label>
                 <div className="col-sm-10">
                   <textarea
-                      disabled={disabledUser}
                       type="text"
                       maxLength={250}
                       placeholder="250 characters allowed"
@@ -699,7 +680,6 @@ class ObserveHeader extends Component{
                   <input
                     type="checkbox"
                     checked={this.state.courseOutline}
-                    disabled={disabledUser}
                     onClick={this.handleCourseOutlineChange.bind(this)}
                   />
                 </div>
@@ -710,7 +690,6 @@ class ObserveHeader extends Component{
                 <label className="col-sm-2 control-label">Comments</label>
                 <div className="col-sm-10">
                   <textarea
-                      disabled={disabledUser}
                       type="text"
                       maxLength={250}
                       placeholder="250 characters allowed"
@@ -729,7 +708,6 @@ class ObserveHeader extends Component{
                 <label className="col-sm-2 control-label">Observation Notes</label>
                 <div className="col-sm-10">
                   <textarea
-                      disabled={disabledUser}
                       type="text"
                       style={{width: "100%", height:"500px"}}
                       className="form-control m-b"
@@ -797,7 +775,6 @@ class ObserveEntryRow extends Component{
   }
 
   render(){
-    var disabledUser = this.props.role.qualityAssurance;
     return(
         <tr className={this.props.category}>
             <td>
@@ -808,7 +785,6 @@ class ObserveEntryRow extends Component{
             <td align="center">
                 <input className="form-control"
                   type="checkbox"
-                  disabled={disabledUser}
                   checked={this.state.categoryItem.strength}
                   onClick={this.handleStrengthChange.bind(this)}
                 />
@@ -816,13 +792,12 @@ class ObserveEntryRow extends Component{
             <td align="center">
                 <input className="form-control"
                   type="checkbox"
-                  disabled={disabledUser}
                   checked={this.state.categoryItem.improvement}
                   onClick={this.handleImprovementChange.bind(this)}
                 />
             </td>
             <td>
-                <textArea disabled={disabledUser} type="text"
+                <textArea type="text"
                   maxLength={250}
                   placeholder="250 characters allowed"
                   className="form-control"
@@ -1014,7 +989,6 @@ class ObserveSummary extends Component{
   }
 
   render(){
-    var disabledUser = this.props.role.qualityAssurance;
     return(
       <div className="ibox-content">
         <div className="form-group">
@@ -1024,7 +998,6 @@ class ObserveSummary extends Component{
               <div className="col-sm-8">
                 <select id="rating"
                   className="form-control m-b"
-                  disabled={disabledUser}
                   value={this.state.ratingReferenceId}
                   style={{width: "100%"}}>
                   <option></option>
@@ -1039,7 +1012,6 @@ class ObserveSummary extends Component{
               <div className="col-sm-8">
                 <textarea type="text" className="form-control"
                     style={{width: "100%", height:"150px"}}
-                    disabled={disabledUser}
                     onChange={this.handleRatingSummaryChange.bind(this)}
                     value={this.state.ratingSummary}
                 />
@@ -1050,7 +1022,7 @@ class ObserveSummary extends Component{
             <div className="col-sm-12">
               <label className="col-sm-4 control-label">Additional Comments</label>
               <div className="col-sm-8">
-                <textarea disabled={disabledUser} type="text" className="form-control m-b"
+                <textarea type="text" className="form-control m-b"
                     style={{width: "100%", height:"150px"}}
                     onChange={this.handleAdditionalCommentsChange.bind(this)}
                     value={this.state.additionalComments}
@@ -1171,7 +1143,6 @@ class ObserveModerate extends Component{
               <div className="col-sm-8">
                   <input
                     type="checkbox"
-                    disabled = {disabledUser}
                     checked={this.state.appliedFeedback}
                     onClick={this.handleAppliedFeedbackChange.bind(this)} />
                 </div>
@@ -1199,7 +1170,6 @@ class ObserveModerate extends Component{
               <div className="col-sm-8">
                 <select id="moderator"
                   className="form-control m-b"
-                  disabled = {disabledUser}
                   style={{width: "100%"}}
                   data-init={this.state.moderator.firstName + " " + this.state.moderator.lastName}
                   value={this.state.moderatorId}>
@@ -1215,7 +1185,6 @@ class ObserveModerate extends Component{
               <div className="col-sm-8">
                 <select id="coach"
                   style={{width: "100%"}}
-                  disabled = {disabledUser}
                   className="form-control m-b"
                   data-init={this.state.learningCoach.firstName + " " + this.state.learningCoach.lastName}
                   value={this.state.learningCoachId}>
@@ -1228,7 +1197,6 @@ class ObserveModerate extends Component{
               <div className="col-sm-8">
                 <select id="hod"
                   style={{width: "100%"}}
-                  disabled = {disabledUser}
                   className="form-control m-b"
                   data-init={this.state.hod.firstName + " " + this.state.hod.lastName}
                   value={this.state.hodId}>
@@ -1311,13 +1279,11 @@ class ObserveRecommendation extends Component {
   }
 
   render() {
-    var disabledUser = this.props.role.qualityAssurance;
     return (
         <tr>
             <td>
                 <select className="form-control"
                   onChange={this.handleFocusAreaChange.bind(this)}
-                  disabled={disabledUser}
                   value={this.state.recommendation.focusArea}>
                   <option></option>
                   {this.populateFocusArea()}
@@ -1326,7 +1292,6 @@ class ObserveRecommendation extends Component {
             <td align="center">
                 <input className="form-control"
                   type="checkbox"
-                  disabled={disabledUser}
                   checked={this.state.recommendation.strength}
                   onClick={this.handleStrengthChange.bind(this)}
                 />
@@ -1334,13 +1299,12 @@ class ObserveRecommendation extends Component {
             <td align="center">
                 <input className="form-control"
                   type="checkbox"
-                  disabled={disabledUser}
                   checked={this.state.recommendation.improvement}
                   onClick={this.handleImprovementChange.bind(this)}
                 />
             </td>
             <td>
-                <textArea disabled={disabledUser} type="text"
+                <textArea type="text"
                   maxLength={250}
                   placeholder="250 characters allowed"
                   className="form-control"

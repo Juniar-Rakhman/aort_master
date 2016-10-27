@@ -207,9 +207,11 @@ class ParamsForm extends Component{
         }, this);
     }
 
+    No
+    Title
     handlePrint(e) {
         this.state.reportData.parameters.forEach(function(parameter){
-            if(parameter.type === 'MultiStaff'){
+            if (parameter.type === 'MultiStaff') {
                 var valueStr = '';
                 parameter.value.forEach(function(val) {
                     valueStr += val + ';';
@@ -238,15 +240,44 @@ class ParamsForm extends Component{
                 for (var i = 0; i < binary.length; i++) {
                     view[i] = binary.charCodeAt(i);
                 }
-                // create pdf blob file
-                var blob = new Blob([view], {type: "application/pdf"});
-                // create object URL
-                var url = URL.createObjectURL(blob);
-                // construct the viewer and open it in new tab
-                var viewerUrl = "/viewer?file=" + encodeURIComponent(url);
-                window.open(viewerUrl, "_blank");
+                console.log(this.state.reportData.name);
+                if (this.state.reportData.name === "Academic Staff Observation Overview") {
+                    var blob = new Blob([view], {type: "application/vnd.ms-excel"});
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth() + 1;
+                    var yyyy = today.getFullYear();
+                    if (dd < 10) {
+                        dd = '0' + dd
+                    }
+                    if (mm < 10) {
+                        mm = '0' + mm
+                    }
+                    today = dd + '_' + mm + '_' + yyyy;
+                    var fileName = "Academic_Staff_Observation_Overview_" + today + ".xls";
+                    if (navigator.appVersion.toString().indexOf('.NET') > 0) { // for IE browser
+                        window.navigator.msSaveBlob(blob, fileName);
+                    } else { // for other browsers
+                        var a = window.document.createElement("a");
+                        a.href = URL.createObjectURL(blob);
+                        a.download = fileName;
+                        // Append anchor to body.
+                        document.body.appendChild(a);
+                        a.click();
+                        // Remove anchor from body
+                        document.body.removeChild(a);
+                    }
+                } else {
+                    // create pdf blob file
+                    var blob = new Blob([view], {type: "application/pdf"});
+                    // create object URL
+                    var url = URL.createObjectURL(blob);
+                    // construct the viewer and open it in new tab
+                    var viewerUrl = "/viewer?file=" + encodeURIComponent(url);
+                    window.open(viewerUrl, "_blank");
+                }
             }.bind(this),
-            error: function(xhr, status, err) {
+            error: function (xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         });
@@ -261,6 +292,11 @@ class ParamsForm extends Component{
     render(){
         var parameters = this.props.report.parameters;
         var row=[];
+
+        if (parameters.length == 0){
+            row.push("No parameter for this report");
+        }
+
         parameters.forEach(function(parameter){
             row.push(<ParamRow key={parameter.id} parameter={parameter} updateParamsData={this.updateParamsData} departments={this.props.departments}/>)
         },this);
