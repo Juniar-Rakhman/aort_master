@@ -207,9 +207,11 @@ class ParamsForm extends Component{
         }, this);
     }
 
+    No
+    Title
     handlePrint(e) {
         this.state.reportData.parameters.forEach(function(parameter){
-            if(parameter.type === 'MultiStaff'){
+            if (parameter.type === 'MultiStaff') {
                 var valueStr = '';
                 parameter.value.forEach(function(val) {
                     valueStr += val + ';';
@@ -240,8 +242,7 @@ class ParamsForm extends Component{
                 }
                 console.log(this.state.reportData.name);
                 if (this.state.reportData.name === "Academic Staff Observation Overview") {
-                    var a = window.document.createElement("a");
-                    a.href = URL.createObjectURL(new Blob([view], {type: "application/vnd.ms-excel"}));
+                    var blob = new Blob([view], {type: "application/vnd.ms-excel"});
                     var today = new Date();
                     var dd = today.getDate();
                     var mm = today.getMonth() + 1;
@@ -253,12 +254,19 @@ class ParamsForm extends Component{
                         mm = '0' + mm
                     }
                     today = dd + '_' + mm + '_' + yyyy;
-                    a.download = "Academic_Staff_Observation_Overview_" + today + ".xls";
-                    // Append anchor to body.
-                    document.body.appendChild(a);
-                    a.click();
-                    // Remove anchor from body 
-                    document.body.removeChild(a);
+                    var fileName = "Academic_Staff_Observation_Overview_" + today + ".xls";
+                    if (navigator.appVersion.toString().indexOf('.NET') > 0) { // for IE browser
+                        window.navigator.msSaveBlob(blob, fileName);
+                    } else { // for other browsers
+                        var a = window.document.createElement("a");
+                        a.href = URL.createObjectURL(blob);
+                        a.download = fileName;
+                        // Append anchor to body.
+                        document.body.appendChild(a);
+                        a.click();
+                        // Remove anchor from body
+                        document.body.removeChild(a);
+                    }
                 } else {
                     // create pdf blob file
                     var blob = new Blob([view], {type: "application/pdf"});
@@ -269,7 +277,7 @@ class ParamsForm extends Component{
                     window.open(viewerUrl, "_blank");
                 }
             }.bind(this),
-            error: function(xhr, status, err) {
+            error: function (xhr, status, err) {
                 console.error(this.props.url, status, err.toString());
             }.bind(this)
         });

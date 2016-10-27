@@ -141,7 +141,6 @@ public class ReportController {
             Random random = new Random();
             long randomNum = Math.abs(random.nextLong());
             InputStream in = ReportUtils.buildInputStream(reportUrl, domain, username, password);
-            logger.info("info report url : " + reportUrl);
             File dest = new File(requestReport.getPath() +"_" + randomNum +".pdf");
             Files.copy(in, dest.toPath(), StandardCopyOption.REPLACE_EXISTING);
             content = Base64.encodeBase64(Files.readAllBytes(dest.toPath()));
